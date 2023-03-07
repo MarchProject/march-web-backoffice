@@ -1,0 +1,45 @@
+{
+  "name": "march-web-backoffice",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@babel/core": "^7.20.2",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12",
+    "@next/bundle-analyzer": "^13.2.3",
+    "@types/node": "18.14.6",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "babel-plugin-styled-components": "^2.0.7",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.3",
+    "march-web-backoffice": "link:",
+    "next": "13.2.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "7.17.2",
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.8",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "8.2.3",
+    "babel-plugin-import": "1.13.3",
+    "eslint": "8.27.0",
+    "eslint-config-next": "12.1.2",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "typescript": "4.8.4"
+  }
+}
