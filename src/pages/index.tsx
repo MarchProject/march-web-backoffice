@@ -9,7 +9,7 @@ export default function Home() {
           <Button variant="contained" color="success">
             Contained
           </Button>
-          <Button variant="text">Text</Button>
+          <Button variant="text">Bright</Button>
           <Button variant="outlined">Outlined</Button>
         </div>
       </div>
