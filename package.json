@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
     "@babel/core": "^7.20.2",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -18,13 +19,16 @@
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "apollo-link-ws": "^1.0.20",
     "babel-plugin-styled-components": "^2.0.7",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "graphql": "^16.6.0",
     "march-web-backoffice": "link:",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "ts-node": "^10.9.1",
     "typescript": "4.9.5"
   },

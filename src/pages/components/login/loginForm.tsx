@@ -22,30 +22,25 @@ function LoginForm() {
           <div className="col-span-2">
             <img src="/login.jpeg" className="img-login" alt="" />
           </div>
-          <div className="p-[20px]">
+          <div className="p-[20px] max-w-[250px]">
             <CardContent>
               <h2 className="mt-[40px] text-gray-600">Sign In</h2>
-              <div className="mt-[10px]">
+              <div className="mt-[10px] max-w-[220px]">
                 <InputForm
                   id="username"
-                  label="username"
-                  required={false}
+                  inputLabel={{ label: 'username', required: true }}
                   type={'text'}
                 />
               </div>
               <div className="mt-[10px]">
                 <InputForm
                   id="password"
-                  label="password"
-                  required={false}
+                  inputLabel={{ label: 'password', required: true }}
                   type={'password'}
                 />
               </div>
               <div className="mt-[30px]">
                 <ButtonForm color="primary" label="Sign In" />
-              </div>
-              <div className="mt-[30px]">
-                <ButtonForm color="primary" label="Contact" />
               </div>
             </CardContent>
           </div>
