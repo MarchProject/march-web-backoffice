@@ -20,14 +20,13 @@ import * as clientConfig from '../../config/client'
  */
 export async function initApollo(uri?: string) {
   const basePath = process.env.basePath
-  const _uri = uri || `${window.origin}${basePath}/graphql`
+  const _uri = uri || process.env.coreApiUrl
+  console.log({ _uri })
   const wsUri = _uri.replace(/^http/, 'ws')
   const accessToken = clientConfig.getAccessToken()
-  // const accessToken = null
   const reconnect = !wsUri.startsWith(
     `${window.origin.replace(/^http/, 'ws')}${basePath}`,
   )
-
   const wsLink = new WebSocketLink({
     uri: wsUri,
     options: {

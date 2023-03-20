@@ -1,6 +1,20 @@
+import Head from 'next/head'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  const title = `March ${process.env.version}`
+  return (
+    <>
+      <Head>
+        <meta
+          key="viewport"
+          name="viewport"
+          content="initial-scale=1.0, width=device-width, shrink-to-fit=no"
+        />
+        <title>{title}</title>
+      </Head>
+      <Component {...pageProps} />
+    </>
+  )
 }

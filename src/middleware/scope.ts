@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { CookiesKey } from '../constant/index'
 import * as jwt from 'jsonwebtoken'
-import { uam } from 'src/types/uam'
+// import { uam } from 'src/types/uam'
 import { homeRoute } from '../router/home'
 import { scopeMenuRoute } from '../router/common/menu'
 
@@ -15,7 +15,8 @@ export async function validateScope(
   console.log(logPrefix, path)
   const accessToken = req.cookies[CookiesKey.accessToken]
 
-  const decoded = jwt.decode(accessToken) as uam.JwtPayload
+  const decoded = jwt.decode(accessToken) as  any  
+  // uam.JwtPayload
   const scopes = decoded?.CustomInfo?.functions
 
   const isInScopeMenu = Object.values(scopeMenuRoute).includes(path)

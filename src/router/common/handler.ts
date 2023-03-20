@@ -21,7 +21,8 @@ import {
   userUpdateRoute,
 } from '../users-management'
 import { shopRolesManagementRoute } from '../shop-management'
-import { validateScope } from '../../middleware/scope'
+import { setCookieSignIn } from '../../core/services/auth'
+// import { validateScope } from '../../middleware/scope'
 
 export const routes: Route[] = [
   homeRoute,
@@ -139,29 +140,26 @@ export function init(router: Router, nextServer: NextServer) {
     router.get(
       route.regex,
       route.auth ? validateAccessToken : (_, __, next) => next(),
-      (req, res, next) => validateScope(req, res, next, route.path),
+      // (req, res, next) => validateScope(req, res, next, route.path),
       (req, res) => handlePage(req, res, nextServer),
     )
   })
 
-  // router.post('/backoffice/api/signIn', async (req: Request, res: Response) => {
-  //   try {
-  //     const response = await signIn(
-  //       {
-  //         username: req.body.username,
-  //         password: req.body.password,
-  //       },
-  //       res,
-  //     )
-  //     // const response = await signInApi(req, res)
-  //     res.send(response)
-  //   } catch (error) {
-  //     // console.log('handleError', error.response.data.statusCode)
-  //     res.status(error.response.data.statusCode).send({
-  //       message: error.response.data.message,
-  //     })
-  //   }
-  // })
+  router.post('/backoffice/api/signIn', async (req: Request, res: Response) => {
+    try {
+      const response = await setCookieSignIn(
+        {
+          access_token: req.body.access_token,
+        },
+        res,
+      )
+      res.send(response)
+    } catch (error) {
+      res.status(error.response.data.statusCode).send({
+        message: error.response.data.message,
+      })
+    }
+  })
 
   // router.post('/backoffice/api/signOut', async (_: Request, res: Response) => {
   //   const response = await signOut(res)

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-// import { verifyAccessToken } from '../core/services/server/auth'
 import { CookiesKey } from '../constant/index'
 import { getLoginRoute } from '../router/auth'
+import { verifyAccessToken } from '../core/services/auth'
 
 export async function validateAccessToken(
   req: Request,
@@ -20,8 +20,8 @@ export async function validateAccessToken(
   }
 
   try {
-    // const response = await verifyAccessToken({ accessToken })
-    console.log('[error_sus]')
+    const response = await verifyAccessToken({ accessToken })
+    console.log('[error_sus]', { response })
   } catch (error) {
     console.log('[error_verify]', { error })
 

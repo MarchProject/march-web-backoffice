@@ -8,7 +8,7 @@
 import { ClientConfig } from '../types/config'
 import { Credential } from '../types/uam'
 
-const prefix = 'mop.backOffice'
+const prefix = 'march.backOffice'
 
 export function getDevelopment() {
   return localStorage.getItem(`${prefix}.development`)
@@ -17,7 +17,6 @@ export function getDevelopment() {
 export function getCoreApiUrl() {
   return localStorage.getItem(`${prefix}.coreApiUrl`)
 }
-
 
 export function getUserId() {
   return localStorage.getItem(`${prefix}.userId`)
@@ -39,7 +38,7 @@ export function getDefaultLoginPath() {
   return localStorage.getItem(`${prefix}.defaultLoginPath`)
 }
 
-export function init(config: ClientConfig, credential: Credential) {
+export function init(config: any, credential: Credential) {
   const logPrefix = 'config.init'
   console.log(logPrefix, { config })
 

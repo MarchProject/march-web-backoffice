@@ -14,7 +14,20 @@ import Input from '@mui/material/Input'
 import InputForm from '../common/Input/inputForm'
 import ButtonForm from '../common/Button/button'
 
-function LoginForm() {
+type LoginFormProps = {
+  signIn: any
+}
+
+function LoginForm({ signIn }) {
+  const handleSubmit = () => {
+    signIn({
+      variables: {
+        username: 'admin',
+        password: '123456',
+      },
+    })
+  }
+
   return (
     <div className="">
       <Card className="card-login" sx={{ minWidth: 275, borderRadius: '20px' }}>
@@ -44,7 +57,11 @@ function LoginForm() {
                 />
               </div>
               <div className="mt-[30px]">
-                <ButtonForm color="primary" label="Sign In" />
+                <ButtonForm
+                  color="primary"
+                  label="Sign In"
+                  onClick={handleSubmit}
+                />
               </div>
             </CardContent>
           </div>

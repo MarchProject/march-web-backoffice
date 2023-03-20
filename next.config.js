@@ -47,8 +47,6 @@ module.exports = withBundleAnalyzer({
   env: {
     version: `v${version}`,
     basePath: process.env.BASE_PATH || '',
-    //TODO
-    // authority: process.env.AUTHORITY || '',
-    // clientId: process.env.CLIENT_ID || '',
+    coreApiUrl: process.env.MARCH_BO_CORE_API_URL || '',
   },
 })
