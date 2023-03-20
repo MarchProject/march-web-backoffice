@@ -20,7 +20,11 @@ function LoginForm() {
       <Card className="card-login" sx={{ minWidth: 275, borderRadius: '20px' }}>
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-2">
-            <img src="/login.jpeg" className="img-login" alt="" />
+            <img
+              src={`${process.env.basePath}/public/login.jpeg`}
+              className="img-login"
+              alt=""
+            />
           </div>
           <div className="p-[20px] max-w-[250px]">
             <CardContent>

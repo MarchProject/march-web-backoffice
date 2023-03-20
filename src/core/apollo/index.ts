@@ -2,7 +2,7 @@ import { ApolloClient, HttpLink, InMemoryCache, split } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
-// import * as clientConfig from '../config/client'
+import * as clientConfig from '../../config/client'
 
 /**
  * working on cient-side only
@@ -22,8 +22,8 @@ export async function initApollo(uri?: string) {
   const basePath = process.env.basePath
   const _uri = uri || `${window.origin}${basePath}/graphql`
   const wsUri = _uri.replace(/^http/, 'ws')
-  // const accessToken = clientConfig.getAccessToken()
-  const accessToken = null
+  const accessToken = clientConfig.getAccessToken()
+  // const accessToken = null
   const reconnect = !wsUri.startsWith(
     `${window.origin.replace(/^http/, 'ws')}${basePath}`,
   )

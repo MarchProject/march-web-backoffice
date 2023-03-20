@@ -14,7 +14,7 @@ body {
 }
 
 .bg-login {
-  background-image: url('/bg01.jpeg');
+  background-image: url('/backoffice/public/bg01.jpeg');
   height: 100vh;
   width: 100%;
 }
