@@ -1,63 +1,20 @@
-import { Button, Card, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import router from 'next/router'
 import LoginForm from '../components/login/loginForm'
 import { GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import * as clientConfig from '../../config/client'
 import { Request, Response } from 'express'
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-  useQuery,
-  useMutation,
-} from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { initApollo } from '@/core/apollo'
-import { signinMutation } from '@/core/gql/auth'
-import { LoginResult, SigninVariables } from '@/core/model'
 import { homeRoute } from '@/router/home'
-import axios from 'axios'
 import { CookiesKey } from '@/constant'
 import { verifyAccessToken } from '@/core/services/auth'
+import { useLoginController } from './controller'
+
 
 const Index = () => {
-  const [signIn, { loading: _loading, error, data }] = useMutation<
-    LoginResult,
-    SigninVariables
-  >(signinMutation)
-
-  const signAxios = async (access_token) => {
-    const response = await axios.post('/backoffice/api/signIn', {
-      access_token,
-    })
-    console.log({ response })
-  }
-
-  useEffect(() => {
-    const _data = data?.signIn
-    if (_data) {
-      if (!_data.access_token) {
-        // alertError('Unauthorized', alertTitle)
-        console.log('err auth')
-        return () => {}
-      }
-      console.log('login success')
-      localStorage.clear()
-      const config = _data
-      if (config) {
-        clientConfig.init(config, {
-          userId: _data?.userId,
-          username: _data?.username,
-          accessToken: _data?.access_token,
-        })
-      }
-      signAxios(_data?.access_token)
-
-      router.push({ pathname: homeRoute.path })
-    }
-  }, [data])
+  const {
+    signInState: { signIn },
+  } = useLoginController()
 
   return (
     <>
@@ -89,7 +46,7 @@ export async function getServerSideProps(
   if (accessToken) {
     try {
       const response = await verifyAccessToken({ accessToken })
-      console.log(logPrefix, {})
+      console.log(logPrefix, { response })
 
       const uri = `${process.env.BASE_PATH}${homeRoute.path}`
       console.log(logPrefix, { uri })

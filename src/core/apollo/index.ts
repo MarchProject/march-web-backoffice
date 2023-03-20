@@ -87,6 +87,9 @@ export async function initApollo(uri?: string) {
         fetchPolicy: 'no-cache',
         errorPolicy: 'all',
       },
+      mutate: {
+        errorPolicy: 'all',
+      },
     },
   })
 

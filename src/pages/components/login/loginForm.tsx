@@ -1,16 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  FormControl,
-  InputLabel,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Card, CardContent } from '@mui/material'
 import React from 'react'
-import Input from '@mui/material/Input'
 import InputForm from '../common/Input/inputForm'
 import ButtonForm from '../common/Button/button'
 
@@ -18,12 +8,13 @@ type LoginFormProps = {
   signIn: any
 }
 
-function LoginForm({ signIn }) {
+function LoginForm({ signIn }: LoginFormProps) {
+
   const handleSubmit = () => {
     signIn({
       variables: {
         username: 'admin',
-        password: '123456',
+        password: '1234562',
       },
     })
   }
