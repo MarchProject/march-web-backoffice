@@ -40,6 +40,13 @@ export function removeRefreshToken() {
   localStorage.removeItem(`${prefix}.refreshToken`)
 }
 
+export function getAuthFailed() {
+  return localStorage.getItem(`${prefix}.authFailed`)
+}
+
+export function removeAuthFailed() {
+  return localStorage.removeItem(`${prefix}.authFailed`)
+}
 export function getDefaultLoginPath() {
   return localStorage.getItem(`${prefix}.defaultLoginPath`)
 }

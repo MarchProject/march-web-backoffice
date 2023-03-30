@@ -12,6 +12,7 @@ import * as clientConfig from '../../config/client'
 import { onError } from '@apollo/client/link/error'
 import { GraphQLError } from 'graphql'
 import { tokenExpireMutation } from '../gql/auth'
+import router from 'next/router'
 /**
  * working on cient-side only
  */
@@ -96,9 +97,13 @@ export async function initApollo(uri?: string) {
                       complete: observer.complete.bind(observer),
                     }
 
-                    forward(operation).subscribe(subscriber);
+                    forward(operation).subscribe(subscriber)
                   } catch (err) {
-                    observer.error(err)
+                    localStorage.setItem('march.backOffice.authFailed', 'true')
+                    router.push({
+                      pathname: clientConfig.getDefaultLoginPath(),
+                    })
+                    // observer.error(err)
                   }
                 })()
               })
@@ -187,7 +192,9 @@ export async function initApollo(uri?: string) {
       return accessToken
     } catch (err) {
       console.log({ err })
-      localStorage.clear()
+      // localStorage.clear()
+      clientConfig.removeAccessToken()
+      clientConfig.removeRefreshToken()
       throw err
     }
   }

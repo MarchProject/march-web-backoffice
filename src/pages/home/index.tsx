@@ -12,13 +12,16 @@ import * as clientConfig from '@/config/client'
 import { useRouter } from 'next/router'
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
+import Cookies from 'js-cookie'
 
 type SignOut = {
-  id: string
+  signOut: {
+    id: string
+  }
 }
 
 const Index = () => {
-  const [signOut, { loading, error, data }] = useMutation<SignOut, SignOut>(
+  const [signOut, { loading, error, data }] = useMutation<SignOut, any>(
     signOutMutation,
   )
   const router = useRouter()
@@ -32,8 +35,12 @@ const Index = () => {
   }
 
   useEffect(() => {
-    if (data) {
-      // clientConfig.removeAccessToken()
+    if (data?.signOut?.id) {
+      clientConfig.removeAccessToken()
+      clientConfig.removeRefreshToken()
+      Cookies.remove('mbo-token')
+      Cookies.remove('mbo-refresh')
+      router.push({ pathname: clientConfig.getDefaultLoginPath() })
     }
   }, [data])
 

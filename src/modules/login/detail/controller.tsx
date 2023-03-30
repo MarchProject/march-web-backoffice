@@ -23,6 +23,13 @@ const notificationErrorProp = {
   title: 'Sign In',
   message: 'Sign In Error',
 }
+
+const notificationAuthErrorProp = {
+  severity: EnumSeverity.error,
+  title: 'Sign In',
+  message: 'Sign In Expire',
+}
+
 export const useLoginController = () => {
   const { notification } = useNotificationContext()
   const { signIn, signInLoading } = useSignInState({ notification })
@@ -58,7 +65,13 @@ const useSignInState = ({ notification }) => {
     setDataSet(response.data)
     console.log({ response })
   }
-
+  useEffect(() => {
+    const check = clientConfig.getAuthFailed()
+    if (check === 'true') {
+      notification(notificationAuthErrorProp)
+      clientConfig.removeAuthFailed()
+    }
+  }, [])
   useEffect(() => {
     if (data) {
       signAxios({
@@ -91,7 +104,7 @@ const useSignInState = ({ notification }) => {
         })
       }
       notification(notificationSuccessProp)
-      // router.push({ pathname: homeRoute.path })
+      router.push({ pathname: homeRoute.path })
     }
   }, [dataSet])
 
