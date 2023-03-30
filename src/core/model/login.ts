@@ -9,6 +9,7 @@ export type SignInResponse = {
   userId: string
   username: string
   accessToken: string
+  refreshToken: string
   config?: ClientConfig
 }
 

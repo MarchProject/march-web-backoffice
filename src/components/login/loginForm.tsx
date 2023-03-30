@@ -3,22 +3,14 @@ import { Card, CardContent } from '@mui/material'
 import React from 'react'
 import InputForm from '../common/Input/inputForm'
 import ButtonForm from '../common/Button/button'
+import { Control, FieldValues } from 'react-hook-form'
 
 type LoginFormProps = {
-  signIn: any
+  onSubmit: any
+  control: Control<FieldValues, any>
 }
 
-function LoginForm({ signIn }: LoginFormProps) {
-
-  const handleSubmit = () => {
-    signIn({
-      variables: {
-        username: 'admin',
-        password: '1234562',
-      },
-    })
-  }
-
+function LoginForm({ onSubmit, control }: LoginFormProps) {
   return (
     <div className="">
       <Card className="card-login" sx={{ minWidth: 275, borderRadius: '20px' }}>
@@ -27,7 +19,7 @@ function LoginForm({ signIn }: LoginFormProps) {
             <img
               src={`${process.env.basePath}/public/login.jpeg`}
               className="img-login"
-              alt=""
+              alt="img-login"
             />
           </div>
           <div className="p-[20px] max-w-[250px]">
@@ -35,14 +27,18 @@ function LoginForm({ signIn }: LoginFormProps) {
               <h2 className="mt-[40px] text-gray-600">Sign In</h2>
               <div className="mt-[10px] max-w-[220px]">
                 <InputForm
+                  control={control}
                   id="username"
+                  name="username"
                   inputLabel={{ label: 'username', required: true }}
                   type={'text'}
                 />
               </div>
               <div className="mt-[10px]">
                 <InputForm
+                  control={control}
                   id="password"
+                  name="password"
                   inputLabel={{ label: 'password', required: true }}
                   type={'password'}
                 />
@@ -51,7 +47,7 @@ function LoginForm({ signIn }: LoginFormProps) {
                 <ButtonForm
                   color="primary"
                   label="Sign In"
-                  onClick={handleSubmit}
+                  onClick={onSubmit}
                 />
               </div>
             </CardContent>

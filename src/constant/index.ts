@@ -1,4 +1,6 @@
 export const CookiesKey = {
-  accessToken: 'mop-token',
-  username: 'mop-username',
+  accessToken: 'mbo-token',
+  newAccessToken: 'mbo-token2',
+  refreshToken: 'mbo-refresh',
+  username: 'mbo-username',
 }

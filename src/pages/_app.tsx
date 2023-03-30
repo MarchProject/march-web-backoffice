@@ -2,6 +2,7 @@ import Head from 'next/head'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Providers from '@/providers'
+import 'react-block-ui/style.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   const title = `March ${process.env.version}`

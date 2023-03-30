@@ -33,6 +33,12 @@ export function getAccessToken() {
 export function removeAccessToken() {
   localStorage.removeItem(`${prefix}.accessToken`)
 }
+export function getRefreshToken() {
+  return localStorage.getItem(`${prefix}.refreshToken`)
+}
+export function removeRefreshToken() {
+  localStorage.removeItem(`${prefix}.refreshToken`)
+}
 
 export function getDefaultLoginPath() {
   return localStorage.getItem(`${prefix}.defaultLoginPath`)
@@ -47,7 +53,7 @@ export function init(config: any, credential: Credential) {
     ...(credential ?? {}),
   }
   // TODO delete
-  console.log(logPrefix, { _config })
+  // console.log(logPrefix, { _config })
 
   Object.keys(_config).forEach((key) => {
     localStorage.setItem(`${prefix}.${key}`, _config[key])

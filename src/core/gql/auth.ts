@@ -11,10 +11,27 @@ export const signinMutation = gql`
   }
 `
 
+export const signOutMutation = gql`
+  mutation signOut($id: String!) {
+    signOut(id: $id) {
+      id
+    }
+  }
+`
+
 export const verifyAccessTokenMutation = gql`
   mutation verifyAccessToken($token: String!) {
     verifyAccessToken(token: $token) {
       success
+    }
+  }
+`
+
+
+export const tokenExpireMutation = gql`
+  mutation tokenExpire($refreshToken: String!) {
+    tokenExpire(refreshToken: $refreshToken) {
+      access_token
     }
   }
 `

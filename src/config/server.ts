@@ -59,6 +59,7 @@ export function toClientConfig(): ClientConfig {
   console.log('clientConfig', {
     development,
     coreApiUrl,
+    defaultLoginPath
   })
 
   return {

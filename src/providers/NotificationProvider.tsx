@@ -1,5 +1,5 @@
 import { useNotificationContext } from '@/context/notification'
-import AlertNoti from '@/pages/components/common/Alert/alert'
+import AlertNoti from '@/components/common/Alert/alert'
 import { Alert, AlertTitle, Snackbar } from '@mui/material'
 import { FC, ReactElement } from 'react'
 
