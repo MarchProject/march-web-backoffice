@@ -98,6 +98,7 @@ export async function initApollo(uri?: string) {
                     }
 
                     forward(operation).subscribe(subscriber)
+                    router.reload()
                   } catch (err) {
                     localStorage.setItem('march.backOffice.authFailed', 'true')
                     router.push({
