@@ -182,7 +182,7 @@ export function init(router: Router, nextServer: NextServer) {
     const parsedUrl = url.parse(req.url, true)
 
     console.log(logPrefix, parsedUrl.pathname)
-
+    // return res.redirect(`${basePath}`)
     return handleNextRequest(req, res, parsedUrl)
   })
 

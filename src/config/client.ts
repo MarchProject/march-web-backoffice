@@ -5,7 +5,6 @@
  *
  */
 
-import { ClientConfig } from '../types/config'
 import { Credential } from '../types/uam'
 
 const prefix = 'march.backOffice'

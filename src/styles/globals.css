@@ -32,15 +32,15 @@ body {
   height: 100%;
 }
 
-.css-sghohy-MuiButtonBase-root-MuiButton-root {
+/* .css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: #e69fff !important;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
   background-color: #d079ea !important;
-}
+} */
 
-.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+/* .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
   color: #d079ea !important;
 }
 
@@ -50,10 +50,10 @@ body {
 
 .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
   border-color: #d079ea !important;
-}
+} */
 
 .Mui-required {
-  color: red;
+  color: red !important;
 }
 
 /* #b040d3 */

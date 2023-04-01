@@ -1,55 +1,21 @@
-import { getUserId } from '@/config/client'
 import { CookiesKey } from '@/constant'
 import { initApollo } from '@/core/apollo'
-import { signOutMutation } from '@/core/gql/auth'
-import { ApolloProvider, useMutation } from '@apollo/client'
-import { Button } from '@mui/material'
+import { ApolloProvider } from '@apollo/client'
 import { GetServerSidePropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React, { useEffect, useState } from 'react'
-import { Request, Response } from 'express'
-import * as clientConfig from '@/config/client'
-import { useRouter } from 'next/router'
+import {
+  Request,
+  // Response
+} from 'express'
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
-import Cookies from 'js-cookie'
-
-type SignOut = {
-  signOut: {
-    id: string
-  }
-}
+import Layout from '@/layout/Layout'
 
 const Index = () => {
-  const [signOut, { loading, error, data }] = useMutation<SignOut, any>(
-    signOutMutation,
-  )
-  const router = useRouter()
-  const userId = getUserId()
-  const handle = () => {
-    signOut({
-      variables: {
-        id: userId,
-      },
-    })
-  }
-
-  useEffect(() => {
-    if (data?.signOut?.id) {
-      clientConfig.removeAccessToken()
-      clientConfig.removeRefreshToken()
-      Cookies.remove('mbo-token')
-      Cookies.remove('mbo-refresh')
-      router.push({ pathname: clientConfig.getDefaultLoginPath() })
-    }
-  }, [data])
-
   return (
     <div>
       <div>home</div>
-      <Button variant="outlined" onClick={handle}>
-        Logout
-      </Button>
     </div>
   )
 }
@@ -59,7 +25,7 @@ export async function getServerSideProps(
 ) {
   const logPrefix = '[pages.home.getServerSideProps]'
   const req = ctx.req as Request
-  const res = ctx.res as Response
+  // const res = ctx.res as Response
 
   const accessToken = req.cookies[CookiesKey.accessToken]
 
@@ -94,7 +60,9 @@ function Container(props: any) {
 
   return (
     <ApolloProvider client={client}>
-      <Index {...props} />
+      <Layout>
+        <Index {...props} />
+      </Layout>
     </ApolloProvider>
   )
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 // import { notification } from 'antd'
 
 // const TOKEN_KEY = `${process.env.REACT_APP_LOCALSTORAGE_KEY}`
@@ -27,7 +27,7 @@ const handleError = async (error: AxiosError) => {
     console.log({ statusText, status })
     return Promise.reject(response && response.data)
   } catch (error) {
-//     console.log({ error })
+    //     console.log({ error })
   }
 }
 
@@ -40,10 +40,10 @@ const appAxios = axios.create({
 appAxios.interceptors.response.use((response: AxiosResponse) => {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
-  console.log('logAxios',{ response })
+  console.log('logAxios', { response })
   return response
 }, handleError)
-appAxios.interceptors.request.use((config: AxiosRequestConfig) => {
+appAxios.interceptors.request.use((config: any) => {
   const currentToken = localStorage.getItem('TOKEN_KEY')
   if (currentToken) {
     config.headers.Authorization = `Bearer ${currentToken}`

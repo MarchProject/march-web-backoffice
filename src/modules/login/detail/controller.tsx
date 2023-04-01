@@ -138,7 +138,7 @@ const useFormHandler = ({ notification, signIn }) => {
     })
     reset()
   }
-  const onError = (errorForm) => {
+  const onError = () => {
     notification(notificationErrorProp)
   }
 

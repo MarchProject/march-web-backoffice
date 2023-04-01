@@ -3,11 +3,14 @@ import {
   FetchResult,
   HttpLink,
   InMemoryCache,
-  split,
+  // split,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { Observable, getMainDefinition } from '@apollo/client/utilities'
-import { WebSocketLink } from '@apollo/client/link/ws'
+import {
+  Observable,
+  // getMainDefinition
+} from '@apollo/client/utilities'
+// import { WebSocketLink } from '@apollo/client/link/ws'
 import * as clientConfig from '../../config/client'
 import { onError } from '@apollo/client/link/error'
 import { GraphQLError } from 'graphql'
@@ -36,19 +39,19 @@ export async function initApollo(uri?: string) {
   const reconnect = !wsUri.startsWith(
     `${window.origin.replace(/^http/, 'ws')}${basePath}`,
   )
-  console.log({ accessTokenAPL: accessToken })
-  const wsLink = new WebSocketLink({
-    uri: wsUri,
-    options: {
-      reconnect,
-      connectionParams: {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-      timeout: 30000,
-    },
-  })
+  console.log({ accessTokenAPL: accessToken, reconnect })
+  // const wsLink = new WebSocketLink({
+  //   uri: wsUri,
+  //   options: {
+  //     reconnect,
+  //     connectionParams: {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     },
+  //     timeout: 30000,
+  //   },
+  // })
 
   const errorLink = onError(
     ({ graphQLErrors, networkError, operation, forward }: any) => {
@@ -123,17 +126,17 @@ export async function initApollo(uri?: string) {
     credentials: 'same-origin',
   })
 
-  const splitLink = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query)
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      )
-    },
-    wsLink,
-    httpLink,
-  )
+  // const splitLink = split(
+  //   ({ query }) => {
+  //     const definition = getMainDefinition(query)
+  //     return (
+  //       definition.kind === 'OperationDefinition' &&
+  //       definition.operation === 'subscription'
+  //     )
+  //   },
+  //   wsLink,
+  //   httpLink,
+  // )
 
   const authLink = setContext((_, { headers }) => {
     console.log('newauth')
