@@ -12,16 +12,17 @@ type ButtonFormProps = {
     | 'info'
     | 'warning'
     | undefined
+  onClick: () => void
 }
 
 function ButtonForm(props: ButtonFormProps) {
-  const { label, color } = props
+  const { label, color, onClick } = props
   return (
     <Button
       style={{ width: '100%' }}
       variant="contained"
       color={color}
-      onClick={() => {}}>
+      onClick={() => onClick()}>
       {label}
     </Button>
   )
