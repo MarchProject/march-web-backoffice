@@ -40,7 +40,7 @@ function Layout({ children }) {
   )
 
   const handleChange = (e, index) => {
-    console.log({ e: e.target })
+    console.log({ f: e.target })
     setTab(index)
   }
 
