@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web1:
+    container_name: app
+    # platform: linux/amd64
+    image: mbo-admin:${BACKOFFICE_TAG}
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    x-bake:
+      no-cache: true
+  nginx:
+    build: ./nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - web1
