@@ -13,6 +13,7 @@ import BlockUi from 'react-block-ui'
 import StoreIcon from '@mui/icons-material/Store'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import CardMembershipIcon from '@mui/icons-material/CardMembership'
+import { useTabContext } from '@/context/tabContext'
 // enum EnumTabs {
 //   Dashboard = 'dashboard',
 //   Inventory = 'inventory',
@@ -33,15 +34,14 @@ const TabMenu = [
 ]
 
 function Layout({ children }) {
-  const [tab, setTab] = useState(0)
-
+  // const [tab, setTab] = useState()
+  const { handleTab, tab } = useTabContext()
   const [signOut, { loading, data }] = useMutation<SignOut, any>(
     signOutMutation,
   )
-
+  console.log({ tab })
   const handleChange = (e, index) => {
-    console.log({ e: e.target })
-    setTab(index)
+    handleTab(index)
   }
 
   const IconTab = ({ value, index }) => {
@@ -108,7 +108,7 @@ function Layout({ children }) {
       <div
         key={index}
         onClick={() => {
-          setTab(index)
+          handleTab(index)
         }}
         style={{ display: 'flex', paddingInline: 30, paddingBlock: 5 }}>
         <IconTab value={t.value} index={index} />
