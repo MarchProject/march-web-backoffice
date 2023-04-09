@@ -1,13 +1,9 @@
-import { shopRolesManagementRoute } from '../shop-management'
-import {
-  usersManagementApprovalStepRoute,
-  usersManagementUserRoleRoute,
-  usersManagementUserRoute,
-} from '../users-management'
+import { dashboardRoute } from '../dashboard'
+import { inventoryRoute } from '../inventory'
+import { salesRoute } from '../sales'
 
 export const scopeMenuRoute = {
-  USER: usersManagementUserRoute.path,
-  USER_ROLE: usersManagementUserRoleRoute.path,
-  APPROVAL_STEP: usersManagementApprovalStepRoute.path,
-  AGENT_ROLES: shopRolesManagementRoute.path,
+  'MENU:INVENTORY': inventoryRoute.path,
+  'MENU:SALES': salesRoute.path,
+  'MENU:DASHBOARD': dashboardRoute.path,
 }

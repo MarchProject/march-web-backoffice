@@ -69,14 +69,18 @@ function Container(props: any) {
     _initApollo(setClient)
   }, [])
 
-  if (!client) {
-    return <>Loading, please wait ...</>
-  }
+  // if (!client) {
+  //   return <>Loading, please wait ...</>
+  // }
 
   return (
-    <ApolloProvider client={client}>
-      <Index {...props} />
-    </ApolloProvider>
+    <>
+      {(client && (
+        <ApolloProvider client={client}>
+          <Index {...props} />
+        </ApolloProvider>
+      )) || <>loading, Please wait ...</>}
+    </>
   )
 }
 

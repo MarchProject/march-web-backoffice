@@ -13,18 +13,21 @@ import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
 
 const Index = () => {
-  return <div></div>
+  return (
+    <div>
+      <h2>inventory</h2>
+    </div>
+  )
 }
 
 export async function getServerSideProps(
   ctx: GetServerSidePropsContext<ParsedUrlQuery>,
 ) {
-  const logPrefix = '[pages.home.getServerSideProps]'
+  const logPrefix = '[pages.inventory.getServerSideProps]'
   const req = ctx.req as Request
   // const res = ctx.res as Response
 
   const accessToken = req.cookies[CookiesKey.accessToken]
-
   const code = ctx.query.code as string
   const sessionState = ctx.query.session_state as string
 
@@ -37,6 +40,7 @@ export async function getServerSideProps(
     return getErrorServerSideProps(e?.response?.status, getLoginRoute().path)
   }
 }
+
 
 async function _initApollo(setClient: any) {
   const client = await initApollo()
@@ -56,12 +60,12 @@ function Container(props: any) {
 
   return (
     <Layout>
-    {(client && (
-      <ApolloProvider client={client}>
-        <Index {...props} />
-      </ApolloProvider>
-    )) || <>loading, Please wait ...</>}
-  </Layout>
+      {(client && (
+        <ApolloProvider client={client}>
+          <Index {...props} />
+        </ApolloProvider>
+      )) || <>loading, Please wait ...</>}
+    </Layout>
   )
 }
 

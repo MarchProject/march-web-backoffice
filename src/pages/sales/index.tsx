@@ -13,13 +13,13 @@ import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
 
 const Index = () => {
-  return <div></div>
+  return <div>sales</div>
 }
 
 export async function getServerSideProps(
   ctx: GetServerSidePropsContext<ParsedUrlQuery>,
 ) {
-  const logPrefix = '[pages.home.getServerSideProps]'
+  const logPrefix = '[pages.sales.getServerSideProps]'
   const req = ctx.req as Request
   // const res = ctx.res as Response
 
@@ -56,12 +56,12 @@ function Container(props: any) {
 
   return (
     <Layout>
-    {(client && (
-      <ApolloProvider client={client}>
-        <Index {...props} />
-      </ApolloProvider>
-    )) || <>loading, Please wait ...</>}
-  </Layout>
+      {(client && (
+        <ApolloProvider client={client}>
+          <Index {...props} />
+        </ApolloProvider>
+      )) || <>loading, Please wait ...</>}
+    </Layout>
   )
 }
 

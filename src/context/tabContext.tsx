@@ -1,16 +1,13 @@
-import { SnackbarCloseReason, SnackbarProps } from '@mui/material/Snackbar'
 import {
   createContext,
   FC,
   ReactElement,
-  SyntheticEvent,
   useCallback,
   useContext,
   useMemo,
   useState,
 } from 'react'
 import { noop } from '../utils/common/noop'
-
 interface ITabProvider {
   children: ReactElement
 }
@@ -22,30 +19,30 @@ interface ITabMenu {
 }
 
 const TabMenu = [
+  { id: 0, label: 'Home', value: 'home' },
   { id: 1, label: 'Sales', value: 'sales' },
   { id: 2, label: 'Inventory', value: 'inventory' },
-  { id: 3, label: 'Customer', value: 'member' },
+  { id: 3, label: 'Customer', value: 'customer' },
   { id: 4, label: 'Dashboard', value: 'dashboard' },
 ]
 
 interface ITabContext {
-  handleTab: (tabIndex: number) => void
-  tab: number
+  handleTab: (tabIndex: string) => void
+  tab: string
   TabMenu: ITabMenu[]
 }
 
 const TabContext = createContext<ITabContext>({
   handleTab: noop,
-  tab: 0,
+  tab: 'sales',
   TabMenu,
 })
 
 export const TabContextProvider: FC<ITabProvider> = (props) => {
   const { children } = props
-  const [tab, setTab] = useState<number>(0)
-
-  const handleTab = useCallback((tabIndex: number) => {
-    setTab(tabIndex)
+  const [tab, setTab] = useState<string>('sales')
+  const handleTab = useCallback((tabIndex: string) => {
+    setTab(tabIndex.toLocaleLowerCase())
   }, [])
 
   const contextValue = useMemo(() => {

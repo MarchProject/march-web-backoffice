@@ -82,8 +82,6 @@ const useSignInState = ({ notification }) => {
   }, [data])
 
   useEffect(() => {
-    console.log('gererer')
-    console.log({ dataSet })
     if (dataSet) {
       if (!dataSet.accessToken) {
         notification(notificationErrorProp)
@@ -94,13 +92,14 @@ const useSignInState = ({ notification }) => {
 
       localStorage.clear()
       const config = dataSet.config
-      console.log({ config })
+      console.log({ config, dataSet })
       if (config) {
         clientConfig.init(config, {
           userId: dataSet?.userId,
           username: dataSet?.username,
           accessToken: dataSet?.accessToken,
           refreshToken: dataSet?.refreshToken,
+          functions: dataSet?.functions,
         })
       }
       notification(notificationSuccessProp)

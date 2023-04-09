@@ -26,6 +26,11 @@ export function getUsername() {
 export function getGroups() {
   return localStorage.getItem(`${prefix}.groups`)
 }
+
+export function getFunctions() {
+  return localStorage.getItem(`${prefix}.functions`)
+}
+
 export function getAccessToken() {
   return localStorage.getItem(`${prefix}.accessToken`)
 }

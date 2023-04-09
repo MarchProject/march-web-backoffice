@@ -31,8 +31,8 @@ export async function setCookieSignIn(
       throw new Error('Failed to login')
     }
 
-    const { userId, userName } = jwt.decode(access_token)
-    console.log(logPrefix, { access_token })
+    const { userId, userName, info } = jwt.decode(access_token) as any
+    console.log(logPrefix, { access_token, info })
 
     const cookieOptions = createCookiesOptions()
     res.cookie(CookiesKey.accessToken, access_token, cookieOptions)
@@ -44,6 +44,7 @@ export async function setCookieSignIn(
       username: userName,
       refreshToken: refresh_token,
       config: serverConfig.toClientConfig(),
+      functions: info.functions,
     }
   } catch (error) {
     return Promise.reject(error)

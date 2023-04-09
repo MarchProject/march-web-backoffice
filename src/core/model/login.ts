@@ -11,6 +11,7 @@ export type SignInResponse = {
   accessToken: string
   refreshToken: string
   config?: ClientConfig
+  functions: string[]
 }
 
 export type ILoginResponse = {

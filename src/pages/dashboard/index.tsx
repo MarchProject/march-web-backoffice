@@ -13,13 +13,13 @@ import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
 
 const Index = () => {
-  return <div></div>
+  return <div>dashboard</div>
 }
 
 export async function getServerSideProps(
   ctx: GetServerSidePropsContext<ParsedUrlQuery>,
 ) {
-  const logPrefix = '[pages.home.getServerSideProps]'
+  const logPrefix = '[pages.dashboard.getServerSideProps]'
   const req = ctx.req as Request
   // const res = ctx.res as Response
 

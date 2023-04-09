@@ -20,5 +20,6 @@ export type Credential = {
   accessToken?: string
   refreshToken?: string
   expiresIn?: number
+  functions: string[]
   groups?: RoleName[]
 }
