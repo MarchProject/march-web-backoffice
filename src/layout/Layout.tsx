@@ -2,14 +2,9 @@
 import { Box, Tab, Tabs } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard'
-import { getUserId, getUsername } from '@/config/client'
-import LogoutIcon from '@mui/icons-material/Logout'
-import { useMutation } from '@apollo/client'
-import { signOutMutation } from '@/core/gql/auth'
-import router, { useRouter } from 'next/router'
+import { getUsername } from '@/config/client'
+import router from 'next/router'
 import * as clientConfig from '@/config/client'
-import Cookies from 'js-cookie'
-import BlockUi from 'react-block-ui'
 import StoreIcon from '@mui/icons-material/Store'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import CardMembershipIcon from '@mui/icons-material/CardMembership'
@@ -18,7 +13,6 @@ import jwt from 'jsonwebtoken'
 import { uniqBy } from 'lodash'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { Logout } from '@mui/icons-material'
 import { SignOut } from '@/components/logout/logout'
 
 const TabMenu = {
@@ -30,9 +24,6 @@ const TabMenu = {
 }
 
 function Layout({ children }) {
-  // const [signOut, { loading, data }] = useMutation<SignOut, any>(
-  //   signOutMutation,
-  // )
   const [tab, setTab] = useState('home')
   const [tabMenu, setTabMenu] = useState([
     { id: 0, label: 'Home', value: 'home' },
@@ -131,11 +122,6 @@ function Layout({ children }) {
     const username = getUsername()
     return (
       <div className="p-[20px] mt-[20px]">
-        {/* <img
-          className="max-w-[50px] m-auto block"
-          src={`${process.env.basePath}/public/man.png`}
-          alt="user-icon"
-        /> */}
         <Image
           className="max-w-[50px] m-auto block"
           src={`${process.env.basePath}/man.png`}
@@ -144,41 +130,6 @@ function Layout({ children }) {
           height={50}
         />
         <h3 className="text-center text-primary capitalize">{username}</h3>
-      </div>
-    )
-  }
-
-  const LogoutUI = () => {
-    const router = useRouter()
-    const userId = getUserId()
-
-    // useEffect(() => {
-    //   if (data?.signOut?.id) {
-    //     clientConfig.removeAccessToken()
-    //     clientConfig.removeRefreshToken()
-    //     Cookies.remove('mbo-token')
-    //     Cookies.remove('mbo-refresh')
-    //     router.push({ pathname: clientConfig.getDefaultLoginPath() })
-    //   }
-    // }, [data])
-
-    // const handleSignOut = () => {
-    //   signOut({
-    //     variables: {
-    //       id: userId,
-    //     },
-    //   })
-    // }
-
-    return (
-      <div className="text-center p-[30px] mt-[40%]">
-        <div
-          className="flex justify-center cursor-pointer"
-          // onClick={handleSignOut}
-        >
-          <LogoutIcon className="text-secondary my-auto" />
-          <h4 className="text-secondary font-normal px-[10px]">Log Out</h4>
-        </div>
       </div>
     )
   }
@@ -213,9 +164,7 @@ function Layout({ children }) {
           </Tabs>
           <SignOut />
         </div>
-        {/* <BlockUi tag="div" blocking={loading}> */}
         {children}
-        {/* </BlockUi> */}
       </Box>
     </div>
   )

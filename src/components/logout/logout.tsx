@@ -14,9 +14,7 @@ type SignOut = {
 }
 
 const Index = () => {
-  const [signOut, { loading, data }] = useMutation<SignOut, any>(
-    signOutMutation,
-  )
+  const [signOut, { data }] = useMutation<SignOut, any>(signOutMutation)
 
   useEffect(() => {
     if (data?.signOut?.id) {
@@ -68,4 +66,3 @@ export function SignOut() {
     )) || <>loading, Please wait ...</>
   )
 }
-
