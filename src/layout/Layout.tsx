@@ -14,11 +14,6 @@ import StoreIcon from '@mui/icons-material/Store'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import CardMembershipIcon from '@mui/icons-material/CardMembership'
 import { useTabContext } from '@/context/tabContext'
-// enum EnumTabs {
-//   Dashboard = 'dashboard',
-//   Inventory = 'inventory',
-//   Sales = 'sales',
-// }
 
 type SignOut = {
   signOut: {
@@ -26,20 +21,11 @@ type SignOut = {
   }
 }
 
-const TabMenu = [
-  { id: 1, label: 'Sales', value: 'sales' },
-  { id: 2, label: 'Inventory', value: 'inventory' },
-  { id: 3, label: 'Customer', value: 'member' },
-  { id: 4, label: 'Dashboard', value: 'dashboard' },
-]
-
 function Layout({ children }) {
-  // const [tab, setTab] = useState()
-  const { handleTab, tab } = useTabContext()
+  const { handleTab, tab, TabMenu } = useTabContext()
   const [signOut, { loading, data }] = useMutation<SignOut, any>(
     signOutMutation,
   )
-  console.log({ tab })
   const handleChange = (e, index) => {
     handleTab(index)
   }
@@ -105,24 +91,20 @@ function Layout({ children }) {
 
   const TabM = TabMenu.map((t, index) => {
     return (
-      <div
-        key={index}
-        onClick={() => {
-          handleTab(index)
+      <Tab
+        style={{
+          justifyContent: 'start',
+          paddingInline: '30px',
+          gap: '25px',
+          color: tab === index ? '#121212' : '#878787',
+          fontWeight: 'bold',
         }}
-        style={{ display: 'flex', paddingInline: 30, paddingBlock: 5 }}>
-        <IconTab value={t.value} index={index} />
-        <Tab
-          style={{
-            alignItems: 'self-start',
-            color: tab === index ? '#121212' : '#878787',
-            fontWeight: 'bold',
-          }}
-          key={t.id}
-          label={t.label}
-          value={index}
-        />
-      </div>
+        icon={<IconTab value={t.value} index={index} />}
+        iconPosition="start"
+        key={t.id}
+        label={t.label}
+        value={index}
+      />
     )
   })
 
@@ -200,6 +182,7 @@ function Layout({ children }) {
             maxWidth: '250px',
           }}>
           {TabM}
+          {/* <Tab icon={<CardMembershipIcon />} iconPosition="start" label="start" /> */}
         </Tabs>
         <LogoutUI />
       </div>

@@ -15,6 +15,12 @@ interface ITabProvider {
   children: ReactElement
 }
 
+interface ITabMenu {
+  id: number
+  label: string
+  value: string
+}
+
 const TabMenu = [
   { id: 1, label: 'Sales', value: 'sales' },
   { id: 2, label: 'Inventory', value: 'inventory' },
@@ -25,11 +31,13 @@ const TabMenu = [
 interface ITabContext {
   handleTab: (tabIndex: number) => void
   tab: number
+  TabMenu: ITabMenu[]
 }
 
 const TabContext = createContext<ITabContext>({
   handleTab: noop,
   tab: 0,
+  TabMenu,
 })
 
 export const TabContextProvider: FC<ITabProvider> = (props) => {
@@ -44,8 +52,9 @@ export const TabContextProvider: FC<ITabProvider> = (props) => {
     return {
       handleTab,
       tab,
+      TabMenu,
     }
-  }, [handleTab, tab])
+  }, [handleTab, tab, TabMenu])
 
   return (
     <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>
