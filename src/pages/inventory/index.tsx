@@ -11,11 +11,13 @@ import {
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
+import EditorInventory from '@/components/inventory/editor'
+import * as clientConfig from '@/config/client'
 
 const Index = () => {
   return (
-    <div>
-      <h2>inventory</h2>
+    <div className="p-[20px] w-full">
+      <EditorInventory />
     </div>
   )
 }
@@ -41,9 +43,8 @@ export async function getServerSideProps(
   }
 }
 
-
 async function _initApollo(setClient: any) {
-  const client = await initApollo()
+  const client = await initApollo(clientConfig.getInventoryApiUrl())
   setClient(client)
 }
 

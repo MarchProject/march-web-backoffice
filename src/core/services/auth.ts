@@ -59,7 +59,7 @@ export async function verifyAccessToken(
   const { accessToken } = ctx
   console.log(logPrefix, { accessToken })
 
-  const graphQLClient = new GraphQLClient(global.config.coreApiUrl, {
+  const graphQLClient = new GraphQLClient(global.config.authApiUrl, {
     headers: {
       authorization: `Bearer ${ctx.accessToken}`,
     },
@@ -90,7 +90,7 @@ export async function getNewAccessToken(
   const { accessToken, refreshToken, res } = ctx
   console.log(logPrefix, { accessToken, refreshToken, ctx })
   console.log('here')
-  const graphQLClient = new GraphQLClient(global.config.coreApiUrl, {
+  const graphQLClient = new GraphQLClient(global.config.authApiUrl, {
     headers: {
       authorization: `Bearer ${ctx.accessToken}`,
     },

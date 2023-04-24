@@ -8,6 +8,7 @@ import { homeRoute } from '@/router/home'
 import { CookiesKey } from '@/constant'
 import { verifyAccessToken } from '@/core/services/auth'
 import ContainerLogin from '@/modules/login/detail/Container'
+import * as clientConfig from '@/config/client'
 
 const Index = () => {
   return (
@@ -58,7 +59,7 @@ export async function getServerSideProps(
 }
 
 async function _initApollo(setClient: any) {
-  const client = await initApollo()
+  const client = await initApollo(clientConfig.getAuthApiUrl())
   setClient(client)
 }
 

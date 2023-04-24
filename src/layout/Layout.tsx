@@ -129,7 +129,7 @@ function Layout({ children }) {
           width={50}
           height={50}
         />
-        <h3 className="text-center text-primary capitalize">{username}</h3>
+        <h3 className="text-center text-primary capitalize font-normal">{username}</h3>
       </div>
     )
   }

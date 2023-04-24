@@ -13,8 +13,12 @@ export function getDevelopment() {
   return localStorage.getItem(`${prefix}.development`)
 }
 
-export function getCoreApiUrl() {
-  return localStorage.getItem(`${prefix}.coreApiUrl`)
+export function getAuthApiUrl() {
+  return localStorage.getItem(`${prefix}.authApiUrl`)
+}
+
+export function getInventoryApiUrl() {
+  return localStorage.getItem(`${prefix}.inventoryApiUrl`)
 }
 
 export function getUserId() {

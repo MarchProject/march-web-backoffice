@@ -3,15 +3,16 @@ export type ServerConfig = {
   port: number
   defaultLoginPath: string
   uamLoginEnabled: boolean
-  coreApiUrl: string
+  authApiUrl: string
+  inventoryApiUrl: string
   azureAdClientid: string
   azureAdAuthority: string
-
 }
 
 export type ClientConfig = {
   development: boolean
-  coreApiUrl: string
+  authApiUrl: string
+  inventoryApiUrl: string
   defaultLoginPath: string
   userId?: string
   username?: string

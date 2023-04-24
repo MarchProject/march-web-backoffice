@@ -21,8 +21,7 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     //
     .filter((key) => key.startsWith(prefix))
     .forEach((key) => {
-      rawConfig[_.camelCase(key.replace(/MARCH_BO_/g, ''))] =
-        process.env[key]
+      rawConfig[_.camelCase(key.replace(/MARCH_BO_/g, ''))] = process.env[key]
       console.log({ rawConfig })
     })
   console.log({ rawConfig })
@@ -33,7 +32,8 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     port,
     uamLoginEnabled,
     defaultLoginPath,
-    coreApiUrl,
+    authApiUrl,
+    inventoryApiUrl,
     azureAdAuthority,
     azureAdClientid,
   } = rawConfig
@@ -43,7 +43,8 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     port: toInt(port, 4000),
     uamLoginEnabled: toBoolean(uamLoginEnabled),
     defaultLoginPath: String(defaultLoginPath),
-    coreApiUrl: String(coreApiUrl),
+    authApiUrl: String(authApiUrl),
+    inventoryApiUrl: String(inventoryApiUrl),
     azureAdClientid: String(azureAdClientid),
     azureAdAuthority: String(azureAdAuthority),
   }
@@ -53,18 +54,20 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
 }
 
 export function toClientConfig(): ClientConfig {
-  const { development, coreApiUrl, defaultLoginPath } =
+  const { development, authApiUrl, defaultLoginPath, inventoryApiUrl } =
     global.config as ServerConfig
 
   console.log('clientConfig', {
     development,
-    coreApiUrl,
-    defaultLoginPath
+    authApiUrl,
+    inventoryApiUrl,
+    defaultLoginPath,
   })
 
   return {
     development,
     defaultLoginPath,
-    coreApiUrl,
+    authApiUrl,
+    inventoryApiUrl,
   }
 }
