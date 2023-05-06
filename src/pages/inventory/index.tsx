@@ -11,14 +11,15 @@ import {
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
-import EditorInventory from '@/components/inventory/editor'
 import * as clientConfig from '@/config/client'
+import ContainerInventory from '@/modules/inventory/Container'
+
 
 const Index = () => {
   return (
-    <div className="p-[20px] w-full">
-      <EditorInventory />
-    </div>
+    <>
+      <ContainerInventory />
+    </>
   )
 }
 

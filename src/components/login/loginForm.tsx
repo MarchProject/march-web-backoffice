@@ -14,8 +14,8 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
   return (
     <div className="">
       <Card className="card-login" sx={{ minWidth: 275, borderRadius: '20px' }}>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2">
+        <div className="grid sm:grid-cols-3 gap-4">
+          <div className="col-span-2 hidden sm:block">
             <img
               src={`${process.env.basePath}/public/login.jpeg`}
               className="img-login"

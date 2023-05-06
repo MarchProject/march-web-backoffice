@@ -35,12 +35,12 @@ const Index = () => {
     })
   }
   return (
-    <div className="text-center p-[30px] mt-[40%]">
+    <div className="text-center sm:p-[30px] sm:mt-[50px] my-auto">
       <div
         className="flex justify-center cursor-pointer"
         onClick={handleSignOut}>
         <LogoutIcon className="text-secondary my-auto" />
-        <h4 className="text-secondary font-normal px-[10px]">Log Out</h4>
+        <h4 className="text-secondary font-normal px-[10px] hidden sm:block">Log Out</h4>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import { InputAdornment, TextField } from '@mui/material'
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search'
+import ContainerInventory from '@/modules/inventory/Container'
 
 const EditorInventory = () => {
   return (
@@ -33,7 +34,7 @@ const EditorInventory = () => {
           </div>
         </div>
         <div className="w-full max-w-[100%]">
-          <h2>91</h2>
+        <ContainerInventory />
         </div>
       </div>
     </>
