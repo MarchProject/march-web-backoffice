@@ -1,12 +1,9 @@
-import {
-  createTheme,
-  PaletteColorOptions,
-} from '@mui/material/styles'
+import { createTheme, PaletteColorOptions } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
   interface CustomPalette {
-    apple: PaletteColorOptions
-    steelBlue: PaletteColorOptions
+    text100: PaletteColorOptions
+    text200: PaletteColorOptions
     violet: PaletteColorOptions
   }
   interface Palette extends CustomPalette {}
@@ -20,8 +17,8 @@ const createColor = (mainColor) => augmentColor({ color: { main: mainColor } })
 export const theme = createTheme({
   palette: {
     primary: createColor('#8B5FBF'),
-    apple: createColor('#5DBA40'),
-    steelBlue: createColor('#5C76B7'),
+    text100: createColor('#4A4A4A'),
+    text200: createColor('#525252'),
     violet: createColor('#BC00A3'),
   },
 })

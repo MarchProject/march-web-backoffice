@@ -2,7 +2,13 @@ import * as React from 'react'
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 90, align:'center', headerAlign:'center' },
+  {
+    field: 'id',
+    headerName: 'ID',
+    width: 90,
+    align: 'center',
+    headerAlign: 'center',
+  },
   { field: 'firstName', headerName: 'First name', width: 130 },
   { field: 'lastName', headerName: 'Last name', width: 130 },
   {
@@ -10,6 +16,8 @@ const columns: GridColDef[] = [
     headerName: 'Age',
     type: 'number',
     width: 90,
+    align: 'left',
+    headerAlign: 'left',
   },
   {
     field: 'fullName',
@@ -35,7 +43,7 @@ const rows = [
 ]
 
 const onRow = (e) => {
-  console.log({e})
+  console.log({ e })
 }
 
 export default function DataTable() {
@@ -45,16 +53,26 @@ export default function DataTable() {
       // style={{ width: '100%', maxWidth: "1850px" }}
     >
       <DataGrid
+        sx={{
+          '& .MuiDataGrid-columnHeaders': {
+            color: 'text100.main',
+            backgroundColor: '#f3f4f6',
+          },
+          '& .MuiDataGrid-row': {
+            color: 'text200.main',
+          },
+        }}
         rows={rows}
+        autoHeight
         columns={columns}
         onRowSelectionModelChange={onRow}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 12 },
+            paginationModel: { page: 0, pageSize: 5 },
           },
         }}
         pageSizeOptions={[5, 10]}
-        // checkboxSelection
+        checkboxSelection
       />
     </div>
   )

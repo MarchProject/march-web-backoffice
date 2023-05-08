@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Tab, Tabs } from '@mui/material'
+import { Box, Tab, Tabs, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import { getUsername } from '@/config/client'
@@ -56,9 +56,10 @@ function Layout({ children }) {
       borderRadius: '4px',
       marginTop: 'auto',
       marginBottom: 'auto',
+      fontSize: '20px',
     }
     return (
-      <>
+      <div className="">
         {value === 'home' && (
           <HomeIcon className="cursor-pointer" style={styleIcon} />
         )}
@@ -72,19 +73,9 @@ function Layout({ children }) {
           <StoreIcon className="cursor-pointer" style={styleIcon} />
         )}
         {value === 'customer' && (
-          <CardMembershipIcon
-            className="cursor-pointer"
-            style={{
-              color: tab === value ? '#FFFFFF' : '#878787',
-              backgroundColor: tab === value ? '#9A73B5' : '#E9E4ED',
-              padding: '4px',
-              borderRadius: '4px',
-              marginTop: 'auto',
-              marginBottom: 'auto',
-            }}
-          />
+          <CardMembershipIcon className="cursor-pointer" style={styleIcon} />
         )}
-      </>
+      </div>
     )
   }
 
@@ -99,73 +90,83 @@ function Layout({ children }) {
   const TabM = (isMobile: boolean) => {
     return uniqBy(tabMenu, 'id').map((t) => {
       const Lable = () => {
-        return (
-          <div className="block text-xs sm:text-sm mt-[5px] sm:mt-0">
-            {t.label}
-          </div>
-        )
+        return <div className="block text-xs mt-[5px] sm:mt-0">{t.label}</div>
       }
-      const gapIcon = isMobile ? '0px' : '25px'
-      const paddingInline = isMobile ? '0px' : '30px'
+      const gapIcon = isMobile ? '0px' : '10px'
+      const paddingInline = isMobile ? '0px' : '40px'
       const fontWeight = isMobile ? 'normal' : 'bold'
       return (
-        <Tab
-          style={{
-            justifyContent: 'start',
-            paddingInline: paddingInline,
-            gap: gapIcon,
-            color: tab === t.value ? '#121212' : '#878787',
-            fontWeight,
-          }}
-          icon={<IconTab value={t.value} />}
-          iconPosition={isMobile ? 'top' : 'start'}
-          key={t.id}
-          onClick={() => handlePath(t.value)}
-          label={Lable()}
-          value={t.value as any}
-          defaultValue={t.value}
-        />
+        <Tooltip title={t.value} key={t.id} arrow>
+          <Tab
+            style={{
+              justifyContent: 'start',
+              paddingInline: paddingInline,
+              gap: gapIcon,
+              color: tab === t.value ? '#121212' : '#878787',
+              fontWeight,
+              paddingTop: '0px',
+              paddingBottom: '0px',
+              minHeight: '50px',
+            }}
+            icon={<IconTab value={t.value} />}
+            iconPosition={isMobile ? 'top' : 'start'}
+            key={t.id}
+            onClick={() => handlePath(t.value)}
+            label={Lable()}
+            value={t.value as any}
+            defaultValue={t.value}
+          />
+        </Tooltip>
       )
     })
   }
   const UserUI = () => {
     const username = getUsername()
     return (
-      <div className="md:p-[20px] p-[10px] md:mt-[20px] sm:block flex">
+      <div className="mt-[20px] px-[40px] flex bg-white justify-between">
         <img
-          className="sm:max-w-[50px]  max-w-[30px] m-auto block"
+          className="max-w-[30px] max-h-[30px] my-auto  block"
           src={`${process.env.basePath}/man.png`}
           alt="user-icon"
         />
-        <h3 className="text-center text-primary capitalize font-normal sm:block hidden">
+
+        <h3 className="text-center text-primary text-xs capitalize font-normal block">
           {username}
         </h3>
+        <Tooltip title="Sign Out" arrow placement="top">
+          <div className='my-auto'>
+            <SignOut />
+          </div>
+        </Tooltip>
       </div>
     )
   }
 
-  const handleMenuM = () => {
-    setMenuM(!menuM)
-  }
   return (
     <>
-      <div className="hidden sm:block w-full ">
+      <div className="sm:block w-full ">
         <Box
-          className="flex  h-screen"
+          className="flex h-full"
           style={{ backgroundColor: '#F5F3F7' }}
           sx={{
             flexGrow: 1,
             bgcolor: 'background.paper',
             display: 'flex',
             height: '100vh',
-            maxHeight: '100vh',
+            // maxHeight: '100vh',
             backgroundColor: '#F5F3F7',
           }}>
           <div
+            className="w-[30%] bg-white max-w-[260px] "
             style={{ borderRight: '1px solid #CCCCCC', overflowX: 'hidden' }}>
-            <UserUI />
+            <h2 className="text-left text-primary capitalize font-normal px-[40px]">
+              CurryShop
+            </h2>
+            <h4 className="text-left text-xs text-primary capitalize font-normal my-0 px-[40px] mt-[30px]">
+              MainMenu
+            </h4>
             <Tabs
-              className="mt-[30] "
+              className=""
               orientation="vertical"
               variant="scrollable"
               value={tab}
@@ -173,38 +174,28 @@ function Layout({ children }) {
               sx={{
                 borderRight: 1,
                 borderColor: 'divider',
-                width: '300px',
-                maxWidth: '300px',
+                width: '100%',
               }}>
               {TabM(false)}
             </Tabs>
-
-            <SignOut />
+            {/* <div className='pb-[30px]'>
+              <SignOut />
+            </div> */}
+            <div className="bottom-0 fixed pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
+              <UserUI />
+            </div>
           </div>
-          {children}
+          <div className="w-[88%] mainBg">{children}</div>
         </Box>
       </div>
-      <div className="sm:hidden block ">
+      {/* <div className="sm:hidden block ">
         <Box
-          className="w-full h-screen"
+          className="w-full h-screen mainBg"
           sx={{
             backgroundColor: '#F5F3F7',
           }}>
           <div className="sticky top-0" style={{ backgroundColor: '#F5F3F7' }}>
             <div className="px-[10px] mb-[0px] flex justify-between">
-              {/* <MenuIcon
-                className="cursor-pointer"
-                onClick={handleMenuM}
-                style={{
-                  color: !menuM ? '#FFFFFF' : '#878787',
-                  backgroundColor: !menuM ? '#9A73B5' : '#E9E4ED',
-                  padding: '4px',
-                  borderRadius: '4px',
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  cursor: 'pointer',
-                }}
-              /> */}
               <UserUI />
               <SignOut />
             </div>
@@ -216,19 +207,17 @@ function Layout({ children }) {
             variant="scrollable"
             value={tab}
             aria-label="Tabs Mobile"
-            
             sx={{
               borderRight: 1,
               borderColor: 'divider',
               width: '100%',
               position: 'fixed',
               bottom: 0,
-
             }}>
             {TabM(true)}
           </Tabs>
         </Box>
-      </div>
+      </div> */}
     </>
   )
 }
