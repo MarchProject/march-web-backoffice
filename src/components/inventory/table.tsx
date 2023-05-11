@@ -39,7 +39,7 @@ const rows = [
   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  { id: 19, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ]
 
 const onRow = (e) => {
@@ -49,7 +49,7 @@ const onRow = (e) => {
 export default function DataTable() {
   return (
     <div
-      className="w-max h-full"
+      className="w-full h-full"
       // style={{ width: '100%', maxWidth: "1850px" }}
     >
       <DataGrid

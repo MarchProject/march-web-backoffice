@@ -23,10 +23,10 @@ type InputProps = {
   name: string
   control: Control<FieldValues, any>
   field: any
-  error: string
+  error?: string
 }
 
-const Input = (props: InputProps) => {
+export const Input = (props: InputProps) => {
   const { id, inputLabel, type, name, field, error } = props
   return (
     <FormControl variant="standard" required style={{ width: '100%' }}>

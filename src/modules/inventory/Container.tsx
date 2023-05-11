@@ -1,19 +1,31 @@
-import SearchIcon from '@mui/icons-material/Search'
 import {
   GetInventoriesData,
   GetInventoriesVariables,
   getInventoriesQuery,
 } from '@/core/gql/inventory'
 import { useLazyQuery } from '@apollo/client'
-import { InputAdornment, TextField } from '@mui/material'
 import React, { useEffect } from 'react'
-import EnhancedTable from '@/components/inventory/table'
+import { InventoryManagement } from './view/InventoryManagement'
+import DataTableMarch from '@/components/common/Table/table'
+import { columns } from './view/column'
 
 const ContainerInventory = () => {
-  const [getInventories, { loading, error, data }] = useLazyQuery<
+  const [getInventories, { data }] = useLazyQuery<
     GetInventoriesData,
     GetInventoriesVariables
   >(getInventoriesQuery)
+
+  useEffect(() => {
+    getInventories({
+      variables: {
+        params: {
+          limit: 20,
+          offset: 0,
+          search: '',
+        },
+      },
+    })
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -21,11 +33,24 @@ const ContainerInventory = () => {
     }
   }, [data])
 
+  const onRow = (rows, reason) => {
+    console.log({ rows, reason })
+  }
+  const onPaginationModelChange = (model, reason) => {
+    console.log({ model, reason })
+  }
+
   return (
-    <div className="flex gap-[15px] w-full mainBg">
-      <div className="w-full bg-white">
-        <div className=" flex justify-center">
-          <EnhancedTable />
+    <div className="w-full mainBg">
+      <div className="bg-white m-4 rounded-lg">
+        <div className="p-4">
+          <InventoryManagement />
+          <DataTableMarch
+            rows={data?.getInventories || []}
+            columns={columns()}
+            onRow={onRow}
+            onPaginationModelChange={onPaginationModelChange}
+          />
         </div>
       </div>
     </div>

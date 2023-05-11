@@ -59,7 +59,7 @@ export async function getServerSideProps(
 }
 
 async function _initApollo(setClient: any) {
-  const client = await initApollo(clientConfig.getAuthApiUrl())
+  const client = await initApollo(process.env.authApiUrl)
   setClient(client)
 }
 

@@ -48,7 +48,7 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     azureAdClientid: String(azureAdClientid),
     azureAdAuthority: String(azureAdAuthority),
   }
-  console.log({ config })
+  console.log({  config })
 
   return config
 }

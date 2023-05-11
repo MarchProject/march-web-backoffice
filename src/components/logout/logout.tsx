@@ -39,7 +39,7 @@ const Index = () => {
       <div
         className="flex justify-center cursor-pointer"
         onClick={handleSignOut}>
-        <LogoutIcon className="text-secondary my-auto" />
+        <LogoutIcon className="text-secondary my-auto" style={{fontSize:"18px"}} />
         {/* <h4 className="text-secondary font-normal px-[10px] hidden sm:block">Log Out</h4> */}
       </div>
     </div>

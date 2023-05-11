@@ -32,9 +32,9 @@ import router from 'next/router'
  */
 export async function initApollo(uri?: string) {
   const basePath = process.env.basePath
-  const _uri = uri || process.env.coreApiUrl
-  console.log({ _uri })
-  const wsUri = _uri.replace(/^http/, 'ws')
+  const authPath = process.env.authApiUrl
+  const _uri = uri || authPath
+  const wsUri = _uri?.replace(/^http/, 'ws')
   const accessToken = clientConfig.getAccessToken()
   const reconnect = !wsUri.startsWith(
     `${window.origin.replace(/^http/, 'ws')}${basePath}`,

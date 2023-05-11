@@ -1,18 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import DashboardIcon from '@mui/icons-material/Dashboard'
 import { getUsername } from '@/config/client'
 import router from 'next/router'
 import * as clientConfig from '@/config/client'
 import StoreIcon from '@mui/icons-material/Store'
-import InventoryIcon from '@mui/icons-material/Inventory'
 import CardMembershipIcon from '@mui/icons-material/CardMembership'
 import HomeIcon from '@mui/icons-material/Home'
 import jwt from 'jsonwebtoken'
-import { uniqBy } from 'lodash'
+import { orderBy, uniqBy } from 'lodash'
 import dynamic from 'next/dynamic'
 import { SignOut } from '@/components/logout/logout'
+import { BsBoxSeam } from 'react-icons/bs'
+import { RxDashboard } from 'react-icons/rx'
+
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
   'MENU:SALES': { id: 1, label: 'Sales', value: 'sales' },
@@ -22,15 +23,16 @@ const TabMenu = {
 }
 
 function Layout({ children }) {
-  const [tab, setTab] = useState('home')
-  const [menuM, setMenuM] = useState(false)
+  const [tab, setTab] = useState(0)
+  // const [menuM, setMenuM] = useState(false)
   const [tabMenu, setTabMenu] = useState([
     { id: 0, label: 'Home', value: 'home' },
   ])
 
   useEffect(() => {
     const pathName = router.pathname.replace('/', '')
-    setTab(pathName)
+    const numTab = 'MENU:' + pathName.toUpperCase()
+    setTab(TabMenu[numTab].id)
   }, [])
 
   useEffect(() => {
@@ -60,19 +62,19 @@ function Layout({ children }) {
     }
     return (
       <div className="">
-        {value === 'home' && (
+        {value === 0 && (
           <HomeIcon className="cursor-pointer" style={styleIcon} />
         )}
-        {value === 'dashboard' && (
-          <DashboardIcon className="cursor-pointer" style={styleIcon} />
+        {value === 4 && (
+          <RxDashboard className="cursor-pointer" style={styleIcon} />
         )}
-        {value === 'inventory' && (
-          <InventoryIcon className="cursor-pointer" style={styleIcon} />
+        {value === 2 && (
+          <BsBoxSeam className="cursor-pointer" style={styleIcon} />
         )}
-        {value === 'sales' && (
+        {value === 1 && (
           <StoreIcon className="cursor-pointer" style={styleIcon} />
         )}
-        {value === 'customer' && (
+        {value === 3 && (
           <CardMembershipIcon className="cursor-pointer" style={styleIcon} />
         )}
       </div>
@@ -88,37 +90,43 @@ function Layout({ children }) {
   }
 
   const TabM = (isMobile: boolean) => {
-    return uniqBy(tabMenu, 'id').map((t) => {
-      const Lable = () => {
-        return <div className="block text-xs mt-[5px] sm:mt-0">{t.label}</div>
-      }
-      const gapIcon = isMobile ? '0px' : '10px'
-      const paddingInline = isMobile ? '0px' : '40px'
-      const fontWeight = isMobile ? 'normal' : 'bold'
-      return (
-        <Tooltip title={t.value} key={t.id} arrow>
-          <Tab
-            style={{
-              justifyContent: 'start',
-              paddingInline: paddingInline,
-              gap: gapIcon,
-              color: tab === t.value ? '#121212' : '#878787',
-              fontWeight,
-              paddingTop: '0px',
-              paddingBottom: '0px',
-              minHeight: '50px',
-            }}
-            icon={<IconTab value={t.value} />}
-            iconPosition={isMobile ? 'top' : 'start'}
-            key={t.id}
-            onClick={() => handlePath(t.value)}
-            label={Lable()}
-            value={t.value as any}
-            defaultValue={t.value}
-          />
-        </Tooltip>
-      )
-    })
+    const test = orderBy(
+      uniqBy(tabMenu, 'id').map((t) => {
+        const Lable = () => {
+          return <div className="block text-xs mt-[5px] sm:mt-0">{t.label}</div>
+        }
+        const gapIcon = isMobile ? '0px' : '10px'
+        const paddingInline = isMobile ? '0px' : '40px'
+        const fontWeight = isMobile ? 'normal' : 'bold'
+        return (
+          <Tooltip title={t.value} key={t.id} arrow>
+            <Tab
+              style={{
+                justifyContent: 'start',
+                paddingInline: paddingInline,
+                gap: gapIcon,
+                color: tab === t.id ? '#121212' : '#878787',
+                fontWeight,
+                paddingTop: '0px',
+                paddingBottom: '0px',
+                minHeight: '50px',
+              }}
+              icon={<IconTab value={t.id} />}
+              iconPosition={isMobile ? 'top' : 'start'}
+              key={t.id}
+              onClick={() => handlePath(t.value)}
+              label={Lable()}
+              value={t.value as any}
+              defaultValue={t.value}
+            />
+          </Tooltip>
+        )
+      }),
+      ['key'],
+      ['asc'],
+    )
+    console.log({ test })
+    return test
   }
   const UserUI = () => {
     const username = getUsername()
@@ -134,7 +142,7 @@ function Layout({ children }) {
           {username}
         </h3>
         <Tooltip title="Sign Out" arrow placement="top">
-          <div className='my-auto'>
+          <div className="my-auto">
             <SignOut />
           </div>
         </Tooltip>

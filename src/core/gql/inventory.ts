@@ -1,6 +1,10 @@
 import { gql } from '@apollo/client'
 
 export type GetInventoriesData = {
+  getInventories: InventoriesData[]
+}
+
+export type InventoriesData = {
   id: string
   name: string
   amount: number
@@ -31,6 +35,8 @@ export const getInventoriesQuery = gql`
       id
       name
       amount
+      sold
+      price
       inventoryType {
         name
       }
@@ -39,6 +45,7 @@ export const getInventoriesQuery = gql`
       }
       description
       createdBy
+      expiryDate
       createdAt
       updatedBy
       updatedAt
