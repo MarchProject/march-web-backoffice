@@ -1,7 +1,15 @@
 import { gql } from '@apollo/client'
 
 export type GetInventoriesData = {
-  getInventories: InventoriesData[]
+  getInventories: InventoriesResponse
+}
+
+export type InventoriesResponse = {
+  inventories: InventoriesData[]
+  pageNo: number
+  pageLimit: number
+  totalPage: number
+  totalRow: number
 }
 
 export type InventoriesData = {
@@ -23,32 +31,40 @@ export type InventoriesData = {
 
 export type GetInventoriesVariables = {
   params: {
-    search: string
-    limit: number
-    offset: number
+    search?: string
+    limit?: number
+    type?: string
+    brand?: string
+    pageNo?: number
   }
 }
 
 export const getInventoriesQuery = gql`
   query getInventories($params: ParamsInventory!) {
     getInventories(params: $params) {
-      id
-      name
-      amount
-      sold
-      price
-      inventoryType {
+      inventories {
+        id
         name
+        amount
+        sold
+        price
+        inventoryType {
+          name
+        }
+        brandType {
+          name
+        }
+        description
+        expiryDate
+        createdBy
+        createdAt
+        updatedBy
+        updatedAt
       }
-      brandType {
-        name
-      }
-      description
-      createdBy
-      expiryDate
-      createdAt
-      updatedBy
-      updatedAt
+      pageNo
+      pageLimit
+      totalPage
+      totalRow
     }
   }
 `

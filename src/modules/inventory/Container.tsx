@@ -1,55 +1,38 @@
-import {
-  GetInventoriesData,
-  GetInventoriesVariables,
-  getInventoriesQuery,
-} from '@/core/gql/inventory'
-import { useLazyQuery } from '@apollo/client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { InventoryManagement } from './view/InventoryManagement'
 import DataTableMarch from '@/components/common/Table/table'
 import { columns } from './view/column'
+import { useInventoryController } from './controller'
 
 const ContainerInventory = () => {
-  const [getInventories, { data }] = useLazyQuery<
-    GetInventoriesData,
-    GetInventoriesVariables
-  >(getInventoriesQuery)
-
-  useEffect(() => {
-    getInventories({
-      variables: {
-        params: {
-          limit: 20,
-          offset: 0,
-          search: '',
-        },
-      },
-    })
-  }, [])
-
-  useEffect(() => {
-    if (data) {
-      console.log({ data })
-    }
-  }, [data])
-
-  const onRow = (rows, reason) => {
-    console.log({ rows, reason })
-  }
-  const onPaginationModelChange = (model, reason) => {
-    console.log({ model, reason })
-  }
-
+  const {
+    globalState: {
+      inventoryPage,
+      inventoryLimit,
+      onPaginationModelChange,
+      onRow,
+      handleChangeInventory,
+      setPage,
+    },
+    inventoryData: { inventoryData, inventoryLoading },
+  } = useInventoryController()
+  
   return (
     <div className="w-full mainBg">
       <div className="bg-white m-4 rounded-lg">
-        <div className="p-4">
-          <InventoryManagement />
+        <div className="p-4 mb-[30px]">
+          <InventoryManagement setSearch={handleChangeInventory} />
           <DataTableMarch
-            rows={data?.getInventories || []}
+            rows={inventoryData?.getInventories?.inventories || []}
             columns={columns()}
             onRow={onRow}
             onPaginationModelChange={onPaginationModelChange}
+            pageCount={inventoryData?.getInventories?.totalPage || 1}
+            setPage={setPage}
+            page={inventoryPage}
+            loading={inventoryLoading}
+            limit={inventoryLimit}
+            totalRow={inventoryData?.getInventories?.totalRow}
           />
         </div>
       </div>

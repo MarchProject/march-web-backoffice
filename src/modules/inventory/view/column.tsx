@@ -19,8 +19,19 @@ export const columns = (): GridColDef[] => {
       headerName: 'Name',
       flex: 2,
       minWidth: 100,
-      valueGetter: (params: InventoriesDataColumn) => {
-        return `${params.row?.name?.split('|')[0]}`
+      renderCell: (params) => {
+        const name = params.row?.name?.split('|')[0]
+        return (
+          <Tooltip title={name} arrow placement="top" enterTouchDelay={0}>
+            <p
+              style={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}>
+              {name}
+            </p>
+          </Tooltip>
+        )
       },
     },
     {
@@ -52,7 +63,13 @@ export const columns = (): GridColDef[] => {
         const brand = params.row?.brandType?.name?.split('|')[0]
         return (
           <Tooltip title={brand} arrow placement="top" enterTouchDelay={0}>
-            <p>{brand}</p>
+            <p
+              style={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}>
+              {brand}
+            </p>
           </Tooltip>
         )
       },

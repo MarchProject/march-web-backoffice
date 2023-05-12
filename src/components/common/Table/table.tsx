@@ -2,14 +2,18 @@ import * as React from 'react'
 import {
   DataGrid,
   GridCallbackDetails,
+  GridFooterContainer,
+  GridPagination,
   GridPaginationModel,
   GridRowSelectionModel,
+  useGridApiRef,
 } from '@mui/x-data-grid'
-
+import { Pagination } from '@mui/material'
 
 type DataTableMarchProps = {
   rows: any[]
   columns: any[]
+  pageCount: number
   onRow: (
     rowSelectionModel: GridRowSelectionModel,
     details: GridCallbackDetails<any>,
@@ -18,16 +22,77 @@ type DataTableMarchProps = {
     model: GridPaginationModel,
     details: GridCallbackDetails<any>,
   ) => void
+  page: number
+  setPage: (value: number) => void
+  loading: boolean
+  limit: number
+  totalRow: number
 }
 
 export default function DataTableMarch({
-  rows,
+  rows = [],
   columns,
   onRow,
+  pageCount = 1,
   onPaginationModelChange,
+  setPage,
+  page,
+  loading,
+  limit,
+  totalRow = 1,
 }: DataTableMarchProps) {
+  const apiRef = useGridApiRef()
+
+  const CustomPagination = () => {
+    // const apiRef = useGridApiContext()
+    // const page = useGridSelector(apiRef, gridPageSelector)
+    // const pageCount = useGridSelector(apiRef, gridPageCountSelector
+
+    return (
+      <Pagination
+        color="primary"
+        count={pageCount}
+        page={page}
+        onChange={(_, value) => {
+          setPage(value)
+        }}
+      />
+    )
+  }
+
+  const CustomFooter = () => {
+    const offset = page * limit - limit || 0
+    return (
+      <GridFooterContainer>
+        <div className="flex">
+          <GridPagination
+            sx={{
+              '& .MuiInputBase-root': {
+                marginRight: '5px',
+              },
+            }}
+            labelDisplayedRows={() => <></>}
+            labelRowsPerPage={'Rows per page'}
+            ActionsComponent={() => <></>}
+            getItemAriaLabel={undefined}
+          />
+          <h5 className="text-secondary">
+            Display {offset + 1} to {offset + limit} of {totalRow} results
+          </h5>
+        </div>
+        <CustomPagination />
+      </GridFooterContainer>
+    )
+  }
+
+  // const { data } = useDemoData({
+  //   dataSet: 'Commodity',
+  //   rowLength: 100,
+  //   maxColumns: 6,
+  // })
+
   return (
-    <div className="w-full" style={{ height: 'calc(100vh - 120px)' }}>
+    <div className="w-full" style={{ height: 'calc(100vh - 16vmin)' }}>
       <DataGrid
         sx={{
           '& .MuiDataGrid-columnHeaders': {
@@ -40,18 +105,22 @@ export default function DataTableMarch({
         }}
         rows={rows}
         columns={columns}
+        // {...data}
         onRowSelectionModelChange={onRow}
+        apiRef={apiRef}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+            paginationModel: { page: 0, pageSize: 15 },
           },
         }}
         onPaginationModelChange={onPaginationModelChange}
-        pageSizeOptions={[5, 10, 15]}
+        pageSizeOptions={[15, 30]}
         checkboxSelection
         disableRowSelectionOnClick
         disableColumnMenu
         disableColumnSelector
+        slots={{ footer: CustomFooter }}
+        loading={loading}
       />
     </div>
   )
