@@ -4,9 +4,6 @@ import React, { memo, useEffect, useState } from 'react'
 import { getUsername } from '@/config/client'
 import router from 'next/router'
 import * as clientConfig from '@/config/client'
-import StoreIcon from '@mui/icons-material/Store'
-import CardMembershipIcon from '@mui/icons-material/CardMembership'
-import HomeIcon from '@mui/icons-material/Home'
 import jwt from 'jsonwebtoken'
 import { orderBy, uniqBy } from 'lodash'
 import dynamic from 'next/dynamic'
@@ -19,7 +16,10 @@ import { RxDashboard } from 'react-icons/rx'
 //   MdKeyboardArrowRight,
 //   MdOutlineKeyboardDoubleArrowRight,
 // } from 'react-icons/md'
+import { RiHome4Line } from 'react-icons/ri'
+import { FiDivideCircle } from 'react-icons/fi'
 import { FcWorkflow } from 'react-icons/fc'
+import { SlPeople } from 'react-icons/sl'
 
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
@@ -61,7 +61,7 @@ function Layout({ children }) {
   const IconTab = ({ value }) => {
     const styleIcon: React.CSSProperties = {
       color: tab === value ? '#FFFFFF' : '#878787',
-      backgroundColor: tab === value ? '#9A73B5' : '#E9E4ED',
+      backgroundColor: tab === value ? '#9A73B5' : '', //#E9E4ED
       padding: '4px',
       borderRadius: '4px',
       marginTop: 'auto',
@@ -71,7 +71,7 @@ function Layout({ children }) {
     return (
       <div className={hide ? 'mx-auto' : '' + ' min-w-0'}>
         {value === 0 && (
-          <HomeIcon className="cursor-pointer" style={styleIcon} />
+          <RiHome4Line className="cursor-pointer" style={styleIcon} />
         )}
         {value === 4 && (
           <RxDashboard className="cursor-pointer" style={styleIcon} />
@@ -80,10 +80,10 @@ function Layout({ children }) {
           <BsBoxSeam className="cursor-pointer" style={styleIcon} />
         )}
         {value === 1 && (
-          <StoreIcon className="cursor-pointer" style={styleIcon} />
+          <FiDivideCircle className="cursor-pointer" style={styleIcon} />
         )}
         {value === 3 && (
-          <CardMembershipIcon className="cursor-pointer" style={styleIcon} />
+          <SlPeople className="cursor-pointer" style={styleIcon} />
         )}
       </div>
     )
@@ -158,7 +158,10 @@ function Layout({ children }) {
     return (
       <div className="mt-[20px] px-[40px] flex bg-white justify-between">
         <img
-          className="max-w-[30px] max-h-[30px] my-auto block"
+          className={
+            'max-w-[30px] max-h-[30px] my-auto block ' +
+            (hide ? ' mx-auto' : '')
+          }
           src={`${process.env.basePath}/man.png`}
           alt="user-icon"
         />
