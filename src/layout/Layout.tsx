@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { getUsername } from '@/config/client'
 import router from 'next/router'
 import * as clientConfig from '@/config/client'
@@ -10,9 +10,16 @@ import HomeIcon from '@mui/icons-material/Home'
 import jwt from 'jsonwebtoken'
 import { orderBy, uniqBy } from 'lodash'
 import dynamic from 'next/dynamic'
-import { SignOut } from '@/components/logout/logout'
+import SignOut from '@/components/logout/logout'
 import { BsBoxSeam } from 'react-icons/bs'
 import { RxDashboard } from 'react-icons/rx'
+// import {
+//   MdOutlineKeyboardDoubleArrowLeft,
+//   MdKeyboardArrowLeft,
+//   MdKeyboardArrowRight,
+//   MdOutlineKeyboardDoubleArrowRight,
+// } from 'react-icons/md'
+import { FcWorkflow } from 'react-icons/fc'
 
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
@@ -24,6 +31,7 @@ const TabMenu = {
 
 function Layout({ children }) {
   const [tab, setTab] = useState(0)
+  const [hide, setHide] = useState(false)
   // const [menuM, setMenuM] = useState(false)
   const [tabMenu, setTabMenu] = useState([
     { id: 0, label: 'Home', value: 'home' },
@@ -61,7 +69,7 @@ function Layout({ children }) {
       fontSize: '20px',
     }
     return (
-      <div className="">
+      <div className={hide ? 'mx-auto' : '' + ' min-w-0'}>
         {value === 0 && (
           <HomeIcon className="cursor-pointer" style={styleIcon} />
         )}
@@ -93,14 +101,32 @@ function Layout({ children }) {
     const test = orderBy(
       uniqBy(tabMenu, 'id').map((t) => {
         const Lable = () => {
-          return <div className="block text-xs mt-[5px] sm:mt-0">{t.label}</div>
+          return (
+            <div
+              className={
+                'text-xs mt-[5px] sm:mt-0 ' +
+                (!hide
+                  ? 'block opacity-100'
+                  : 'overflow-hidden opacity-0 w-0 h-0 absolute')
+              }
+              style={{
+                transition: 'opacity 1s ease-in',
+              }}>
+              {t.label}
+            </div>
+          )
         }
         const gapIcon = isMobile ? '0px' : '10px'
-        const paddingInline = isMobile ? '0px' : '40px'
+        const paddingInline = !hide ? '20px' : ''
         const fontWeight = isMobile ? 'normal' : 'bold'
         return (
           <Tooltip title={t.value} key={t.id} arrow>
             <Tab
+              sx={{
+                '& .MuiTab-labelIcon': {
+                  minWidth: 0,
+                },
+              }}
               style={{
                 justifyContent: 'start',
                 paddingInline: paddingInline,
@@ -125,7 +151,6 @@ function Layout({ children }) {
       ['key'],
       ['asc'],
     )
-    console.log({ test })
     return test
   }
   const UserUI = () => {
@@ -133,23 +158,36 @@ function Layout({ children }) {
     return (
       <div className="mt-[20px] px-[40px] flex bg-white justify-between">
         <img
-          className="max-w-[30px] max-h-[30px] my-auto  block"
+          className="max-w-[30px] max-h-[30px] my-auto block"
           src={`${process.env.basePath}/man.png`}
           alt="user-icon"
         />
-
-        <h3 className="text-center text-primary text-xs capitalize font-normal block">
+        <h3
+          className={
+            'text-center text-primary text-xs capitalize font-normal ' +
+            (!hide
+              ? 'block opacity-100'
+              : 'overflow-hidden opacity-0 w-0 h-0 absolute')
+          }
+          style={{ transition: 'opacity 1s ease-in' }}>
           {username}
         </h3>
+
         <Tooltip title="Sign Out" arrow placement="top">
-          <div className="my-auto">
+          <div
+            className={
+              'my-auto ' +
+              (!hide
+                ? 'block opacity-100'
+                : 'overflow-hidden opacity-0 w-0 h-0 absolute')
+            }
+            style={{ transition: 'opacity 1s ease-in' }}>
             <SignOut />
           </div>
         </Tooltip>
       </div>
     )
   }
-
   return (
     <>
       <div className="sm:block w-full ">
@@ -161,74 +199,99 @@ function Layout({ children }) {
             bgcolor: 'background.paper',
             display: 'flex',
             height: '100vh',
-            // maxHeight: '100vh',
             backgroundColor: '#F5F3F7',
           }}>
           <div
-            className="w-[30%] bg-white max-w-[260px] "
-            style={{ borderRight: '1px solid #CCCCCC', overflowX: 'hidden' }}>
-            <h2 className="text-left text-primary capitalize font-normal px-[40px]">
-              CurryShop
-            </h2>
-            <h4 className="text-left text-xs text-primary capitalize font-normal my-0 px-[40px] mt-[30px]">
+            className={
+              'flex flex-col justify-between bg-white ' +
+              (!hide ? 'max-w-[220px] w-[18%]' : ' w-[8%] min-w-[40px]')
+            }
+            onMouseEnter={() => setHide(false)}
+            onMouseLeave={() => setHide(true)}
+            style={{
+              borderRight: '1px solid #CCCCCC',
+              overflowX: 'hidden',
+              transition: 'width 0.7s',
+            }}>
+            <div>
+              <div className="flex justify-between py-[20px]">
+                <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
+                  <FcWorkflow
+                    className="my-auto"
+                    style={{ fontSize: '30px' }}
+                  />
+                  <h3
+                    className={
+                      'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
+                      (!hide ? 'block' : 'hidden')
+                    }
+                    style={{
+                      transition: 'opacity 0.7s',
+                    }}>
+                    CurryShop
+                  </h3>
+                </div>
+              </div>
+              {/* <div
+                className="my-auto mr-[10px] cursor-pointer"
+                onClick={() => {
+                  setHide(!hide)
+                }}>
+                {!hide ? (
+                  <>
+                    <MdKeyboardArrowLeft
+                      className="text-accent200"
+                      style={{ fontSize: '24px' }}
+                    />
+                    <MdKeyboardArrowLeft
+                      className="text-gray-300"
+                      style={{ fontSize: '24px', marginLeft: '-18px' }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <MdKeyboardArrowRight
+                      className="text-gray-300"
+                      style={{ fontSize: '24px' }}
+                    />
+                    <MdKeyboardArrowRight
+                      className="text-accent200 "
+                      style={{ fontSize: '24px', marginLeft: '-18px' }}
+                    />
+                  </>
+                )}
+              </div> */}
+              {/* <h4 className="text-left text-xs text-primary capitalize font-normal my-0 px-[40px] mt-[30px]">
               MainMenu
-            </h4>
-            <Tabs
-              className=""
-              orientation="vertical"
-              variant="scrollable"
-              value={tab}
-              aria-label="Vertical tabs example"
-              sx={{
-                borderRight: 1,
-                borderColor: 'divider',
-                width: '100%',
-              }}>
-              {TabM(false)}
-            </Tabs>
-            {/* <div className='pb-[30px]'>
-              <SignOut />
-            </div> */}
-            <div className="bottom-0 fixed pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
+            </h4> */}
+              <Tabs
+                className=""
+                orientation="vertical"
+                variant="scrollable"
+                value={tab}
+                aria-label="Vertical tabs example"
+                sx={{
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  width: '100%',
+                  '& .MuiTab-labelIcon': {
+                    minWidth: 0,
+                  },
+                }}>
+                {TabM(false)}
+              </Tabs>
+            </div>
+            <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
               <UserUI />
             </div>
           </div>
-          <div className="w-[88%] mainBg">{children}</div>
+          <div className={'mainBg ' + (!hide ? 'w-[82%]' : 'w-[92%]')}>
+            {children}
+          </div>
         </Box>
       </div>
-      {/* <div className="sm:hidden block ">
-        <Box
-          className="w-full h-screen mainBg"
-          sx={{
-            backgroundColor: '#F5F3F7',
-          }}>
-          <div className="sticky top-0" style={{ backgroundColor: '#F5F3F7' }}>
-            <div className="px-[10px] mb-[0px] flex justify-between">
-              <UserUI />
-              <SignOut />
-            </div>
-          </div>
-          {children}
-          <Tabs
-            className="mt-[30]"
-            orientation="horizontal"
-            variant="scrollable"
-            value={tab}
-            aria-label="Tabs Mobile"
-            sx={{
-              borderRight: 1,
-              borderColor: 'divider',
-              width: '100%',
-              position: 'fixed',
-              bottom: 0,
-            }}>
-            {TabM(true)}
-          </Tabs>
-        </Box>
-      </div> */}
     </>
   )
 }
 
-// export default Layout
-export default dynamic(() => Promise.resolve(Layout), { ssr: false })
+export default dynamic(() => Promise.resolve(memo(Layout)), { ssr: false })

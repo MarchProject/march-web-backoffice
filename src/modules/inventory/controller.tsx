@@ -97,7 +97,11 @@ const useGlobalInventory = ({
 
   useEffect(() => {
     if (inventoryData?.getInventories?.inventories?.length === 0) {
-      setPage(inventoryData?.getInventories?.totalPage)
+      setPage(
+        inventoryData?.getInventories?.totalPage === 0
+          ? 1
+          : inventoryData?.getInventories?.totalPage,
+      )
     }
   }, [inventoryData?.getInventories?.inventories])
 

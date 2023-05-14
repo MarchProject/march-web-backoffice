@@ -139,7 +139,7 @@ export async function initApollo(uri?: string) {
   // )
 
   const authLink = setContext((_, { headers }) => {
-    console.log('newauth')
+    // console.log('newauth')
     let _headers = {
       ...headers,
     }
@@ -150,7 +150,7 @@ export async function initApollo(uri?: string) {
       })
     }
 
-    console.log({ _headers })
+    // console.log({ _headers })
 
     return {
       headers: _headers,

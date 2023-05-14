@@ -6,6 +6,7 @@ import * as clientConfig from '@/config/client'
 import router from 'next/router'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { initApollo } from '@/core/apollo'
+import dynamic from 'next/dynamic'
 
 type SignOut = {
   signOut: {
@@ -26,7 +27,6 @@ const Index = () => {
     }
   }, [data])
   const userId = clientConfig.getUserId()
-
   const handleSignOut = () => {
     signOut({
       variables: {
@@ -37,9 +37,15 @@ const Index = () => {
   return (
     <div className="text-right my-auto">
       <div
-        className="flex justify-center cursor-pointer"
-        onClick={handleSignOut}>
-        <LogoutIcon className="text-secondary my-auto" style={{fontSize:"18px"}} />
+        className={
+          'flex justify-center cursor-pointer '
+        }
+        onClick={handleSignOut}
+      >
+        <LogoutIcon
+          className="text-secondary my-auto"
+          style={{ fontSize: '18px' }}
+        />
         {/* <h4 className="text-secondary font-normal px-[10px] hidden sm:block">Log Out</h4> */}
       </div>
     </div>
@@ -51,7 +57,7 @@ async function _initApollo(setClient) {
   setClient(client)
 }
 
-export function SignOut() {
+const SignOut = (props: any) => {
   const [client, setClient] = useState(null)
 
   useEffect(() => {
@@ -61,8 +67,12 @@ export function SignOut() {
   return (
     (client && (
       <ApolloProvider client={client}>
-        <Index />
+        <Index {...props} />
       </ApolloProvider>
-    )) || <>loading, Please wait ...</>
+    )) || <></>
   )
 }
+
+export default dynamic(() => Promise.resolve(React.memo(SignOut)), {
+  ssr: false,
+})

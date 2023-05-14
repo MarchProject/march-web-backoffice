@@ -76,9 +76,11 @@ export default function DataTableMarch({
             ActionsComponent={() => <></>}
             getItemAriaLabel={undefined}
           />
-          <h5 className="text-secondary">
-            Display {offset + 1} to {offset + limit} of {totalRow} results
-          </h5>
+          {totalRow > 0 && (
+            <h5 className="text-secondary">
+              Display {offset + 1} to {offset + limit} of {totalRow} results
+            </h5>
+          )}
         </div>
         <CustomPagination />
       </GridFooterContainer>
