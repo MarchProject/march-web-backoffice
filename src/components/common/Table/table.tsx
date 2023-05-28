@@ -65,24 +65,26 @@ export default function DataTableMarch({
     return (
       <GridFooterContainer>
         <div className="flex">
+          {totalRow > 0 && (
+            <h5 className="text-secondary ml-4">
+              Show {offset + 1} - {offset + limit} of {totalRow} results
+            </h5>
+          )}
+        </div>
+        <CustomPagination />
+        <div className="pr-4 flex">
           <GridPagination
             sx={{
               '& .MuiInputBase-root': {
                 marginRight: '5px',
               },
             }}
-            labelDisplayedRows={() => <></>}
-            labelRowsPerPage={'Rows per page'}
+            labelDisplayedRows={() => <p>entries</p>}
+            labelRowsPerPage={'Show'}
             ActionsComponent={() => <></>}
             getItemAriaLabel={undefined}
           />
-          {totalRow > 0 && (
-            <h5 className="text-secondary">
-              Display {offset + 1} to {offset + limit} of {totalRow} results
-            </h5>
-          )}
         </div>
-        <CustomPagination />
       </GridFooterContainer>
     )
   }
@@ -94,7 +96,10 @@ export default function DataTableMarch({
   // })
 
   return (
-    <div className="w-full" style={{ height: 'calc(100vh - 16vmin)' }}>
+    <div
+      className="w-full"
+      // style={{ height: 'calc(100vh - 12vmin)' }}
+    >
       <DataGrid
         sx={{
           '& .MuiDataGrid-columnHeaders': {

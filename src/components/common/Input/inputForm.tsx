@@ -1,9 +1,22 @@
-import { FormControl, TextField } from '@mui/material'
+import { noop } from '@/utils/common/noop'
+import {
+  FormControl,
+  OutlinedInputProps,
+  TextField,
+  TextFieldProps,
+} from '@mui/material'
 import React from 'react'
-import { Control, Controller, FieldValues } from 'react-hook-form'
+import {
+  Control,
+  Controller,
+  ControllerRenderProps,
+  FieldValues,
+} from 'react-hook-form'
+import classnames from 'classnames'
 
 type InputFormProps = {
   id: string
+  classNames?: string
   inputLabel: {
     label: string
     required: boolean
@@ -11,46 +24,74 @@ type InputFormProps = {
   type: string
   name: string
   control: Control<FieldValues, any>
+  variant: 'standard' | 'filled' | 'outlined'
 }
 
-type InputProps = {
+interface IInputProps {
   id: string
-  inputLabel: {
+  classNames?: string
+  inputLabel?: {
     label: string
     required: boolean
   }
   type: string
   name: string
-  control: Control<FieldValues, any>
-  field: any
+  control?: Control<FieldValues, any>
+  field?: ControllerRenderProps<FieldValues, string>
+  size?: 'small' | 'medium'
   error?: string
+  onChange?: (value?: any) => void
+  InputProps?: Partial<OutlinedInputProps>
+  placeholder?: string
+  variant?: 'standard' | 'filled' | 'outlined'
 }
 
-export const Input = (props: InputProps) => {
-  const { id, inputLabel, type, name, field, error } = props
+const Input = (props: IInputProps) => {
+  const {
+    id,
+    inputLabel,
+    type,
+    name,
+    field,
+    error,
+    size,
+    classNames,
+    onChange = noop,
+    InputProps,
+    variant = 'standard',
+    placeholder,
+  } = props
   return (
-    <FormControl variant="standard" required style={{ width: '100%' }}>
-      <div className="text-xs text-gray-600 mb-[4px]">
-        {inputLabel.label}
-        {inputLabel.required && <span className="text-rose-600"> * </span>}
-      </div>
+    <FormControl
+      variant="standard"
+      required
+      fullWidth={inputLabel ? true : false}>
+      {inputLabel && (
+        <div className="text-xs text-gray-600 mb-[4px]">
+          {inputLabel.label}
+          {inputLabel.required && <span className="text-rose-600"> * </span>}
+        </div>
+      )}
       <TextField
         id={id}
+        className={classnames(classNames)}
         name={name}
-        variant="standard"
-        placeholder={inputLabel.label}
+        variant={variant}
+        InputProps={InputProps}
+        placeholder={placeholder || inputLabel.label}
         type={type}
+        onChange={onChange}
         helperText={error}
         {...field}
         error={!!error}
+        size={size}
       />
-      {/* <Input error={true} id={id} type={type} placeholder={inputLabel.label} /> */}
     </FormControl>
   )
 }
 
 const InputForm = (props: InputFormProps) => {
-  const { id, inputLabel, type, name, control } = props
+  const { id, inputLabel, type, name, control, variant, ...rest } = props
   return (
     <>
       <Controller
@@ -62,12 +103,14 @@ const InputForm = (props: InputFormProps) => {
             <>
               <Input
                 id={id}
+                variant={variant}
                 name={name}
                 inputLabel={inputLabel}
                 type={type}
                 control={control}
                 field={field}
                 error={error?.message}
+                {...rest}
               />
             </>
           )
@@ -77,4 +120,4 @@ const InputForm = (props: InputFormProps) => {
   )
 }
 
-export default InputForm
+export { InputForm, Input }

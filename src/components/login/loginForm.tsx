@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card, CardContent } from '@mui/material'
 import React from 'react'
-import InputForm from '../common/Input/inputForm'
 import ButtonForm from '../common/Button/button'
 import { Control, FieldValues } from 'react-hook-form'
+import { InputForm } from '../common/Input'
 
 type LoginFormProps = {
   onSubmit: any
@@ -29,9 +29,11 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
                 <InputForm
                   control={control}
                   id="username"
+                  classNames='!w-[100%] !max-w-[220px]'
                   name="username"
                   inputLabel={{ label: 'username', required: true }}
                   type={'text'}
+                  variant={'standard'}
                 />
               </div>
               <div className="mt-[10px]">
@@ -41,6 +43,7 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
                   name="password"
                   inputLabel={{ label: 'password', required: true }}
                   type={'password'}
+                  variant={'standard'}
                 />
               </div>
               <div className="mt-[30px]">

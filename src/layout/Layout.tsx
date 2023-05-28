@@ -156,7 +156,10 @@ function Layout({ children }) {
   const UserUI = () => {
     const username = getUsername()
     return (
-      <div className="mt-[20px] px-[40px] flex bg-white justify-between">
+      <div
+        className={
+          'mt-[20px] flex bg-white justify-between mx-auto ' + (hide ? 'max-w-[40px]' : 'px-[40px]')
+        }>
         <img
           className={
             'max-w-[30px] max-h-[30px] my-auto block ' +
@@ -191,109 +194,154 @@ function Layout({ children }) {
       </div>
     )
   }
+  // return (
+  //   // <>
+  //     {/* <div className="sm:block w-full flex">
+  //       <Box
+  //         className="flex h-full"
+  //         style={{ backgroundColor: '#F5F3F7' }}
+  //         sx={{
+  //           flexGrow: 1,
+  //           bgcolor: 'background.paper',
+  //           display: 'flex',
+  //           height: '100vh',
+  //           backgroundColor: '#F5F3F7',
+  //         }}>
+  //         <div
+  //           className={
+  //             'flex flex-col justify-between bg-white ' + ''
+  //             (!hide ? 'w-[18%]' : 'w-[8%] min-w-[40px]')
+  //           }
+  //           onMouseEnter={() => setHide(false)}
+  //           onMouseLeave={() => setHide(true)}
+  //           style={{
+  //             borderRight: '1px solid #CCCCCC',
+  //             overflowX: 'hidden',
+  //             transition: 'width 0.7s',
+  //           }}>
+  //           <div>
+  //             <div className="flex justify-between py-[20px]">
+  //               <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
+  //                 <FcWorkflow
+  //                   className="my-auto"
+  //                   style={{ fontSize: '30px' }}
+  //                 />
+  //                 <h3
+  //                   className={
+  //                     'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
+  //                     (!hide ? 'block' : 'hidden')
+  //                   }
+  //                   style={{
+  //                     transition: 'opacity 0.7s',
+  //                   }}>
+  //                   CurryShop
+  //                 </h3>
+  //               </div>
+  //             </div>
+  //             <Tabs
+  //               className=""
+  //               orientation="vertical"
+  //               variant="scrollable"
+  //               value={tab}
+  //               aria-label="Vertical tabs example"
+  //               sx={{
+  //                 borderRight: 1,
+  //                 borderColor: 'divider',
+  //                 width: '100%',
+  //                 '& .MuiTab-labelIcon': {
+  //                   minWidth: 0,
+  //                 },
+  //               }}>
+  //               {TabM(false)}
+  //             </Tabs>
+  //           </div>
+  //           <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
+  //             <UserUI />
+  //           </div>
+  //         </div>
+  //         <div
+  //           className={'mainBg ' + (!hide ? 'w-[82%]' : 'w-[92%]')}
+  //           // style={{ overflow: 'auto' }}
+  //         >
+  //           {children}
+  //         </div>
+  //       </Box>
+  //     </div> */}
+  //   // </>
+  // )
+  const leftSide: React.CSSProperties = {
+    flex: `0 0 ${!hide ? '220px' : '35px'}`,
+    backgroundColor: 'red',
+    transition: 'flex 0.5s ease',
+  }
+  const rightSide: React.CSSProperties = {
+    flex: 1,
+    overflow: 'scroll',
+    overflowX: 'hidden',
+    backgroundColor: '#F5F3F7',
+  }
   return (
-    <>
-      <div className="sm:block w-full ">
-        <Box
-          className="flex h-full"
-          style={{ backgroundColor: '#F5F3F7' }}
-          sx={{
-            flexGrow: 1,
-            bgcolor: 'background.paper',
-            display: 'flex',
-            height: '100vh',
-            backgroundColor: '#F5F3F7',
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <div style={leftSide}>
+        <div
+          className={
+            'flex flex-col justify-between bg-white ' + 'h-full'
+            // (!hide ? 'max-w-[220px] w-[18%]' : ' w-[8%] min-w-[40px]')
+          }
+          onMouseEnter={() => setHide(false)}
+          onMouseLeave={() => setHide(true)}
+          style={{
+            borderRight: '1px solid #CCCCCC',
+            overflowX: 'hidden',
+            transition: 'width 0.7s',
           }}>
-          <div
-            className={
-              'flex flex-col justify-between bg-white ' +
-              (!hide ? 'max-w-[220px] w-[18%]' : ' w-[8%] min-w-[40px]')
-            }
-            onMouseEnter={() => setHide(false)}
-            onMouseLeave={() => setHide(true)}
-            style={{
-              borderRight: '1px solid #CCCCCC',
-              overflowX: 'hidden',
-              transition: 'width 0.7s',
-            }}>
-            <div>
-              <div className="flex justify-between py-[20px]">
-                <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
-                  <FcWorkflow
-                    className="my-auto"
-                    style={{ fontSize: '30px' }}
-                  />
-                  <h3
-                    className={
-                      'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
-                      (!hide ? 'block' : 'hidden')
-                    }
-                    style={{
-                      transition: 'opacity 0.7s',
-                    }}>
-                    CurryShop
-                  </h3>
-                </div>
+          <div>
+            <div className="flex justify-between py-[20px]">
+              <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
+                <FcWorkflow className="my-auto" style={{ fontSize: '30px' }} />
+                <h3
+                  className={
+                    'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
+                    (!hide ? 'block' : 'hidden')
+                  }
+                  style={{
+                    transition: 'opacity 0.7s',
+                  }}>
+                  CurryShop
+                </h3>
               </div>
-              {/* <div
-                className="my-auto mr-[10px] cursor-pointer"
-                onClick={() => {
-                  setHide(!hide)
-                }}>
-                {!hide ? (
-                  <>
-                    <MdKeyboardArrowLeft
-                      className="text-accent200"
-                      style={{ fontSize: '24px' }}
-                    />
-                    <MdKeyboardArrowLeft
-                      className="text-gray-300"
-                      style={{ fontSize: '24px', marginLeft: '-18px' }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <MdKeyboardArrowRight
-                      className="text-gray-300"
-                      style={{ fontSize: '24px' }}
-                    />
-                    <MdKeyboardArrowRight
-                      className="text-accent200 "
-                      style={{ fontSize: '24px', marginLeft: '-18px' }}
-                    />
-                  </>
-                )}
-              </div> */}
-              {/* <h4 className="text-left text-xs text-primary capitalize font-normal my-0 px-[40px] mt-[30px]">
-              MainMenu
-            </h4> */}
-              <Tabs
-                className=""
-                orientation="vertical"
-                variant="scrollable"
-                value={tab}
-                aria-label="Vertical tabs example"
-                sx={{
-                  borderRight: 1,
-                  borderColor: 'divider',
-                  width: '100%',
-                  '& .MuiTab-labelIcon': {
-                    minWidth: 0,
-                  },
-                }}>
-                {TabM(false)}
-              </Tabs>
             </div>
-            <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
-              <UserUI />
-            </div>
+            <Tabs
+              className=""
+              orientation="vertical"
+              variant="scrollable"
+              value={tab}
+              aria-label="Vertical tabs example"
+              sx={{
+                borderRight: 1,
+                borderColor: 'divider',
+                width: '100%',
+                '& .MuiTab-labelIcon': {
+                  minWidth: 0,
+                },
+              }}>
+              {TabM(false)}
+            </Tabs>
           </div>
-          <div className={'mainBg ' + (!hide ? 'w-[82%]' : 'w-[92%]')}>
-            {children}
+          <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
+            <UserUI />
           </div>
-        </Box>
+        </div>
       </div>
-    </>
+      <div
+        style={rightSide}
+        onMouseEnter={() => setHide(true)}
+        onMouseLeave={() => setHide(false)}>
+        <div className={'mainBg'} style={{ overflow: 'auto' }}>
+          {children}
+        </div>
+      </div>
+    </div>
   )
 }
 

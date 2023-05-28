@@ -1,8 +1,5 @@
-// import moment from 'moment-timezone' //dayjs
-export const dateTimeFormat = 'YYYY-MM-DD HH:mm:ss'
-
-
-// const timezone = 'Asia/Bangkok'
+import { dateFormat, timeZone } from '../common'
+import dayjs from '../common/dayjs'
 
 export class Model {
   get key() {
@@ -52,11 +49,12 @@ export class Model {
 
     //
     if (value) {
-      instance[formattedFieldName] = ''
+      instance[formattedFieldName] = dayjs(value)
+        .tz(timeZone)
+        .format(dateFormat)
       // moment(value)
       //   .tz(timezone)
       //   .format(dateTimeFormat)
     }
   }
-
 }

@@ -1,8 +1,14 @@
 import { InventoriesData } from '@/core/gql/inventory'
 import { Tooltip } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
+import { CSSProperties } from 'react'
 type InventoriesDataColumn = {
   row: InventoriesData
+}
+
+const styleColumns: CSSProperties = {
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
 }
 
 export const columns = (): GridColDef[] => {
@@ -16,27 +22,21 @@ export const columns = (): GridColDef[] => {
     //   },
     {
       field: 'name',
-      headerName: 'Name',
-      flex: 2,
+      headerName: 'Item Name',
+      flex: 1,
       minWidth: 100,
       renderCell: (params) => {
-        const name = params.row?.name?.split('|')[0]
+        const name = params.row?.name
         return (
           <Tooltip title={name} arrow placement="top" enterTouchDelay={0}>
-            <p
-              style={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-              }}>
-              {name}
-            </p>
+            <p style={styleColumns}>{name}</p>
           </Tooltip>
         )
       },
     },
     {
       field: 'amount',
-      headerName: 'Amount',
+      headerName: 'On Hand',
       flex: 1,
       minWidth: 100,
       align: 'center',
@@ -48,7 +48,8 @@ export const columns = (): GridColDef[] => {
       flex: 2,
       minWidth: 100,
       valueGetter: (params: InventoriesDataColumn) => {
-        return `${params.row?.inventoryType?.name?.split('|')[0]}`
+        return `${params.row?.inventoryType?.name}`
+          // .split('|')[0]}`
       },
     },
     {
@@ -56,20 +57,14 @@ export const columns = (): GridColDef[] => {
       headerName: 'Brand',
       flex: 1,
       minWidth: 100,
-      valueGetter: (params: InventoriesDataColumn) => {
-        return `${params.row?.brandType?.name?.split('|')[0]}`
-      },
+      // valueGetter: (params: InventoriesDataColumn) => {
+      //   return `${params.row?.brandType?.name?.split('|')[0]}223`
+      // },
       renderCell: (params) => {
-        const brand = params.row?.brandType?.name?.split('|')[0]
+        const brand = params.row?.brandType?.name
         return (
           <Tooltip title={brand} arrow placement="top" enterTouchDelay={0}>
-            <p
-              style={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-              }}>
-              {brand}
-            </p>
+            <p style={styleColumns}>{brand}</p>
           </Tooltip>
         )
       },
@@ -86,20 +81,21 @@ export const columns = (): GridColDef[] => {
     {
       field: 'price',
       headerName: 'Price',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
+      type: 'number',
+      // description: 'This column has a value getter and is not sortable.',
+      // sortable: false,
       flex: 1,
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
     },
     {
-      field: 'expiryDate',
+      field: 'formattedExpiryDate',
       headerName: 'Expiry Date',
-      description: 'This column has a value getter and is not sortable.',
+      // description: 'This column has a value getter and is not sortable.',
       sortable: false,
       flex: 1,
-      minWidth: 100,
+      minWidth: 120,
       align: 'center',
       headerAlign: 'center',
     },
@@ -112,14 +108,28 @@ export const columns = (): GridColDef[] => {
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params) => {
+        const description = params.row?.description
+        return (
+          <Tooltip
+            title={description}
+            arrow
+            placement="top"
+            enterTouchDelay={0}>
+            <p style={styleColumns}>{description}</p>
+          </Tooltip>
+        )
+      },
     },
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: 'Actions',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       flex: 1,
-      minWidth: 100,
+      maxWidth: 80,
+      align: 'center',
+      headerAlign: 'center',
       renderCell: () => {
         return (
           <Tooltip title="action" arrow placement="top">

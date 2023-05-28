@@ -33,8 +33,8 @@ export type GetInventoriesVariables = {
   params: {
     search?: string
     limit?: number
-    type?: string
-    brand?: string
+    type?: string[]
+    brand?: string[]
     pageNo?: number
   }
 }
@@ -65,6 +65,39 @@ export const getInventoriesQuery = gql`
       pageLimit
       totalPage
       totalRow
+    }
+  }
+`
+export type GetInventoriesTypeData = {
+  getInventoryTypes: GetInventoryTypes[]
+}
+
+export type GetInventoryTypes = {
+  id: string
+  name: string
+  description: string
+  createdBy: string
+  createdAt: string
+  updatedBy: string
+  updatedAt: string
+}
+export type GetInventoriesTypeVariables = {
+  params: {
+    search: string
+    limit: number
+    offset: number
+  }
+}
+export const getInventoriesTypeQuery = gql`
+  query getInventoryTypes($params: ParamsInventoryType!) {
+    getInventoryTypes(params: $params) {
+      id
+      name
+      # description
+      # createdBy
+      # createdAt
+      # updatedBy
+      # updatedAt
     }
   }
 `

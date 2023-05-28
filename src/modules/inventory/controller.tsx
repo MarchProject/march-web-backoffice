@@ -1,12 +1,25 @@
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import {
   GetInventoriesData,
+  GetInventoriesTypeData,
+  GetInventoriesTypeVariables,
   GetInventoriesVariables,
   getInventoriesQuery,
+  getInventoriesTypeQuery,
 } from '@/core/gql/inventory'
-import { useLazyQuery } from '@apollo/client'
+import {
+  InventoriesResponse,
+  Inventory,
+  InventoryType,
+} from '@/core/model/inventory'
+import { LazyQueryExecFunction, useLazyQuery, useQuery } from '@apollo/client'
+import {
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason,
+} from '@mui/material'
+import { plainToClass, plainToInstance } from 'class-transformer'
 import { debounce } from 'lodash'
-import { useEffect, useState } from 'react'
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
 
 const notificationErrorProp = {
   severity: EnumSeverity.error,
@@ -26,9 +39,16 @@ export const useInventoryController = () => {
     onPaginationModelChange,
     onRow,
     handleChangeInventory,
+    setType,
     setPage,
   } = useGlobalInventory({ getInventories, inventoryData })
+  const {
+    inventoriesTypeData,
+    inventoriesTypeDataError,
+    inventoriesTypeLoading,
+  } = useQueryInventoryType()
 
+  const { handleTypeChange } = useHandleInventory({ setType })
   return {
     globalState: {
       inventoryPage,
@@ -37,12 +57,64 @@ export const useInventoryController = () => {
       onPaginationModelChange,
       onRow,
       handleChangeInventory,
+      setType,
       setPage,
     },
-    inventoryData: {
+    inventory: {
       inventoryData,
       inventoryLoading,
     },
+    inventoriesType: {
+      inventoriesTypeData,
+      inventoriesTypeDataError,
+      inventoriesTypeLoading,
+    },
+    handleInventory: {
+      handleTypeChange,
+    },
+  }
+}
+
+const useQueryInventoryType = () => {
+  const [search, setSearch] = useState<string>('')
+  const [limit, setLimit] = useState<number>(20)
+  const [offset, setOffset] = useState<number>(0)
+  const [inventoriesTypeData, setInventoriesTypeData] = useState([])
+  const [getInventoryTypes, { data, error, loading }] = useLazyQuery<
+    GetInventoriesTypeData,
+    GetInventoriesTypeVariables
+  >(getInventoriesTypeQuery)
+
+  useEffect(() => {
+    if (data) {
+      const _inventoriyType = plainToInstance(
+        InventoryType,
+        data?.getInventoryTypes,
+      )
+      setInventoriesTypeData(_inventoriyType)
+    }
+  }, [data])
+
+  const getInventoryTypesHandle = useCallback(() => {
+    getInventoryTypes({
+      variables: {
+        params: {
+          search,
+          limit,
+          offset,
+        },
+      },
+    })
+  }, [getInventoryTypes, limit, offset, search])
+
+  useEffect(() => {
+    getInventoryTypesHandle()
+  }, [getInventoryTypesHandle, search])
+
+  return {
+    inventoriesTypeData: inventoriesTypeData,
+    inventoriesTypeDataError: error,
+    inventoriesTypeLoading: loading,
   }
 }
 
@@ -52,11 +124,20 @@ const useQueryInventory = ({ notification }) => {
     GetInventoriesVariables
   >(getInventoriesQuery)
 
+  const _inventories = plainToInstance(
+    Inventory,
+    data?.getInventories?.inventories,
+  )
+
+  if (data && _inventories) {
+    data.getInventories.inventories = _inventories
+  }
+
   useEffect(() => {
     if (error) {
       notification(notificationErrorProp)
     }
-  }, [error])
+  }, [error, notification])
 
   return {
     getInventories,
@@ -64,6 +145,7 @@ const useQueryInventory = ({ notification }) => {
     inventoryLoading: loading,
   }
 }
+
 const useGlobalInventory = ({
   getInventories,
   inventoryData,
@@ -71,29 +153,30 @@ const useGlobalInventory = ({
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
   const [search, setSearch] = useState('')
+  const [type, setType] = useState<string[]>([])
+  const [brand, setBrand] = useState<string[]>([])
 
-  const handleSearch = debounce((search) => {
+  const handleSearch = useCallback(() => {
     getInventories({
       variables: {
         params: {
           limit: limit,
           pageNo: page,
           search: search,
-          type: '',
-          brand: '',
+          type: type,
+          brand: brand,
         },
       },
     })
-  }, 500)
+  }, [brand, getInventories, limit, page, search, type])
 
-  const handleChange = (value) => {
+  const handleSearchChange = (value: string) => {
     setSearch(value)
-    handleSearch(value)
   }
 
   useEffect(() => {
-    handleSearch(search)
-  }, [page, limit, search])
+    handleSearch()
+  }, [handleSearch])
 
   useEffect(() => {
     if (inventoryData?.getInventories?.inventories?.length === 0) {
@@ -103,7 +186,10 @@ const useGlobalInventory = ({
           : inventoryData?.getInventories?.totalPage,
       )
     }
-  }, [inventoryData?.getInventories?.inventories])
+  }, [
+    inventoryData?.getInventories?.inventories,
+    inventoryData?.getInventories?.totalPage,
+  ])
 
   const onRow = (rows, reason) => {
     console.log({ rows, reason })
@@ -118,12 +204,36 @@ const useGlobalInventory = ({
     inventorySearch: search,
     onPaginationModelChange,
     onRow,
-    handleChangeInventory: handleChange,
+    handleChangeInventory: handleSearchChange,
+    setType,
     setPage,
   }
 }
 
+const useHandleInventory = ({ setType }) => {
+  const handleTypeChange = (
+    event: SyntheticEvent<Element, Event>,
+    value: InventoryType[],
+    reason: AutocompleteChangeReason,
+    // details?: AutocompleteChangeDetails,
+  ) => {
+    console.log({ event, value, reason })
+    const ids: string[] = value.map((e) => {
+      return e.id
+    })
+    console.log({ ids })
+    setType(ids)
+  }
+
+  return {
+    handleTypeChange,
+  }
+}
+
 type UseGlobalInventoryProps = {
-  getInventories: any
+  getInventories: LazyQueryExecFunction<
+    GetInventoriesData,
+    GetInventoriesVariables
+  >
   inventoryData: GetInventoriesData
 }

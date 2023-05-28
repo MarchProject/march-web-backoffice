@@ -14,7 +14,6 @@ import Layout from '@/layout/Layout'
 import * as clientConfig from '@/config/client'
 import ContainerInventory from '@/modules/inventory/Container'
 
-
 const Index = () => {
   return (
     <>
