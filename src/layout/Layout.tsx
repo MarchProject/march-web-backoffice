@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Tab, Tabs, Tooltip } from '@mui/material'
+import { Tab, Tabs, Tooltip } from '@mui/material'
 import React, { memo, useEffect, useState } from 'react'
 import { getUsername } from '@/config/client'
 import router from 'next/router'
@@ -10,12 +10,6 @@ import dynamic from 'next/dynamic'
 import SignOut from '@/components/logout/logout'
 import { BsBoxSeam } from 'react-icons/bs'
 import { RxDashboard } from 'react-icons/rx'
-// import {
-//   MdOutlineKeyboardDoubleArrowLeft,
-//   MdKeyboardArrowLeft,
-//   MdKeyboardArrowRight,
-//   MdOutlineKeyboardDoubleArrowRight,
-// } from 'react-icons/md'
 import { RiHome4Line } from 'react-icons/ri'
 import { FiDivideCircle } from 'react-icons/fi'
 import { FcWorkflow } from 'react-icons/fc'
@@ -32,14 +26,15 @@ const TabMenu = {
 function Layout({ children }) {
   const [tab, setTab] = useState(0)
   const [hide, setHide] = useState(false)
-  // const [menuM, setMenuM] = useState(false)
   const [tabMenu, setTabMenu] = useState([
     { id: 0, label: 'Home', value: 'home' },
   ])
 
   useEffect(() => {
-    const pathName = router.pathname.replace('/', '')
-    const numTab = 'MENU:' + pathName.toUpperCase()
+    // const pathName = router.pathname.replace('/', '')
+    const pathName = router.pathname.split('/')
+    const _pathName = pathName[1]
+    const numTab = 'MENU:' + _pathName.toUpperCase()
     setTab(TabMenu[numTab].id)
   }, [])
 
@@ -94,7 +89,8 @@ function Layout({ children }) {
     if (value === pathName.replace('/', '')) {
       return
     }
-    router.push({ pathname: value })
+    console.log({ valuepath: value })
+    router.replace({ pathname: '/' + value })
   }
 
   const TabM = (isMobile: boolean) => {
@@ -158,7 +154,8 @@ function Layout({ children }) {
     return (
       <div
         className={
-          'mt-[20px] flex bg-white justify-between mx-auto ' + (hide ? 'max-w-[40px]' : 'px-[40px]')
+          'mt-[20px] flex bg-white justify-between mx-auto ' +
+          (hide ? 'max-w-[40px]' : 'px-[40px]')
         }>
         <img
           className={
@@ -194,81 +191,6 @@ function Layout({ children }) {
       </div>
     )
   }
-  // return (
-  //   // <>
-  //     {/* <div className="sm:block w-full flex">
-  //       <Box
-  //         className="flex h-full"
-  //         style={{ backgroundColor: '#F5F3F7' }}
-  //         sx={{
-  //           flexGrow: 1,
-  //           bgcolor: 'background.paper',
-  //           display: 'flex',
-  //           height: '100vh',
-  //           backgroundColor: '#F5F3F7',
-  //         }}>
-  //         <div
-  //           className={
-  //             'flex flex-col justify-between bg-white ' + ''
-  //             (!hide ? 'w-[18%]' : 'w-[8%] min-w-[40px]')
-  //           }
-  //           onMouseEnter={() => setHide(false)}
-  //           onMouseLeave={() => setHide(true)}
-  //           style={{
-  //             borderRight: '1px solid #CCCCCC',
-  //             overflowX: 'hidden',
-  //             transition: 'width 0.7s',
-  //           }}>
-  //           <div>
-  //             <div className="flex justify-between py-[20px]">
-  //               <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
-  //                 <FcWorkflow
-  //                   className="my-auto"
-  //                   style={{ fontSize: '30px' }}
-  //                 />
-  //                 <h3
-  //                   className={
-  //                     'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
-  //                     (!hide ? 'block' : 'hidden')
-  //                   }
-  //                   style={{
-  //                     transition: 'opacity 0.7s',
-  //                   }}>
-  //                   CurryShop
-  //                 </h3>
-  //               </div>
-  //             </div>
-  //             <Tabs
-  //               className=""
-  //               orientation="vertical"
-  //               variant="scrollable"
-  //               value={tab}
-  //               aria-label="Vertical tabs example"
-  //               sx={{
-  //                 borderRight: 1,
-  //                 borderColor: 'divider',
-  //                 width: '100%',
-  //                 '& .MuiTab-labelIcon': {
-  //                   minWidth: 0,
-  //                 },
-  //               }}>
-  //               {TabM(false)}
-  //             </Tabs>
-  //           </div>
-  //           <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
-  //             <UserUI />
-  //           </div>
-  //         </div>
-  //         <div
-  //           className={'mainBg ' + (!hide ? 'w-[82%]' : 'w-[92%]')}
-  //           // style={{ overflow: 'auto' }}
-  //         >
-  //           {children}
-  //         </div>
-  //       </Box>
-  //     </div> */}
-  //   // </>
-  // )
   const leftSide: React.CSSProperties = {
     flex: `0 0 ${!hide ? '220px' : '35px'}`,
     backgroundColor: 'red',
@@ -276,7 +198,7 @@ function Layout({ children }) {
   }
   const rightSide: React.CSSProperties = {
     flex: 1,
-    overflow: 'scroll',
+    overflowY: 'hidden',
     overflowX: 'hidden',
     backgroundColor: '#F5F3F7',
   }
@@ -284,10 +206,7 @@ function Layout({ children }) {
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={leftSide}>
         <div
-          className={
-            'flex flex-col justify-between bg-white ' + 'h-full'
-            // (!hide ? 'max-w-[220px] w-[18%]' : ' w-[8%] min-w-[40px]')
-          }
+          className={'flex flex-col justify-between bg-white ' + 'h-full'}
           onMouseEnter={() => setHide(false)}
           onMouseLeave={() => setHide(true)}
           style={{
@@ -336,8 +255,11 @@ function Layout({ children }) {
       <div
         style={rightSide}
         onMouseEnter={() => setHide(true)}
-        onMouseLeave={() => setHide(false)}>
-        <div className={'mainBg'} style={{ overflow: 'auto' }}>
+        // onMouseLeave={() => setHide(false)}
+      >
+        <div
+          className={'mainBg overflow-y-auto'}
+          style={{ overflowY: 'scroll' }}>
           {children}
         </div>
       </div>

@@ -8,7 +8,6 @@ import { homeRoute } from '@/router/home'
 import { CookiesKey } from '@/constant'
 import { verifyAccessToken } from '@/core/services/auth'
 import ContainerLogin from '@/modules/login/detail/Container'
-import * as clientConfig from '@/config/client'
 
 const Index = () => {
   return (

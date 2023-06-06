@@ -1,7 +1,15 @@
 import { Model } from './model'
 
-class BrandType {
-  name: string
+export class BrandType {
+  id: string
+  _name: string
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name.split('|')[0]
+  }
 }
 
 export class InventoriesResponse {
@@ -28,7 +36,14 @@ export class SplitShop {
 
 export class InventoryType {
   id: string
-  name: string
+  _name: string
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name.split('|')[0]
+  }
   // _name: string
   // formattedName: string
   // get name() {

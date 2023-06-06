@@ -5,3 +5,9 @@ export const inventoryRoute: Route = {
   auth: true,
   regex: /(\/(en|th)|)\/inventory/,
 }
+
+export const inventoryCreateRoute: Route = {
+  path: '/inventory/create',
+  auth: true,
+  regex: /(\/(en|th)|)\/inventory\/create/,
+}

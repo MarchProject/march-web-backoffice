@@ -1,24 +1,22 @@
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import {
+  GetInventoriesBrandData,
+  GetInventoriesBrandVariables,
   GetInventoriesData,
   GetInventoriesTypeData,
   GetInventoriesTypeVariables,
   GetInventoriesVariables,
+  getInventoriesBrandQuery,
   getInventoriesQuery,
   getInventoriesTypeQuery,
 } from '@/core/gql/inventory'
+import { BrandType, Inventory, InventoryType } from '@/core/model/inventory'
+import { useLazyQuery } from '@apollo/client'
 import {
-  InventoriesResponse,
-  Inventory,
-  InventoryType,
-} from '@/core/model/inventory'
-import { LazyQueryExecFunction, useLazyQuery, useQuery } from '@apollo/client'
-import {
-  AutocompleteChangeDetails,
   AutocompleteChangeReason,
+  AutocompleteInputChangeReason,
 } from '@mui/material'
-import { plainToClass, plainToInstance } from 'class-transformer'
-import { debounce } from 'lodash'
+import { plainToInstance } from 'class-transformer'
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
 
 const notificationErrorProp = {
@@ -29,10 +27,9 @@ const notificationErrorProp = {
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
-  const { getInventories, inventoryData, inventoryLoading } = useQueryInventory(
-    { notification },
-  )
   const {
+    inventoryData,
+    inventoryLoading,
     inventoryPage,
     inventoryLimit,
     inventorySearch,
@@ -41,49 +38,136 @@ export const useInventoryController = () => {
     handleChangeInventory,
     setType,
     setPage,
-  } = useGlobalInventory({ getInventories, inventoryData })
+    setBrand,
+    handleClearChange,
+    inventoryTypeValue,
+    inventoryBrandValue,
+  } = useQueryInventory({ notification })
+  // const {} = useGlobalInventory({ getInventories, inventoryData })
   const {
     inventoriesTypeData,
     inventoriesTypeDataError,
     inventoriesTypeLoading,
+    handleSearchInventoryType,
   } = useQueryInventoryType()
 
-  const { handleTypeChange } = useHandleInventory({ setType })
+  const {
+    inventoriesBrandData,
+    inventoriesBrandDataError,
+    inventoriesBrandLoading,
+    handleSearchInventoryBrand,
+  } = useQueryInventoryBrand()
+  const { handleTypeChange, handleBrandChange } = useHandleInventory({
+    setType,
+    setBrand,
+  })
   return {
-    globalState: {
+    globalState: {},
+    inventory: {
+      inventoryData,
+      inventoryLoading,
       inventoryPage,
       inventoryLimit,
       inventorySearch,
+      handleClearChange,
       onPaginationModelChange,
       onRow,
       handleChangeInventory,
       setType,
       setPage,
-    },
-    inventory: {
-      inventoryData,
-      inventoryLoading,
+      setBrand,
+      inventoryTypeValue,
+      inventoryBrandValue,
     },
     inventoriesType: {
       inventoriesTypeData,
       inventoriesTypeDataError,
       inventoriesTypeLoading,
+      handleSearchInventoryType,
+    },
+    inventoriesBrand: {
+      inventoriesBrandData,
+      inventoriesBrandDataError,
+      inventoriesBrandLoading,
+      handleSearchInventoryBrand,
     },
     handleInventory: {
       handleTypeChange,
+      handleBrandChange,
     },
   }
 }
 
-const useQueryInventoryType = () => {
+export const useQueryInventoryBrand = () => {
   const [search, setSearch] = useState<string>('')
-  const [limit, setLimit] = useState<number>(20)
-  const [offset, setOffset] = useState<number>(0)
+  const [inventoriesBrandData, setInventoriesBrandData] = useState([])
+  const [getBrandTypes, { data, error, loading }] = useLazyQuery<
+    GetInventoriesBrandData,
+    GetInventoriesBrandVariables
+  >(getInventoriesBrandQuery)
+
+  const onInputTypeChange = useCallback(
+    (
+      _: React.SyntheticEvent,
+      value: string,
+      reason: AutocompleteInputChangeReason,
+    ) => {
+      console.log({ reason, value })
+      setSearch(value)
+    },
+    [setSearch],
+  )
+
+  useEffect(() => {
+    if (data) {
+      const _inventoryBrand = plainToInstance(BrandType, data?.getBrandTypes)
+      setInventoriesBrandData(_inventoryBrand)
+    }
+  }, [data])
+
+  const getInventoryBrandHandle = useCallback(() => {
+    getBrandTypes({
+      variables: {
+        params: {
+          search,
+          limit: 999,
+          offset: 0,
+        },
+      },
+    })
+  }, [getBrandTypes, search])
+
+  useEffect(() => {
+    getInventoryBrandHandle()
+  }, [getInventoryBrandHandle, search])
+
+  return {
+    inventoriesBrandData: inventoriesBrandData,
+    inventoriesBrandDataError: error,
+    inventoriesBrandLoading: loading,
+    handleSearchInventoryBrand: onInputTypeChange,
+  }
+}
+
+export const useQueryInventoryType = () => {
+  const [search, setSearch] = useState<string>('')
   const [inventoriesTypeData, setInventoriesTypeData] = useState([])
   const [getInventoryTypes, { data, error, loading }] = useLazyQuery<
     GetInventoriesTypeData,
     GetInventoriesTypeVariables
   >(getInventoriesTypeQuery)
+
+  const onInputTypeChange = useCallback(
+    (
+      _: React.SyntheticEvent,
+      value: string,
+      reason: AutocompleteInputChangeReason,
+    ) => {
+      console.log({ reason, value })
+      setSearch(value)
+    },
+    [setSearch],
+  )
 
   useEffect(() => {
     if (data) {
@@ -100,12 +184,12 @@ const useQueryInventoryType = () => {
       variables: {
         params: {
           search,
-          limit,
-          offset,
+          limit: 999,
+          offset: 0,
         },
       },
     })
-  }, [getInventoryTypes, limit, offset, search])
+  }, [getInventoryTypes, search])
 
   useEffect(() => {
     getInventoryTypesHandle()
@@ -115,14 +199,70 @@ const useQueryInventoryType = () => {
     inventoriesTypeData: inventoriesTypeData,
     inventoriesTypeDataError: error,
     inventoriesTypeLoading: loading,
+    handleSearchInventoryType: onInputTypeChange,
   }
 }
 
 const useQueryInventory = ({ notification }) => {
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(15)
+  const [search, setSearch] = useState('')
+  const [type, setType] = useState<InventoryType[]>([])
+  const [brand, setBrand] = useState<BrandType[]>([])
+
   const [getInventories, { data, loading, error }] = useLazyQuery<
     GetInventoriesData,
     GetInventoriesVariables
   >(getInventoriesQuery)
+
+  const handleSearch = useCallback(() => {
+    getInventories({
+      variables: {
+        params: {
+          limit: limit,
+          pageNo: page,
+          search: search,
+          type: type.map((e: any) => {
+            return e.id
+          }),
+          brand: brand.map((e: any) => {
+            return e.id
+          }),
+        },
+      },
+    })
+  }, [brand, getInventories, limit, page, search, type])
+
+  const handleSearchChange = (value: any) => {
+    setSearch(value.target.value)
+  }
+
+  const handleClearChange = () => {
+    setSearch('')
+    setType([])
+    setBrand([])
+  }
+
+  useEffect(() => {
+    handleSearch()
+  }, [handleSearch])
+
+  useEffect(() => {
+    if (data?.getInventories?.inventories?.length === 0) {
+      setPage(
+        data?.getInventories?.totalPage === 0
+          ? 1
+          : data?.getInventories?.totalPage,
+      )
+    }
+  }, [data?.getInventories?.inventories, data?.getInventories?.totalPage])
+
+  const onRow = (rows, reason) => {
+    console.log({ rows, reason })
+  }
+  const onPaginationModelChange = (model, _) => {
+    setLimit(model.pageSize)
+  }
 
   const _inventories = plainToInstance(
     Inventory,
@@ -143,62 +283,7 @@ const useQueryInventory = ({ notification }) => {
     getInventories,
     inventoryData: data,
     inventoryLoading: loading,
-  }
-}
-
-const useGlobalInventory = ({
-  getInventories,
-  inventoryData,
-}: UseGlobalInventoryProps) => {
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(15)
-  const [search, setSearch] = useState('')
-  const [type, setType] = useState<string[]>([])
-  const [brand, setBrand] = useState<string[]>([])
-
-  const handleSearch = useCallback(() => {
-    getInventories({
-      variables: {
-        params: {
-          limit: limit,
-          pageNo: page,
-          search: search,
-          type: type,
-          brand: brand,
-        },
-      },
-    })
-  }, [brand, getInventories, limit, page, search, type])
-
-  const handleSearchChange = (value: string) => {
-    setSearch(value)
-  }
-
-  useEffect(() => {
-    handleSearch()
-  }, [handleSearch])
-
-  useEffect(() => {
-    if (inventoryData?.getInventories?.inventories?.length === 0) {
-      setPage(
-        inventoryData?.getInventories?.totalPage === 0
-          ? 1
-          : inventoryData?.getInventories?.totalPage,
-      )
-    }
-  }, [
-    inventoryData?.getInventories?.inventories,
-    inventoryData?.getInventories?.totalPage,
-  ])
-
-  const onRow = (rows, reason) => {
-    console.log({ rows, reason })
-  }
-  const onPaginationModelChange = (model, _) => {
-    setLimit(model.pageSize)
-  }
-
-  return {
+    handleClearChange,
     inventoryPage: page,
     inventoryLimit: limit,
     inventorySearch: search,
@@ -207,33 +292,65 @@ const useGlobalInventory = ({
     handleChangeInventory: handleSearchChange,
     setType,
     setPage,
+    setBrand,
+    inventoryTypeValue: type,
+    inventoryBrandValue: brand,
   }
 }
 
-const useHandleInventory = ({ setType }) => {
-  const handleTypeChange = (
-    event: SyntheticEvent<Element, Event>,
-    value: InventoryType[],
-    reason: AutocompleteChangeReason,
-    // details?: AutocompleteChangeDetails,
-  ) => {
-    console.log({ event, value, reason })
-    const ids: string[] = value.map((e) => {
-      return e.id
-    })
-    console.log({ ids })
-    setType(ids)
-  }
+// const useGlobalInventory = ({}) => {}
+
+const useHandleInventory = ({ setType, setBrand }) => {
+  const handleTypeChange = useCallback(
+    (
+      _: SyntheticEvent<Element, Event>,
+      value: InventoryType[],
+      reason: AutocompleteChangeReason,
+    ) => {
+      if (reason === 'selectOption' || reason === 'removeOption') {
+        // const ids: string[] = value.map((e) => {
+        //   return e.id
+        // })
+
+        setType(value)
+      } else {
+        console.log('elsesus')
+        setType([])
+      }
+    },
+    [setType],
+  )
+
+  const handleBrandChange = useCallback(
+    (
+      _: SyntheticEvent<Element, Event>,
+      value: BrandType[],
+      reason: AutocompleteChangeReason,
+    ) => {
+      if (reason === 'selectOption' || reason === 'removeOption') {
+        // const ids: string[] = value.map((e) => {
+        //   return e.id
+        // })
+
+        setBrand(value)
+      } else {
+        console.log('elsesus')
+        setBrand([])
+      }
+    },
+    [setBrand],
+  )
 
   return {
     handleTypeChange,
+    handleBrandChange,
   }
 }
 
-type UseGlobalInventoryProps = {
-  getInventories: LazyQueryExecFunction<
-    GetInventoriesData,
-    GetInventoriesVariables
-  >
-  inventoryData: GetInventoriesData
-}
+// type UseGlobalInventoryProps = {
+//   getInventories: LazyQueryExecFunction<
+//     GetInventoriesData,
+//     GetInventoriesVariables
+//   >
+//   inventoryData: GetInventoriesData
+// }

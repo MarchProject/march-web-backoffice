@@ -9,6 +9,7 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid'
 import { Pagination } from '@mui/material'
+import { useEffect, useState } from 'react'
 
 type DataTableMarchProps = {
   rows: any[]
@@ -44,9 +45,6 @@ export default function DataTableMarch({
   const apiRef = useGridApiRef()
 
   const CustomPagination = () => {
-    // const apiRef = useGridApiContext()
-    // const page = useGridSelector(apiRef, gridPageSelector)
-    // const pageCount = useGridSelector(apiRef, gridPageCountSelector
 
     return (
       <Pagination
@@ -79,7 +77,7 @@ export default function DataTableMarch({
                 marginRight: '5px',
               },
             }}
-            labelDisplayedRows={() => <p>entries</p>}
+            labelDisplayedRows={() => <>entries</>}
             labelRowsPerPage={'Show'}
             ActionsComponent={() => <></>}
             getItemAriaLabel={undefined}
@@ -89,17 +87,27 @@ export default function DataTableMarch({
     )
   }
 
-  // const { data } = useDemoData({
-  //   dataSet: 'Commodity',
-  //   rowLength: 100,
-  //   maxColumns: 6,
-  // })
+  const [gridHeight, setGridHeight] = useState(0)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const windowHeight = window.innerHeight
+      const navbarHeight =
+        document.getElementById('navbar-inventory')?.offsetHeight
+      const availableHeight = windowHeight - navbarHeight - 65
+      setGridHeight(availableHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
-    <div
-      className="w-full"
-      // style={{ height: 'calc(100vh - 12vmin)' }}
-    >
+    <div className={'w-full'} style={{ height: gridHeight }}>
       <DataGrid
         sx={{
           '& .MuiDataGrid-columnHeaders': {
@@ -112,7 +120,6 @@ export default function DataTableMarch({
         }}
         rows={rows}
         columns={columns}
-        // {...data}
         onRowSelectionModelChange={onRow}
         apiRef={apiRef}
         initialState={{

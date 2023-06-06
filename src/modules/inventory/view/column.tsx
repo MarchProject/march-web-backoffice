@@ -2,6 +2,8 @@ import { InventoriesData } from '@/core/gql/inventory'
 import { Tooltip } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import { CSSProperties } from 'react'
+import { RiEdit2Line } from 'react-icons/ri'
+import { CiCircleMore } from 'react-icons/ci'
 type InventoriesDataColumn = {
   row: InventoriesData
 }
@@ -35,21 +37,21 @@ export const columns = (): GridColDef[] => {
       },
     },
     {
-      field: 'amount',
-      headerName: 'On Hand',
-      flex: 1,
-      minWidth: 100,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
       field: 'inventoryType',
       headerName: 'Type',
-      flex: 2,
+      flex: 1,
       minWidth: 100,
-      valueGetter: (params: InventoriesDataColumn) => {
-        return `${params.row?.inventoryType?.name}`
-          // .split('|')[0]}`
+      // valueGetter: (params: InventoriesDataColumn) => {
+      //   return `${params.row?.inventoryType?.name}`
+      //   // .split('|')[0]}`
+      // },
+      renderCell: (params) => {
+        const type = params.row?.inventoryType?.name
+        return (
+          <Tooltip title={type} arrow placement="top" enterTouchDelay={0}>
+            <p style={styleColumns}>{type}</p>
+          </Tooltip>
+        )
       },
     },
     {
@@ -68,6 +70,14 @@ export const columns = (): GridColDef[] => {
           </Tooltip>
         )
       },
+    },
+    {
+      field: 'amount',
+      headerName: 'On Hand',
+      flex: 1,
+      minWidth: 100,
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       field: 'sold',
@@ -126,15 +136,16 @@ export const columns = (): GridColDef[] => {
       headerName: 'Actions',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      flex: 1,
-      maxWidth: 80,
+      // flex: 1,
+      minWidth: 90,
       align: 'center',
       headerAlign: 'center',
       renderCell: () => {
         return (
-          <Tooltip title="action" arrow placement="top">
-            <a className="cursor-pointer">action</a>
-          </Tooltip>
+          <div className="flex gap-[15px]">
+            <RiEdit2Line className="cursor-pointer text-secondary" size={18} />
+            <CiCircleMore className="cursor-pointer text-secondary" size={18} />
+          </div>
         )
       },
     },

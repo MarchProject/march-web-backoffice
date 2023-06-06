@@ -7,7 +7,7 @@ import { validateAccessToken } from '../../middleware/auth'
 import { uamLoginRoute } from '../user'
 import { azureAdLoginPath, getLoginRoute } from '../auth'
 import { setCookieSignIn } from '../../core/services/auth'
-import { inventoryRoute } from '../inventory'
+import { inventoryRoute , inventoryCreateRoute} from '../inventory'
 import { validateScope } from '../../middleware/scope'
 import { salesRoute } from '../sales'
 import { dashboardRoute } from '../dashboard'
@@ -18,6 +18,7 @@ export const routes: Route[] = [
   inventoryRoute,
   salesRoute,
   dashboardRoute,
+  inventoryCreateRoute
 ]
 function getBasePath() {
   return process.env.BASE_PATH ?? '/backoffice'

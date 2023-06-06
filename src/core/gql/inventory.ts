@@ -101,3 +101,38 @@ export const getInventoriesTypeQuery = gql`
     }
   }
 `
+
+export type GetInventoriesBrandData = {
+  getBrandTypes: GetInventoryBrand[]
+}
+
+export type GetInventoryBrand = {
+  id: string
+  name: string
+  description: string
+  createdBy: string
+  createdAt: string
+  updatedBy: string
+  updatedAt: string
+}
+export type GetInventoriesBrandVariables = {
+  params: {
+    search: string
+    limit: number
+    offset: number
+  }
+}
+
+export const getInventoriesBrandQuery = gql`
+  query getBrandTypes($params: ParamsInventoryBrand!) {
+    getBrandTypes(params: $params) {
+      id
+      name
+      # description
+      # createdBy
+      # createdAt
+      # updatedBy
+      # updatedAt
+    }
+  }
+`

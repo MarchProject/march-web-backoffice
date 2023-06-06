@@ -66,3 +66,21 @@ body {
 .MuiTabs-flexContainer {
   justify-content: center;
 }
+
+/* .iconPage {
+  color: '#FFFFFF';
+  background-color: '#FFFFFF';
+  padding: '4px';
+  border-radius: '4px';
+  margin-top: 'auto';
+  margin-bottom: 'auto';
+  font-size: '20px';
+  border: '2px solid #E9E4ED' !important;
+  cursor: pointer;
+} */
+
+.iconPage:hover {
+  color: white !important;
+  background-color: #9a73b5 !important;
+  border: '1px solid #red';
+}
