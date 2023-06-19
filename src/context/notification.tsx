@@ -101,7 +101,6 @@ export const NotificationContextProvider: FC<INotificationContextProvider> = (
   )
 
   const notification = useCallback((config: INotification): void => {
-    console.log('notihere')
     setNotificationProps((preState) => {
       return {
         ...preState,

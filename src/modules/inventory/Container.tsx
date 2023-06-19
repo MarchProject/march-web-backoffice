@@ -33,6 +33,7 @@ const ContainerInventory = () => {
       handleSearchInventoryBrand,
     },
     handleInventory: { handleTypeChange, handleBrandChange },
+    setTriggerType,
   } = useInventoryController()
   return (
     <BlockUi tag="div" blocking={inventoryLoading}>
@@ -59,6 +60,7 @@ const ContainerInventory = () => {
                   }}
                   inventoryTypeValue={inventoryTypeValue}
                   inventoryBrandValue={inventoryBrandValue}
+                  setTriggerType={setTriggerType}
                 />
                 <DataTableMarch
                   rows={inventoryData?.getInventories?.inventories || []}

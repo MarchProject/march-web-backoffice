@@ -51,7 +51,7 @@ export const TabContextProvider: FC<ITabProvider> = (props) => {
       tab,
       TabMenu,
     }
-  }, [handleTab, tab, TabMenu])
+  }, [handleTab, tab])
 
   return (
     <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>

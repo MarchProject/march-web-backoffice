@@ -10,6 +10,8 @@ export class BrandType {
   set name(name: string) {
     this._name = name.split('|')[0]
   }
+  description: string
+  createdBy: string
 }
 
 export class InventoriesResponse {
@@ -44,14 +46,8 @@ export class InventoryType {
   set name(name: string) {
     this._name = name.split('|')[0]
   }
-  // _name: string
-  // formattedName: string
-  // get name() {
-  //   return this._name + '1234'
-  // }
-  // set name(value: string) {
-  //   this.splitShop<SplitShop>(this, '_name', 'formattedName', value)
-  // }
+  description: string
+  createdBy: string
 }
 
 export class Inventory extends Model {
@@ -59,6 +55,10 @@ export class Inventory extends Model {
   amount: number
   sold: number
   price: number
+  sku: string
+  reorderLevel: number
+  size: string
+  priceMember: number
   _inventoryType: InventoryType
   _brandType: BrandType
   description: string

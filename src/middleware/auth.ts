@@ -11,7 +11,6 @@ export async function validateAccessToken(
   const logPrefix = '[middleware.auth.validateAccessToken]'
   const accessToken = req.cookies[CookiesKey.accessToken]
   const refreshToken = req.cookies[CookiesKey.refreshToken]
-  // console.log(logPrefix, req.path)
 
   const loginPath = `${process.env.BASE_PATH}${getLoginRoute().path}`
   console.log(logPrefix, { accessToken, loginPath })
@@ -21,8 +20,7 @@ export async function validateAccessToken(
   }
 
   try {
-    const response = await verifyAccessToken({ accessToken, refreshToken, res })
-    console.log('[error_sus]', { response })
+    await verifyAccessToken({ accessToken, refreshToken, res })
   } catch (error) {
     console.log('[error_verify]', { error })
 

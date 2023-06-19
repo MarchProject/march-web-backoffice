@@ -89,7 +89,6 @@ function Layout({ children }) {
     if (value === pathName.replace('/', '')) {
       return
     }
-    console.log({ valuepath: value })
     router.replace({ pathname: '/' + value })
   }
 

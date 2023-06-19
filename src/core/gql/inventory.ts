@@ -39,6 +39,36 @@ export type GetInventoriesVariables = {
   }
 }
 
+export const getInventoryQuery = gql`
+  query getInventory($id: String) {
+    getInventory(id: $id) {
+      id
+      name
+      amount
+      sold
+      price
+      sku
+      size
+      priceMember
+      reorderLevel
+      inventoryType {
+        id
+        name
+      }
+      brandType {
+        id
+        name
+      }
+      description
+      expiryDate
+      createdBy
+      createdAt
+      updatedBy
+      updatedAt
+    }
+  }
+`
+
 export const getInventoriesQuery = gql`
   query getInventories($params: ParamsInventory!) {
     getInventories(params: $params) {
@@ -73,8 +103,9 @@ export type GetInventoriesTypeData = {
 }
 
 export type GetInventoryTypes = {
-  id: string
+  id?: string
   name: string
+  _name?: string
   description: string
   createdBy: string
   createdAt: string
@@ -93,10 +124,10 @@ export const getInventoriesTypeQuery = gql`
     getInventoryTypes(params: $params) {
       id
       name
-      # description
-      # createdBy
+      description
+      createdBy
       # createdAt
-      # updatedBy
+      updatedBy
       # updatedAt
     }
   }
@@ -128,11 +159,114 @@ export const getInventoriesBrandQuery = gql`
     getBrandTypes(params: $params) {
       id
       name
-      # description
-      # createdBy
+      description
+      createdBy
       # createdAt
-      # updatedBy
+      updatedBy
       # updatedAt
     }
   }
 `
+
+export type UpsertInventoryTypeVariables = {
+  input: {
+    id?: string
+    name: string
+    amount: number
+    price: number
+    sku?: string
+    size?: {
+      width?: number
+      length?: number
+      height?: number
+      weight?: number
+    }
+    priceMember?: number
+    reorderLevel?: number
+    description?: string
+    createdBy: string
+    inventoryTypeId: string
+    brandTypeId: string
+    expiryDate?: string
+  }
+}
+
+export type UpsertInventoryTypeData = {
+  upsertInventory: UpsertInventoryTypes
+}
+
+export type UpsertInventoryTypes = {
+  id: string
+}
+
+export const upsertInventoryMutation = gql`
+  mutation upsertInventory($input: UpsertInventoryInput!) {
+    upsertInventory(input: $input) {
+      id
+    }
+  }
+`
+export const upsertInventoryTypeMutation = gql`
+  mutation upsertInventoryType($input: UpsertInventoryTypeInput!) {
+    upsertInventoryType(input: $input) {
+      id
+    }
+  }
+`
+export const upsertBrandTypeMutation = gql`
+  mutation upsertBrandType($input: UpsertBrandTypeInput) {
+    upsertBrandType(input: $input) {
+      id
+    }
+  }
+`
+export const deleteInventoryTypeMutation = gql`
+  mutation deleteInventoryType($id: String!) {
+    deleteInventoryType(id: $id) {
+      id
+    }
+  }
+`
+export const deleteInventoryMutation = gql`
+  mutation deleteInventory($id: String!) {
+    deleteInventory(id: $id) {
+      id
+    }
+  }
+`
+export type DeleteInventoryData = {
+  deleteInventory: {
+    id?: string
+  }
+}
+
+export type DeleteTypeDataVariables = {
+  id: string
+}
+
+export type UpsertInventoryBrandTypeVariables = {
+  input: {
+    id?: string
+    name: string
+    description?: string
+    createdBy?: string
+  }
+}
+
+export type UpsertInventoryType = {
+  upsertInventoryType: {
+    id?: string
+  }
+}
+
+export type upsertBrandType = {
+  upsertBrandType: {
+    id?: string
+  }
+}
+
+export type DeleteTypeData = {
+  deleteInventoryType: {
+    id?: string
+  }
+}

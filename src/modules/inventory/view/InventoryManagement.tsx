@@ -3,11 +3,6 @@ import { GetInventoryTypes } from '@/core/gql/inventory'
 import { styleIconMarch } from '@/utils/style/utill'
 import {
   AutocompleteInputChangeReason,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   InputAdornment,
 } from '@mui/material'
 import { debounce } from 'lodash'
@@ -17,10 +12,9 @@ import { RiSearchLine } from 'react-icons/ri'
 import { BrandType, InventoryType } from '@/core/model/inventory'
 import { BiCaretDown } from 'react-icons/bi'
 import ButtonForm from '@/components/common/Button/button'
-import { RiAddLine } from 'react-icons/ri'
-import router from 'next/router'
-import { inventoryCreateRoute } from '@/router/inventory'
 import { AutocompleteSelectAsync } from '@/components/common/Autocomplete/AutocompleteSelect'
+import { DialogM } from '@/components/common/Dialog/DialogM'
+import { ButtonMenu } from './ButtonMenu'
 type InventoryManagementProps = {
   setSearch: (value: string) => void
   handleClearChange: () => void
@@ -49,6 +43,7 @@ type InventoryManagementProps = {
       reason: AutocompleteInputChangeReason,
     ) => void
   }
+  setTriggerType: (value: boolean) => void
 }
 export const InventoryManagement = ({
   setSearch,
@@ -67,6 +62,7 @@ export const InventoryManagement = ({
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
   },
+  setTriggerType,
 }: InventoryManagementProps) => {
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
@@ -91,72 +87,65 @@ export const InventoryManagement = ({
 
   return (
     <>
-      <Dialog
+      <DialogM
+        dialogTitle="Filter"
         open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{
-          '& .MuiPaper-root': {
-            maxWidth: '440px',
-            width: '100%',
-            borderRadius: '10px',
-          },
-        }}>
-        <DialogTitle id="alert-dialog-title">{'Filter'}</DialogTitle>
-        <DialogContent>
-          <div className="mx-auto">
-            <AutocompleteSelectAsync
-              inputRef={brandFieldRef}
-              value={inventoryBrandValue}
-              classNames="max-w-[250px] mx-auto p-2"
-              id="brandFilter"
-              labelIndex="name"
-              valueIndex={'id'}
-              multiple={true}
-              options={inventoriesBrandData}
-              InputProps={{ label: 'Brand Filter', placeholder: 'Brand' }}
-              classLogic={
-                {
-                  // classLogicFalse: 'max-w-[250px]',
-                  // classLogicTrue: 'absolute max-w-[250px] mr-[430px]',
-                }
-              }
-              onChange={handleBrandChange}
-              loading={inventoriesBrandLoading}
-              onInputChange={handleSearchInventoryBrand}
-            />
-            <AutocompleteSelectAsync
-              inputRef={typeFieldRef}
-              id="typeFilter"
-              classNames="max-w-[250px] mx-auto mt-[10px]"
-              labelIndex="name"
-              valueIndex={'id'}
-              multiple={true}
-              options={inventoriesTypeData}
-              InputProps={{ label: 'Type Filter', placeholder: 'Type' }}
-              classLogic={
-                {
-                  // classLogicFalse: 'max-w-[250px]',
-                  // classLogicTrue: 'absolute max-w-[250px] mr-[230px]',
-                }
-              }
-              value={inventoryTypeValue}
-              onChange={handleTypeChange}
-              loading={inventoriesTypeLoading}
-              onInputChange={handleSearchInventoryType}
-            />
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleReset} autoFocus>
-            Clear
-          </Button>
-          <Button onClick={handleClose} autoFocus>
-            close
-          </Button>
-        </DialogActions>
-      </Dialog>
+        handleClose={handleClose}
+        contentRender={() => {
+          return (
+            <div className="mx-auto">
+              <AutocompleteSelectAsync
+                inputRef={brandFieldRef}
+                value={inventoryBrandValue}
+                classNames="max-w-[250px] mx-auto p-2"
+                id="brandFilter"
+                labelIndex="name"
+                valueIndex={'id'}
+                multiple={true}
+                options={inventoriesBrandData}
+                InputProps={{ label: 'Brand Filter', placeholder: 'Brand' }}
+                onChange={handleBrandChange}
+                loading={inventoriesBrandLoading}
+                onInputChange={handleSearchInventoryBrand}
+              />
+              <AutocompleteSelectAsync
+                inputRef={typeFieldRef}
+                id="typeFilter"
+                classNames="max-w-[250px] mx-auto mt-[10px]"
+                labelIndex="name"
+                valueIndex={'id'}
+                multiple={true}
+                options={inventoriesTypeData}
+                InputProps={{ label: 'Type Filter', placeholder: 'Type' }}
+                value={inventoryTypeValue}
+                onChange={handleTypeChange}
+                loading={inventoriesTypeLoading}
+                onInputChange={handleSearchInventoryType}
+              />
+            </div>
+          )
+        }}
+        actionRender={() => {
+          return (
+            <>
+              <ButtonForm
+                classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
+                label={'Clear'}
+                color={'primary'}
+                variant="text"
+                onClick={handleReset}
+              />
+              <ButtonForm
+                classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
+                label={'Close'}
+                color={'primary'}
+                variant="text"
+                onClick={handleClose}
+              />
+            </>
+          )
+        }}
+      />
       <div id="navbar-inventory" className="flex justify-between">
         <div className="flex gap-[15px] my-auto w-[100%]">
           <BsBoxSeam style={styleIconMarch} />
@@ -189,14 +178,9 @@ export const InventoryManagement = ({
               endIcon={<BiCaretDown size={15} />}
               onClick={handleClickOpen}
             />
-            <ButtonForm
-              classNames="!w-[150px] !h-[40px] !normal-case"
-              label={'Add Item'}
-              color={'primary'}
-              endIcon={<RiAddLine size={15} />}
-              onClick={() => {
-                router.push({ pathname: inventoryCreateRoute.path })
-              }}
+            <ButtonMenu
+              setTriggerType={setTriggerType}
+              inventoriesTypeData={inventoriesTypeData}
             />
           </div>
         </div>

@@ -55,7 +55,7 @@ const useSignInState = ({ notification }) => {
 
   useEffect(() => {
     if (error) notification(notificationErrorProp)
-  }, [error])
+  }, [error, notification])
 
   const signAxios = async ({ access_token, refresh_token }) => {
     const response = await axios.post('/backoffice/api/signIn', {
@@ -71,7 +71,7 @@ const useSignInState = ({ notification }) => {
       notification(notificationAuthErrorProp)
       clientConfig.removeAuthFailed()
     }
-  }, [])
+  }, [notification])
   useEffect(() => {
     if (data) {
       signAxios({
@@ -85,14 +85,11 @@ const useSignInState = ({ notification }) => {
     if (dataSet) {
       if (!dataSet.accessToken) {
         notification(notificationErrorProp)
-        console.log('err auth')
         return () => {}
       }
-      console.log('login success')
 
       localStorage.clear()
       const config = dataSet.config
-      console.log({ config, dataSet })
       if (config) {
         clientConfig.init(config, {
           userId: dataSet?.userId,
@@ -105,7 +102,7 @@ const useSignInState = ({ notification }) => {
       notification(notificationSuccessProp)
       router.push({ pathname: homeRoute.path })
     }
-  }, [dataSet])
+  }, [dataSet, notification])
 
   return {
     signIn,

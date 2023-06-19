@@ -22,7 +22,6 @@ interface InputFormProps extends IInputProps {
   name: string
   control: Control<FieldValues, any>
   variant: 'standard' | 'filled' | 'outlined'
-  disable?: boolean
 }
 
 interface IInputProps {
@@ -35,7 +34,7 @@ interface IInputProps {
     classNames?: string
   }
   type: string
-  name: string
+  name?: string
   control?: Control<FieldValues, any>
   field?: ControllerRenderProps<FieldValues, string>
   size?: 'small' | 'medium'
@@ -50,6 +49,7 @@ interface IInputProps {
   multiline?: boolean
   rows?: number
   normalizes?: Normalization[]
+  disable?: boolean
 }
 
 const Input = (props: IInputProps) => {
@@ -70,6 +70,7 @@ const Input = (props: IInputProps) => {
     placeholder,
     normalizes = [],
     multiline,
+    disable,
     ...rest
   } = props
 
@@ -91,7 +92,6 @@ const Input = (props: IInputProps) => {
       }
     }
     if (onChange) {
-      console.log('pass')
       onChange(e)
     }
   }
@@ -117,7 +117,12 @@ const Input = (props: IInputProps) => {
         name={name}
         variant={variant}
         value={value}
-        InputProps={InputProps}
+        InputProps={{
+          ...InputProps,
+          onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+            e.stopPropagation()
+          },
+        }}
         placeholder={placeholder || inputLabel?.label}
         type={type}
         multiline={multiline}
@@ -125,6 +130,7 @@ const Input = (props: IInputProps) => {
         helperText={error}
         {...field}
         error={!!error}
+        disabled={disable}
         size={size}
         {...rest}
         sx={{

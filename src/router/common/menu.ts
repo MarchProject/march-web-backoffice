@@ -1,6 +1,11 @@
 import { customerRoute } from '../customer'
 import { dashboardRoute } from '../dashboard'
-import { inventoryRoute } from '../inventory'
+import {
+  inventoryCreateRoute,
+  // inventoryCreateRoute,
+  inventoryRoute,
+  inventoryUpdateRoute,
+} from '../inventory'
 import { salesRoute } from '../sales'
 
 export const scopeMenuRoute = {
@@ -8,4 +13,18 @@ export const scopeMenuRoute = {
   'MENU:SALES': salesRoute.path,
   'MENU:DASHBOARD': dashboardRoute.path,
   'MENU:CUSTOMER': customerRoute.path,
+
+  'MENU:INVENTORY:CREATE': inventoryCreateRoute.path,
+  // 'MENU:INVENTORY:VIEW': inventoryRoute.path,
+  'MENU:INVENTORY:UPDATE': inventoryUpdateRoute.path,
+  // 'MENU:DASHBOARD:CREATE': '',
+  // 'MENU:DASHBOARD:VIEW': '',
+  // 'MENU:DASHBOARD:UPDATE': '',
+  // 'MENU:SALES:CREATE': '',
+  // 'MENU:SALES:VIEW': '',
+  // 'MENU:SALES:UPDATE': '',
+  // 'MENU:CUSTOMER:CREATE': '',
+  // 'MENU:CUSTOMER:VIEW': '',
+  // 'MENU:CUSTOMER:UPDATE': '',
+  // 'CREATE:INVENTORY': inventoryCreateRoute.path,
 }

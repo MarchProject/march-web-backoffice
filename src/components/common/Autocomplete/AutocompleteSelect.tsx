@@ -17,7 +17,7 @@ import {
   FieldValues,
 } from 'react-hook-form'
 
-interface IAutocompleteSelectForm extends IAutocompleteSelect<any> {
+interface IAutocompleteSelectForm<T> extends IAutocompleteSelect<T> {
   control?: Control<FieldValues, any>
 }
 interface IAutocompleteSelect<T> {
@@ -54,6 +54,11 @@ interface IAutocompleteSelect<T> {
     label?: string
     placeholder?: string
   }
+  inputLabel?: {
+    label: string
+    required: boolean
+    classNames?: string
+  }
 }
 
 const AutocompleteSelectAsync = <T extends object>({
@@ -75,6 +80,8 @@ const AutocompleteSelectAsync = <T extends object>({
   inputRef,
   field,
   InputProps,
+  inputLabel,
+  onChange,
   error,
   ...otherProps
 }: IAutocompleteSelect<T>) => {
@@ -83,9 +90,18 @@ const AutocompleteSelectAsync = <T extends object>({
   const _classLogic = `${
     open ? classLogic.classLogicTrue : classLogic.classLogicFalse
   }`
-
   return (
     <>
+      {inputLabel && (
+        <div
+          className={classnames(
+            inputLabel.classNames,
+            'text-xs text-gray-600 mb-[4px]',
+          )}>
+          {inputLabel.label}
+          {inputLabel.required && <span className="text-rose-600"> * </span>}
+        </div>
+      )}
       <Autocomplete
         sx={{
           '& .MuiAutocomplete-tag': {
@@ -106,6 +122,7 @@ const AutocompleteSelectAsync = <T extends object>({
           setOpen(false)
         }}
         id={id}
+        onChange={onChange}
         options={options}
         size={size}
         disableClearable={false}
@@ -137,6 +154,7 @@ const AutocompleteSelectAsync = <T extends object>({
             label={InputProps?.label}
             placeholder={InputProps?.placeholder}
             error={!!error}
+            value={value}
             helperText={error}
           />
         )}
@@ -146,7 +164,7 @@ const AutocompleteSelectAsync = <T extends object>({
 }
 
 const AutocompleteSelectAsyncFrom = <T extends object>(
-  props: IAutocompleteSelectForm,
+  props: IAutocompleteSelectForm<T>,
 ) => {
   const { id, name, control, ...rest } = props
   return (
@@ -155,17 +173,16 @@ const AutocompleteSelectAsyncFrom = <T extends object>(
         name={name}
         control={control}
         render={({ field, fieldState: { error } }) => {
-          const onChange = (event, value, reason, details) => {
-            console.log({ textX: value })
+          const onChange = (_event, value, _reason, _details) => {
             field.onChange(value)
           }
           return (
-            <AutocompleteSelectAsync
+            <AutocompleteSelectAsync<T>
               id={id}
               name={name}
               // field={field}
               onChange={onChange}
-              value={field?.value}
+              value={field.value}
               error={error?.message}
               {...rest}
             />

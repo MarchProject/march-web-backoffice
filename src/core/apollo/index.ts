@@ -16,6 +16,7 @@ import { onError } from '@apollo/client/link/error'
 import { GraphQLError } from 'graphql'
 import { tokenExpireMutation } from '../gql/auth'
 import router from 'next/router'
+import Cookies from 'js-cookie'
 /**
  * working on cient-side only
  */
@@ -39,7 +40,7 @@ export async function initApollo(uri?: string) {
   const reconnect = !wsUri.startsWith(
     `${window.origin.replace(/^http/, 'ws')}${basePath}`,
   )
-  console.log({ accessTokenAPL: accessToken, reconnect })
+  console.log({ reconnect })
   // const wsLink = new WebSocketLink({
   //   uri: wsUri,
   //   options: {
@@ -68,7 +69,6 @@ export async function initApollo(uri?: string) {
                 // used an annonymous function for using an async function
                 ;(async () => {
                   try {
-                    console.log('heavenus')
                     const accessToken = await refreshToken()
 
                     if (!accessToken) {
@@ -92,7 +92,7 @@ export async function initApollo(uri?: string) {
                     })
 
                     const newHeaders = operation.getContext().headers
-                    console.log({ new: accessToken, operation, newHeaders })
+                    console.log({ newHeaders })
                     // Retry the failed request
                     const subscriber = {
                       next: observer.next.bind(observer),
@@ -104,6 +104,8 @@ export async function initApollo(uri?: string) {
                     router.reload()
                   } catch (err) {
                     localStorage.setItem('march.backOffice.authFailed', 'true')
+                    Cookies.remove('mbo-token')
+                    Cookies.remove('mbo-refresh')
                     router.push({
                       pathname: clientConfig.getDefaultLoginPath(),
                     })
@@ -169,9 +171,10 @@ export async function initApollo(uri?: string) {
       },
       query: {
         fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
+        errorPolicy: 'ignore',
       },
       mutate: {
+        fetchPolicy: 'no-cache',
         errorPolicy: 'all',
       },
     },

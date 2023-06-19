@@ -2,24 +2,27 @@ import { InputForm } from '@/components/common/Input'
 import React from 'react'
 import BlockUi from 'react-block-ui'
 import { useEditorInventoryController } from './controller'
-import { Button, Card, CardContent, InputAdornment } from '@mui/material'
+import { Card, CardContent, InputAdornment } from '@mui/material'
 import router from 'next/router'
-// import { styleIconPageMarch } from '@/utils/style/utill'
 import { IoIosArrowRoundBack } from 'react-icons/io'
 import { AutocompleteSelectAsyncFrom } from '@/components/common/Autocomplete/AutocompleteSelect'
 import { max, onlyNumber } from '@/utils/common/normalizeInput'
-import {
-  DatePickerSelect,
-  DatePickerSelectForm,
-} from '@/components/common/DatePicker/DatePicker'
+import { DatePickerSelectForm } from '@/components/common/DatePicker/DatePicker'
 import { dateFormat } from '@/core/common'
+import ButtonForm from '@/components/common/Button/button'
+import { inventoryRoute } from '@/router/inventory'
+import AlertToast from '@/components/common/Alert/Alert'
+import { warningDelete } from '@/constant'
 
-const EditorInventoryPage = ({ inventory }: any) => {
+const EditorInventoryPage = () => {
+  const idInventory = router.query.id
+
   const {
-    formHandler: { control, onSubmit },
+    formHandler: { control, onSubmit, setValue },
     inventoriesType: { inventoriesTypeData, inventoriesTypeLoading },
     inventoriesBrand: { inventoriesBrandData, inventoriesBrandLoading },
-  } = useEditorInventoryController()
+    inventory: { inventory, deleteInventoryHandle },
+  } = useEditorInventoryController({ idInventory })
 
   const styleIconPageMarch: React.CSSProperties = {
     color: '#9A73B5',
@@ -57,6 +60,15 @@ const EditorInventoryPage = ({ inventory }: any) => {
                     </h3>
                   </div>
                 </div>
+                {inventory && (
+                  <AlertToast
+                    classNames="mt-[10px]"
+                    severity="warning"
+                    variant="standard"
+                    title="Warning !"
+                    message={warningDelete}
+                  />
+                )}
                 <div className="md:grid gap-4 md:grid-cols-2 mt-[20px]">
                   <div className="w-[100%]">
                     <div className="">
@@ -112,6 +124,11 @@ const EditorInventoryPage = ({ inventory }: any) => {
                               }}
                               mask={'__/__/____'}
                               inputFormat={dateFormat}
+                              onError={(reason, _value) => {
+                                if (reason) {
+                                  setValue('expiryDate', 'Invalid Date')
+                                }
+                              }}
                             />
                           </div>
                         </CardContent>
@@ -124,17 +141,23 @@ const EditorInventoryPage = ({ inventory }: any) => {
                           <div className="p-2">
                             <AutocompleteSelectAsyncFrom
                               // inputRef={typeFieldRef}
-                              name="typeFilter"
+                              name="type"
                               control={control}
-                              id="typeFilter"
+                              id="type"
                               classNames=" mx-auto mt-[10px]"
                               labelIndex="name"
                               valueIndex={'id'}
                               multiple={false}
                               options={inventoriesTypeData}
                               InputProps={{
-                                label: 'Type Filter',
+                                label: 'Type',
                                 placeholder: 'Type',
+                              }}
+                              inputLabel={{
+                                label: 'Item Type',
+                                required: true,
+                                classNames:
+                                  'text-base !text-secondary !font-semibold',
                               }}
                               loading={inventoriesTypeLoading}
                             />
@@ -142,17 +165,23 @@ const EditorInventoryPage = ({ inventory }: any) => {
                           <div className="p-2 pb-0">
                             <AutocompleteSelectAsyncFrom
                               // inputRef={typeFieldRef}
-                              name="brandFilter"
+                              name="brand"
                               control={control}
-                              id="brandFilter"
+                              id="brand"
                               classNames=" mx-auto mt-[20px]"
                               labelIndex="name"
-                              valueIndex={'id'}
+                              valueIndex="id"
                               multiple={false}
                               options={inventoriesBrandData}
+                              inputLabel={{
+                                label: 'Item Brand',
+                                required: true,
+                                classNames:
+                                  'text-base !text-secondary !font-semibold',
+                              }}
                               InputProps={{
-                                label: 'Brand Filter',
-                                placeholder: 'Type',
+                                label: 'Brand',
+                                placeholder: 'Brand',
                               }}
                               loading={inventoriesBrandLoading}
                             />
@@ -362,7 +391,7 @@ const EditorInventoryPage = ({ inventory }: any) => {
                                 // label='Item Name'
                                 inputLabel={{
                                   label: 'Price',
-                                  required: false,
+                                  required: true,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
                                 }}
@@ -406,7 +435,31 @@ const EditorInventoryPage = ({ inventory }: any) => {
                         </CardContent>
                       </Card>
                     </div>
-                    <Button onClick={onSubmit}>onSubmit</Button>
+                    <div className="mt-[20px] flex justify-end gap-[15px] h-[50px]">
+                      <ButtonForm
+                        classNames="max-w-[150px] !normal-case"
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => {
+                          router.push({ pathname: inventoryRoute.path })
+                        }}
+                        label={'Discard'}
+                      />
+                      {inventory && (
+                        <ButtonForm
+                          classNames="max-w-[150px] !normal-case"
+                          color="error"
+                          variant="contained"
+                          onClick={deleteInventoryHandle}
+                          label={'Delete'}
+                        />
+                      )}
+                      <ButtonForm
+                        classNames="max-w-[150px] !normal-case"
+                        onClick={onSubmit}
+                        label={inventory ? 'Update Item' : 'Add Item'}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

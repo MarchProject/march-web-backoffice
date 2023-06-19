@@ -1,31 +1,31 @@
+import { Alert, AlertColor, AlertTitle } from '@mui/material'
+import classnames from 'classnames'
 import React from 'react'
-import { Alert, AlertTitle, Snackbar } from '@mui/material'
 
-const AlertNoti = ({
-  open,
-  onClose,
+interface IAlertToast {
+  severity?: AlertColor
+  title: string
+  message: string
+  variant: 'standard' | 'filled' | 'outlined'
+  classNames?: string
+}
+
+const AlertToast = ({
   severity,
-  onClick,
-  duration,
-  message,
   title,
-}: any) => {
+  message,
+  variant,
+  classNames,
+}: IAlertToast) => {
   return (
-    <Snackbar
-      open={open}
-      autoHideDuration={duration}
-      style={{ width: '100%', maxWidth: '400px' }}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
-      <Alert
-        style={{ width: '100%', borderRadius: '15px' }}
-        severity={severity}
-        onClose={onClick}>
-        <AlertTitle>{title}</AlertTitle>
-        {message}
-      </Alert>
-    </Snackbar>
+    <Alert
+      className={classnames(classNames)}
+      severity={severity}
+      variant={variant}>
+      <AlertTitle>{title}</AlertTitle>
+      {message}
+    </Alert>
   )
 }
 
-export default AlertNoti
+export default AlertToast

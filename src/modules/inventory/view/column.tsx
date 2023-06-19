@@ -1,12 +1,14 @@
-import { InventoriesData } from '@/core/gql/inventory'
+// import { InventoriesData } from '@/core/gql/inventory'
 import { Tooltip } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import { CSSProperties } from 'react'
 import { RiEdit2Line } from 'react-icons/ri'
 import { CiCircleMore } from 'react-icons/ci'
-type InventoriesDataColumn = {
-  row: InventoriesData
-}
+import router from 'next/router'
+import { inventoryUpdateRoute } from '@/router/inventory'
+// type InventoriesDataColumn = {
+//   row: InventoriesData
+// }
 
 const styleColumns: CSSProperties = {
   textOverflow: 'ellipsis',
@@ -24,7 +26,7 @@ export const columns = (): GridColDef[] => {
     //   },
     {
       field: 'name',
-      headerName: 'Item Name',
+      headerName: 'Product Name',
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -41,10 +43,6 @@ export const columns = (): GridColDef[] => {
       headerName: 'Type',
       flex: 1,
       minWidth: 100,
-      // valueGetter: (params: InventoriesDataColumn) => {
-      //   return `${params.row?.inventoryType?.name}`
-      //   // .split('|')[0]}`
-      // },
       renderCell: (params) => {
         const type = params.row?.inventoryType?.name
         return (
@@ -59,9 +57,6 @@ export const columns = (): GridColDef[] => {
       headerName: 'Brand',
       flex: 1,
       minWidth: 100,
-      // valueGetter: (params: InventoriesDataColumn) => {
-      //   return `${params.row?.brandType?.name?.split('|')[0]}223`
-      // },
       renderCell: (params) => {
         const brand = params.row?.brandType?.name
         return (
@@ -92,8 +87,6 @@ export const columns = (): GridColDef[] => {
       field: 'price',
       headerName: 'Price',
       type: 'number',
-      // description: 'This column has a value getter and is not sortable.',
-      // sortable: false,
       flex: 1,
       minWidth: 100,
       align: 'center',
@@ -102,7 +95,6 @@ export const columns = (): GridColDef[] => {
     {
       field: 'formattedExpiryDate',
       headerName: 'Expiry Date',
-      // description: 'This column has a value getter and is not sortable.',
       sortable: false,
       flex: 1,
       minWidth: 120,
@@ -140,10 +132,18 @@ export const columns = (): GridColDef[] => {
       minWidth: 90,
       align: 'center',
       headerAlign: 'center',
-      renderCell: () => {
+      renderCell: (params) => {
         return (
           <div className="flex gap-[15px]">
-            <RiEdit2Line className="cursor-pointer text-secondary" size={18} />
+            <RiEdit2Line
+              onClick={() => {
+                router.push({
+                  pathname: inventoryUpdateRoute.pathWithParam(params.row?.id),
+                })
+              }}
+              className="cursor-pointer text-secondary"
+              size={18}
+            />
             <CiCircleMore className="cursor-pointer text-secondary" size={18} />
           </div>
         )

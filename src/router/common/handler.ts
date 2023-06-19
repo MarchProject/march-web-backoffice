@@ -2,42 +2,44 @@ import { NextServer } from 'next/dist/server/next'
 import { Request, Response, Router } from 'express'
 import url from 'url'
 import { Route } from './types'
-import { homeRoute } from '../home'
+import { homeRoute, permissionRoute } from '../home'
 import { validateAccessToken } from '../../middleware/auth'
-import { uamLoginRoute } from '../user'
 import { azureAdLoginPath, getLoginRoute } from '../auth'
 import { setCookieSignIn } from '../../core/services/auth'
-import { inventoryRoute , inventoryCreateRoute} from '../inventory'
+import {
+  inventoryRoute,
+  inventoryCreateRoute,
+  inventoryUpdateRoute,
+} from '../inventory'
 import { validateScope } from '../../middleware/scope'
 import { salesRoute } from '../sales'
 import { dashboardRoute } from '../dashboard'
 
 export const routes: Route[] = [
   homeRoute,
-  uamLoginRoute,
-  inventoryRoute,
   salesRoute,
   dashboardRoute,
-  inventoryCreateRoute
+  
+  inventoryCreateRoute,
+  inventoryUpdateRoute,
+  inventoryRoute,
+
+  permissionRoute,
 ]
 function getBasePath() {
   return process.env.BASE_PATH ?? '/backoffice'
 }
 
 function handleLoginPage(req: Request, res: Response, nextServer: NextServer) {
-  //azure
   const logPrefix = '[router.renderLoginPage]'
   const parsedUrl = url.parse(req.url, true)
   const { query } = parsedUrl
-  // const loginPage = '/user/login'
-  const loginPage = getLoginRoute().path
-  console.log(logPrefix, { loginPage })
+  console.log(logPrefix)
 
   return nextServer.render(
     req,
     res,
     getLoginRoute().path,
-    // loginPage,
     query,
   )
 }
@@ -50,7 +52,6 @@ function handlePage(req: Request, res: Response, nextServer: NextServer) {
     .replace(basePath, '')
     .replace('/en', '')
     .replace('/th', '')
-
   return nextServer.render(req, res, _pathname, query)
 }
 
@@ -72,7 +73,6 @@ export function init(router: Router, nextServer: NextServer) {
 
       if (!uamLoginEnabled) {
         return res.redirect(`${basePath}${azureAdLoginPath}`)
-        // /user/login
       }
 
       return next()
@@ -89,7 +89,7 @@ export function init(router: Router, nextServer: NextServer) {
     router.get(
       route.regex,
       route.auth ? validateAccessToken : (_, __, next) => next(),
-      (req, res, next) => validateScope(req, res, next, route.path),
+      (req, res, next) => validateScope(req, res, next),
       (req, res) => handlePage(req, res, nextServer),
     )
   })
@@ -112,26 +112,11 @@ export function init(router: Router, nextServer: NextServer) {
     }
   })
 
-  // router.post('/backoffice/api/signOut', async (_: Request, res: Response) => {
-  //   const response = await signOut(res)
-  //   res.send(response)
-  // })
-
-  // router.post(
-  //   '/backoffice/api/logout',
-  //   async (req: Request, res: Response) => {
-
-  //     const response =  await signInApi(req, res)
-  //     res.send(response)
-  //   },
-  // )
-
   router.get('*', (req: Request, res: Response) => {
     const logPrefix = '[controller static resources]'
     const parsedUrl = url.parse(req.url, true)
 
     console.log(logPrefix, parsedUrl.pathname)
-    // return res.redirect(`${basePath}`)
     return handleNextRequest(req, res, parsedUrl)
   })
 

@@ -27,6 +27,8 @@ const notificationErrorProp = {
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
+  const [triggerType, setTriggerType] = useState(true)
+  const [triggerBrand, setTriggerBrand] = useState(true)
   const {
     inventoryData,
     inventoryLoading,
@@ -42,27 +44,29 @@ export const useInventoryController = () => {
     handleClearChange,
     inventoryTypeValue,
     inventoryBrandValue,
-  } = useQueryInventory({ notification })
+  } = useQueryInventory({ notification, triggerType, triggerBrand })
   // const {} = useGlobalInventory({ getInventories, inventoryData })
   const {
     inventoriesTypeData,
     inventoriesTypeDataError,
     inventoriesTypeLoading,
     handleSearchInventoryType,
-  } = useQueryInventoryType()
+  } = useQueryInventoryType(triggerType)
 
   const {
     inventoriesBrandData,
     inventoriesBrandDataError,
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
-  } = useQueryInventoryBrand()
+  } = useQueryInventoryBrand(triggerBrand)
   const { handleTypeChange, handleBrandChange } = useHandleInventory({
     setType,
     setBrand,
   })
   return {
     globalState: {},
+    setTriggerType,
+    setTriggerBrand,
     inventory: {
       inventoryData,
       inventoryLoading,
@@ -98,7 +102,7 @@ export const useInventoryController = () => {
   }
 }
 
-export const useQueryInventoryBrand = () => {
+export const useQueryInventoryBrand = (trigger: any) => {
   const [search, setSearch] = useState<string>('')
   const [inventoriesBrandData, setInventoriesBrandData] = useState([])
   const [getBrandTypes, { data, error, loading }] = useLazyQuery<
@@ -110,9 +114,8 @@ export const useQueryInventoryBrand = () => {
     (
       _: React.SyntheticEvent,
       value: string,
-      reason: AutocompleteInputChangeReason,
+      __: AutocompleteInputChangeReason,
     ) => {
-      console.log({ reason, value })
       setSearch(value)
     },
     [setSearch],
@@ -139,7 +142,7 @@ export const useQueryInventoryBrand = () => {
 
   useEffect(() => {
     getInventoryBrandHandle()
-  }, [getInventoryBrandHandle, search])
+  }, [getInventoryBrandHandle, search, trigger])
 
   return {
     inventoriesBrandData: inventoriesBrandData,
@@ -149,7 +152,7 @@ export const useQueryInventoryBrand = () => {
   }
 }
 
-export const useQueryInventoryType = () => {
+export const useQueryInventoryType = (trigger?: any) => {
   const [search, setSearch] = useState<string>('')
   const [inventoriesTypeData, setInventoriesTypeData] = useState([])
   const [getInventoryTypes, { data, error, loading }] = useLazyQuery<
@@ -193,7 +196,7 @@ export const useQueryInventoryType = () => {
 
   useEffect(() => {
     getInventoryTypesHandle()
-  }, [getInventoryTypesHandle, search])
+  }, [getInventoryTypesHandle, search, trigger])
 
   return {
     inventoriesTypeData: inventoriesTypeData,
@@ -203,7 +206,7 @@ export const useQueryInventoryType = () => {
   }
 }
 
-const useQueryInventory = ({ notification }) => {
+const useQueryInventory = ({ notification, triggerBrand, triggerType }) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
   const [search, setSearch] = useState('')
@@ -245,7 +248,7 @@ const useQueryInventory = ({ notification }) => {
 
   useEffect(() => {
     handleSearch()
-  }, [handleSearch])
+  }, [handleSearch, triggerBrand, triggerType])
 
   useEffect(() => {
     if (data?.getInventories?.inventories?.length === 0) {
@@ -308,13 +311,8 @@ const useHandleInventory = ({ setType, setBrand }) => {
       reason: AutocompleteChangeReason,
     ) => {
       if (reason === 'selectOption' || reason === 'removeOption') {
-        // const ids: string[] = value.map((e) => {
-        //   return e.id
-        // })
-
         setType(value)
       } else {
-        console.log('elsesus')
         setType([])
       }
     },
@@ -328,13 +326,8 @@ const useHandleInventory = ({ setType, setBrand }) => {
       reason: AutocompleteChangeReason,
     ) => {
       if (reason === 'selectOption' || reason === 'removeOption') {
-        // const ids: string[] = value.map((e) => {
-        //   return e.id
-        // })
-
         setBrand(value)
       } else {
-        console.log('elsesus')
         setBrand([])
       }
     },

@@ -16,7 +16,6 @@ type SignOut = {
 
 const Index = () => {
   const [signOut, { data }] = useMutation<SignOut, any>(signOutMutation)
-
   useEffect(() => {
     if (data?.signOut?.id) {
       clientConfig.removeAccessToken()
@@ -37,11 +36,8 @@ const Index = () => {
   return (
     <div className="text-right my-auto">
       <div
-        className={
-          'flex justify-center cursor-pointer '
-        }
-        onClick={handleSignOut}
-      >
+        className={'flex justify-center cursor-pointer '}
+        onClick={handleSignOut}>
         <LogoutIcon
           className="text-secondary my-auto"
           style={{ fontSize: '18px' }}

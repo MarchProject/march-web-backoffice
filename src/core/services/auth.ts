@@ -89,7 +89,6 @@ export async function getNewAccessToken(
   const cookieOptions = createCookiesOptions()
   const { accessToken, refreshToken, res } = ctx
   console.log(logPrefix, { accessToken, refreshToken, ctx })
-  console.log('here')
   const graphQLClient = new GraphQLClient(global.config.authApiUrl, {
     headers: {
       authorization: `Bearer ${ctx.accessToken}`,
@@ -101,15 +100,12 @@ export async function getNewAccessToken(
     response = await graphQLClient.request<any>(tokenExpireMutation, {
       refreshToken,
     })
-    console.log({ res }, 'setnewres')
     res.cookie(
       CookiesKey.accessToken,
       response?.tokenExpire?.access_token,
       cookieOptions,
     )
-    console.log({ responseHere: response })
   } catch (error) {
-    console.log({ error20: error })
     handleGraphqlRequestError(error, logPrefix)
     return Promise.reject(error)
   }

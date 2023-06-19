@@ -1,0 +1,49 @@
+import ButtonForm from '@/components/common/Button/button'
+import { inventoryCreateRoute } from '@/router/inventory'
+import { Menu, MenuItem } from '@mui/material'
+import router from 'next/router'
+import React from 'react'
+import { RiAddLine } from 'react-icons/ri'
+import DialogEditor from '../dialog/DialogEditor'
+
+export const ButtonMenu = ({ inventoriesTypeData, setTriggerType }) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  return (
+    <div>
+      <ButtonForm
+        classNames="!w-[150px] !h-[40px] !normal-case"
+        label={'Product'}
+        color={'primary'}
+        endIcon={<RiAddLine size={15} />}
+        onClick={handleClick as any}
+      />
+      <Menu
+        id="product-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}>
+        <MenuItem
+          onClick={() => {
+            handleClose()
+            router.push({ pathname: inventoryCreateRoute.path })
+          }}>
+          Add Product
+        </MenuItem>
+        <DialogEditor
+          setTriggerType={setTriggerType}
+          inventoriesTypeData={inventoriesTypeData}
+        />
+      </Menu>
+    </div>
+  )
+}

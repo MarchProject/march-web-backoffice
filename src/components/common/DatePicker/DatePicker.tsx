@@ -1,13 +1,14 @@
 import React from 'react'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { Dayjs } from 'dayjs'
-import { DbFormat, dateFormat } from '@/core/common'
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DbFormat } from '@/core/common'
 import dayjs from '../../../core/common/dayjs'
 import { TextField } from '@mui/material'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import classnames from 'classnames'
+import { DesktopDatePicker } from '@mui/x-date-pickers'
+import { DateValidationError } from '@mui/x-date-pickers/internals'
 
 interface IDatePickerSelect {
   onChange: (value: any, keyboardInputValue?: string) => void
@@ -21,6 +22,7 @@ interface IDatePickerSelect {
     classNames?: string
   }
   error: string
+  onError?: (reason: DateValidationError, value: any) => void
 }
 
 const DatePickerSelect = ({
@@ -31,6 +33,7 @@ const DatePickerSelect = ({
   label,
   inputLabel,
   error,
+  onError,
 }: IDatePickerSelect) => {
   return (
     <>
@@ -45,8 +48,8 @@ const DatePickerSelect = ({
         </div>
       )}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          className="!h-[40px]"
+        <DesktopDatePicker
+          className="!h-[40px] border-solid border-2 border-sky-500"
           disablePast
           mask={mask}
           label={label}
@@ -54,12 +57,25 @@ const DatePickerSelect = ({
           openTo="day"
           // views={['year', 'month', 'day']}
           inputFormat={inputFormat}
+          onError={onError}
           value={value}
           onChange={onChange}
-          renderInput={(params) => <TextField {...params} size={'small'} />}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: !!error ? 'solid 1px' : '',
+                  borderColor: !!error ? 'rgb(220 38 38)' : '',
+                },
+              }}
+              error={!!error}
+              {...params}
+              size={'small'}
+            />
+          )}
         />
       </LocalizationProvider>
-      {error && <p>{error}</p>}
+      {error && <p className="text-xs text-red-600">{error}</p>}
     </>
   )
 }
@@ -76,6 +92,7 @@ interface IDatePickerSelectForm {
     classNames?: string
   }
   inputFormat: string
+  onError?: (reason: DateValidationError, value: any) => void
 }
 
 const DatePickerSelectForm = ({
@@ -95,10 +112,12 @@ const DatePickerSelectForm = ({
         control={control}
         render={({ field, fieldState: { error } }) => {
           const onChange = (value) => {
-            const transformedDate = dayjs(value).format(DbFormat)
+            const transformedDate = value ? dayjs(value).format(DbFormat) : null
             field.onChange(transformedDate)
+          
           }
           const value = field?.value ? dayjs(field.value, DbFormat) : null
+
           return (
             <>
               <DatePickerSelect

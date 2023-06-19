@@ -12,11 +12,12 @@ declare module '@mui/material/styles' {
 
 const { palette } = createTheme()
 const { augmentColor } = palette
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } })
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor }, mainShade: 200 })
 
 export const theme = createTheme({
   palette: {
     primary: createColor('#8B5FBF'),
+    secondary: createColor('#000000'),
     text100: createColor('#4A4A4A'),
     text200: createColor('#525252'),
     violet: createColor('#BC00A3'),

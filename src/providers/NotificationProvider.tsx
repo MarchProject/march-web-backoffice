@@ -1,5 +1,6 @@
+import AlertNoti from '@/components/common/Alert/AlertNotification'
 import { useNotificationContext } from '@/context/notification'
-import AlertNoti from '@/components/common/Alert/alert'
+
 import { FC, ReactElement } from 'react'
 
 interface INotificationProvider {
