@@ -10,7 +10,6 @@ export const inventoryCreateRoute: Route = {
   path: '/inventory/create',
   auth: true,
   regex: /(\/(en|th)|)\/inventory\/create/,
-
 }
 
 function userUpdatePathWithParam(param: string) {
@@ -24,5 +23,17 @@ export const inventoryUpdateRoute: Route = {
   pathWithParam: userUpdatePathWithParam,
   auth: true,
   regex: /(\/(en|th)|)\/inventory\/(.+)\/update/,
+}
 
+function userViewPathWithParam(param: string) {
+  return `${inventoryViewRoute.prepath}/${param}${inventoryViewRoute.postpath}`
+}
+
+export const inventoryViewRoute: Route = {
+  path: '/inventory/:Id/view',
+  prepath: '/inventory',
+  postpath: '/view',
+  pathWithParam: userViewPathWithParam,
+  auth: true,
+  regex: /(\/(en|th)|)\/inventory\/(.+)\/view/,
 }

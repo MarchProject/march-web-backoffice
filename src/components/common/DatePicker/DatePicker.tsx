@@ -23,6 +23,7 @@ interface IDatePickerSelect {
   }
   error: string
   onError?: (reason: DateValidationError, value: any) => void
+  disabled?: boolean
 }
 
 const DatePickerSelect = ({
@@ -34,6 +35,7 @@ const DatePickerSelect = ({
   inputLabel,
   error,
   onError,
+  disabled,
 }: IDatePickerSelect) => {
   return (
     <>
@@ -53,6 +55,7 @@ const DatePickerSelect = ({
           disablePast
           mask={mask}
           label={label}
+          disabled={disabled}
           acceptRegex={/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/}
           openTo="day"
           // views={['year', 'month', 'day']}
@@ -93,6 +96,7 @@ interface IDatePickerSelectForm {
   }
   inputFormat: string
   onError?: (reason: DateValidationError, value: any) => void
+  disabled?: boolean
 }
 
 const DatePickerSelectForm = ({
@@ -114,7 +118,6 @@ const DatePickerSelectForm = ({
           const onChange = (value) => {
             const transformedDate = value ? dayjs(value).format(DbFormat) : null
             field.onChange(transformedDate)
-          
           }
           const value = field?.value ? dayjs(field.value, DbFormat) : null
 

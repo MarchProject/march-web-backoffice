@@ -6,7 +6,12 @@ import React from 'react'
 import { RiAddLine } from 'react-icons/ri'
 import DialogEditor from '../dialog/DialogEditor'
 
-export const ButtonMenu = ({ inventoriesTypeData, setTriggerType }) => {
+export const ButtonMenu = ({
+  inventoriesTypeData,
+  setTriggerType,
+  setTriggerBrand,
+  inventoriesBrandData,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,6 +47,8 @@ export const ButtonMenu = ({ inventoriesTypeData, setTriggerType }) => {
         <DialogEditor
           setTriggerType={setTriggerType}
           inventoriesTypeData={inventoriesTypeData}
+          setTriggerBrand={setTriggerBrand}
+          inventoriesBrandData={inventoriesBrandData}
         />
       </Menu>
     </div>

@@ -14,7 +14,7 @@ import { RiHome4Line } from 'react-icons/ri'
 import { FiDivideCircle } from 'react-icons/fi'
 import { FcWorkflow } from 'react-icons/fc'
 import { SlPeople } from 'react-icons/sl'
-
+import { FcOk } from 'react-icons/fc'
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
   'MENU:SALES': { id: 1, label: 'Sales', value: 'sales' },
@@ -227,6 +227,10 @@ function Layout({ children }) {
                   }}>
                   CurryShop
                 </h3>
+
+                <FcOk
+                  className={'my-auto ml-[5px] ' + (!hide ? 'block' : 'hidden')}
+                />
               </div>
             </div>
             <Tabs

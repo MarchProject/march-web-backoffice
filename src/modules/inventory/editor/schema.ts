@@ -1,6 +1,7 @@
 import * as yup from 'yup'
 
 export const schema = yup.lazy((_formalue) => {
+  console.log({ _formalue })
   return yup.object({
     // id: yup.string().required('ID is required'),
     name: yup.string().nullable().required('Name is required'),
@@ -12,6 +13,7 @@ export const schema = yup.lazy((_formalue) => {
     height: yup.string().nullable(),
     weight: yup.string().nullable(),
     memberPrice: yup.string().nullable(),
+    favorite: yup.boolean().nullable(),
     reorder: yup.string().nullable(),
     description: yup.string().nullable(),
     type: yup.object({}).nullable().required('Inventory Type ID is required'),

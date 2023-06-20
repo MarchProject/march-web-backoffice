@@ -1,21 +1,28 @@
 // import { InventoriesData } from '@/core/gql/inventory'
 import { Tooltip } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
-import { CSSProperties } from 'react'
+import { CSSProperties, useState } from 'react'
 import { RiEdit2Line } from 'react-icons/ri'
-import { CiCircleMore } from 'react-icons/ci'
 import router from 'next/router'
-import { inventoryUpdateRoute } from '@/router/inventory'
+import { inventoryUpdateRoute, inventoryViewRoute } from '@/router/inventory'
+import { AiOutlineEye } from 'react-icons/ai'
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+
 // type InventoriesDataColumn = {
 //   row: InventoriesData
 // }
-
 const styleColumns: CSSProperties = {
   textOverflow: 'ellipsis',
   overflow: 'hidden',
 }
 
-export const columns = (): GridColDef[] => {
+interface ColumnInventory {
+  favoriteInventoryHandle: (value: string) => void
+}
+
+export const columns = ({
+  favoriteInventoryHandle,
+}: ColumnInventory): GridColDef[] => {
   return [
     //   {
     //     field: 'id',
@@ -133,6 +140,8 @@ export const columns = (): GridColDef[] => {
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => {
+        const [state, setState] = useState(true)
+
         return (
           <div className="flex gap-[15px]">
             <RiEdit2Line
@@ -141,10 +150,41 @@ export const columns = (): GridColDef[] => {
                   pathname: inventoryUpdateRoute.pathWithParam(params.row?.id),
                 })
               }}
-              className="cursor-pointer text-secondary"
+              className="cursor-pointer text-primary200"
               size={18}
             />
-            <CiCircleMore className="cursor-pointer text-secondary" size={18} />
+
+            <AiOutlineEye
+              className="cursor-pointer text-accent200"
+              size={18}
+              onClick={() => {
+                router.push({
+                  pathname: inventoryViewRoute.pathWithParam(params.row?.id),
+                })
+              }}
+            />
+            <div
+              onClick={() => {
+                favoriteInventoryHandle(params.row?.id)
+              }}>
+              {!params.row?.favorite ? (
+                <FcLikePlaceholder
+                  className="cursor-pointer text-secondary"
+                  size={18}
+                  onClick={() => {
+                    setState(!state)
+                  }}
+                />
+              ) : (
+                <FcLike
+                  className="cursor-pointer text-secondary"
+                  size={18}
+                  onClick={() => {
+                    setState(!state)
+                  }}
+                />
+              )}
+            </div>
           </div>
         )
       },

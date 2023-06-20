@@ -1,28 +1,23 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
 import { GetInventoryTypes } from '@/core/gql/inventory'
-import {
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-} from '@mui/material'
+import { List, ListSubheader, ListItem, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { MdDeleteForever } from 'react-icons/md'
 import { RiEdit2Line } from 'react-icons/ri'
 import { ModeDialog } from './DialogEditor'
 
-const TypeDialogElement = ({
-  inventoriesTypeData,
+const BrandDialogElement = ({
+  inventoriesBrandData,
   idType,
   setIdType,
   setEditType,
   editType,
-  deleteInventoryTypeLoading,
-  upsertInventoryTypeLoading,
-  deleteTypeHandle,
-  updateTypeHandle,
+  deleteInventoryBrandLoading,
+  upsertInventoryBrandLoading,
+  deleteBrandHandle,
+  updateBrandHandle,
 }) => {
   const [inventoryTypeData, setInventoriyTypeData] =
     useState<GetInventoryTypes>()
@@ -36,13 +31,13 @@ const TypeDialogElement = ({
   }, [editType])
 
   useEffect(() => {
-    setInventoriyTypeData(inventoriesTypeData.find((t) => t.id === idType))
-  }, [inventoriesTypeData, idType, setInventoriyTypeData, editType])
+    setInventoriyTypeData(inventoriesBrandData.find((t) => t.id === idType))
+  }, [inventoriesBrandData, idType, setInventoriyTypeData, editType])
 
   return (
     <>
       {editType === ModeDialog.VIEW ? (
-        <BlockUi tag="div" blocking={deleteInventoryTypeLoading}>
+        <BlockUi tag="div" blocking={deleteInventoryBrandLoading}>
           <List
             subheader={
               <div className="flex justify-between pr-2">
@@ -62,7 +57,7 @@ const TypeDialogElement = ({
               maxHeight: 300,
               '& ul': { padding: 0 },
             }}>
-            {inventoriesTypeData.map((value) => (
+            {inventoriesBrandData.map((value) => (
               <ListItem
                 className="pr-[10px]"
                 key={value.id}
@@ -79,10 +74,10 @@ const TypeDialogElement = ({
                     />
                     <MdDeleteForever
                       className="cursor-pointer text-secondary"
-                      color='red'
                       size={18}
+                      color="red"
                       onClick={() => {
-                        deleteTypeHandle(value.id)
+                        deleteBrandHandle(value.id)
                       }}
                     />
                   </div>
@@ -93,7 +88,7 @@ const TypeDialogElement = ({
           </List>
         </BlockUi>
       ) : editType === ModeDialog.EDIT ? (
-        <BlockUi tag="div" blocking={upsertInventoryTypeLoading}>
+        <BlockUi tag="div" blocking={upsertInventoryBrandLoading}>
           <div className="flex flex-col gap-[10px]">
             <Input
               id={'name'}
@@ -168,14 +163,14 @@ const TypeDialogElement = ({
                 label={'Update'}
                 variant="contained"
                 onClick={() => {
-                  updateTypeHandle(inventoryTypeData)
+                  updateBrandHandle(inventoryTypeData)
                 }}
               />
             </div>
           </div>
         </BlockUi>
       ) : (
-        <BlockUi tag="div" blocking={upsertInventoryTypeLoading}>
+        <BlockUi tag="div" blocking={upsertInventoryBrandLoading}>
           <div className="flex flex-col gap-[10px]">
             <Input
               id={'name'}
@@ -227,7 +222,7 @@ const TypeDialogElement = ({
                 label={editType === ModeDialog.CREATE ? 'Create' : 'Update'}
                 variant="contained"
                 onClick={() => {
-                  updateTypeHandle(
+                  updateBrandHandle(
                     editType === ModeDialog.CREATE
                       ? createInventoryTypeData
                       : inventoryTypeData,
@@ -242,4 +237,4 @@ const TypeDialogElement = ({
   )
 }
 
-export default TypeDialogElement
+export default BrandDialogElement

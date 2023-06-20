@@ -13,11 +13,12 @@ import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
 import * as clientConfig from '@/config/client'
 import EditorInventoryPage from '@/modules/inventory/editor/Editor'
+import { EnumModeEditorPage } from '@/modules/interface'
 
 const Index = () => {
   return (
     <>
-      <EditorInventoryPage />
+      <EditorInventoryPage mode={EnumModeEditorPage.CREATE} />
     </>
   )
 }

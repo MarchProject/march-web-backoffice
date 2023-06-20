@@ -1,5 +1,5 @@
 import { InputForm } from '@/components/common/Input'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { useEditorInventoryController } from './controller'
 import { Card, CardContent, InputAdornment } from '@mui/material'
@@ -13,9 +13,20 @@ import ButtonForm from '@/components/common/Button/button'
 import { inventoryRoute } from '@/router/inventory'
 import AlertToast from '@/components/common/Alert/Alert'
 import { warningDelete } from '@/constant'
+import { EnumModeEditorPage } from '@/modules/interface'
+import { MdFavorite } from 'react-icons/md'
+import { CheckBoxForm } from '@/components/common/Checkbox/CheckBox'
+interface IEditorInventoryPage {
+  mode: EnumModeEditorPage
+}
 
-const EditorInventoryPage = () => {
+const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
   const idInventory = router.query.id
+  const [disabled, setDisable] = useState(false)
+
+  useEffect(() => {
+    if (mode === EnumModeEditorPage.VIEW) setDisable(true)
+  }, [mode])
 
   const {
     formHandler: { control, onSubmit, setValue },
@@ -60,7 +71,7 @@ const EditorInventoryPage = () => {
                     </h3>
                   </div>
                 </div>
-                {inventory && (
+                {mode !== EnumModeEditorPage.VIEW && (
                   <AlertToast
                     classNames="mt-[10px]"
                     severity="warning"
@@ -91,6 +102,7 @@ const EditorInventoryPage = () => {
                               }}
                               type={'text'}
                               variant={'outlined'}
+                              disabled={disabled}
                             />
                           </div>
                           <div className="p-2 pb-0">
@@ -109,6 +121,7 @@ const EditorInventoryPage = () => {
                               }}
                               type={'text'}
                               variant={'outlined'}
+                              disabled={disabled}
                             />
                           </div>
                           <div className="p-2 pb-0 mt-2">
@@ -116,6 +129,7 @@ const EditorInventoryPage = () => {
                               id="expiryDate"
                               name="expiryDate"
                               control={control}
+                              disabled={disabled}
                               inputLabel={{
                                 label: 'Expiry Date',
                                 required: false,
@@ -148,6 +162,7 @@ const EditorInventoryPage = () => {
                               labelIndex="name"
                               valueIndex={'id'}
                               multiple={false}
+                              disabled={disabled}
                               options={inventoriesTypeData}
                               InputProps={{
                                 label: 'Type',
@@ -168,6 +183,7 @@ const EditorInventoryPage = () => {
                               name="brand"
                               control={control}
                               id="brand"
+                              disabled={disabled}
                               classNames=" mx-auto mt-[20px]"
                               labelIndex="name"
                               valueIndex="id"
@@ -211,6 +227,7 @@ const EditorInventoryPage = () => {
                                 type={'text'}
                                 variant={'outlined'}
                                 normalizes={[onlyNumber, max(6)]}
+                                disabled={disabled}
                               />
                             </div>
                             <div className="col-span-8 p-2">
@@ -230,6 +247,7 @@ const EditorInventoryPage = () => {
                                 }}
                                 type={'text'}
                                 variant={'outlined'}
+                                disabled={disabled}
                               />
                             </div>
                           </div>
@@ -254,6 +272,7 @@ const EditorInventoryPage = () => {
                               type={'text'}
                               variant={'outlined'}
                               normalizes={[onlyNumber, max(6)]}
+                              disabled={disabled}
                             />
                           </div>
                         </CardContent>
@@ -291,6 +310,7 @@ const EditorInventoryPage = () => {
                               type={'text'}
                               variant={'outlined'}
                               normalizes={[onlyNumber, max(6)]}
+                              disabled={disabled}
                             />
                           </div>
                           <h5 className="px-2">
@@ -322,6 +342,7 @@ const EditorInventoryPage = () => {
                                   ),
                                 }}
                                 normalizes={[onlyNumber, max(10)]}
+                                disabled={disabled}
                               />
                               <InputForm
                                 // required
@@ -346,6 +367,7 @@ const EditorInventoryPage = () => {
                                   ),
                                 }}
                                 normalizes={[onlyNumber, max(10)]}
+                                disabled={disabled}
                               />
                               <InputForm
                                 // required
@@ -370,6 +392,7 @@ const EditorInventoryPage = () => {
                                   ),
                                 }}
                                 normalizes={[onlyNumber, max(10)]}
+                                disabled={disabled}
                               />
                             </div>
                           </div>
@@ -405,6 +428,7 @@ const EditorInventoryPage = () => {
                                 type={'text'}
                                 variant={'outlined'}
                                 normalizes={[onlyNumber, max(10)]}
+                                disabled={disabled}
                               />
                               <InputForm
                                 // required
@@ -429,6 +453,7 @@ const EditorInventoryPage = () => {
                                 type={'text'}
                                 variant={'outlined'}
                                 normalizes={[onlyNumber, max(10)]}
+                                disabled={disabled}
                               />
                             </div>
                           </div>
@@ -436,6 +461,18 @@ const EditorInventoryPage = () => {
                       </Card>
                     </div>
                     <div className="mt-[20px] flex justify-end gap-[15px] h-[50px]">
+                      {mode !== EnumModeEditorPage.VIEW && (
+                        <div className="w-full max-w-[40px] my-auto">
+                          <CheckBoxForm
+                            control={control}
+                            id={'favorite'}
+                            name="favorite"
+                            classNames="scale-[2]"
+                            icon={<MdFavorite />}
+                            checkedIcon={<MdFavorite />}
+                          />
+                        </div>
+                      )}
                       <ButtonForm
                         classNames="max-w-[150px] !normal-case"
                         color="secondary"
@@ -443,9 +480,11 @@ const EditorInventoryPage = () => {
                         onClick={() => {
                           router.push({ pathname: inventoryRoute.path })
                         }}
-                        label={'Discard'}
+                        label={
+                          mode === EnumModeEditorPage.VIEW ? 'Back' : 'Discard'
+                        }
                       />
-                      {inventory && (
+                      {mode === EnumModeEditorPage.UPDATE && (
                         <ButtonForm
                           classNames="max-w-[150px] !normal-case"
                           color="error"
@@ -454,11 +493,17 @@ const EditorInventoryPage = () => {
                           label={'Delete'}
                         />
                       )}
-                      <ButtonForm
-                        classNames="max-w-[150px] !normal-case"
-                        onClick={onSubmit}
-                        label={inventory ? 'Update Item' : 'Add Item'}
-                      />
+                      {mode !== EnumModeEditorPage.VIEW && (
+                        <ButtonForm
+                          classNames="max-w-[150px] !normal-case"
+                          onClick={onSubmit}
+                          label={
+                            mode === EnumModeEditorPage.UPDATE
+                              ? 'Update Item'
+                              : 'Add Item'
+                          }
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

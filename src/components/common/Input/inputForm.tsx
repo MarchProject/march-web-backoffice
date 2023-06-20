@@ -49,7 +49,7 @@ interface IInputProps {
   multiline?: boolean
   rows?: number
   normalizes?: Normalization[]
-  disable?: boolean
+  disabled?: boolean
 }
 
 const Input = (props: IInputProps) => {
@@ -70,7 +70,7 @@ const Input = (props: IInputProps) => {
     placeholder,
     normalizes = [],
     multiline,
-    disable,
+    disabled,
     ...rest
   } = props
 
@@ -85,6 +85,8 @@ const Input = (props: IInputProps) => {
     HTMLInputElement | HTMLTextAreaElement
   > = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e?.target?.value
+    let _e = e
+    _e.target.value = value.replace('  ', ' ')
     if (normalizes.length > 0 && value) {
       const isValid = validateNormalize(normalizes, value)
       if (!isValid) {
@@ -92,7 +94,7 @@ const Input = (props: IInputProps) => {
       }
     }
     if (onChange) {
-      onChange(e)
+      onChange(_e)
     }
   }
   return (
@@ -130,7 +132,7 @@ const Input = (props: IInputProps) => {
         helperText={error}
         {...field}
         error={!!error}
-        disabled={disable}
+        disabled={disabled}
         size={size}
         {...rest}
         sx={{

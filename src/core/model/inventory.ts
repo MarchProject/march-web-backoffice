@@ -58,6 +58,7 @@ export class Inventory extends Model {
   sku: string
   reorderLevel: number
   size: string
+  favorite: boolean
   priceMember: number
   _inventoryType: InventoryType
   _brandType: BrandType

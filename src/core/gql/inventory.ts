@@ -29,11 +29,14 @@ export type InventoriesData = {
   updatedAt: string
 }
 
+export type IFavoriteStatus = 'LIKE' | 'DEFAULT'
+
 export type GetInventoriesVariables = {
   params: {
     search?: string
     limit?: number
     type?: string[]
+    favorite?: IFavoriteStatus
     brand?: string[]
     pageNo?: number
   }
@@ -49,6 +52,7 @@ export const getInventoryQuery = gql`
       price
       sku
       size
+      favorite
       priceMember
       reorderLevel
       inventoryType {
@@ -78,6 +82,7 @@ export const getInventoriesQuery = gql`
         amount
         sold
         price
+        favorite
         inventoryType {
           name
         }
@@ -175,6 +180,7 @@ export type UpsertInventoryTypeVariables = {
     amount: number
     price: number
     sku?: string
+    favorite?: boolean
     size?: {
       width?: number
       length?: number
@@ -214,7 +220,7 @@ export const upsertInventoryTypeMutation = gql`
   }
 `
 export const upsertBrandTypeMutation = gql`
-  mutation upsertBrandType($input: UpsertBrandTypeInput) {
+  mutation upsertBrandType($input: UpsertBrandTypeInput!) {
     upsertBrandType(input: $input) {
       id
     }
@@ -227,6 +233,13 @@ export const deleteInventoryTypeMutation = gql`
     }
   }
 `
+export const deleteBrandTypeMutation = gql`
+  mutation deleteBrandType($id: String!) {
+    deleteBrandType(id: $id) {
+      id
+    }
+  }
+`
 export const deleteInventoryMutation = gql`
   mutation deleteInventory($id: String!) {
     deleteInventory(id: $id) {
@@ -234,6 +247,24 @@ export const deleteInventoryMutation = gql`
     }
   }
 `
+export const favoriteInventoryMutation = gql`
+  mutation favoriteInventory($id: String!) {
+    favoriteInventory(id: $id) {
+      id
+    }
+  }
+`
+
+export type FavoriteInventoryVariables = {
+  id: string
+}
+
+export type FavoriteInventoryData = {
+  favoriteInventory: {
+    id?: string
+  }
+}
+
 export type DeleteInventoryData = {
   deleteInventory: {
     id?: string
@@ -259,7 +290,7 @@ export type UpsertInventoryType = {
   }
 }
 
-export type upsertBrandType = {
+export type UpsertBrandType = {
   upsertBrandType: {
     id?: string
   }
@@ -267,6 +298,12 @@ export type upsertBrandType = {
 
 export type DeleteTypeData = {
   deleteInventoryType: {
+    id?: string
+  }
+}
+
+export type DeleteBrandData = {
+  deleteBrandType: {
     id?: string
   }
 }

@@ -22,6 +22,7 @@ export const tranFromUpsertInventoryDto = (
       price: Number(input.price),
       sku: get(input, 'sku', undefined),
       size: Object.keys(size).length !== 0 ? size : undefined,
+      favorite: get(input, 'favorite', false),
       priceMember: isNil(input?.memberPrice)
         ? undefined
         : Number(input?.memberPrice),

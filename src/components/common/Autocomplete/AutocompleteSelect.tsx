@@ -59,6 +59,7 @@ interface IAutocompleteSelect<T> {
     required: boolean
     classNames?: string
   }
+  disabled?: boolean
 }
 
 const AutocompleteSelectAsync = <T extends object>({

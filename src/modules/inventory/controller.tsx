@@ -9,9 +9,13 @@ import {
   getInventoriesBrandQuery,
   getInventoriesQuery,
   getInventoriesTypeQuery,
+  IFavoriteStatus,
+  favoriteInventoryMutation,
+  FavoriteInventoryData,
+  FavoriteInventoryVariables,
 } from '@/core/gql/inventory'
 import { BrandType, Inventory, InventoryType } from '@/core/model/inventory'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import {
   AutocompleteChangeReason,
   AutocompleteInputChangeReason,
@@ -25,10 +29,17 @@ const notificationErrorProp = {
   message: 'Fetch Error',
 }
 
+const notificationSuccessFavoriteProp = {
+  severity: EnumSeverity.success,
+  title: 'Inventory',
+  message: 'Favorite Success',
+}
+
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
   const [triggerType, setTriggerType] = useState(true)
   const [triggerBrand, setTriggerBrand] = useState(true)
+  const [triggerFavorite, setTriggerFavorite] = useState(true)
   const {
     inventoryData,
     inventoryLoading,
@@ -41,10 +52,18 @@ export const useInventoryController = () => {
     setType,
     setPage,
     setBrand,
+    setFavorite,
+    favorite,
+    handleFavoriteChange,
     handleClearChange,
     inventoryTypeValue,
     inventoryBrandValue,
-  } = useQueryInventory({ notification, triggerType, triggerBrand })
+  } = useQueryInventory({
+    notification,
+    triggerType,
+    triggerBrand,
+    triggerFavorite,
+  })
   // const {} = useGlobalInventory({ getInventories, inventoryData })
   const {
     inventoriesTypeData,
@@ -52,6 +71,11 @@ export const useInventoryController = () => {
     inventoriesTypeLoading,
     handleSearchInventoryType,
   } = useQueryInventoryType(triggerType)
+
+  const { favoriteInventoryHandle } = useMutationFavorite({
+    notification,
+    setTriggerFavorite,
+  })
 
   const {
     inventoriesBrandData,
@@ -67,6 +91,7 @@ export const useInventoryController = () => {
     globalState: {},
     setTriggerType,
     setTriggerBrand,
+    setTriggerFavorite,
     inventory: {
       inventoryData,
       inventoryLoading,
@@ -80,6 +105,9 @@ export const useInventoryController = () => {
       setType,
       setPage,
       setBrand,
+      favorite,
+      setFavorite,
+      handleFavoriteChange,
       inventoryTypeValue,
       inventoryBrandValue,
     },
@@ -99,6 +127,7 @@ export const useInventoryController = () => {
       handleTypeChange,
       handleBrandChange,
     },
+    favoriteInventoryHandle,
   }
 }
 
@@ -206,12 +235,18 @@ export const useQueryInventoryType = (trigger?: any) => {
   }
 }
 
-const useQueryInventory = ({ notification, triggerBrand, triggerType }) => {
+const useQueryInventory = ({
+  notification,
+  triggerBrand,
+  triggerType,
+  triggerFavorite,
+}) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
   const [search, setSearch] = useState('')
   const [type, setType] = useState<InventoryType[]>([])
   const [brand, setBrand] = useState<BrandType[]>([])
+  const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
 
   const [getInventories, { data, loading, error }] = useLazyQuery<
     GetInventoriesData,
@@ -225,6 +260,7 @@ const useQueryInventory = ({ notification, triggerBrand, triggerType }) => {
           limit: limit,
           pageNo: page,
           search: search,
+          favorite: favorite,
           type: type.map((e: any) => {
             return e.id
           }),
@@ -234,21 +270,28 @@ const useQueryInventory = ({ notification, triggerBrand, triggerType }) => {
         },
       },
     })
-  }, [brand, getInventories, limit, page, search, type])
+  }, [brand, getInventories, limit, page, search, type, favorite])
 
   const handleSearchChange = (value: any) => {
     setSearch(value.target.value)
+  }
+
+  const handleFavoriteChange = () => {
+    setFavorite((prevFavorite) =>
+      prevFavorite === 'DEFAULT' ? 'LIKE' : 'DEFAULT',
+    )
   }
 
   const handleClearChange = () => {
     setSearch('')
     setType([])
     setBrand([])
+    setFavorite('DEFAULT')
   }
 
   useEffect(() => {
     handleSearch()
-  }, [handleSearch, triggerBrand, triggerType])
+  }, [handleSearch, triggerBrand, triggerType, triggerFavorite])
 
   useEffect(() => {
     if (data?.getInventories?.inventories?.length === 0) {
@@ -296,6 +339,9 @@ const useQueryInventory = ({ notification, triggerBrand, triggerType }) => {
     setType,
     setPage,
     setBrand,
+    setFavorite,
+    favorite,
+    handleFavoriteChange,
     inventoryTypeValue: type,
     inventoryBrandValue: brand,
   }
@@ -340,10 +386,43 @@ const useHandleInventory = ({ setType, setBrand }) => {
   }
 }
 
-// type UseGlobalInventoryProps = {
-//   getInventories: LazyQueryExecFunction<
-//     GetInventoriesData,
-//     GetInventoriesVariables
-//   >
-//   inventoryData: GetInventoriesData
-// }
+const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
+  const [
+    favoriteInventory,
+    { loading: _loading, error, data: favoriteInventoryData },
+  ] = useMutation<FavoriteInventoryData, FavoriteInventoryVariables>(
+    favoriteInventoryMutation,
+  )
+
+  const favoriteInventoryHandle = useCallback(
+    (id: string) => {
+      favoriteInventory({
+        variables: {
+          id: id,
+        },
+      })
+    },
+    [favoriteInventory],
+  )
+
+  useEffect(() => {
+    if (favoriteInventoryData?.favoriteInventory?.id) {
+      notification(notificationSuccessFavoriteProp)
+      setTriggerFavorite((prev) => !prev)
+    }
+  }, [
+    favoriteInventoryData?.favoriteInventory?.id,
+    notification,
+    setTriggerFavorite,
+  ])
+
+  useEffect(() => {
+    if (error) {
+      notification(notificationErrorProp)
+    }
+  }, [error, notification])
+
+  return {
+    favoriteInventoryHandle,
+  }
+}

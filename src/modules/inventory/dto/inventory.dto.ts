@@ -11,6 +11,7 @@ export const transfromInventory = (inventory: Inventory) => {
     quantity: inventory.amount,
     sku: inventory.sku,
     reorder: inventory.reorderLevel,
+    favorite: inventory.favorite,
     weight: size[3],
     width: size[0],
     length: size[1],

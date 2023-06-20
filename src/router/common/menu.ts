@@ -5,6 +5,7 @@ import {
   // inventoryCreateRoute,
   inventoryRoute,
   inventoryUpdateRoute,
+  inventoryViewRoute,
 } from '../inventory'
 import { salesRoute } from '../sales'
 
@@ -15,7 +16,7 @@ export const scopeMenuRoute = {
   'MENU:CUSTOMER': customerRoute.path,
 
   'MENU:INVENTORY:CREATE': inventoryCreateRoute.path,
-  // 'MENU:INVENTORY:VIEW': inventoryRoute.path,
+  'MENU:INVENTORY:VIEW': inventoryViewRoute.path,
   'MENU:INVENTORY:UPDATE': inventoryUpdateRoute.path,
   // 'MENU:DASHBOARD:CREATE': '',
   // 'MENU:DASHBOARD:VIEW': '',

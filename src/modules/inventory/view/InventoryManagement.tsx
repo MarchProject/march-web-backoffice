@@ -1,10 +1,7 @@
 import { Input } from '@/components/common/Input'
-import { GetInventoryTypes } from '@/core/gql/inventory'
+import { GetInventoryTypes, IFavoriteStatus } from '@/core/gql/inventory'
 import { styleIconMarch } from '@/utils/style/utill'
-import {
-  AutocompleteInputChangeReason,
-  InputAdornment,
-} from '@mui/material'
+import { AutocompleteInputChangeReason, InputAdornment } from '@mui/material'
 import { debounce } from 'lodash'
 import React, { useRef } from 'react'
 import { BsBoxSeam } from 'react-icons/bs'
@@ -15,6 +12,8 @@ import ButtonForm from '@/components/common/Button/button'
 import { AutocompleteSelectAsync } from '@/components/common/Autocomplete/AutocompleteSelect'
 import { DialogM } from '@/components/common/Dialog/DialogM'
 import { ButtonMenu } from './ButtonMenu'
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+
 type InventoryManagementProps = {
   setSearch: (value: string) => void
   handleClearChange: () => void
@@ -44,7 +43,11 @@ type InventoryManagementProps = {
     ) => void
   }
   setTriggerType: (value: boolean) => void
+  setTriggerBrand: (value: boolean) => void
+  handleFavoriteChange: () => void
+  favorite: IFavoriteStatus
 }
+
 export const InventoryManagement = ({
   setSearch,
   inventoryBrandValue,
@@ -63,6 +66,9 @@ export const InventoryManagement = ({
     handleSearchInventoryBrand,
   },
   setTriggerType,
+  setTriggerBrand,
+  handleFavoriteChange,
+  favorite,
 }: InventoryManagementProps) => {
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
@@ -93,11 +99,11 @@ export const InventoryManagement = ({
         handleClose={handleClose}
         contentRender={() => {
           return (
-            <div className="mx-auto">
+            <div className="mx-auto w-full pb-[20px]">
               <AutocompleteSelectAsync
                 inputRef={brandFieldRef}
                 value={inventoryBrandValue}
-                classNames="max-w-[250px] mx-auto p-2"
+                classNames="max-w-[380px] mx-auto p-2"
                 id="brandFilter"
                 labelIndex="name"
                 valueIndex={'id'}
@@ -111,7 +117,7 @@ export const InventoryManagement = ({
               <AutocompleteSelectAsync
                 inputRef={typeFieldRef}
                 id="typeFilter"
-                classNames="max-w-[250px] mx-auto mt-[10px]"
+                classNames="max-w-[380px] mx-auto mt-[10px]"
                 labelIndex="name"
                 valueIndex={'id'}
                 multiple={true}
@@ -122,6 +128,32 @@ export const InventoryManagement = ({
                 loading={inventoriesTypeLoading}
                 onInputChange={handleSearchInventoryType}
               />
+              <div className="mx-auto !mx-[30px] mt-[20px]">
+                <div className="flex gap-[10px] justify-start max-w-[380px]">
+                  <ButtonForm
+                    classNames="!w-[150px] !h-[40px] !normal-case"
+                    label={'Favorite'}
+                    variant="outlined"
+                    color="error"
+                    endIcon={
+                      favorite === 'DEFAULT' ? (
+                        <FcLikePlaceholder
+                          className="cursor-pointer text-secondary my-auto"
+                          size={18}
+                        />
+                      ) : (
+                        <FcLike
+                          className="cursor-pointer text-secondary my-auto"
+                          size={18}
+                        />
+                      )
+                    }
+                    onClick={() => {
+                      handleFavoriteChange()
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           )
         }}
@@ -181,6 +213,8 @@ export const InventoryManagement = ({
             <ButtonMenu
               setTriggerType={setTriggerType}
               inventoriesTypeData={inventoriesTypeData}
+              setTriggerBrand={setTriggerBrand}
+              inventoriesBrandData={inventoriesBrandData}
             />
           </div>
         </div>

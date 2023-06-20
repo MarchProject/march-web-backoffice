@@ -1,9 +1,9 @@
 import {
   Dialog,
   DialogActions,
-  DialogContent,
   DialogTitle,
 } from '@mui/material'
+import classnames from 'classnames'
 import React from 'react'
 
 interface IDialogM {
@@ -12,6 +12,7 @@ interface IDialogM {
   handleClose: () => void
   contentRender: () => JSX.Element
   actionRender: () => JSX.Element
+  classNames?: string
 }
 
 export const DialogM = ({
@@ -19,6 +20,7 @@ export const DialogM = ({
   handleClose,
   contentRender,
   actionRender,
+  classNames,
   dialogTitle,
 }: IDialogM) => {
   return (
@@ -26,6 +28,7 @@ export const DialogM = ({
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
+      className={classnames(classNames)}
       aria-describedby="alert-dialog-description"
       sx={{
         '& .MuiPaper-root': {
@@ -35,7 +38,7 @@ export const DialogM = ({
         },
       }}>
       <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
-      <DialogContent>{contentRender()}</DialogContent>
+      {contentRender()}
       <DialogActions>{actionRender()}</DialogActions>
     </Dialog>
   )

@@ -21,6 +21,8 @@ const ContainerInventory = () => {
       handleClearChange,
       inventoryTypeValue,
       inventoryBrandValue,
+      handleFavoriteChange,
+      favorite,
     },
     inventoriesType: {
       inventoriesTypeData,
@@ -34,6 +36,8 @@ const ContainerInventory = () => {
     },
     handleInventory: { handleTypeChange, handleBrandChange },
     setTriggerType,
+    setTriggerBrand,
+    favoriteInventoryHandle,
   } = useInventoryController()
   return (
     <BlockUi tag="div" blocking={inventoryLoading}>
@@ -60,11 +64,14 @@ const ContainerInventory = () => {
                   }}
                   inventoryTypeValue={inventoryTypeValue}
                   inventoryBrandValue={inventoryBrandValue}
+                  handleFavoriteChange={handleFavoriteChange}
                   setTriggerType={setTriggerType}
+                  setTriggerBrand={setTriggerBrand}
+                  favorite={favorite}
                 />
                 <DataTableMarch
                   rows={inventoryData?.getInventories?.inventories || []}
-                  columns={columns()}
+                  columns={columns({ favoriteInventoryHandle })}
                   onRow={onRow}
                   onPaginationModelChange={onPaginationModelChange}
                   pageCount={inventoryData?.getInventories?.totalPage || 1}

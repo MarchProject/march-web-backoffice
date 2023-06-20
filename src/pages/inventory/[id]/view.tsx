@@ -18,7 +18,7 @@ import { EnumModeEditorPage } from '@/modules/interface'
 const Index = () => {
   return (
     <>
-      <EditorInventoryPage mode={EnumModeEditorPage.UPDATE} />
+      <EditorInventoryPage mode={EnumModeEditorPage.VIEW} />
     </>
   )
 }
@@ -26,7 +26,7 @@ const Index = () => {
 export async function getServerSideProps(
   ctx: GetServerSidePropsContext<ParsedUrlQuery>,
 ) {
-  const logPrefix = '[pages.inventory.update.getServerSideProps]'
+  const logPrefix = '[pages.inventory.view.getServerSideProps]'
   const req = ctx.req as Request
   const accessToken = req.cookies[CookiesKey.accessToken]
   const code = ctx.query.code as string

@@ -10,6 +10,7 @@ import {
   inventoryRoute,
   inventoryCreateRoute,
   inventoryUpdateRoute,
+  inventoryViewRoute,
 } from '../inventory'
 import { validateScope } from '../../middleware/scope'
 import { salesRoute } from '../sales'
@@ -19,9 +20,10 @@ export const routes: Route[] = [
   homeRoute,
   salesRoute,
   dashboardRoute,
-  
+
   inventoryCreateRoute,
   inventoryUpdateRoute,
+  inventoryViewRoute,
   inventoryRoute,
 
   permissionRoute,
@@ -36,12 +38,7 @@ function handleLoginPage(req: Request, res: Response, nextServer: NextServer) {
   const { query } = parsedUrl
   console.log(logPrefix)
 
-  return nextServer.render(
-    req,
-    res,
-    getLoginRoute().path,
-    query,
-  )
+  return nextServer.render(req, res, getLoginRoute().path, query)
 }
 
 function handlePage(req: Request, res: Response, nextServer: NextServer) {
