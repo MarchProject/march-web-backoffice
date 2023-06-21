@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "exec": "export $(cat local.watch.env | xargs) && ts-node --project tsconfig.server.json src/index.ts",
+  "ext": "js ts",
+  "ignore": ["dist/*"]
+}

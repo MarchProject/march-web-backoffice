@@ -2,6 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
-.test {
-  margin-left: 15px;
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
+
+body {
+  font-family: 'Kanit', sans-serif !important;
+  margin: 0px !important;
+  height: '100%';
+  background-color: 'red' !important;
+}
+
+.card-login {
+  background-color: rgb(255, 255, 255);
+}
+
+.bg-login {
+  background-image: url('/backoffice/public/bg01.jpeg');
+  height: 100vh;
+  width: 100%;
+}
+
+.layout-loginForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.img-login {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+}
+
+.mainBg {
+  background-color: #f5f3f7;
+}
+/* .css-sghohy-MuiButtonBase-root-MuiButton-root {
+  background-color: #e69fff !important;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: #d079ea !important;
+} */
+
+/* .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: #d079ea !important;
+}
+
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
+  border-color: #d079ea !important;
+}
+
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+  border-color: #d079ea !important;
+} */
+
+.Mui-required {
+  color: red !important;
+}
+
+/* #b040d3 */
+
+.MuiTabs-flexContainer {
+  justify-content: center;
+}
+
+/* .iconPage {
+  color: '#FFFFFF';
+  background-color: '#FFFFFF';
+  padding: '4px';
+  border-radius: '4px';
+  margin-top: 'auto';
+  margin-bottom: 'auto';
+  font-size: '20px';
+  border: '2px solid #E9E4ED' !important;
+  cursor: pointer;
+} */
+
+.iconPage:hover {
+  color: white !important;
+  background-color: #9a73b5 !important;
+  border: '1px solid #red';
 }
