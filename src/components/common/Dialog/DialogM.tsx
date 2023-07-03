@@ -1,8 +1,4 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogTitle,
-} from '@mui/material'
+import { Breakpoint, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import classnames from 'classnames'
 import React from 'react'
 
@@ -13,6 +9,8 @@ interface IDialogM {
   contentRender: () => JSX.Element
   actionRender: () => JSX.Element
   classNames?: string
+  maxWidth?: Breakpoint
+  dialogContentTextRender?: () => JSX.Element
 }
 
 export const DialogM = ({
@@ -22,6 +20,8 @@ export const DialogM = ({
   actionRender,
   classNames,
   dialogTitle,
+  maxWidth = 'xs',
+  dialogContentTextRender = () => <></>,
 }: IDialogM) => {
   return (
     <Dialog
@@ -30,14 +30,19 @@ export const DialogM = ({
       aria-labelledby="alert-dialog-title"
       className={classnames(classNames)}
       aria-describedby="alert-dialog-description"
+      fullWidth
+      maxWidth={maxWidth}
       sx={{
         '& .MuiPaper-root': {
-          maxWidth: '440px',
-          width: '100%',
+          // maxWidth: '440px',
+          // width: '100%',
           borderRadius: '10px',
         },
       }}>
-      <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+      <DialogTitle id="alert-dialog-title" className="text-primary">
+        {dialogTitle}
+      </DialogTitle>
+      {dialogContentTextRender()}
       {contentRender()}
       <DialogActions>{actionRender()}</DialogActions>
     </Dialog>

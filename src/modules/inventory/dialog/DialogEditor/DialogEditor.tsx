@@ -1,29 +1,21 @@
 import ButtonForm from '@/components/common/Button/button'
 import { DialogM } from '@/components/common/Dialog/DialogM'
-import React, { useCallback, useState } from 'react'
-import { useDialogController } from './controller'
+import React from 'react'
+import { ModeDialog, TypeDialog, useDialogController } from './controller'
 import { MenuItem } from '@mui/material'
 import { GetInventoryTypes } from '@/core/gql/inventory'
-import TypeDialogElement from './TypeDialogElement'
+import TypeDialogElement from './DialogBrandType/TypeDialogElement'
 import { warningDelete } from '@/constant'
-import BrandDialogElement from './BrandDialogElement'
-
-enum TypeDialog {
-  TYPE = 'type',
-  BRAND = 'brand',
-}
-
-export enum ModeDialog {
-  EDIT = 'edit',
-  CREATE = 'create',
-  VIEW = 'view',
-}
+import BrandDialogElement from './DialogBrandType/BrandDialogElement'
+import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
+import { InventoryNamesClass } from '@/core/model/inventory'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
   inventoriesTypeData: GetInventoryTypes[]
   setTriggerBrand: (e: any) => void
   inventoriesBrandData: GetInventoryTypes[]
+  inventoryNamesData: InventoryNamesClass[]
 }
 
 const DialogEditor = ({
@@ -31,41 +23,50 @@ const DialogEditor = ({
   inventoriesTypeData,
   setTriggerBrand,
   inventoriesBrandData,
+  inventoryNamesData,
 }: IDialogEditor) => {
-  const [open, setOpen] = useState(false)
-  const [typeD, setTypeD] = useState<TypeDialog>(TypeDialog.TYPE)
-  const [editType, setEditType] = useState<ModeDialog>(ModeDialog.VIEW)
-  const [idType, setIdType] = useState('')
-
-  const triggerType = useCallback(() => {
-    setTriggerType((e: boolean) => !e)
-  }, [setTriggerType])
-
-  const triggerBrand = useCallback(() => {
-    setTriggerBrand((e: boolean) => !e)
-  }, [setTriggerBrand])
-
   const {
     deleteTypeHandle: { deleteInventoryTypeLoading, deleteTypeHandle },
     upsertTypeHandle: { upsertInventoryTypeLoading, updateTypeHandle },
     upsertBrandHandle: { upsertInventoryBrandLoading, updateBrandHandle },
     deletBrandHandle: { deleteInventoryBrandLoading, deleteBrandHandle },
-  } = useDialogController({ triggerType, setEditType, triggerBrand })
+    dialogCsv: { openDialogCsv, handleOpenCsv, handleCloseCsv },
+    dialogMain: {
+      setEditType,
+      editType,
+      openDialogMain,
+      typeDialogMain,
+      idType,
+      setIdType,
+      handleCloseTypeBrandDialog,
+      handleOpenType,
+      handleOpenBrand,
+      handleTypeDialogCreate,
+    },
+  } = useDialogController({ setTriggerType, setTriggerBrand })
 
   return (
     <>
+      <DialogUploadCsv
+        open={openDialogCsv}
+        handleOpen={handleOpenCsv}
+        handleClose={handleCloseCsv}
+        inventoriesTypeData={inventoriesTypeData}
+        inventoriesBrandData={inventoriesBrandData}
+        inventoryNamesData={inventoryNamesData}
+      />
       <DialogM
-        open={open}
+        open={openDialogMain}
         dialogTitle={
-          typeD === TypeDialog.TYPE ? 'Inventory Type' : 'Inventory Brand'
+          typeDialogMain === TypeDialog.TYPE
+            ? 'Inventory Type'
+            : 'Inventory Brand'
         }
-        handleClose={() => {
-          setOpen(false)
-        }}
+        handleClose={handleCloseTypeBrandDialog}
         contentRender={() => {
           return (
             <div className="px-[30px]">
-              {typeD === TypeDialog.TYPE ? (
+              {typeDialogMain === TypeDialog.TYPE ? (
                 <TypeDialogElement
                   inventoriesTypeData={inventoriesTypeData}
                   idType={idType}
@@ -102,38 +103,22 @@ const DialogEditor = ({
                   classNames="!normal-case max-w-[80px]"
                   label={'Create'}
                   variant="text"
-                  onClick={() => {
-                    setEditType(ModeDialog.CREATE)
-                  }}
+                  onClick={handleTypeDialogCreate}
                 />
               )}
               <ButtonForm
                 classNames="!normal-case max-w-[80px]"
                 label={'Close'}
                 variant="text"
-                onClick={() => {
-                  setOpen(false)
-                  setEditType(ModeDialog.VIEW)
-                }}
+                onClick={handleCloseTypeBrandDialog}
               />
             </>
           )
         }}
       />
-      <MenuItem
-        onClick={() => {
-          setTypeD(TypeDialog.TYPE)
-          setOpen(true)
-        }}>
-        Type
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setTypeD(TypeDialog.BRAND)
-          setOpen(true)
-        }}>
-        Brand
-      </MenuItem>
+      <MenuItem onClick={handleOpenType}>Type</MenuItem>
+      <MenuItem onClick={handleOpenBrand}>Brand</MenuItem>
+      <MenuItem onClick={handleOpenCsv}>Upload CSV</MenuItem>
     </>
   )
 }

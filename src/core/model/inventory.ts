@@ -1,5 +1,16 @@
 import { Model } from './model'
 
+export class InventoryNamesClass {
+  id: string
+  _name: string
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name.split('|')[0]
+  }
+}
 export class BrandType {
   id: string
   _name: string

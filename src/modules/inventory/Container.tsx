@@ -38,9 +38,13 @@ const ContainerInventory = () => {
     setTriggerType,
     setTriggerBrand,
     favoriteInventoryHandle,
+    InventoryNames: {
+      inventoryNamesData,
+      inventoryNamesLoading,
+    },
   } = useInventoryController()
   return (
-    <BlockUi tag="div" blocking={inventoryLoading}>
+    <BlockUi tag="div" blocking={inventoryLoading || inventoryNamesLoading}>
       <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
         <div className="p-[15px]">
           <div className="bg-white m-0 rounded-lg " style={{ height: '100%' }}>
@@ -62,6 +66,7 @@ const ContainerInventory = () => {
                     inventoriesBrandLoading,
                     handleSearchInventoryBrand,
                   }}
+                  inventoryNamesData={inventoryNamesData}
                   inventoryTypeValue={inventoryTypeValue}
                   inventoryBrandValue={inventoryBrandValue}
                   handleFavoriteChange={handleFavoriteChange}

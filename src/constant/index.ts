@@ -7,3 +7,5 @@ export const CookiesKey = {
 
 export const warningDelete =
   'If you delete Item. You can create again with same name before 30 days then delete. Old Item will recovery back.'
+
+

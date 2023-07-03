@@ -307,3 +307,21 @@ export type DeleteBrandData = {
     id?: string
   }
 }
+
+export type InventoryNames = {
+  getInventoryNames: [
+    {
+      id: string
+      name: string
+    },
+  ]
+}
+
+export const getInventoryNamesQuery = gql`
+  query getInventoryNames {
+    getInventoryNames {
+      id
+      name
+    }
+  }
+`

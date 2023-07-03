@@ -28,12 +28,13 @@ const notificationSuccessProp = {
   message: 'Create Success',
 }
 
-const notificationErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Inventory',
-  message: 'Create Error',
+const notificationErrorProp = (message: string) => {
+  return {
+    severity: EnumSeverity.error,
+    title: 'Inventory',
+    message: `Create Error ${message}`,
+  }
 }
-
 const notificationValidErrorProp = {
   severity: EnumSeverity.error,
   title: 'Inventory',
@@ -135,13 +136,13 @@ const useFormHandler = () => {
       weight: '',
       width: '',
       length: '',
-      height:'',
+      height: '',
       price: 0,
       memberPrice: 0,
     },
     resolver: yupResolver(schema),
     reValidateMode: 'onChange',
-    mode: 'all'
+    mode: 'all',
   })
 
   return {
@@ -210,7 +211,7 @@ const useDeleteInventory = ({ notification, id }) => {
 
   useEffect(() => {
     if (error) {
-      notification(notificationErrorProp)
+      notification(notificationErrorProp(error?.message))
     }
   }, [error, notification])
 
@@ -236,7 +237,7 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
         },
       })
     } catch (error) {
-      notification(notificationErrorProp)
+      notification(notificationErrorProp(error?.message))
     }
   }
   const onError = () => {
@@ -255,7 +256,7 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
 
   useEffect(() => {
     if (error) {
-      notification(notificationErrorProp)
+      notification(notificationErrorProp(error?.message))
     }
   }, [error, notification])
 

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { MdDeleteForever } from 'react-icons/md'
 import { RiEdit2Line } from 'react-icons/ri'
-import { ModeDialog } from './DialogEditor'
+import { ModeDialog } from '../controller'
 
 const BrandDialogElement = ({
   inventoriesBrandData,
@@ -25,7 +25,6 @@ const BrandDialogElement = ({
   const [createInventoryTypeData, setCreateInventoriyTypeData] =
     useState<GetInventoryTypes>(null)
 
-  // const [name, setName] = useState('')
   useEffect(() => {
     setCreateInventoriyTypeData(null)
   }, [editType])

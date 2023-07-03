@@ -2,17 +2,18 @@ import ButtonForm from '@/components/common/Button/button'
 import { inventoryCreateRoute } from '@/router/inventory'
 import { Menu, MenuItem } from '@mui/material'
 import router from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { RiAddLine } from 'react-icons/ri'
-import DialogEditor from '../dialog/DialogEditor'
+import DialogEditor from '../dialog/DialogEditor/DialogEditor'
 
 export const ButtonMenu = ({
   inventoriesTypeData,
   setTriggerType,
   setTriggerBrand,
   inventoriesBrandData,
+  inventoryNamesData
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -20,8 +21,9 @@ export const ButtonMenu = ({
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
-    <div>
+    <>
       <ButtonForm
         classNames="!w-[150px] !h-[40px] !normal-case"
         label={'Product'}
@@ -49,8 +51,10 @@ export const ButtonMenu = ({
           inventoriesTypeData={inventoriesTypeData}
           setTriggerBrand={setTriggerBrand}
           inventoriesBrandData={inventoriesBrandData}
+          inventoryNamesData={inventoryNamesData}
+          
         />
       </Menu>
-    </div>
+    </>
   )
 }

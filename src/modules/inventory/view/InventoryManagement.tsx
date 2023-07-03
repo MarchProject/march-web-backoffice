@@ -3,10 +3,14 @@ import { GetInventoryTypes, IFavoriteStatus } from '@/core/gql/inventory'
 import { styleIconMarch } from '@/utils/style/utill'
 import { AutocompleteInputChangeReason, InputAdornment } from '@mui/material'
 import { debounce } from 'lodash'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { BsBoxSeam } from 'react-icons/bs'
 import { RiSearchLine } from 'react-icons/ri'
-import { BrandType, InventoryType } from '@/core/model/inventory'
+import {
+  BrandType,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
 import { BiCaretDown } from 'react-icons/bi'
 import ButtonForm from '@/components/common/Button/button'
 import { AutocompleteSelectAsync } from '@/components/common/Autocomplete/AutocompleteSelect'
@@ -46,6 +50,7 @@ type InventoryManagementProps = {
   setTriggerBrand: (value: boolean) => void
   handleFavoriteChange: () => void
   favorite: IFavoriteStatus
+  inventoryNamesData: InventoryNamesClass[]
 }
 
 export const InventoryManagement = ({
@@ -69,6 +74,7 @@ export const InventoryManagement = ({
   setTriggerBrand,
   handleFavoriteChange,
   favorite,
+  inventoryNamesData,
 }: InventoryManagementProps) => {
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
@@ -81,7 +87,7 @@ export const InventoryManagement = ({
     brandFieldRef.current.value = ''
   }
 
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -178,30 +184,33 @@ export const InventoryManagement = ({
           )
         }}
       />
-      <div id="navbar-inventory" className="flex justify-between">
-        <div className="flex gap-[15px] my-auto w-[100%]">
+
+      <div id="navbar-inventory" className="flex justify-between w-[100%]">
+        <div className="flex gap-[15px] my-auto w-[25%]">
           <BsBoxSeam style={styleIconMarch} />
           <p className="text-base text-primary">Inventory Management</p>
         </div>
-        <div className="w-[100%] max-w-[950px] my-auto flex gap-[12px] justify-end">
-          <Input
-            inputRef={searchFieldRef}
-            classNames="max-w-[220px] w-[100%] min-w-[220px]"
-            id="searchItems"
-            variant="outlined"
-            placeholder="Search item here"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <RiSearchLine />
-                </InputAdornment>
-              ),
-            }}
-            onChange={debounce(setSearch, 1000)}
-            type={'text'}
-            name="searchItems"
-            size="small"
-          />
+        <div className="w-[75%] my-auto flex gap-[12px] justify-end">
+          <div className="max-w-[220px] w-[100%] min-w-[220px] my-auto ">
+            <Input
+              inputRef={searchFieldRef}
+              classNames="max-w-[220px] w-[100%] min-w-[220px]"
+              id="searchItems"
+              variant="outlined"
+              placeholder="Search item here"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <RiSearchLine />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={debounce(setSearch, 1000)}
+              type={'text'}
+              name="searchItems"
+              size="small"
+            />
+          </div>
           <div className="flex my-auto gap-[12px]">
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
@@ -215,6 +224,7 @@ export const InventoryManagement = ({
               inventoriesTypeData={inventoriesTypeData}
               setTriggerBrand={setTriggerBrand}
               inventoriesBrandData={inventoriesBrandData}
+              inventoryNamesData={inventoryNamesData}
             />
           </div>
         </div>

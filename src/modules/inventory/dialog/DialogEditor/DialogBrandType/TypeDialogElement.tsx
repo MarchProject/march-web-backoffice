@@ -1,17 +1,12 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
 import { GetInventoryTypes } from '@/core/gql/inventory'
-import {
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-} from '@mui/material'
+import { List, ListSubheader, ListItem, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { MdDeleteForever } from 'react-icons/md'
 import { RiEdit2Line } from 'react-icons/ri'
-import { ModeDialog } from './DialogEditor'
+import { ModeDialog } from '../controller'
 
 const TypeDialogElement = ({
   inventoriesTypeData,
@@ -30,7 +25,6 @@ const TypeDialogElement = ({
   const [createInventoryTypeData, setCreateInventoriyTypeData] =
     useState<GetInventoryTypes>(null)
 
-  // const [name, setName] = useState('')
   useEffect(() => {
     setCreateInventoriyTypeData(null)
   }, [editType])
@@ -79,7 +73,7 @@ const TypeDialogElement = ({
                     />
                     <MdDeleteForever
                       className="cursor-pointer text-secondary"
-                      color='red'
+                      color="red"
                       size={18}
                       onClick={() => {
                         deleteTypeHandle(value.id)

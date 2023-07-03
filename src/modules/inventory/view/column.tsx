@@ -140,8 +140,6 @@ export const columns = ({
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => {
-        const [state, setState] = useState(true)
-
         return (
           <div className="flex gap-[15px]">
             <RiEdit2Line
@@ -171,17 +169,11 @@ export const columns = ({
                 <FcLikePlaceholder
                   className="cursor-pointer text-secondary"
                   size={18}
-                  onClick={() => {
-                    setState(!state)
-                  }}
                 />
               ) : (
                 <FcLike
                   className="cursor-pointer text-secondary"
                   size={18}
-                  onClick={() => {
-                    setState(!state)
-                  }}
                 />
               )}
             </div>

@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import {
   DeleteTypeDataVariables,
   DeleteTypeData,
@@ -14,49 +14,49 @@ import {
 import { EnumErrorType } from '@/core/utils/ErrorType'
 import { useMutation } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
-import { ModeDialog } from './DialogEditor'
+import {
+  notificationTypeUsedDeleteErrorProp,
+  notificationDeleteErrorProp,
+  notificationDeleteSuccessProp,
+  notificationUpdateErrorProp,
+  notificationUpdateSuccessProp,
+} from './notification'
 
-const notificationDeleteSuccessProp = {
-  severity: EnumSeverity.success,
-  title: 'Product Type',
-  message: 'Delete Success',
-}
-const notificationTypeUsedDeleteErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Product Type',
-  message: 'Delete Failed. This type already use in product',
-}
-const notificationDeleteErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Product Type',
-  message: 'Delete Failed.',
+export enum TypeDialog {
+  TYPE = 'type',
+  BRAND = 'brand',
 }
 
-const notificationUpdateSuccessProp = (
-  type = 'type',
-  create: boolean = true,
-) => {
-  return {
-    severity: EnumSeverity.success,
-    title: `Product ${type === 'type' ? 'type' : 'brand'}`,
-    message: `${create ? 'Create' : 'Update'} Success`,
-  }
+export enum ModeDialog {
+  EDIT = 'edit',
+  CREATE = 'create',
+  VIEW = 'view',
 }
 
-const notificationUpdateErrorProp = (type = 'type', create: boolean = true) => {
-  return {
-    severity: EnumSeverity.error,
-    title: `Product ${type === 'type' ? 'type' : 'brand'}`,
-    message: `${create ? 'Create' : 'Update'} Failed.`,
-  }
-}
+export const useDialogController = ({ setTriggerType, setTriggerBrand }) => {
+  const triggerType = useCallback(() => {
+    setTriggerType((e: boolean) => !e)
+  }, [setTriggerType])
 
-export const useDialogController = ({
-  triggerType,
-  setEditType,
-  triggerBrand,
-}) => {
+  const triggerBrand = useCallback(() => {
+    setTriggerBrand((e: boolean) => !e)
+  }, [setTriggerBrand])
+
   const { notification } = useNotificationContext()
+
+  const {
+    setEditType,
+    editType,
+    openDialogMain,
+    typeDialogMain,
+    idType,
+    setIdType,
+    handleCloseTypeBrandDialog,
+    handleOpenType,
+    handleOpenBrand,
+    handleTypeDialogCreate,
+  } = useHandleDialogMain()
+
   const { deleteInventoryType, deleteInventoryTypeLoading, deleteTypeHandle } =
     useDeleteTypeHandle({
       notification,
@@ -82,6 +82,9 @@ export const useDialogController = ({
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
   } = useUpdateBransHandle({ notification, triggerBrand, setEditType })
+
+  const { openDialogCsv, handleOpenCsv, handleCloseCsv } = useHandleDialogCsv()
+
   return {
     deleteTypeHandle: {
       deleteInventoryType,
@@ -104,6 +107,23 @@ export const useDialogController = ({
       updateBrandHandle,
       upsertInventoryBrandLoading,
       upsertInventoryBrandData,
+    },
+    dialogCsv: {
+      openDialogCsv,
+      handleOpenCsv,
+      handleCloseCsv,
+    },
+    dialogMain: {
+      setEditType,
+      editType,
+      openDialogMain,
+      typeDialogMain,
+      idType,
+      setIdType,
+      handleCloseTypeBrandDialog,
+      handleOpenType,
+      handleOpenBrand,
+      handleTypeDialogCreate,
     },
   }
 }
@@ -295,5 +315,61 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
     updateBrandHandle,
     upsertInventoryBrandLoading: loading,
     upsertInventoryBrandData,
+  }
+}
+
+const useHandleDialogCsv = () => {
+  const [openDialogCsv, setOpenDialogCsv] = useState(false)
+
+  const handleOpenCsv = useCallback(() => {
+    setOpenDialogCsv(true)
+  }, [])
+
+  const handleCloseCsv = useCallback(() => {
+    setOpenDialogCsv(false)
+  }, [])
+
+  return {
+    openDialogCsv,
+    handleOpenCsv,
+    handleCloseCsv,
+  }
+}
+
+const useHandleDialogMain = () => {
+  const [open, setOpen] = useState(false)
+  const [typeD, setTypeD] = useState<TypeDialog>(TypeDialog.TYPE)
+  const [editType, setEditType] = useState<ModeDialog>(ModeDialog.VIEW)
+  const [idType, setIdType] = useState('')
+
+  const handleCloseTypeBrandDialog = () => {
+    setOpen(false)
+    setEditType(ModeDialog.VIEW)
+  }
+
+  const handleOpenType = () => {
+    setTypeD(TypeDialog.TYPE)
+    setOpen(true)
+  }
+  const handleOpenBrand = () => {
+    setTypeD(TypeDialog.BRAND)
+    setOpen(true)
+  }
+
+  const handleTypeDialogCreate = () => {
+    setEditType(ModeDialog.CREATE)
+  }
+
+  return {
+    editType,
+    openDialogMain: open,
+    typeDialogMain: typeD,
+    idType,
+    setIdType,
+    setEditType,
+    handleCloseTypeBrandDialog,
+    handleOpenType,
+    handleOpenBrand,
+    handleTypeDialogCreate,
   }
 }

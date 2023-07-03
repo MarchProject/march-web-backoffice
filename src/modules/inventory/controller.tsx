@@ -13,9 +13,16 @@ import {
   favoriteInventoryMutation,
   FavoriteInventoryData,
   FavoriteInventoryVariables,
+  InventoryNames,
+  getInventoryNamesQuery,
 } from '@/core/gql/inventory'
-import { BrandType, Inventory, InventoryType } from '@/core/model/inventory'
-import { useLazyQuery, useMutation } from '@apollo/client'
+import {
+  BrandType,
+  Inventory,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import {
   AutocompleteChangeReason,
   AutocompleteInputChangeReason,
@@ -71,7 +78,8 @@ export const useInventoryController = () => {
     inventoriesTypeLoading,
     handleSearchInventoryType,
   } = useQueryInventoryType(triggerType)
-
+  const { inventoryNamesData, inventoryNamesError, inventoryNamesLoading } =
+    useGetNameItems({ notification })
   const { favoriteInventoryHandle } = useMutationFavorite({
     notification,
     setTriggerFavorite,
@@ -128,6 +136,37 @@ export const useInventoryController = () => {
       handleBrandChange,
     },
     favoriteInventoryHandle,
+    InventoryNames: {
+      inventoryNamesData,
+      inventoryNamesError,
+      inventoryNamesLoading,
+    },
+  }
+}
+
+const useGetNameItems = ({ notification }) => {
+  const [dataTranform, setDataTranform] = useState<InventoryNamesClass[]>([])
+  const { data, error, loading } = useQuery<InventoryNames>(
+    getInventoryNamesQuery,
+  )
+  useEffect(() => {
+    if (data) {
+      setDataTranform(
+        plainToInstance(InventoryNamesClass, data.getInventoryNames),
+      )
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (error) {
+      notification(notificationErrorProp)
+    }
+  }, [error, notification])
+
+  return {
+    inventoryNamesData: dataTranform,
+    inventoryNamesError: error,
+    inventoryNamesLoading: loading,
   }
 }
 
