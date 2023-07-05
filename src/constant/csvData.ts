@@ -18,22 +18,22 @@ export const headersTemplateCsv = [
 ]
 
 export interface IDataTemplateCsv {
-  id: number
+  id: string
   name: string
   type: string
   brand: string
   description: string
   expiryDate: string
-  amount: number
+  amount: string
   sku: string
-  reorderLevel: number
-  price: number
-  priceMember: number
-  favorite: number
-  weight: number
-  width: number
-  height: number
-  length: number
+  reorderLevel: string
+  price: string
+  priceMember: string
+  favorite: string
+  weight: string
+  width: string
+  height: string
+  length: string
 }
 
 interface IMessage {

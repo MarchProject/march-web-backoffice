@@ -1,4 +1,5 @@
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useLazyQueryData } from '@/core/adapter/query/inventory/inventory'
 import {
   GetInventoriesBrandData,
   GetInventoriesBrandVariables,
@@ -22,7 +23,7 @@ import {
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { ApolloError, useLazyQuery, useMutation } from '@apollo/client'
 import {
   AutocompleteChangeReason,
   AutocompleteInputChangeReason,
@@ -47,6 +48,7 @@ export const useInventoryController = () => {
   const [triggerType, setTriggerType] = useState(true)
   const [triggerBrand, setTriggerBrand] = useState(true)
   const [triggerFavorite, setTriggerFavorite] = useState(true)
+  const [triggerGetInventoryNames, setTriggerGetInventoryNames] = useState(true)
   const {
     inventoryData,
     inventoryLoading,
@@ -70,6 +72,7 @@ export const useInventoryController = () => {
     triggerType,
     triggerBrand,
     triggerFavorite,
+    triggerGetInventoryNames,
   })
   // const {} = useGlobalInventory({ getInventories, inventoryData })
   const {
@@ -79,7 +82,7 @@ export const useInventoryController = () => {
     handleSearchInventoryType,
   } = useQueryInventoryType(triggerType)
   const { inventoryNamesData, inventoryNamesError, inventoryNamesLoading } =
-    useGetNameItems({ notification })
+    useGetNameItems({ notification, triggerGetInventoryNames })
   const { favoriteInventoryHandle } = useMutationFavorite({
     notification,
     setTriggerFavorite,
@@ -140,28 +143,60 @@ export const useInventoryController = () => {
       inventoryNamesData,
       inventoryNamesError,
       inventoryNamesLoading,
+      setTriggerGetInventoryNames,
     },
   }
 }
 
-const useGetNameItems = ({ notification }) => {
+const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
   const [dataTranform, setDataTranform] = useState<InventoryNamesClass[]>([])
-  const { data, error, loading } = useQuery<InventoryNames>(
-    getInventoryNamesQuery,
+  // const [getInventoryNames, { data, error, loading }] =
+  //   useLazyQuery<InventoryNames>(getInventoryNamesQuery)
+
+  const onSuccess = useCallback((data: InventoryNamesClass[]) => {
+    setDataTranform(data)
+  }, [])
+
+  const onError = useCallback(
+    (_: ApolloError) => {
+      notification(notificationErrorProp)
+    },
+    [notification],
   )
-  useEffect(() => {
-    if (data) {
-      setDataTranform(
-        plainToInstance(InventoryNamesClass, data.getInventoryNames),
-      )
-    }
-  }, [data])
+
+  const { trigger, error, loading } = useLazyQueryData<
+    InventoryNamesClass[],
+    InventoryNames,
+    any
+  >({
+    onSuccess: onSuccess,
+    onError: onError,
+    defaultValue: [],
+    queryNode: getInventoryNamesQuery,
+    classConstructor: InventoryNamesClass,
+  })
 
   useEffect(() => {
-    if (error) {
-      notification(notificationErrorProp)
-    }
-  }, [error, notification])
+    trigger()
+  }, [trigger, triggerGetInventoryNames])
+
+  // useEffect(() => {
+  //   getInventoryNames()
+  // }, [getInventoryNames, triggerGetInventoryNames])
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setDataTranform(
+  //       plainToInstance(InventoryNamesClass, data.getInventoryNames),
+  //     )
+  //   }
+  // }, [data, triggerGetInventoryNames])
+
+  // useEffect(() => {
+  //   if (error) {
+  //     notification(notificationErrorProp)
+  //   }
+  // }, [error, notification])
 
   return {
     inventoryNamesData: dataTranform,
@@ -279,6 +314,7 @@ const useQueryInventory = ({
   triggerBrand,
   triggerType,
   triggerFavorite,
+  triggerGetInventoryNames,
 }) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
@@ -330,7 +366,13 @@ const useQueryInventory = ({
 
   useEffect(() => {
     handleSearch()
-  }, [handleSearch, triggerBrand, triggerType, triggerFavorite])
+  }, [
+    handleSearch,
+    triggerBrand,
+    triggerType,
+    triggerFavorite,
+    triggerGetInventoryNames,
+  ])
 
   useEffect(() => {
     if (data?.getInventories?.inventories?.length === 0) {

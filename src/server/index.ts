@@ -30,7 +30,7 @@ export async function start() {
     genid: uuidv4,
     cookie: {
       // 1 day
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000 * 7,
     },
   }
   expressServer.use(session(sessionOptions))

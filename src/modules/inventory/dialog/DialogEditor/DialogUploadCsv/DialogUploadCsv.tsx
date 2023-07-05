@@ -11,6 +11,7 @@ interface IDialogUploadCsv {
   open: boolean
   handleOpen: () => void
   handleClose: () => void
+  setTriggerGetInventoryNames: (value: boolean) => void
   inventoriesTypeData: GetInventoryTypes[]
   inventoriesBrandData: GetInventoryTypes[]
   inventoryNamesData: InventoryNamesClass[]
@@ -22,8 +23,13 @@ const DialogUploadCsv = ({
   inventoriesTypeData,
   inventoriesBrandData,
   inventoryNamesData,
+  setTriggerGetInventoryNames,
 }: IDialogUploadCsv) => {
-  const { uploadHandle, isValid } = useControllerUplaod()
+  const { uploadHandle, isValid, onUploadHandle } = useControllerUplaod({
+    inventoriesTypeData,
+    inventoriesBrandData,
+    setTriggerGetInventoryNames,
+  })
   return (
     <>
       <DialogM
@@ -61,7 +67,7 @@ const DialogUploadCsv = ({
                 color={'primary'}
                 disabled={!isValid}
                 variant="text"
-                onClick={handleClose}
+                onClick={onUploadHandle}
               />
               <DownLoadCsv
                 data={dataTemplateCsv}

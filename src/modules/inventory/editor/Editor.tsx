@@ -136,8 +136,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
                               }}
-                              mask={'__/__/____'}
-                              inputFormat={dateFormat}
+                              mask={'DD-MM-YYYY'}
+                              inputFormat={'DD-MM-YYYY'}
                               onError={(reason, _value) => {
                                 if (reason) {
                                   setValue('expiryDate', 'Invalid Date')

@@ -2,16 +2,12 @@ import { IDataTemplateCsv, IDataTemplateCsvValidate } from '@/constant/csvData'
 import { useNotificationContext } from '@/context/notification'
 import { ParseResult } from 'papaparse'
 import { useEffect, useState } from 'react'
-import { tranfromCsvFile } from './upload.dto'
+import { tranfromCsvFile } from '../../../../../dto/upload.dto'
 import {
   GetInventoryTypes,
-  InventoryNames,
-  getInventoryNamesQuery,
 } from '@/core/gql/inventory'
 import { validateExpiryDate } from './validate/expiryDateValidate'
 import { ICompleteValues, IValidatedValues } from './interface'
-import { useQuery } from '@apollo/client'
-import { plainToInstance } from 'class-transformer'
 import { InventoryNamesClass } from '@/core/model/inventory'
 
 interface IUseControllerUploadCsvViewProps {
@@ -212,11 +208,20 @@ const validateDataCsv = (
       if (value) {
         if (field === 'expiryDate') {
           const valid = validateExpiryDate(value)
-          if (!valid) {
+          const parts = value.split('-')
+
+          const year = parseInt(parts[2], 10)
+          if (year > 2099) {
             isValid = false
             invalidFields.push({
               name: field,
-              message: `${value} is not valid. Example (18-11-2024) or not in future`,
+              message: `${value} is not valid. Example (18-11-2024), not in future or year > 2099`,
+            })
+          } else if (!valid) {
+            isValid = false
+            invalidFields.push({
+              name: field,
+              message: `${value} is not valid. Example (18-11-2024), not in future or year > 2099`,
             })
           }
         } else if (field === 'sku') {
@@ -254,27 +259,6 @@ const validateDataCsv = (
   }
 }
 
-const useGetNameItems = () => {
-  const [dataTranform, setDataTranform] = useState<InventoryNamesClass[]>([])
-  const { data, error, loading } = useQuery<InventoryNames>(
-    getInventoryNamesQuery,
-  )
-  console.log({ data })
-  useEffect(() => {
-    if (data) {
-      setDataTranform(
-        plainToInstance(InventoryNamesClass, data.getInventoryNames),
-      )
-    }
-  }, [data])
-
-  return {
-    inventoryNamesData: dataTranform,
-    inventoryNamesError: error,
-    inventoryNamesLoading: loading,
-  }
-}
-
 const useHandleUploadCsv = ({
   inventoryNamesData,
   inventoriesTypeData,
@@ -283,7 +267,6 @@ const useHandleUploadCsv = ({
 }: IUseControllerUploadCsvViewProps) => {
   // const [selectedFile, setSelectFile] = useState<File[]>(null)
   const [validatedValues, setValidatedValues] = useState<IValidatedValues[]>([])
-  const [isValid, setIsValid] = useState<boolean>(false)
 
   const onCompleteValue = (
     result: ParseResult<IDataTemplateCsv>,
@@ -306,7 +289,8 @@ const useHandleUploadCsv = ({
       validData,
       inValidData,
     }
-    setValidatedValues((prev) => [...prev, validatedValue])
+    // setValidatedValues((prev) => [...prev, validatedValue])
+    setValidatedValues([validatedValue])
   }
 
   useEffect(() => {
@@ -325,7 +309,6 @@ const useHandleUploadCsv = ({
   return {
     removeItem,
     validatedValues,
-    isValid,
     onChangeFile,
     onCompleteValue,
   }

@@ -14,6 +14,7 @@ interface IDialogEditor {
   setTriggerType: (e: any) => void
   inventoriesTypeData: GetInventoryTypes[]
   setTriggerBrand: (e: any) => void
+  setTriggerGetInventoryNames: (e: boolean) => void
   inventoriesBrandData: GetInventoryTypes[]
   inventoryNamesData: InventoryNamesClass[]
 }
@@ -24,6 +25,7 @@ const DialogEditor = ({
   setTriggerBrand,
   inventoriesBrandData,
   inventoryNamesData,
+  setTriggerGetInventoryNames
 }: IDialogEditor) => {
   const {
     deleteTypeHandle: { deleteInventoryTypeLoading, deleteTypeHandle },
@@ -54,6 +56,7 @@ const DialogEditor = ({
         inventoriesTypeData={inventoriesTypeData}
         inventoriesBrandData={inventoriesBrandData}
         inventoryNamesData={inventoryNamesData}
+        setTriggerGetInventoryNames={setTriggerGetInventoryNames}
       />
       <DialogM
         open={openDialogMain}

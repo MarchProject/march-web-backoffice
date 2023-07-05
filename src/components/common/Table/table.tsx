@@ -45,7 +45,6 @@ export default function DataTableMarch({
   const apiRef = useGridApiRef()
 
   const CustomPagination = () => {
-
     return (
       <Pagination
         color="primary"
@@ -118,6 +117,7 @@ export default function DataTableMarch({
             color: 'text200.main',
           },
         }}
+        autoHeight={gridHeight === 0}
         rows={rows}
         columns={columns}
         onRowSelectionModelChange={onRow}

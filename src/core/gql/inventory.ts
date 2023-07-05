@@ -173,28 +173,30 @@ export const getInventoriesBrandQuery = gql`
   }
 `
 
-export type UpsertInventoryTypeVariables = {
-  input: {
-    id?: string
-    name: string
-    amount: number
-    price: number
-    sku?: string
-    favorite?: boolean
-    size?: {
-      width?: number
-      length?: number
-      height?: number
-      weight?: number
-    }
-    priceMember?: number
-    reorderLevel?: number
-    description?: string
-    createdBy: string
-    inventoryTypeId: string
-    brandTypeId: string
-    expiryDate?: string
+export type UpsertInventoryData = {
+  id?: string
+  name: string
+  amount: number
+  price: number
+  sku?: string
+  favorite?: boolean
+  size?: {
+    width?: number
+    length?: number
+    height?: number
+    weight?: number
   }
+  priceMember?: number
+  reorderLevel?: number
+  description?: string
+  createdBy?: string
+  inventoryTypeId: string
+  brandTypeId: string
+  expiryDate?: string
+}
+
+export type UpsertInventoryTypeVariables = {
+  input: UpsertInventoryData
 }
 
 export type UpsertInventoryTypeData = {
@@ -325,3 +327,28 @@ export const getInventoryNamesQuery = gql`
     }
   }
 `
+
+// uploadInventory(input: UploadInventoryInput!): UploadInventoryResponse
+export const uploadInventoryMutation = gql`
+  mutation uploadInventory($input: UploadInventoryInput!) {
+    uploadInventory(input: $input) {
+      id
+      success
+      reason
+    }
+  }
+`
+export type UploadInventoryData = {
+  uploadInventory: {
+    id: string
+    success: boolean
+    reason: string
+  }
+}
+
+export type UploadInventoryVariable = {
+  input: {
+    uploadDatas: UpsertInventoryData[]
+    fileName: string
+  }
+}

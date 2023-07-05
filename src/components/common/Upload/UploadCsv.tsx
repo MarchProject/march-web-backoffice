@@ -47,7 +47,7 @@ export const UploadCsv = <T extends object>({
 
   const validateUploadFiles = (files: File[]) => {
     const type = files.some((e) => e.type !== 'text/csv')
-    const size = files.some((e) => e.size > 4096)
+    const size = files.some((e) => e.size > 4194304)
     handleKey()
     if (type) {
       notification(notificationTypeErrorProp)
@@ -57,7 +57,7 @@ export const UploadCsv = <T extends object>({
       notification(notificationFileSizeErrorProp)
       return
     }
-    if (files.length > 4) {
+    if (files.length > 1) {
       notification(notificationMultiErrorProp)
       return
     }
@@ -108,7 +108,9 @@ export const UploadCsv = <T extends object>({
             <p className="text-primary m-0 text-xl">
               Drag & drop your CSV here
             </p>
-            <p className="text-secondary">or, click to browse (4MB max)</p>
+            <p className="text-secondary">
+              or, click to browse (single file, 4MB max)
+            </p>
           </div>
         </div>
       </div>
@@ -118,7 +120,7 @@ export const UploadCsv = <T extends object>({
         accept=".csv"
         id="csv-upload"
         type="file"
-        multiple={true}
+        multiple={false}
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />

@@ -41,6 +41,7 @@ const ContainerInventory = () => {
     InventoryNames: {
       inventoryNamesData,
       inventoryNamesLoading,
+      setTriggerGetInventoryNames,
     },
   } = useInventoryController()
   return (
@@ -67,6 +68,7 @@ const ContainerInventory = () => {
                     handleSearchInventoryBrand,
                   }}
                   inventoryNamesData={inventoryNamesData}
+                  setTriggerGetInventoryNames={setTriggerGetInventoryNames}
                   inventoryTypeValue={inventoryTypeValue}
                   inventoryBrandValue={inventoryBrandValue}
                   handleFavoriteChange={handleFavoriteChange}

@@ -54,6 +54,7 @@ const DatePickerSelect = ({
           className="!h-[40px] border-solid border-2 border-sky-500"
           disablePast
           mask={mask}
+          // maxDate={new Date('2700-12-31')}
           label={label}
           disabled={disabled}
           acceptRegex={/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/}

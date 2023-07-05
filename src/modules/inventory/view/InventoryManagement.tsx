@@ -47,6 +47,7 @@ type InventoryManagementProps = {
     ) => void
   }
   setTriggerType: (value: boolean) => void
+  setTriggerGetInventoryNames: (value: boolean) => void
   setTriggerBrand: (value: boolean) => void
   handleFavoriteChange: () => void
   favorite: IFavoriteStatus
@@ -60,6 +61,7 @@ export const InventoryManagement = ({
   handleTypeChange,
   handleClearChange,
   handleBrandChange,
+  setTriggerGetInventoryNames,
   inventoryType: {
     inventoriesTypeData,
     inventoriesTypeLoading,
@@ -225,6 +227,7 @@ export const InventoryManagement = ({
               setTriggerBrand={setTriggerBrand}
               inventoriesBrandData={inventoriesBrandData}
               inventoryNamesData={inventoryNamesData}
+              setTriggerGetInventoryNames={setTriggerGetInventoryNames}
             />
           </div>
         </div>

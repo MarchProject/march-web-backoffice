@@ -12,7 +12,7 @@ import { handleGraphqlRequestError } from '../common'
 function createCookiesOptions(): CookieOptions {
   return {
     secure: false,
-    maxAge: 60 * 60 * 10000, //cokkie time
+    maxAge: 60 * 60 * 1000 * 24 * 7, //cokkie time
     httpOnly: false,
     sameSite: 'strict',
   }
