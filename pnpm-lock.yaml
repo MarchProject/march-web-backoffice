@@ -45,6 +45,7 @@ specifiers:
   graphql-request: ^5.2.0
   js-cookie: ^3.0.1
   jsonwebtoken: ^9.0.0
+  loaders.css: ^0.1.2
   lodash: ^4.17.21
   march-web-backoffice: 'link:'
   next: ^12.1.0
@@ -57,6 +58,7 @@ specifiers:
   react-dom: 18.2.0
   react-hook-form: ^7.35.0
   react-icons: ^4.8.0
+  react-loaders: ^3.0.1
   subscriptions-transport-ws: ^0.11.0
   tailwindcss: ^3.2.7
   ts-node: ^10.9.1
@@ -101,6 +103,7 @@ dependencies:
   graphql-request: 5.2.0_graphql@16.7.1
   js-cookie: 3.0.5
   jsonwebtoken: 9.0.0
+  loaders.css: 0.1.2
   lodash: 4.17.21
   march-web-backoffice: 'link:'
   next: 12.3.4_fnbpu7bt7txri2xsmgcowgcjwq
@@ -112,6 +115,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.45.1_react@18.2.0
   react-icons: 4.10.1_react@18.2.0
+  react-loaders: 3.0.1_react@18.2.0
   subscriptions-transport-ws: 0.11.0_graphql@16.7.1
   ts-node: 10.9.1_alpjt73dvgv6kni625hu7f2l4m
   typescript: 4.9.5
@@ -4967,6 +4971,10 @@ packages:
       json5: 1.0.2
     dev: true
 
+  /loaders.css/0.1.2:
+    resolution: {integrity: sha512-Rhowlq24ey1VOeor+3wYOt9+MjaxBOJm1u4KlQgNC3+0xJ0LS4wq4iG57D/BPzvuD/7HHDGQOWJ+81oR2EI9bQ==}
+    dev: false
+
   /locate-path/5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
     engines: {node: '>=8'}
@@ -5830,6 +5838,16 @@ packages:
 
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: false
+
+  /react-loaders/3.0.1_react@18.2.0:
+    resolution: {integrity: sha512-4igMNqs9Fb3d4Z+0UHIGQNJsw/37gX0nUO8QxupnEKRn1dtyYC1LGwk5GuaoDciMQCQc/MmPwb4Fn6ZfdoX1FQ==}
+    peerDependencies:
+      prop-types: '>=15.6.0'
+      react: '>=15'
+    dependencies:
+      classnames: 2.3.2
+      react: 18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:

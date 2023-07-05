@@ -8,14 +8,13 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { AutocompleteSelectAsyncFrom } from '@/components/common/Autocomplete/AutocompleteSelect'
 import { max, onlyNumber } from '@/utils/common/normalizeInput'
 import { DatePickerSelectForm } from '@/components/common/DatePicker/DatePicker'
-import { dateFormat } from '@/core/common'
 import ButtonForm from '@/components/common/Button/button'
 import { inventoryRoute } from '@/router/inventory'
-import AlertToast from '@/components/common/Alert/Alert'
 import { warningDelete } from '@/constant'
 import { EnumModeEditorPage } from '@/modules/interface'
 import { MdFavorite } from 'react-icons/md'
 import { CheckBoxForm } from '@/components/common/Checkbox/CheckBox'
+import AlertToast from '@/components/common/Alert/alert'
 interface IEditorInventoryPage {
   mode: EnumModeEditorPage
 }
