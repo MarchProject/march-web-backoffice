@@ -1,17 +1,9 @@
-import { InventoryNames, getInventoryNamesQuery } from '@/core/gql/inventory'
-import { InventoryNamesClass } from '@/core/model/inventory'
 import { noop } from '@/utils/common/noop'
 import { ApolloError, DocumentNode, useLazyQuery } from '@apollo/client'
 import { plainToInstance } from 'class-transformer'
-import { useCallback, useEffect, useState } from 'react'
-
-// interface IOptionUseLazyQuery<U> {
-//   onSuccess: (data: U) => void
-//   onError: () => void
-// }
+import { useCallback, useEffect } from 'react'
 
 interface IUseLazyQueryData<T> {
-  // options?: IOptionUseLazyQuery<U>
   queryNode: DocumentNode
   classConstructor: new () => any
   onSuccess?: (data?: T) => void

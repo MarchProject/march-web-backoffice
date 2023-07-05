@@ -1,5 +1,5 @@
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
-import { useLazyQueryData } from '@/core/adapter/query/inventory/inventory'
+import { useLazyQueryData } from '@/core/adapter/hook/useLazyQueryData'
 import {
   GetInventoriesBrandData,
   GetInventoriesBrandVariables,
@@ -308,7 +308,7 @@ const useQueryInventory = ({
   const [brand, setBrand] = useState<BrandType[]>([])
   const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
   const [inventoriesData, setInventoriesData] = useState<InventoriesResponse>()
-  
+
   const onSuccess = useCallback((data) => {
     setInventoriesData(data)
   }, [])

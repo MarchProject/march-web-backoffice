@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer'
 import { Model } from './model'
 
 export class InventoryNamesClass {
@@ -24,13 +25,20 @@ export class BrandType {
   description: string
   createdBy: string
 }
-
 export class InventoriesResponse {
-  inventories: Inventory[]
+  _inventories: Inventory[]
   pageNo: number
   pageLimit: number
   totalPage: number
   totalRow: number
+
+  get inventories(): Inventory[] {
+    return this._inventories
+  }
+
+  set inventories(inventories: Inventory[]) {
+    this._inventories = plainToInstance(Inventory, inventories)
+  }
 }
 
 export class SplitShop {
