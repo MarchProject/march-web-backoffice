@@ -12,7 +12,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 interface IUseLazyQueryData<T> {
   // options?: IOptionUseLazyQuery<U>
-  defaultValue: T
   queryNode: DocumentNode
   classConstructor: new () => any
   onSuccess?: (data?: T) => void
@@ -22,11 +21,9 @@ interface IUseLazyQueryData<T> {
 export const useLazyQueryData = <T, U extends Record<string, any>, K = any>({
   onSuccess = noop,
   onError = noop,
-  defaultValue = null,
   queryNode,
   classConstructor,
 }: IUseLazyQueryData<T>) => {
-  const [dataTranform, setDataTranform] = useState<T>(defaultValue)
   const [triggerMutation, { data, error, loading }] = useLazyQuery<U, K>(
     queryNode,
   )
@@ -42,7 +39,6 @@ export const useLazyQueryData = <T, U extends Record<string, any>, K = any>({
     if (data) {
       const property = Object.keys(data)[0]
       onSuccess(plainToInstance(classConstructor, data[property]))
-      setDataTranform(plainToInstance(classConstructor, data[property]))
     }
   }, [classConstructor, data, onSuccess])
 
@@ -53,7 +49,7 @@ export const useLazyQueryData = <T, U extends Record<string, any>, K = any>({
   }, [error, onError])
 
   return {
-    data: dataTranform,
+    data,
     error,
     loading,
     trigger: triggerHandle,
