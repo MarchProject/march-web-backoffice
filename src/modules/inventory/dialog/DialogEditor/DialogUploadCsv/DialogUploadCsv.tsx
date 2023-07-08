@@ -4,7 +4,6 @@ import ButtonForm from '../../../../../components/common/Button/button'
 import { dataTemplateCsv, headersTemplateCsv } from '@/constant/csvData'
 import DownLoadCsv from '@/components/common/DownLoad/DownLoadCsv'
 import { UploadCsvView } from './view/UploadCsvView'
-import { GetInventoryTypes } from '@/core/gql/inventory'
 import { useControllerUplaod } from './controller'
 import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
 interface IDialogUploadCsv {

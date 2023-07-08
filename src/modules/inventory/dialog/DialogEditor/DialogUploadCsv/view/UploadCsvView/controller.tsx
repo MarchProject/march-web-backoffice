@@ -1,11 +1,8 @@
 import { IDataTemplateCsv, IDataTemplateCsvValidate } from '@/constant/csvData'
-import { useNotificationContext } from '@/context/notification'
+// import { useNotificationContext } from '@/context/notification'
 import { ParseResult } from 'papaparse'
 import { useEffect, useState } from 'react'
 import { tranfromCsvFile } from '../../../../../dto/upload.dto'
-import {
-  GetInventoryTypes,
-} from '@/core/gql/inventory'
 import { validateExpiryDate } from './validate/expiryDateValidate'
 import { ICompleteValues, IValidatedValues } from './interface'
 import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
@@ -23,7 +20,7 @@ export const useControllerUploadCsvView = ({
   inventoriesBrandData,
   uploadHandle,
 }: IUseControllerUploadCsvViewProps) => {
-  const { notification } = useNotificationContext()
+  // const { notification } = useNotificationContext()
   const { onChangeFile, onCompleteValue, validatedValues, removeItem } =
     useHandleUploadCsv({
       inventoryNamesData,

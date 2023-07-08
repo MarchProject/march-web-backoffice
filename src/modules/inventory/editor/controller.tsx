@@ -66,14 +66,14 @@ export const useEditorInventoryController = ({ idInventory }) => {
     inventoriesTypeDataError,
     inventoriesTypeLoading,
     handleSearchInventoryType,
-  } = useQueryInventoryType(triggerType)
+  } = useQueryInventoryType(triggerType, notification)
 
   const {
     inventoriesBrandData,
     inventoriesBrandDataError,
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
-  } = useQueryInventoryBrand(triggerBrand)
+  } = useQueryInventoryBrand(triggerBrand, notification)
 
   const { inventory } = useQueryInventory(idInventory, reset)
   const { deleteInventoryHandle } = useDeleteInventory({

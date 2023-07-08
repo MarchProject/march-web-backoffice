@@ -12,7 +12,7 @@ import {
 } from '@apollo/client/utilities'
 // import { WebSocketLink } from '@apollo/client/link/ws'
 import * as clientConfig from '../../config/client'
-import { ErrorHandler, ErrorResponse, onError } from '@apollo/client/link/error'
+import { onError } from '@apollo/client/link/error'
 import { GraphQLError } from 'graphql'
 import { tokenExpireMutation } from '../gql/auth'
 import router from 'next/router'
@@ -57,7 +57,6 @@ export async function initApollo(uri?: string) {
 
   const errorLink = onError((errorHandler: any) => {
     const { graphQLErrors, networkError, operation, forward } = errorHandler
-    console.log({ graphQLErrors })
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
         switch (err.extensions.exception?.message) {
@@ -93,7 +92,7 @@ export async function initApollo(uri?: string) {
                     })
 
                     const newHeaders = operation.getContext().headers
-                    console.log({ newHeaders })
+                    // console.log({ newHeaders })
                     // Retry the failed request
                     const subscriber = {
                       next: observer.next.bind(observer),
@@ -184,7 +183,6 @@ export async function initApollo(uri?: string) {
   const refreshToken = async () => {
     const refresh_token = clientConfig.getRefreshToken()
     const authApiUrl = clientConfig.getAuthApiUrl()
-    console.log({ authApiUrl })
     const graphQLClient = new GraphQLClient(authApiUrl, {
       // headers: {
       //   authorization: `Bearer ${ctx.accessToken}`,
@@ -192,19 +190,19 @@ export async function initApollo(uri?: string) {
     })
     try {
       try {
-        console.log('first')
         const response = await graphQLClient.request<{
           tokenExpire: {
             access_token: string
           }
         }>(tokenExpireMutation, { refreshToken: refresh_token })
-        console.log({ response })
 
         const accessToken = response?.tokenExpire?.access_token
         localStorage.setItem('march.backOffice.accessToken', accessToken || '')
         return accessToken
       } catch (error) {
-        console.log('second', { error })
+        console.log('error', { error })
+        clientConfig.removeAccessToken()
+        clientConfig.removeRefreshToken()
       }
 
       // const refreshResolverResponse = await client.mutate<{

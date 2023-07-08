@@ -55,7 +55,7 @@ const useSignInState = ({ notification }) => {
 
   useEffect(() => {
     if (error) {
-      console.log({ errorSignIn: error })
+
       notification(notificationErrorProp)
     }
   }, [error, notification])
@@ -66,7 +66,6 @@ const useSignInState = ({ notification }) => {
       refresh_token,
     })
     setDataSet(response.data)
-    console.log({ response })
   }
   useEffect(() => {
     const check = clientConfig.getAuthFailed()
