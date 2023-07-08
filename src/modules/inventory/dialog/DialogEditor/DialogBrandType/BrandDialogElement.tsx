@@ -1,12 +1,19 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
 import { GetInventoryTypes } from '@/core/gql/inventory'
-import { List, ListSubheader, ListItem, ListItemText } from '@mui/material'
-import { useEffect, useState } from 'react'
+import {
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+  InputAdornment,
+} from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { MdDeleteForever } from 'react-icons/md'
-import { RiEdit2Line } from 'react-icons/ri'
+import { RiEdit2Line, RiSearchLine } from 'react-icons/ri'
 import { ModeDialog } from '../controller'
+import { debounce } from 'lodash'
 
 const BrandDialogElement = ({
   inventoriesBrandData,
@@ -18,7 +25,21 @@ const BrandDialogElement = ({
   upsertInventoryBrandLoading,
   deleteBrandHandle,
   updateBrandHandle,
+  handleSearchInventoryBrand,
 }) => {
+  const searchFieldRef = useRef(null)
+
+  const handleReset = () => {
+    if (searchFieldRef.current) {
+      searchFieldRef.current.value = ''
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      handleReset()
+    }
+  }, [])
   const [inventoryTypeData, setInventoriyTypeData] =
     useState<GetInventoryTypes>()
 
@@ -37,6 +58,28 @@ const BrandDialogElement = ({
     <>
       {editType === ModeDialog.VIEW ? (
         <BlockUi tag="div" blocking={deleteInventoryBrandLoading}>
+          <div className="flex justify-end mb-[10px]">
+            <Input
+              inputRef={searchFieldRef}
+              classNames="max-w-[220px] w-[100%] min-w-[220px]"
+              id="searchItems"
+              variant="outlined"
+              placeholder="Search Brand here"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <RiSearchLine />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={debounce((e) => {
+                handleSearchInventoryBrand(undefined, e.target.value)
+              }, 1000)}
+              type={'text'}
+              name="searchItems"
+              size="small"
+            />
+          </div>
           <List
             subheader={
               <div className="flex justify-between pr-2">

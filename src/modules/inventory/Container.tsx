@@ -3,7 +3,6 @@ import { InventoryManagement } from './view/InventoryManagement'
 import DataTableMarch from '@/components/common/Table/table'
 import { columns } from './view/column'
 import { useInventoryController } from './controller'
-import BlockUi from 'react-block-ui'
 
 const ContainerInventory = () => {
   const {
@@ -40,12 +39,10 @@ const ContainerInventory = () => {
     favoriteInventoryHandle,
     InventoryNames: {
       inventoryNamesData,
-      inventoryNamesLoading,
       setTriggerGetInventoryNames,
     },
   } = useInventoryController()
   return (
-    <BlockUi tag="div" blocking={inventoryLoading || inventoryNamesLoading}>
       <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
         <div className="p-[15px]">
           <div className="bg-white m-0 rounded-lg " style={{ height: '100%' }}>
@@ -93,7 +90,6 @@ const ContainerInventory = () => {
           </div>
         </div>
       </div>
-    </BlockUi>
   )
 }
 

@@ -6,14 +6,14 @@ import DownLoadCsv from '@/components/common/DownLoad/DownLoadCsv'
 import { UploadCsvView } from './view/UploadCsvView'
 import { GetInventoryTypes } from '@/core/gql/inventory'
 import { useControllerUplaod } from './controller'
-import { InventoryNamesClass } from '@/core/model/inventory'
+import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
 interface IDialogUploadCsv {
   open: boolean
   handleOpen: () => void
   handleClose: () => void
   setTriggerGetInventoryNames: (value: boolean) => void
-  inventoriesTypeData: GetInventoryTypes[]
-  inventoriesBrandData: GetInventoryTypes[]
+  inventoriesTypeData: InventoryType[]
+  inventoriesBrandData: BrandType[]
   inventoryNamesData: InventoryNamesClass[]
 }
 

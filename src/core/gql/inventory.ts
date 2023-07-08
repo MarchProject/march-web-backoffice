@@ -118,14 +118,14 @@ export type GetInventoryTypes = {
   updatedAt: string
 }
 export type GetInventoriesTypeVariables = {
-  params: {
-    search: string
-    limit: number
-    offset: number
+  params?: {
+    search?: string
+    limit?: number
+    offset?: number
   }
 }
 export const getInventoriesTypeQuery = gql`
-  query getInventoryTypes($params: ParamsInventoryType!) {
+  query getInventoryTypes($params: ParamsInventoryType) {
     getInventoryTypes(params: $params) {
       id
       name
@@ -152,15 +152,15 @@ export type GetInventoryBrand = {
   updatedAt: string
 }
 export type GetInventoriesBrandVariables = {
-  params: {
-    search: string
-    limit: number
-    offset: number
+  params?: {
+    search?: string
+    limit?: number
+    offset?: number
   }
 }
 
 export const getInventoriesBrandQuery = gql`
-  query getBrandTypes($params: ParamsInventoryBrand!) {
+  query getBrandTypes($params: ParamsInventoryBrand) {
     getBrandTypes(params: $params) {
       id
       name

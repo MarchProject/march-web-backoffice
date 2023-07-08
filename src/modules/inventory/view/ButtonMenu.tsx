@@ -13,6 +13,8 @@ export const ButtonMenu = ({
   inventoriesBrandData,
   inventoryNamesData,
   setTriggerGetInventoryNames,
+  handleSearchInventoryType,
+  handleSearchInventoryBrand,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -54,6 +56,8 @@ export const ButtonMenu = ({
           inventoriesBrandData={inventoriesBrandData}
           inventoryNamesData={inventoryNamesData}
           setTriggerGetInventoryNames={setTriggerGetInventoryNames}
+          handleSearchInventoryType={handleSearchInventoryType}
+          handleSearchInventoryBrand={handleSearchInventoryBrand}
         />
       </Menu>
     </>

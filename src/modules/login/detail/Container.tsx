@@ -11,7 +11,7 @@ const ContainerLogin = () => {
   } = useLoginController()
 
   return (
-    <BlockUi tag="div" blocking={signInLoading}>
+    <BlockUi tag="div" blocking={false}>
       <div className="bg-login">
         <div className="container mx-auto">
           <div className="layout-loginForm">

@@ -12,11 +12,12 @@ import {
 } from '@apollo/client/utilities'
 // import { WebSocketLink } from '@apollo/client/link/ws'
 import * as clientConfig from '../../config/client'
-import { onError } from '@apollo/client/link/error'
+import { ErrorHandler, ErrorResponse, onError } from '@apollo/client/link/error'
 import { GraphQLError } from 'graphql'
 import { tokenExpireMutation } from '../gql/auth'
 import router from 'next/router'
 import Cookies from 'js-cookie'
+import { GraphQLClient } from 'graphql-request'
 /**
  * working on cient-side only
  */
@@ -54,18 +55,18 @@ export async function initApollo(uri?: string) {
   //   },
   // })
 
-  const errorLink = onError(
-    ({ graphQLErrors, networkError, operation, forward }: any) => {
-      if (graphQLErrors) {
-        for (let err of graphQLErrors) {
-          switch (err.extensions.exception?.message) {
-            case 'Unauthorized':
-              // ignore 401 error for a refresh request
-              if (operation.operationName === 'tokenExpire') return
+  const errorLink = onError((errorHandler: any) => {
+    const { graphQLErrors, networkError, operation, forward } = errorHandler
+    console.log({ graphQLErrors })
+    if (graphQLErrors) {
+      for (let err of graphQLErrors) {
+        switch (err.extensions.exception?.message) {
+          case 'Unauthorized':
+            // ignore 401 error for a refresh request
+            if (operation.operationName === 'tokenExpire') return
 
-              const observable = new Observable<
-                FetchResult<Record<string, any>>
-              >((observer) => {
+            const observable = new Observable<FetchResult<Record<string, any>>>(
+              (observer) => {
                 // used an annonymous function for using an async function
                 ;(async () => {
                   try {
@@ -112,16 +113,16 @@ export async function initApollo(uri?: string) {
                     // observer.error(err)
                   }
                 })()
-              })
+              },
+            )
 
-              return observable
-          }
+            return observable
         }
       }
+    }
 
-      if (networkError) console.log(`[Network error]: ${networkError}`)
-    },
-  )
+    if (networkError) console.log(`[Network error]: ${networkError}`)
+  })
 
   const httpLink = new HttpLink({
     uri: _uri,
@@ -167,7 +168,7 @@ export async function initApollo(uri?: string) {
     defaultOptions: {
       watchQuery: {
         fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
+        errorPolicy: 'all',
       },
       query: {
         fetchPolicy: 'no-cache',
@@ -182,21 +183,40 @@ export async function initApollo(uri?: string) {
 
   const refreshToken = async () => {
     const refresh_token = clientConfig.getRefreshToken()
+    const authApiUrl = clientConfig.getAuthApiUrl()
+    console.log({ authApiUrl })
+    const graphQLClient = new GraphQLClient(authApiUrl, {
+      // headers: {
+      //   authorization: `Bearer ${ctx.accessToken}`,
+      // },
+    })
     try {
-      const refreshResolverResponse = await client.mutate<{
-        tokenExpire: {
-          access_token: string
-        }
-      }>({
-        variables: {
-          refreshToken: refresh_token,
-        },
-        mutation: tokenExpireMutation,
-      })
+      try {
+        console.log('first')
+        const response = await graphQLClient.request<{
+          tokenExpire: {
+            access_token: string
+          }
+        }>(tokenExpireMutation, { refreshToken: refresh_token })
+        console.log({ response })
 
-      const accessToken = refreshResolverResponse.data?.tokenExpire.access_token
-      localStorage.setItem('march.backOffice.accessToken', accessToken || '')
-      return accessToken
+        const accessToken = response?.tokenExpire?.access_token
+        localStorage.setItem('march.backOffice.accessToken', accessToken || '')
+        return accessToken
+      } catch (error) {
+        console.log('second', { error })
+      }
+
+      // const refreshResolverResponse = await client.mutate<{
+      //   tokenExpire: {
+      //     access_token: string
+      //   }
+      // }>({
+      //   variables: {
+      //     refreshToken: refresh_token,
+      //   },
+      //   mutation: tokenExpireMutation,
+      // })
     } catch (err) {
       console.log({ err })
       // localStorage.clear()

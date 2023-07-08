@@ -54,7 +54,10 @@ const useSignInState = ({ notification }) => {
   >(signinMutation)
 
   useEffect(() => {
-    if (error) notification(notificationErrorProp)
+    if (error) {
+      console.log({ errorSignIn: error })
+      notification(notificationErrorProp)
+    }
   }, [error, notification])
 
   const signAxios = async ({ access_token, refresh_token }) => {

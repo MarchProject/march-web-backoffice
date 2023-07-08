@@ -4,21 +4,21 @@ import { ApolloError, DocumentNode, useLazyQuery } from '@apollo/client'
 import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect } from 'react'
 
-interface IUseLazyQueryData<T> {
+interface IUseLazyQueryData {
   queryNode: DocumentNode
   classConstructor: new () => any
-  onSuccess?: (data?: T) => void
+  onSuccess?: (data?: any) => void
   onError?: (error?: ApolloError) => void
   globalLoading?: boolean
 }
 
-export const useLazyQueryData = <T, U, K = any>({
+export const useLazyQueryDataOld = <U, K = any>({
   onSuccess = noop,
   onError = noop,
   queryNode,
   classConstructor,
   globalLoading = true,
-}: IUseLazyQueryData<T>) => {
+}: IUseLazyQueryData) => {
   const { openLoading, closeLoading } = useLoadingContext()
   const [triggerMutation, { data, error, loading }] = useLazyQuery<U, K>(
     queryNode,
@@ -30,8 +30,9 @@ export const useLazyQueryData = <T, U, K = any>({
     (input?: K) => {
       _openLoading()
       triggerMutation({ variables: input })
+      _closeLoading()
     },
-    [_openLoading, triggerMutation],
+    [_closeLoading, _openLoading, triggerMutation],
   )
 
   useEffect(() => {
@@ -45,8 +46,9 @@ export const useLazyQueryData = <T, U, K = any>({
   useEffect(() => {
     if (error) {
       onError(error)
+      _closeLoading()
     }
-  }, [error, onError])
+  }, [_closeLoading, error, onError])
 
   return {
     data,

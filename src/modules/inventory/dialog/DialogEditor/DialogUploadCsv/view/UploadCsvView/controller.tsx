@@ -8,12 +8,12 @@ import {
 } from '@/core/gql/inventory'
 import { validateExpiryDate } from './validate/expiryDateValidate'
 import { ICompleteValues, IValidatedValues } from './interface'
-import { InventoryNamesClass } from '@/core/model/inventory'
+import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
 
 interface IUseControllerUploadCsvViewProps {
   inventoryNamesData: InventoryNamesClass[]
-  inventoriesTypeData: GetInventoryTypes[]
-  inventoriesBrandData: GetInventoryTypes[]
+  inventoriesTypeData: InventoryType[]
+  inventoriesBrandData: BrandType[]
   uploadHandle: (value: IValidatedValues[]) => void
 }
 
@@ -41,8 +41,8 @@ export const useControllerUploadCsvView = ({
 
 const validateDataCsv = (
   result: ICompleteValues,
-  inventoriesTypeData: GetInventoryTypes[],
-  inventoriesBrandData: GetInventoryTypes[],
+  inventoriesTypeData: InventoryType[],
+  inventoriesBrandData: BrandType[],
   inventoryNamesData: InventoryNamesClass[],
 ) => {
   const _values = result.data

@@ -7,11 +7,11 @@ import { BsFiletypeCsv } from 'react-icons/bs'
 import { TiDelete } from 'react-icons/ti'
 import { IValidatedValues } from './interface'
 import { capitalizeFirstLetter } from '@/utils/common/utils'
-import { InventoryNamesClass } from '@/core/model/inventory'
+import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
 
 interface IUploadCsvView {
-  inventoriesTypeData: GetInventoryTypes[]
-  inventoriesBrandData: GetInventoryTypes[]
+  inventoriesTypeData: InventoryType[]
+  inventoriesBrandData: BrandType[]
   uploadHandle: (value: IValidatedValues[]) => void
   inventoryNamesData: InventoryNamesClass[]
 }

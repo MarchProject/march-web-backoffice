@@ -2,21 +2,35 @@ import ButtonForm from '@/components/common/Button/button'
 import { DialogM } from '@/components/common/Dialog/DialogM'
 import React from 'react'
 import { ModeDialog, TypeDialog, useDialogController } from './controller'
-import { MenuItem } from '@mui/material'
+import { AutocompleteInputChangeReason, MenuItem } from '@mui/material'
 import { GetInventoryTypes } from '@/core/gql/inventory'
 import TypeDialogElement from './DialogBrandType/TypeDialogElement'
 import { warningDelete } from '@/constant'
 import BrandDialogElement from './DialogBrandType/BrandDialogElement'
 import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
-import { InventoryNamesClass } from '@/core/model/inventory'
+import {
+  BrandType,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
-  inventoriesTypeData: GetInventoryTypes[]
+  inventoriesTypeData: InventoryType[]
   setTriggerBrand: (e: any) => void
   setTriggerGetInventoryNames: (e: boolean) => void
-  inventoriesBrandData: GetInventoryTypes[]
+  inventoriesBrandData: BrandType[]
   inventoryNamesData: InventoryNamesClass[]
+  handleSearchInventoryType: (
+    event: React.SyntheticEvent,
+    value: string,
+    reason: AutocompleteInputChangeReason,
+  ) => void
+  handleSearchInventoryBrand: (
+    event: React.SyntheticEvent,
+    value: string,
+    reason: AutocompleteInputChangeReason,
+  ) => void
 }
 
 const DialogEditor = ({
@@ -25,7 +39,9 @@ const DialogEditor = ({
   setTriggerBrand,
   inventoriesBrandData,
   inventoryNamesData,
-  setTriggerGetInventoryNames
+  setTriggerGetInventoryNames,
+  handleSearchInventoryType,
+  handleSearchInventoryBrand
 }: IDialogEditor) => {
   const {
     deleteTypeHandle: { deleteInventoryTypeLoading, deleteTypeHandle },
@@ -80,6 +96,7 @@ const DialogEditor = ({
                   upsertInventoryTypeLoading={upsertInventoryTypeLoading}
                   deleteTypeHandle={deleteTypeHandle}
                   updateTypeHandle={updateTypeHandle}
+                  handleSearchInventoryType={handleSearchInventoryType}
                 />
               ) : (
                 <BrandDialogElement
@@ -92,6 +109,7 @@ const DialogEditor = ({
                   upsertInventoryBrandLoading={upsertInventoryBrandLoading}
                   deleteBrandHandle={deleteBrandHandle}
                   updateBrandHandle={updateBrandHandle}
+                  handleSearchInventoryBrand={handleSearchInventoryBrand}
                 />
               )}
               <p className="text-primary text-xs mb-0 pb-0">{warningDelete}</p>

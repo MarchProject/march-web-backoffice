@@ -28,7 +28,7 @@ type InventoryManagementProps = {
   handleBrandChange: (event, value, reason) => void
   inventoryType: {
     setInventoryType?: (value: string) => void
-    inventoriesTypeData: GetInventoryTypes[]
+    inventoriesTypeData: InventoryType[]
     inventoriesTypeLoading: boolean
     handleSearchInventoryType: (
       event: React.SyntheticEvent,
@@ -38,7 +38,7 @@ type InventoryManagementProps = {
   }
   inventoryBrand: {
     setInventoryBrand?: (value: string) => void
-    inventoriesBrandData: GetInventoryTypes[]
+    inventoriesBrandData: BrandType[]
     inventoriesBrandLoading: boolean
     handleSearchInventoryBrand: (
       event: React.SyntheticEvent,
@@ -228,6 +228,8 @@ export const InventoryManagement = ({
               inventoriesBrandData={inventoriesBrandData}
               inventoryNamesData={inventoryNamesData}
               setTriggerGetInventoryNames={setTriggerGetInventoryNames}
+              handleSearchInventoryType={handleSearchInventoryType}
+              handleSearchInventoryBrand={handleSearchInventoryBrand}
             />
           </div>
         </div>

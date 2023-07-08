@@ -1,16 +1,13 @@
 // import { InventoriesData } from '@/core/gql/inventory'
 import { Tooltip } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
-import { CSSProperties, useState } from 'react'
+import { CSSProperties } from 'react'
 import { RiEdit2Line } from 'react-icons/ri'
 import router from 'next/router'
 import { inventoryUpdateRoute, inventoryViewRoute } from '@/router/inventory'
 import { AiOutlineEye } from 'react-icons/ai'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 
-// type InventoriesDataColumn = {
-//   row: InventoriesData
-// }
 const styleColumns: CSSProperties = {
   textOverflow: 'ellipsis',
   overflow: 'hidden',
