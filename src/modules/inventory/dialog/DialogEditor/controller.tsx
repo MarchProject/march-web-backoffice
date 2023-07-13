@@ -10,18 +10,25 @@ import {
   UpsertBrandType,
   deleteBrandTypeMutation,
   DeleteBrandData,
-} from '@/core/gql/inventory'
+} from '@/core/gql/inventory/inventory'
 import { EnumErrorType } from '@/core/utils/ErrorType'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   notificationTypeUsedDeleteErrorProp,
   notificationDeleteErrorProp,
   notificationDeleteSuccessProp,
   notificationUpdateErrorProp,
   notificationUpdateSuccessProp,
+  notificationTrashFetchErrorProp,
 } from './notification'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
-import { MutateKey } from '@/core/adapter/interface'
+import { MutateKey, QueryKey } from '@/core/adapter/interface'
+import { useLazyQueryData } from '@/core/adapter/hook/useLazyData'
+import {
+  GetInventoryAllDeletedData,
+  getInventoryAllDeletedQuery,
+} from '@/core/gql/inventory/inventoryTrash'
+import { InventoryTrash } from '@/core/model/inventory'
 
 export enum TypeDialog {
   TYPE = 'type',
@@ -34,7 +41,14 @@ export enum ModeDialog {
   VIEW = 'view',
 }
 
-export const useDialogController = ({ setTriggerType, setTriggerBrand }) => {
+export const useDialogController = ({
+  setTriggerType,
+  setTriggerBrand,
+  setTriggerInventory,
+}) => {
+  const triggerInventory = useCallback(() => {
+    setTriggerInventory((e: boolean) => !e)
+  }, [setTriggerInventory])
   const triggerType = useCallback(() => {
     setTriggerType((e: boolean) => !e)
   }, [setTriggerType])
@@ -57,35 +71,47 @@ export const useDialogController = ({ setTriggerType, setTriggerBrand }) => {
     handleOpenBrand,
     handleTypeDialogCreate,
   } = useHandleDialogMain()
-
+  const { trashData, setTriggerTrash } = useQueryTrash({ notification })
   const { deleteInventoryType, deleteInventoryTypeLoading, deleteTypeHandle } =
     useDeleteTypeHandle({
       notification,
       triggerType,
       setEditType,
+      setTriggerTrash,
     })
   const { deleteBrandType, deleteInventoryBrandLoading, deleteBrandHandle } =
     useDeleteBrandHandle({
       notification,
       triggerBrand,
       setEditType,
+      setTriggerTrash,
     })
   const {
     upsertInventoryType,
     upsertInventoryTypeData,
     upsertInventoryTypeLoading,
     updateTypeHandle,
-  } = useUpdateTypeHandle({ notification, triggerType, setEditType })
+  } = useUpdateTypeHandle({
+    notification,
+    triggerType,
+    setEditType,
+  })
 
   const {
     upsertBrandType,
     updateBrandHandle,
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
-  } = useUpdateBransHandle({ notification, triggerBrand, setEditType })
+  } = useUpdateBransHandle({
+    notification,
+    triggerBrand,
+    setEditType,
+  })
 
   const { openDialogCsv, handleOpenCsv, handleCloseCsv } = useHandleDialogCsv()
-
+  const { openDialogTrash, handleCloseTrash, handleOpenTrash } =
+    useHandleDialogTrash()
+  const {} = useTrashHandle({ triggerInventory, triggerBrand, triggerType })
   return {
     deleteTypeHandle: {
       deleteInventoryType,
@@ -126,10 +152,19 @@ export const useDialogController = ({ setTriggerType, setTriggerBrand }) => {
       handleOpenBrand,
       handleTypeDialogCreate,
     },
+    dialogTrash: { openDialogTrash, handleCloseTrash, handleOpenTrash },
+    trashHanddle: {
+      trashData,
+    },
   }
 }
 
-const useDeleteTypeHandle = ({ notification, triggerType, setEditType }) => {
+const useDeleteTypeHandle = ({
+  notification,
+  triggerType,
+  setEditType,
+  setTriggerTrash,
+}) => {
   const {
     trigger: deleteInventoryType,
     loading,
@@ -143,6 +178,7 @@ const useDeleteTypeHandle = ({ notification, triggerType, setEditType }) => {
       notification(notificationDeleteSuccessProp('type'))
       setEditType(ModeDialog.VIEW)
       triggerType()
+      setTriggerTrash()
     },
     onError: (error) => {
       if (error === EnumErrorType.BADHAVETYPE) {
@@ -221,7 +257,12 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
   }
 }
 
-const useDeleteBrandHandle = ({ notification, triggerBrand, setEditType }) => {
+const useDeleteBrandHandle = ({
+  notification,
+  triggerBrand,
+  setEditType,
+  setTriggerTrash,
+}) => {
   const {
     trigger: deleteBrandType,
     loading,
@@ -235,6 +276,7 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, setEditType }) => {
       notification(notificationDeleteSuccessProp('brand'))
       setEditType(ModeDialog.VIEW)
       triggerBrand()
+      setTriggerTrash()
     },
     onError: (error) => {
       if (error === EnumErrorType.BADHAVETYPE) {
@@ -367,4 +409,64 @@ const useHandleDialogMain = () => {
     handleOpenBrand,
     handleTypeDialogCreate,
   }
+}
+
+const useHandleDialogTrash = () => {
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  return {
+    openDialogTrash: open,
+    handleOpenTrash: handleOpen,
+    handleCloseTrash: handleClose,
+  }
+}
+
+const useQueryTrash = ({ notification }) => {
+  const [trashData, setTrashData] = useState<InventoryTrash>(null)
+  const [trigger, setTrigger] = useState(true)
+  const { trigger: getInventoryAllDeleted } = useLazyQueryData<
+    QueryKey.inventory,
+    GetInventoryAllDeletedData,
+    any
+  >(
+    QueryKey.inventory,
+    (tranform, data) => {
+      return tranform.inventoryTrash(data)
+    },
+    getInventoryAllDeletedQuery,
+    {
+      onSuccess: (data) => {
+        setTrashData(data)
+      },
+      onError: () => {
+        notification(notificationTrashFetchErrorProp)
+      },
+      globalLoading: true,
+    },
+  )
+
+  const getInventoryTrashHandle = useCallback(() => {
+    getInventoryAllDeleted()
+  }, [getInventoryAllDeleted])
+
+  useEffect(() => {
+    getInventoryTrashHandle()
+  }, [getInventoryTrashHandle, trigger])
+
+  return {
+    trashData,
+    setTriggerTrash: setTrigger,
+  }
+}
+
+const useTrashHandle = ({ triggerInventory, triggerBrand, triggerType }) => {
+  console.log({ triggerInventory, triggerBrand, triggerType })
+  //todo trash  recoveryHardDeleted
+  return {}
 }

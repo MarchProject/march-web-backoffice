@@ -1,5 +1,5 @@
 import { Input } from '@/components/common/Input'
-import { IFavoriteStatus } from '@/core/gql/inventory'
+import { IFavoriteStatus } from '@/core/gql/inventory/inventory'
 import { styleIconMarch } from '@/utils/style/utill'
 import { AutocompleteInputChangeReason, InputAdornment } from '@mui/material'
 import { debounce } from 'lodash'
@@ -49,6 +49,7 @@ type InventoryManagementProps = {
   setTriggerType: (value: boolean) => void
   setTriggerGetInventoryNames: (value: boolean) => void
   setTriggerBrand: (value: boolean) => void
+  setTriggerInventory: (value: boolean) => void
   handleFavoriteChange: () => void
   favorite: IFavoriteStatus
   inventoryNamesData: InventoryNamesClass[]
@@ -74,6 +75,7 @@ export const InventoryManagement = ({
   },
   setTriggerType,
   setTriggerBrand,
+  setTriggerInventory,
   handleFavoriteChange,
   favorite,
   inventoryNamesData,
@@ -225,6 +227,7 @@ export const InventoryManagement = ({
               setTriggerType={setTriggerType}
               inventoriesTypeData={inventoriesTypeData}
               setTriggerBrand={setTriggerBrand}
+              setTriggerInventory={setTriggerInventory}
               inventoriesBrandData={inventoriesBrandData}
               inventoryNamesData={inventoryNamesData}
               setTriggerGetInventoryNames={setTriggerGetInventoryNames}

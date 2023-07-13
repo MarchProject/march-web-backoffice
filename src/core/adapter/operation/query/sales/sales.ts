@@ -1,4 +1,4 @@
-import { uploadInventoryMutation } from '../../../../gql/inventory'
+import { uploadInventoryMutation } from '../../../../gql/inventory/inventory'
 import { InventoriesResponse } from '../../../../model/inventory'
 import { ISalesQuery } from './interface'
 

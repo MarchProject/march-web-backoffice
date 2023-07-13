@@ -22,6 +22,7 @@ const ContainerInventory = () => {
       inventoryBrandValue,
       handleFavoriteChange,
       favorite,
+      setTriggerInventory,
     },
     inventoriesType: {
       inventoriesTypeData,
@@ -37,59 +38,57 @@ const ContainerInventory = () => {
     setTriggerType,
     setTriggerBrand,
     favoriteInventoryHandle,
-    InventoryNames: {
-      inventoryNamesData,
-      setTriggerGetInventoryNames,
-    },
+    InventoryNames: { inventoryNamesData, setTriggerGetInventoryNames },
   } = useInventoryController()
   return (
-      <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
-        <div className="p-[15px]">
-          <div className="bg-white m-0 rounded-lg " style={{ height: '100%' }}>
-            <div className="mb-[0px] h-full">
-              <div className="p-4">
-                <InventoryManagement
-                  inventorySearch={inventorySearch}
-                  setSearch={handleChangeInventory}
-                  handleTypeChange={handleTypeChange}
-                  handleBrandChange={handleBrandChange}
-                  handleClearChange={handleClearChange}
-                  inventoryType={{
-                    inventoriesTypeData,
-                    inventoriesTypeLoading,
-                    handleSearchInventoryType,
-                  }}
-                  inventoryBrand={{
-                    inventoriesBrandData,
-                    inventoriesBrandLoading,
-                    handleSearchInventoryBrand,
-                  }}
-                  inventoryNamesData={inventoryNamesData}
-                  setTriggerGetInventoryNames={setTriggerGetInventoryNames}
-                  inventoryTypeValue={inventoryTypeValue}
-                  inventoryBrandValue={inventoryBrandValue}
-                  handleFavoriteChange={handleFavoriteChange}
-                  setTriggerType={setTriggerType}
-                  setTriggerBrand={setTriggerBrand}
-                  favorite={favorite}
-                />
-                <DataTableMarch
-                  rows={inventoryData?.getInventories?.inventories || []}
-                  columns={columns({ favoriteInventoryHandle })}
-                  onRow={onRow}
-                  onPaginationModelChange={onPaginationModelChange}
-                  pageCount={inventoryData?.getInventories?.totalPage || 1}
-                  setPage={setPage}
-                  page={inventoryPage}
-                  loading={inventoryLoading}
-                  limit={inventoryLimit}
-                  totalRow={inventoryData?.getInventories?.totalRow}
-                />
-              </div>
+    <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
+      <div className="p-[15px]">
+        <div className="bg-white m-0 rounded-lg " style={{ height: '100%' }}>
+          <div className="mb-[0px] h-full">
+            <div className="p-4">
+              <InventoryManagement
+                inventorySearch={inventorySearch}
+                setSearch={handleChangeInventory}
+                handleTypeChange={handleTypeChange}
+                handleBrandChange={handleBrandChange}
+                handleClearChange={handleClearChange}
+                inventoryType={{
+                  inventoriesTypeData,
+                  inventoriesTypeLoading,
+                  handleSearchInventoryType,
+                }}
+                inventoryBrand={{
+                  inventoriesBrandData,
+                  inventoriesBrandLoading,
+                  handleSearchInventoryBrand,
+                }}
+                inventoryNamesData={inventoryNamesData}
+                setTriggerGetInventoryNames={setTriggerGetInventoryNames}
+                inventoryTypeValue={inventoryTypeValue}
+                inventoryBrandValue={inventoryBrandValue}
+                handleFavoriteChange={handleFavoriteChange}
+                setTriggerType={setTriggerType}
+                setTriggerBrand={setTriggerBrand}
+                setTriggerInventory={setTriggerInventory}
+                favorite={favorite}
+              />
+              <DataTableMarch
+                rows={inventoryData?.getInventories?.inventories || []}
+                columns={columns({ favoriteInventoryHandle })}
+                onRow={onRow}
+                onPaginationModelChange={onPaginationModelChange}
+                pageCount={inventoryData?.getInventories?.totalPage || 1}
+                setPage={setPage}
+                page={inventoryPage}
+                loading={inventoryLoading}
+                limit={inventoryLimit}
+                totalRow={inventoryData?.getInventories?.totalRow}
+              />
             </div>
           </div>
         </div>
       </div>
+    </div>
   )
 }
 

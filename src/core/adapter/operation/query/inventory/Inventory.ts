@@ -3,15 +3,17 @@ import {
   GetInventoriesData,
   GetInventoriesTypeData,
   InventoryNames,
-} from '../../../../gql/inventory'
+} from '../../../../gql/inventory/inventory'
 import {
   BrandType,
   InventoriesResponse,
   InventoryNamesClass,
+  InventoryTrash,
   InventoryType,
 } from '../../../../model/inventory'
 import { plainToInstance } from 'class-transformer'
 import { IInventoryQuery } from './interface'
+import { GetInventoryAllDeletedData } from '@/core/gql/inventory/inventoryTrash'
 
 export class InventoryQuery implements IInventoryQuery {
   constructor() {}
@@ -57,6 +59,17 @@ export class InventoryQuery implements IInventoryQuery {
       if (response) return response
     } catch (error) {
       throw new Error('Instance Type')
+    }
+  }
+
+  inventoryTrash(data: GetInventoryAllDeletedData) {
+    try {
+      const property = Object.keys(data)[0]
+      const response = plainToInstance(InventoryTrash, data[property])
+
+      if (response) return response
+    } catch (error) {
+      throw new Error('Instance inventoryTrash')
     }
   }
 }

@@ -42,3 +42,9 @@ export const notificationUpdateErrorProp = (
     message: `${create ? 'Create' : 'Update'} Failed. ${message}`,
   }
 }
+
+export const notificationTrashFetchErrorProp = {
+  severity: EnumSeverity.error,
+  title: `Trash`,
+  message: "Fetch Error",
+}

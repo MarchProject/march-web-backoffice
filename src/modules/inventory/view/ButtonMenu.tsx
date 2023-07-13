@@ -15,6 +15,7 @@ export const ButtonMenu = ({
   setTriggerGetInventoryNames,
   handleSearchInventoryType,
   handleSearchInventoryBrand,
+  setTriggerInventory
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -52,6 +53,7 @@ export const ButtonMenu = ({
         <DialogEditor
           setTriggerType={setTriggerType}
           inventoriesTypeData={inventoriesTypeData}
+          setTriggerInventory={setTriggerInventory}
           setTriggerBrand={setTriggerBrand}
           inventoriesBrandData={inventoriesBrandData}
           inventoryNamesData={inventoryNamesData}

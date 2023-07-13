@@ -1,6 +1,6 @@
 import { getUserId } from '@/config/client'
 import { IInventoryForm } from '../editor/interface'
-import { UpsertInventoryTypeVariables } from '@/core/gql/inventory'
+import { UpsertInventoryTypeVariables } from '@/core/gql/inventory/inventory'
 import { get, isNil } from 'lodash'
 
 export const tranFromUpsertInventoryDto = (

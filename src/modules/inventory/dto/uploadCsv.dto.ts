@@ -1,7 +1,7 @@
 import {
   GetInventoryTypes,
   UploadInventoryVariable,
-} from '@/core/gql/inventory'
+} from '@/core/gql/inventory/inventory'
 import { IValidatedValues } from '../dialog/DialogEditor/DialogUploadCsv/view/UploadCsvView/interface'
 import { defaultTo, get } from 'lodash'
 import { DbFormat, dateFormat } from '@/core/common'

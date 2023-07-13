@@ -5,7 +5,7 @@ import {
   UploadInventoryData,
   UploadInventoryVariable,
   uploadInventoryMutation,
-} from '@/core/gql/inventory'
+} from '@/core/gql/inventory/inventory'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
@@ -60,7 +60,6 @@ const useUploadCsvMutation = ({
   handleClose,
 }) => {
   const [isPass, setIsPass] = useState(true)
-
 
   const { trigger: uploadInventory } = useMutationData<
     MutateKey.inventory,

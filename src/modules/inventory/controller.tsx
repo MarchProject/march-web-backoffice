@@ -18,7 +18,7 @@ import {
   FavoriteInventoryVariables,
   InventoryNames,
   getInventoryNamesQuery,
-} from '@/core/gql/inventory'
+} from '@/core/gql/inventory/inventory'
 import {
   BrandType,
   InventoriesResponse,
@@ -51,6 +51,7 @@ export const useInventoryController = () => {
   const [triggerBrand, setTriggerBrand] = useState(true)
   const [triggerFavorite, setTriggerFavorite] = useState(true)
   const [triggerGetInventoryNames, setTriggerGetInventoryNames] = useState(true)
+  const [triggerInventory, setTriggerInventory] = useState(true)
   const {
     inventoryData,
     inventoryLoading,
@@ -75,6 +76,7 @@ export const useInventoryController = () => {
     triggerBrand,
     triggerFavorite,
     triggerGetInventoryNames,
+    triggerInventory,
   })
 
   const {
@@ -123,6 +125,8 @@ export const useInventoryController = () => {
       handleFavoriteChange,
       inventoryTypeValue,
       inventoryBrandValue,
+      setTriggerInventory,
+      triggerInventory,
     },
     inventoriesType: {
       inventoriesTypeData,
@@ -307,6 +311,7 @@ const useQueryInventory = ({
   triggerType,
   triggerFavorite,
   triggerGetInventoryNames,
+  triggerInventory,
 }) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
@@ -379,6 +384,7 @@ const useQueryInventory = ({
     triggerFavorite,
     triggerGetInventoryNames,
     getInventoriesTrigger,
+    triggerInventory,
     limit,
     page,
     search,

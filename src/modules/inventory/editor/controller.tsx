@@ -5,7 +5,7 @@ import { IInventoryForm } from './interface'
 import { schema } from './schema'
 import { useQueryInventoryBrand, useQueryInventoryType } from '../controller'
 import { useCallback, useEffect, useState } from 'react'
-import {  useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import {
   DeleteInventoryData,
   DeleteTypeDataVariables,
@@ -14,7 +14,7 @@ import {
   deleteInventoryMutation,
   getInventoryQuery,
   upsertInventoryMutation,
-} from '@/core/gql/inventory'
+} from '@/core/gql/inventory/inventory'
 import { tranFromUpsertInventoryDto } from '../dto/upsert.dto'
 import router from 'next/router'
 import { inventoryRoute } from '@/router/inventory'
@@ -189,7 +189,6 @@ const useQueryInventory = (
 }
 
 const useDeleteInventory = ({ notification, id }) => {
-
   const { trigger: deleteInventory } = useMutationData<
     MutateKey.inventory,
     DeleteInventoryData,
@@ -212,7 +211,6 @@ const useDeleteInventory = ({ notification, id }) => {
       id: id,
     })
   }, [deleteInventory, id])
-
 
   return {
     deleteInventoryHandle,

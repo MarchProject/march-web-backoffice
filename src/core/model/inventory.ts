@@ -120,7 +120,48 @@ export class Inventory extends Model {
       '_expiryDate',
       'formattedExpiryDate',
       value,
-      false
+      false,
     )
+  }
+}
+
+class TrashInventory extends Model {
+  _name: string
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name.split('|')[0]
+  }
+}
+
+export class InventoryTrash {
+  _inventory: TrashInventory[]
+  _brand: TrashInventory[]
+  _type: TrashInventory[]
+
+  get inventory(): TrashInventory[] {
+    return this._inventory
+  }
+
+  set inventory(inventory: TrashInventory[]) {
+    this._inventory = plainToInstance(TrashInventory, inventory)
+  }
+
+  get brand(): TrashInventory[] {
+    return this._brand
+  }
+
+  set brand(brand: TrashInventory[]) {
+    this._brand = plainToInstance(TrashInventory, brand)
+  }
+
+  get type(): TrashInventory[] {
+    return this._type
+  }
+
+  set type(type: TrashInventory[]) {
+    this._type = plainToInstance(TrashInventory, type)
   }
 }

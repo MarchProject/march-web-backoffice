@@ -1,6 +1,6 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
-import { GetInventoryTypes } from '@/core/gql/inventory'
+import { GetInventoryTypes } from '@/core/gql/inventory/inventory'
 import {
   List,
   ListSubheader,
@@ -70,7 +70,6 @@ const TypeDialogElement = ({
       setIsCreateDisable(false)
     }
   }, [createInventoryTypeData, setInventoriyTypeData])
-
 
   return (
     <>
