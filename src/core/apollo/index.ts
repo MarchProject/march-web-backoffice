@@ -54,6 +54,14 @@ export async function initApollo(uri?: string) {
   //     timeout: 30000,
   //   },
   // })
+  const unAuthorizeHandle = () => {
+    localStorage.setItem('march.backOffice.authFailed', 'true')
+    Cookies.remove('mbo-token')
+    Cookies.remove('mbo-refresh')
+    router.push({
+      pathname: clientConfig.getDefaultLoginPath(),
+    })
+  }
 
   const errorLink = onError((errorHandler: any) => {
     const { graphQLErrors, networkError, operation, forward } = errorHandler
@@ -62,8 +70,15 @@ export async function initApollo(uri?: string) {
         switch (err.extensions.exception?.message) {
           case 'Unauthorized':
             // ignore 401 error for a refresh request
-            if (operation.operationName === 'tokenExpire') return
-
+            if (operation.operationName === 'tokenExpire') {
+              localStorage.setItem('march.backOffice.authFailed', 'true')
+              Cookies.remove('mbo-token')
+              Cookies.remove('mbo-refresh')
+              router.push({
+                pathname: clientConfig.getDefaultLoginPath(),
+              })
+              return
+            }
             const observable = new Observable<FetchResult<Record<string, any>>>(
               (observer) => {
                 // used an annonymous function for using an async function
@@ -103,12 +118,7 @@ export async function initApollo(uri?: string) {
                     forward(operation).subscribe(subscriber)
                     router.reload()
                   } catch (err) {
-                    localStorage.setItem('march.backOffice.authFailed', 'true')
-                    Cookies.remove('mbo-token')
-                    Cookies.remove('mbo-refresh')
-                    router.push({
-                      pathname: clientConfig.getDefaultLoginPath(),
-                    })
+                    unAuthorizeHandle()
                     // observer.error(err)
                   }
                 })()
@@ -116,6 +126,12 @@ export async function initApollo(uri?: string) {
             )
 
             return observable
+          case 'Unauthorized ShopId':
+            unAuthorizeHandle()
+          case 'Unauthorized Role':
+            unAuthorizeHandle()
+          case 'Unauthorized Device':
+            unAuthorizeHandle()
         }
       }
     }

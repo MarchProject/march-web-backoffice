@@ -5,7 +5,11 @@ import { dataTemplateCsv, headersTemplateCsv } from '@/constant/csvData'
 import DownLoadCsv from '@/components/common/DownLoad/DownLoadCsv'
 import { UploadCsvView } from './view/UploadCsvView'
 import { useControllerUplaod } from './controller'
-import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
+import {
+  BrandType,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
 interface IDialogUploadCsv {
   open: boolean
   handleOpen: () => void
@@ -24,11 +28,14 @@ const DialogUploadCsv = ({
   inventoryNamesData,
   setTriggerGetInventoryNames,
 }: IDialogUploadCsv) => {
-  const { uploadHandle, isValid, onUploadHandle } = useControllerUplaod({
-    inventoriesTypeData,
-    inventoriesBrandData,
-    setTriggerGetInventoryNames,
-  })
+  const { uploadHandle, isValid, onUploadHandle, isPass } = useControllerUplaod(
+    {
+      inventoriesTypeData,
+      inventoriesBrandData,
+      setTriggerGetInventoryNames,
+      handleClose,
+    },
+  )
   return (
     <>
       <DialogM
@@ -53,6 +60,7 @@ const DialogUploadCsv = ({
                 inventoriesTypeData={inventoriesTypeData}
                 inventoriesBrandData={inventoriesBrandData}
                 inventoryNamesData={inventoryNamesData}
+                isPass={isPass}
               />
             </>
           )
@@ -64,7 +72,7 @@ const DialogUploadCsv = ({
                 classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
                 label={'Upload'}
                 color={'primary'}
-                disabled={!isValid}
+                disabled={!isValid || !isPass}
                 variant="text"
                 onClick={onUploadHandle}
               />

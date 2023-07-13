@@ -18,5 +18,7 @@ export const transfromInventory = (inventory: Inventory) => {
     height: size[2],
     price: inventory.price,
     memberPrice: inventory.priceMember,
+    updatedAt: inventory.formattedUpdatedAt,
+    updatedBy: inventory.updatedBy,
   }
 }

@@ -106,8 +106,9 @@ export async function getNewAccessToken(
       cookieOptions,
     )
   } catch (error) {
-    handleGraphqlRequestError(error, logPrefix)
-    return Promise.reject(error)
+    return
+    // handleGraphqlRequestError(error, logPrefix)
+    // return Promise.reject(error)
   }
   return response?.tokenExpire?.access_token
 }

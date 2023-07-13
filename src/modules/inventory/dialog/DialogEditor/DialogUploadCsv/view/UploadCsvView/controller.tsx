@@ -5,7 +5,11 @@ import { useEffect, useState } from 'react'
 import { tranfromCsvFile } from '../../../../../dto/upload.dto'
 import { validateExpiryDate } from './validate/expiryDateValidate'
 import { ICompleteValues, IValidatedValues } from './interface'
-import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
+import {
+  BrandType,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
 
 interface IUseControllerUploadCsvViewProps {
   inventoryNamesData: InventoryNamesClass[]
@@ -163,7 +167,7 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `name is duplicated`,
+            message: `name is duplicated (inventory or trash)`,
           })
         }
       }

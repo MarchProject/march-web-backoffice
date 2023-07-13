@@ -42,7 +42,8 @@ const TypeDialogElement = ({
   }, [])
   const [inventoryTypeData, setInventoriyTypeData] =
     useState<GetInventoryTypes>()
-
+  const [isCreateDisable, setIsCreateDisable] = useState(false)
+  const [isUpdateDisable, setIsUpdateDisable] = useState(false)
   const [createInventoryTypeData, setCreateInventoriyTypeData] =
     useState<GetInventoryTypes>(null)
 
@@ -53,6 +54,23 @@ const TypeDialogElement = ({
   useEffect(() => {
     setInventoriyTypeData(inventoriesTypeData.find((t) => t.id === idType))
   }, [inventoriesTypeData, idType, setInventoriyTypeData, editType])
+
+  useEffect(() => {
+    if (!inventoryTypeData?.name) {
+      setIsUpdateDisable(true)
+    } else {
+      setIsUpdateDisable(false)
+    }
+  }, [inventoryTypeData, setInventoriyTypeData])
+
+  useEffect(() => {
+    if (!createInventoryTypeData?.name) {
+      setIsCreateDisable(true)
+    } else {
+      setIsCreateDisable(false)
+    }
+  }, [createInventoryTypeData, setInventoriyTypeData])
+
 
   return (
     <>
@@ -149,6 +167,7 @@ const TypeDialogElement = ({
                 }))
               }}
             />
+
             <Input
               id={'description'}
               type={'text'}
@@ -158,7 +177,7 @@ const TypeDialogElement = ({
                 required: false,
               }}
               variant="outlined"
-              value={inventoryTypeData?.description}
+              value={inventoryTypeData?.description || ''}
               onChange={(e) => {
                 setInventoriyTypeData((prev: GetInventoryTypes) => ({
                   ...prev,
@@ -203,6 +222,7 @@ const TypeDialogElement = ({
               <ButtonForm
                 classNames="max-w-[40px] !normal-case"
                 label={'Update'}
+                disabled={isUpdateDisable}
                 variant="contained"
                 onClick={() => {
                   updateTypeHandle(inventoryTypeData)
@@ -262,6 +282,7 @@ const TypeDialogElement = ({
               <ButtonForm
                 classNames="max-w-[40px] !normal-case"
                 label={editType === ModeDialog.CREATE ? 'Create' : 'Update'}
+                disabled={isCreateDisable}
                 variant="contained"
                 onClick={() => {
                   updateTypeHandle(

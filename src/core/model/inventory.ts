@@ -120,6 +120,7 @@ export class Inventory extends Model {
       '_expiryDate',
       'formattedExpiryDate',
       value,
+      false
     )
   }
 }

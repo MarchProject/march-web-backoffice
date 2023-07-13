@@ -21,18 +21,21 @@ import { inventoryRoute } from '@/router/inventory'
 import { plainToInstance } from 'class-transformer'
 import { Inventory } from '@/core/model/inventory'
 import { transfromInventory } from '../dto/inventory.dto'
+import { useMutationData } from '@/core/adapter/hook/useMutationData'
+import { MutateKey } from '@/core/adapter/interface'
 
-const notificationSuccessProp = {
-  severity: EnumSeverity.success,
-  title: 'Inventory',
-  message: 'Create Success',
+const notificationSuccessProp = (message) => {
+  return {
+    severity: EnumSeverity.success,
+    title: 'Inventory',
+    message: `${message} Success`,
+  }
 }
-
 const notificationErrorProp = (message: string) => {
   return {
     severity: EnumSeverity.error,
     title: 'Inventory',
-    message: `Create Error ${message}`,
+    message: `Create ${message}`,
   }
 }
 const notificationValidErrorProp = {
@@ -179,41 +182,37 @@ const useQueryInventory = (
       }
     }, [getInventory.data, reset])
   }
+  console.log({ inventory })
   return {
     inventory,
   }
 }
 
 const useDeleteInventory = ({ notification, id }) => {
-  const [
-    deleteInventory,
-    { loading: _loading, error, data: deleteInventoryData },
-  ] = useMutation<DeleteInventoryData, DeleteTypeDataVariables>(
-    deleteInventoryMutation,
-  )
 
-  const deleteInventoryHandle = useCallback(() => {
-    deleteInventory({
-      variables: {
-        id: id,
-      },
-    })
-  }, [deleteInventory, id])
-
-  useEffect(() => {
-    if (deleteInventoryData?.deleteInventory?.id) {
-      notification(notificationSuccessProp)
+  const { trigger: deleteInventory } = useMutationData<
+    MutateKey.inventory,
+    DeleteInventoryData,
+    DeleteTypeDataVariables
+  >(MutateKey.inventory, null, deleteInventoryMutation, {
+    onSuccess: () => {
+      notification(notificationSuccessProp('Delete'))
       router.push({
         pathname: inventoryRoute.path,
       })
-    }
-  }, [notification, deleteInventoryData])
+    },
+    onError: (error) => {
+      notification(notificationErrorProp(error))
+    },
+    globalLoading: true,
+  })
 
-  useEffect(() => {
-    if (error) {
-      notification(notificationErrorProp(error?.message))
-    }
-  }, [error, notification])
+  const deleteInventoryHandle = useCallback(() => {
+    deleteInventory({
+      id: id,
+    })
+  }, [deleteInventory, id])
+
 
   return {
     deleteInventoryHandle,
@@ -221,20 +220,29 @@ const useDeleteInventory = ({ notification, id }) => {
 }
 
 const useSubmitForm = ({ notification, reset, idInventory }) => {
-  const [
-    upsertInventory,
-    { loading: _loading, error, data: upsertInventoryData },
-  ] = useMutation<UpsertInventoryTypeData, UpsertInventoryTypeVariables>(
-    upsertInventoryMutation,
-  )
+  const { trigger: upsertInventory } = useMutationData<
+    MutateKey.inventory,
+    UpsertInventoryTypeData,
+    UpsertInventoryTypeVariables
+  >(MutateKey.inventory, null, upsertInventoryMutation, {
+    onSuccess: () => {
+      notification(notificationSuccessProp(idInventory ? 'Update' : 'Create'))
+      reset()
+      router.push({
+        pathname: inventoryRoute.path,
+      })
+    },
+    onError: (error) => {
+      notification(notificationErrorProp(error))
+    },
+    globalLoading: true,
+  })
 
   const onSubmit: SubmitHandler<IInventoryForm> = (data) => {
     try {
       const InventoryInput = tranFromUpsertInventoryDto(data, idInventory)
       upsertInventory({
-        variables: {
-          ...InventoryInput,
-        },
+        ...InventoryInput,
       })
     } catch (error) {
       notification(notificationErrorProp(error?.message))
@@ -243,22 +251,6 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
   const onError = () => {
     notification(notificationValidErrorProp)
   }
-
-  useEffect(() => {
-    if (upsertInventoryData?.upsertInventory?.id) {
-      notification(notificationSuccessProp)
-      reset()
-      router.push({
-        pathname: inventoryRoute.path,
-      })
-    }
-  }, [notification, reset, upsertInventoryData])
-
-  useEffect(() => {
-    if (error) {
-      notification(notificationErrorProp(error?.message))
-    }
-  }, [error, notification])
 
   return {
     onSubmit,

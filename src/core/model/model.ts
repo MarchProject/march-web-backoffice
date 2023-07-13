@@ -1,4 +1,4 @@
-import { dateFormat, timeZone } from '../common'
+import { dateFormat, dateTimeNoSecFormat, timeZone } from '../common'
 import dayjs from '../common/dayjs'
 
 export class Model {
@@ -34,6 +34,7 @@ export class Model {
       '_updatedAt',
       'formattedUpdatedAt',
       value,
+      true,
     )
   }
   //
@@ -43,15 +44,16 @@ export class Model {
     fieldName: string,
     formattedFieldName: string,
     value: string,
+    time?: boolean,
   ) {
     //
     instance[fieldName] = value
-
+    console.log({ time })
     //
     if (value) {
       instance[formattedFieldName] = dayjs(value)
         .tz(timeZone)
-        .format(dateFormat)
+        .format(time ? dateTimeNoSecFormat : dateFormat)
       // moment(value)
       //   .tz(timezone)
       //   .format(dateTimeFormat)

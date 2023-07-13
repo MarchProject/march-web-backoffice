@@ -8,12 +8,12 @@ export const notificationDeleteSuccessProp = {
 export const notificationTypeUsedDeleteErrorProp = {
   severity: EnumSeverity.error,
   title: 'Product Type',
-  message: 'Delete Failed. This type already use in product',
+  message: 'Delete Failed. or This type already use in product',
 }
 export const notificationDeleteErrorProp = {
   severity: EnumSeverity.error,
   title: 'Product Type',
-  message: 'Delete Failed.',
+  message: 'Delete Failed. or This type already use in product',
 }
 export const notificationUpdateSuccessProp = (
   type = 'type',

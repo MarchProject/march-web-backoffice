@@ -15,6 +15,7 @@ import { EnumModeEditorPage } from '@/modules/interface'
 import { MdFavorite } from 'react-icons/md'
 import { CheckBoxForm } from '@/components/common/Checkbox/CheckBox'
 import AlertToast from '@/components/common/Alert/alert'
+import { dateFormat } from '@/core/common'
 interface IEditorInventoryPage {
   mode: EnumModeEditorPage
 }
@@ -135,8 +136,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
                               }}
-                              mask={'DD-MM-YYYY'}
-                              inputFormat={'DD-MM-YYYY'}
+                              mask={'__/__/____'}
+                              inputFormat={dateFormat}
                               onError={(reason, _value) => {
                                 if (reason) {
                                   setValue('expiryDate', 'Invalid Date')
@@ -453,6 +454,49 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 variant={'outlined'}
                                 normalizes={[onlyNumber, max(10)]}
                                 disabled={disabled}
+                              />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    <div className="mt-[15px]">
+                      <p className="text-xl m-0 text-primary">Pricing</p>
+                      <Card variant="outlined" sx={{ marginTop: '15px' }}>
+                        <CardContent>
+                          <div className="p-2">
+                            <div className="grid grid-cols-2 gap-[15px]">
+                              <InputForm
+                                control={control}
+                                classNames=""
+                                id="updatedBy"
+                                name="updatedBy"
+                                inputLabel={{
+                                  label: 'Last Updated By',
+                                  required: false,
+                                  classNames:
+                                    'text-base !text-secondary !font-semibold',
+                                }}
+                                type={'text'}
+                                variant={'outlined'}
+                                disabled={true}
+                              />
+                              <InputForm
+                                // required
+                                control={control}
+                                classNames=""
+                                id="updatedAt"
+                                name="updatedAt"
+                                // label='Item Name'
+                                inputLabel={{
+                                  label: 'Last Updated At',
+                                  required: false,
+                                  classNames:
+                                    'text-base !text-secondary !font-semibold',
+                                }}
+                                type={'text'}
+                                variant={'outlined'}
+                                disabled={true}
                               />
                             </div>
                           </div>

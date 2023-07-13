@@ -6,13 +6,20 @@ import { BsFiletypeCsv } from 'react-icons/bs'
 import { TiDelete } from 'react-icons/ti'
 import { IValidatedValues } from './interface'
 import { capitalizeFirstLetter } from '@/utils/common/utils'
-import { BrandType, InventoryNamesClass, InventoryType } from '@/core/model/inventory'
+import {
+  BrandType,
+  InventoryNamesClass,
+  InventoryType,
+} from '@/core/model/inventory'
+import AlertToast from '@/components/common/Alert/alert'
+import { warningDelete } from '@/constant'
 
 interface IUploadCsvView {
   inventoriesTypeData: InventoryType[]
   inventoriesBrandData: BrandType[]
   uploadHandle: (value: IValidatedValues[]) => void
   inventoryNamesData: InventoryNamesClass[]
+  isPass?: boolean
 }
 export const styleIconUploadFileFailed = (
   status: boolean,
@@ -36,6 +43,7 @@ const UploadCsvView = ({
   inventoriesBrandData,
   uploadHandle,
   inventoryNamesData,
+  isPass = true,
 }: IUploadCsvView) => {
   const { onCompleteValue, onChangeFile, validatedValues, removeItem } =
     useControllerUploadCsvView({
@@ -97,18 +105,27 @@ const UploadCsvView = ({
           return (
             <div
               key={v.name}
-              className="mb-[10px] w-full bg-violet-200 mx-auto rounded-lg border-2">
+              className={`mb-[10px] w-full  mx-auto rounded-lg border-2 ${
+                isPass ? 'bg-violet-200' : 'bg-red-200'
+              }`}>
               <div className="p-[10px] flex justify-between px-[30px] pt-[30px] py-[30px]">
                 <div className="flex gap-[15px]">
                   <BsFiletypeCsv
                     size={40}
-                    style={styleIconUploadFileFailed(true)}
+                    style={styleIconUploadFileFailed(isPass)}
                   />
-                  <p className="m-0 my-auto text-violet-500">{v.name}</p>
+                  <p
+                    className={`m-0 my-auto text-${
+                      isPass ? 'violet' : 'red'
+                    }-500`}>
+                    {v.name}
+                  </p>
                 </div>
                 <TiDelete
                   size={30}
-                  className="cursor-pointer my-auto text-gray-400"
+                  className={`cursor-pointer my-auto text-${
+                    isPass ? 'gray' : 'red'
+                  }-400`}
                   onClick={() => {
                     removeItem(index)
                   }}
@@ -134,6 +151,15 @@ const UploadCsvView = ({
         onCompleteValueObj={onCompleteValue}
         onChangeFile={onChangeFile}
       />
+      <div className="px-[24px] mt-[10px]">
+        <AlertToast
+          classNames="mx-auto"
+          severity="warning"
+          variant="standard"
+          title="Warning !"
+          message={warningDelete}
+        />
+      </div>
       <div className="px-[24px] ">
         {validatedValues.length > 0 && (
           <>

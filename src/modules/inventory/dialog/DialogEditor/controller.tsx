@@ -163,7 +163,7 @@ const useDeleteTypeHandle = ({ notification, triggerType, setEditType }) => {
       setEditType(ModeDialog.VIEW)
       triggerType()
     }
-  }, [deleteInventoryTypeData, notification])
+  }, [deleteInventoryTypeData, notification, setEditType, triggerType])
 
   return {
     deleteInventoryType,
@@ -184,7 +184,7 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
 
   const updateTypeHandle = useCallback(
     (data) => {
-      if (data.id) {
+      if (data?.id) {
         setFlagCreate(false)
       } else {
         setFlagCreate(true)
@@ -193,8 +193,8 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
         variables: {
           input: {
             id: data?.id,
-            name: data.name.trim(),
-            description: data.description.trim(),
+            name: data?.name?.trim(),
+            description: data?.description?.trim(),
           },
         },
       })
@@ -207,7 +207,7 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
       notification(notificationUpdateErrorProp('type', flagCreate))
       setEditType(ModeDialog.VIEW)
     }
-  }, [error, notification])
+  }, [error, flagCreate, notification, setEditType])
 
   useEffect(() => {
     if (upsertInventoryTypeData?.upsertInventoryType?.id) {
@@ -215,7 +215,7 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
       setEditType(ModeDialog.VIEW)
       triggerType()
     }
-  }, [upsertInventoryTypeData, notification])
+  }, [upsertInventoryTypeData, notification, flagCreate, setEditType, triggerType])
 
   return {
     upsertInventoryType,
@@ -258,7 +258,7 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, setEditType }) => {
       setEditType(ModeDialog.VIEW)
       triggerBrand()
     }
-  }, [deleteBrandTypeData, notification])
+  }, [deleteBrandTypeData, notification, setEditType, triggerBrand])
 
   return {
     deleteBrandType,
@@ -277,7 +277,7 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
 
   const updateBrandHandle = useCallback(
     (data) => {
-      if (data.id) {
+      if (data?.id) {
         setFlagCreate(false)
       } else {
         setFlagCreate(true)
@@ -286,8 +286,8 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
         variables: {
           input: {
             id: data?.id,
-            name: data.name.trim(),
-            description: data.description.trim(),
+            name: data?.name?.trim(),
+            description: data?.description?.trim(),
           },
         },
       })
@@ -300,7 +300,7 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
       notification(notificationUpdateErrorProp('brand', flagCreate))
       setEditType(ModeDialog.VIEW)
     }
-  }, [error, notification])
+  }, [error, flagCreate, notification, setEditType])
 
   useEffect(() => {
     if (upsertInventoryBrandData?.upsertBrandType?.id) {
@@ -308,7 +308,7 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
       setEditType(ModeDialog.VIEW)
       triggerBrand()
     }
-  }, [upsertInventoryBrandData, notification])
+  }, [upsertInventoryBrandData, notification, flagCreate, setEditType, triggerBrand])
 
   return {
     upsertBrandType,

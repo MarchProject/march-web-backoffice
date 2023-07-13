@@ -42,7 +42,8 @@ const BrandDialogElement = ({
   }, [])
   const [inventoryTypeData, setInventoriyTypeData] =
     useState<GetInventoryTypes>()
-
+  const [isCreateDisable, setIsCreateDisable] = useState(false)
+  const [isUpdateDisable, setIsUpdateDisable] = useState(false)
   const [createInventoryTypeData, setCreateInventoriyTypeData] =
     useState<GetInventoryTypes>(null)
 
@@ -53,6 +54,22 @@ const BrandDialogElement = ({
   useEffect(() => {
     setInventoriyTypeData(inventoriesBrandData.find((t) => t.id === idType))
   }, [inventoriesBrandData, idType, setInventoriyTypeData, editType])
+
+  useEffect(() => {
+    if (!inventoryTypeData?.name) {
+      setIsUpdateDisable(true)
+    } else {
+      setIsUpdateDisable(false)
+    }
+  }, [inventoryTypeData, setInventoriyTypeData])
+
+  useEffect(() => {
+    if (!createInventoryTypeData?.name) {
+      setIsCreateDisable(true)
+    } else {
+      setIsCreateDisable(false)
+    }
+  }, [createInventoryTypeData, setInventoriyTypeData])
 
   return (
     <>
@@ -158,7 +175,7 @@ const BrandDialogElement = ({
                 required: false,
               }}
               variant="outlined"
-              value={inventoryTypeData?.description}
+              value={inventoryTypeData?.description || ''}
               onChange={(e) => {
                 setInventoriyTypeData((prev: GetInventoryTypes) => ({
                   ...prev,
@@ -202,6 +219,7 @@ const BrandDialogElement = ({
               />
               <ButtonForm
                 classNames="max-w-[40px] !normal-case"
+                disabled={isUpdateDisable}
                 label={'Update'}
                 variant="contained"
                 onClick={() => {
@@ -263,6 +281,7 @@ const BrandDialogElement = ({
                 classNames="max-w-[40px] !normal-case"
                 label={editType === ModeDialog.CREATE ? 'Create' : 'Update'}
                 variant="contained"
+                disabled={isCreateDisable}
                 onClick={() => {
                   updateBrandHandle(
                     editType === ModeDialog.CREATE
