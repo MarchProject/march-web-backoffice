@@ -29,7 +29,6 @@ export const tranFromUploadCsv = (
     } = v
     const typeId = inventoriesTypeData.find((e) => e._name === type)
     const brandId = inventoriesBrandData.find((e) => e._name === brand)
-    console.log({ v, typeId, brandId, inventoriesTypeData })
     const weight = defaultTo(get(v, 'weight'), undefined)
     const width = defaultTo(get(v, 'width'), undefined)
     const length = defaultTo(get(v, 'length'), undefined)

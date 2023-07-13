@@ -5,7 +5,7 @@ import { IInventoryForm } from './interface'
 import { schema } from './schema'
 import { useQueryInventoryBrand, useQueryInventoryType } from '../controller'
 import { useCallback, useEffect, useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
+import {  useQuery } from '@apollo/client'
 import {
   DeleteInventoryData,
   DeleteTypeDataVariables,
@@ -182,7 +182,7 @@ const useQueryInventory = (
       }
     }, [getInventory.data, reset])
   }
-  console.log({ inventory })
+
   return {
     inventory,
   }

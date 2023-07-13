@@ -48,7 +48,6 @@ export class Model {
   ) {
     //
     instance[fieldName] = value
-    console.log({ time })
     //
     if (value) {
       instance[formattedFieldName] = dayjs(value)

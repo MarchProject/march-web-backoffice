@@ -2,7 +2,7 @@
 import { useLoadingContext } from '@/context/loading'
 import { noop } from '@/utils/common/noop'
 import { ApolloError, DocumentNode, useMutation } from '@apollo/client'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect} from 'react'
 import { IMutatePropsMock, IMutateProvider } from '../interface'
 import { mutateSelector } from '../provider/selector'
 
@@ -23,24 +23,28 @@ export const useMutationData = <T extends keyof IMutateProvider, U, K>(
   queryNode: DocumentNode,
   option?: IOption,
 ) => {
-  const { onError = () => {}, onSuccess = noop, globalLoading = false } = option
+  const { onError = noop, onSuccess = noop, globalLoading = false } = option
   const { openLoading, closeLoading } = useLoadingContext()
   const [triggerMutation, { data: MutateData, error, loading }] = useMutation<
     U,
     K
   >(queryNode)
+
   const _openLoading = globalLoading ? openLoading : noop
   const _closeLoading = globalLoading ? closeLoading : noop
 
   const provider = mutateSelector(MutateKey)
 
-  const handleError = useCallback((error) => {
-    if (error instanceof ApolloError) {
-      onError(error.message)
-    } else {
-      onError(error.message)
-    }
-  }, [])
+  const handleError = useCallback(
+    (error) => {
+      if (error instanceof ApolloError) {
+        onError(error.message)
+      } else {
+        onError(error.message)
+      }
+    },
+    [onError],
+  )
 
   const handleAdapter = useCallback(
     async (QueryData: U, provider: IMutatePropsMock[T]) => {
@@ -55,7 +59,7 @@ export const useMutationData = <T extends keyof IMutateProvider, U, K>(
         handleError(error)
       }
     },
-    [handleError],
+    [handleError, onSuccess],
   )
 
   const triggerHandle = useCallback(
@@ -74,7 +78,7 @@ export const useMutationData = <T extends keyof IMutateProvider, U, K>(
         _closeLoading()
       }
     }
-  }, [MutateData, _closeLoading, handleAdapter])
+  }, [MutateData, _closeLoading])
 
   useEffect(() => {
     if (error) {

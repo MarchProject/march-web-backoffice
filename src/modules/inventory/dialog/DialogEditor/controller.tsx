@@ -12,8 +12,7 @@ import {
   DeleteBrandData,
 } from '@/core/gql/inventory'
 import { EnumErrorType } from '@/core/utils/ErrorType'
-import { useMutation } from '@apollo/client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   notificationTypeUsedDeleteErrorProp,
   notificationDeleteErrorProp,
@@ -21,6 +20,8 @@ import {
   notificationUpdateErrorProp,
   notificationUpdateSuccessProp,
 } from './notification'
+import { useMutationData } from '@/core/adapter/hook/useMutationData'
+import { MutateKey } from '@/core/adapter/interface'
 
 export enum TypeDialog {
   TYPE = 'type',
@@ -129,41 +130,38 @@ export const useDialogController = ({ setTriggerType, setTriggerBrand }) => {
 }
 
 const useDeleteTypeHandle = ({ notification, triggerType, setEditType }) => {
-  const [
-    deleteInventoryType,
-    { loading, error, data: deleteInventoryTypeData },
-  ] = useMutation<DeleteTypeData, DeleteTypeDataVariables>(
-    deleteInventoryTypeMutation,
-  )
+  const {
+    trigger: deleteInventoryType,
+    loading,
+    data: deleteInventoryTypeData,
+  } = useMutationData<
+    MutateKey.inventory,
+    DeleteTypeData,
+    DeleteTypeDataVariables
+  >(MutateKey.inventory, null, deleteInventoryTypeMutation, {
+    onSuccess: () => {
+      notification(notificationDeleteSuccessProp('type'))
+      setEditType(ModeDialog.VIEW)
+      triggerType()
+    },
+    onError: (error) => {
+      if (error === EnumErrorType.BADHAVETYPE) {
+        notification(notificationTypeUsedDeleteErrorProp('type'))
+      } else {
+        notification(notificationDeleteErrorProp('type'))
+      }
+    },
+    globalLoading: true,
+  })
 
   const deleteTypeHandle = useCallback(
     (data) => {
       deleteInventoryType({
-        variables: {
-          id: data,
-        },
+        id: data,
       })
     },
     [deleteInventoryType],
   )
-
-  useEffect(() => {
-    if (error) {
-      if (error?.message === EnumErrorType.BADHAVETYPE) {
-        notification(notificationTypeUsedDeleteErrorProp)
-      } else {
-        notification(notificationDeleteErrorProp)
-      }
-    }
-  }, [error, notification])
-
-  useEffect(() => {
-    if (deleteInventoryTypeData?.deleteInventoryType?.id) {
-      notification(notificationDeleteSuccessProp)
-      setEditType(ModeDialog.VIEW)
-      triggerType()
-    }
-  }, [deleteInventoryTypeData, notification, setEditType, triggerType])
 
   return {
     deleteInventoryType,
@@ -175,12 +173,27 @@ const useDeleteTypeHandle = ({ notification, triggerType, setEditType }) => {
 
 const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
   const [flagCreate, setFlagCreate] = useState(true)
-  const [
-    upsertInventoryType,
-    { loading, error, data: upsertInventoryTypeData },
-  ] = useMutation<UpsertInventoryType, UpsertInventoryBrandTypeVariables>(
-    upsertInventoryTypeMutation,
-  )
+
+  const {
+    trigger: upsertInventoryType,
+    loading,
+    data: upsertInventoryTypeData,
+  } = useMutationData<
+    MutateKey.inventory,
+    UpsertInventoryType,
+    UpsertInventoryBrandTypeVariables
+  >(MutateKey.inventory, null, upsertInventoryTypeMutation, {
+    onSuccess: () => {
+      notification(notificationUpdateSuccessProp('type', flagCreate))
+      setEditType(ModeDialog.VIEW)
+      triggerType()
+    },
+    onError: (error) => {
+      notification(notificationUpdateErrorProp('type', flagCreate, error))
+      setEditType(ModeDialog.VIEW)
+    },
+    globalLoading: true,
+  })
 
   const updateTypeHandle = useCallback(
     (data) => {
@@ -190,32 +203,15 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
         setFlagCreate(true)
       }
       upsertInventoryType({
-        variables: {
-          input: {
-            id: data?.id,
-            name: data?.name?.trim(),
-            description: data?.description?.trim(),
-          },
+        input: {
+          id: data?.id,
+          name: data?.name?.trim(),
+          description: data?.description?.trim(),
         },
       })
     },
     [upsertInventoryType],
   )
-
-  useEffect(() => {
-    if (error) {
-      notification(notificationUpdateErrorProp('type', flagCreate))
-      setEditType(ModeDialog.VIEW)
-    }
-  }, [error, flagCreate, notification, setEditType])
-
-  useEffect(() => {
-    if (upsertInventoryTypeData?.upsertInventoryType?.id) {
-      notification(notificationUpdateSuccessProp('type', flagCreate))
-      setEditType(ModeDialog.VIEW)
-      triggerType()
-    }
-  }, [upsertInventoryTypeData, notification, flagCreate, setEditType, triggerType])
 
   return {
     upsertInventoryType,
@@ -226,39 +222,38 @@ const useUpdateTypeHandle = ({ notification, triggerType, setEditType }) => {
 }
 
 const useDeleteBrandHandle = ({ notification, triggerBrand, setEditType }) => {
-  const [deleteBrandType, { loading, error, data: deleteBrandTypeData }] =
-    useMutation<DeleteBrandData, DeleteTypeDataVariables>(
-      deleteBrandTypeMutation,
-    )
+  const {
+    trigger: deleteBrandType,
+    loading,
+    data: deleteBrandTypeData,
+  } = useMutationData<
+    MutateKey.inventory,
+    DeleteBrandData,
+    DeleteTypeDataVariables
+  >(MutateKey.inventory, null, deleteBrandTypeMutation, {
+    onSuccess: () => {
+      notification(notificationDeleteSuccessProp('brand'))
+      setEditType(ModeDialog.VIEW)
+      triggerBrand()
+    },
+    onError: (error) => {
+      if (error === EnumErrorType.BADHAVETYPE) {
+        notification(notificationTypeUsedDeleteErrorProp('brand'))
+      } else {
+        notification(notificationDeleteErrorProp('brand'))
+      }
+    },
+    globalLoading: true,
+  })
 
   const deleteBrandHandle = useCallback(
     (data) => {
       deleteBrandType({
-        variables: {
-          id: data,
-        },
+        id: data,
       })
     },
     [deleteBrandType],
   )
-
-  useEffect(() => {
-    if (error) {
-      if (error?.message === EnumErrorType.BADHAVETYPE) {
-        notification(notificationTypeUsedDeleteErrorProp)
-      } else {
-        notification(notificationDeleteErrorProp)
-      }
-    }
-  }, [error, notification])
-
-  useEffect(() => {
-    if (deleteBrandTypeData?.deleteBrandType?.id) {
-      notification(notificationDeleteSuccessProp)
-      setEditType(ModeDialog.VIEW)
-      triggerBrand()
-    }
-  }, [deleteBrandTypeData, notification, setEditType, triggerBrand])
 
   return {
     deleteBrandType,
@@ -270,10 +265,27 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, setEditType }) => {
 
 const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
   const [flagCreate, setFlagCreate] = useState(true)
-  const [upsertBrandType, { loading, error, data: upsertInventoryBrandData }] =
-    useMutation<UpsertBrandType, UpsertInventoryBrandTypeVariables>(
-      upsertBrandTypeMutation,
-    )
+
+  const {
+    trigger: upsertBrandType,
+    loading,
+    data: upsertInventoryBrandData,
+  } = useMutationData<
+    MutateKey.inventory,
+    UpsertBrandType,
+    UpsertInventoryBrandTypeVariables
+  >(MutateKey.inventory, null, upsertBrandTypeMutation, {
+    onSuccess: () => {
+      notification(notificationUpdateSuccessProp('brand', flagCreate))
+      setEditType(ModeDialog.VIEW)
+      triggerBrand()
+    },
+    onError: () => {
+      notification(notificationUpdateErrorProp('brand', flagCreate, 'error'))
+      setEditType(ModeDialog.VIEW)
+    },
+    globalLoading: true,
+  })
 
   const updateBrandHandle = useCallback(
     (data) => {
@@ -283,32 +295,15 @@ const useUpdateBransHandle = ({ notification, triggerBrand, setEditType }) => {
         setFlagCreate(true)
       }
       upsertBrandType({
-        variables: {
-          input: {
-            id: data?.id,
-            name: data?.name?.trim(),
-            description: data?.description?.trim(),
-          },
+        input: {
+          id: data?.id,
+          name: data?.name?.trim(),
+          description: data?.description?.trim(),
         },
       })
     },
     [upsertBrandType],
   )
-
-  useEffect(() => {
-    if (error) {
-      notification(notificationUpdateErrorProp('brand', flagCreate))
-      setEditType(ModeDialog.VIEW)
-    }
-  }, [error, flagCreate, notification, setEditType])
-
-  useEffect(() => {
-    if (upsertInventoryBrandData?.upsertBrandType?.id) {
-      notification(notificationUpdateSuccessProp('brand', flagCreate))
-      setEditType(ModeDialog.VIEW)
-      triggerBrand()
-    }
-  }, [upsertInventoryBrandData, notification, flagCreate, setEditType, triggerBrand])
 
   return {
     upsertBrandType,

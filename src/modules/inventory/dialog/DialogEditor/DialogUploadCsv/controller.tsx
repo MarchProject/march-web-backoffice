@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { IValidatedValues } from './view/UploadCsvView/interface'
 import { hasDuplicateName } from '@/utils/common/utils'
-import { useMutation } from '@apollo/client'
 import {
   UploadInventoryData,
   UploadInventoryVariable,
@@ -9,6 +8,8 @@ import {
 } from '@/core/gql/inventory'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useMutationData } from '@/core/adapter/hook/useMutationData'
+import { MutateKey } from '@/core/adapter/interface'
 
 const notificationSuccessProp = {
   severity: EnumSeverity.success,
@@ -60,51 +61,41 @@ const useUploadCsvMutation = ({
 }) => {
   const [isPass, setIsPass] = useState(true)
 
-  const [
-    uploadInventory,
-    { loading: _loading, error, data: uploadInventoryData },
-  ] = useMutation<UploadInventoryData, UploadInventoryVariable>(
-    uploadInventoryMutation,
-  )
-  const uploadCsvCallback = useCallback(
-    (validatedValues: IValidatedValues[]) => {
-      uploadInventory({
-        variables: tranFromUploadCsv(
-          validatedValues[0],
-          inventoriesTypeData,
-          inventoriesBrandData,
-        ),
-      })
-    },
-    [inventoriesBrandData, inventoriesTypeData, uploadInventory],
-  )
-  useEffect(() => {
-    if (error) {
-      notificationErrorProp('Upload Failed')
-    }
-  }, [error, uploadInventoryData?.uploadInventory?.reason])
 
-  useEffect(() => {
-    if (uploadInventoryData?.uploadInventory) {
+  const { trigger: uploadInventory } = useMutationData<
+    MutateKey.inventory,
+    UploadInventoryData,
+    UploadInventoryVariable
+  >(MutateKey.inventory, null, uploadInventoryMutation, {
+    onSuccess: (data: UploadInventoryData) => {
       setTriggerGetInventoryNames((prev) => !prev)
-
-      if (uploadInventoryData.uploadInventory.success === true) {
+      if (data.uploadInventory.success === true) {
         notification(notificationSuccessProp)
         setIsPass(true)
         handleClose()
       } else {
-        notification(
-          notificationErrorProp(uploadInventoryData?.uploadInventory?.reason),
-        )
+        notification(notificationErrorProp(data?.uploadInventory?.reason))
         setIsPass(false)
       }
-    }
-  }, [
-    handleClose,
-    notification,
-    setTriggerGetInventoryNames,
-    uploadInventoryData,
-  ])
+    },
+    onError: () => {
+      notificationErrorProp('Upload Failed')
+    },
+    globalLoading: true,
+  })
+
+  const uploadCsvCallback = useCallback(
+    (validatedValues: IValidatedValues[]) => {
+      uploadInventory(
+        tranFromUploadCsv(
+          validatedValues[0],
+          inventoriesTypeData,
+          inventoriesBrandData,
+        ),
+      )
+    },
+    [inventoriesBrandData, inventoriesTypeData, uploadInventory],
+  )
 
   return {
     uploadCsvCallback,

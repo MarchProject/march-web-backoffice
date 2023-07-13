@@ -302,7 +302,6 @@ const useHandleUploadCsv = ({
     const updatedItems = validatedValues.filter((_, index) => index !== id)
     setValidatedValues(updatedItems)
   }
-  console.log({ validatedValues })
   const onChangeFile = (_: File[]) => {
     // setSelectFile(file)
   }
