@@ -2,7 +2,7 @@
 import { useLoadingContext } from '@/context/loading'
 import { noop } from '@/utils/common/noop'
 import { ApolloError, DocumentNode, useMutation } from '@apollo/client'
-import { useCallback, useEffect} from 'react'
+import { useCallback, useEffect } from 'react'
 import { IMutatePropsMock, IMutateProvider } from '../interface'
 import { mutateSelector } from '../provider/selector'
 

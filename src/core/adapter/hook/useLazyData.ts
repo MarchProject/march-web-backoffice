@@ -34,13 +34,16 @@ export const useLazyQueryData = <T extends keyof IQueryProvider, U, K>(
 
   const provider = querySelector(QueryKey)
 
-  const handleError = useCallback((error) => {
-    if (error instanceof ApolloError) {
-      onError(error.message)
-    } else {
-      onError(error.message)
-    }
-  }, [])
+  const handleError = useCallback(
+    (error) => {
+      if (error instanceof ApolloError) {
+        onError(error.message)
+      } else {
+        onError(error.message)
+      }
+    },
+    [onError],
+  )
 
   const handleAdapter = useCallback(
     async (QueryData: U, provider: IQueryPropsMock[T]) => {
@@ -51,7 +54,7 @@ export const useLazyQueryData = <T extends keyof IQueryProvider, U, K>(
         handleError(error)
       }
     },
-    [handleError],
+    [handleError, onSuccess],
   )
 
   const triggerHandle = useCallback(
@@ -70,7 +73,7 @@ export const useLazyQueryData = <T extends keyof IQueryProvider, U, K>(
         _closeLoading()
       }
     }
-  }, [QueryData, _closeLoading, handleAdapter])
+  }, [QueryData, _closeLoading])
 
   useEffect(() => {
     if (error) {
