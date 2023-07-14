@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { type } from 'os'
 
 type IDeletedInventory = {
   id: string
@@ -45,6 +44,42 @@ export const getInventoryAllDeletedQuery = gql`
         updatedAt
         createdAt
       }
+    }
+  }
+`
+export enum EnumDeletedType {
+  inventory = 'inventory',
+  inventoryType = 'inventoryType',
+  brandType = 'brandType',
+}
+
+export enum EnumDeletedMode {
+  RECOVERY = 'RECOVERY',
+  DELETE = 'DELETE',
+}
+
+export type RecoveryHardDeletedData = {
+  recoveryHardDeleted: {
+    id: string
+    type: EnumDeletedType
+    mode: EnumDeletedMode
+  }
+}
+
+export type RecoveryHardDeletedVariable = {
+  input: {
+    id: string
+    type: EnumDeletedType
+    mode: EnumDeletedMode
+  }
+}
+
+export const recoveryHardDeletedMutation = gql`
+  mutation recoveryHardDeleted($input: RecoveryHardDeletedInput!) {
+    recoveryHardDeleted(input: $input) {
+      id
+      type
+      mode
     }
   }
 `

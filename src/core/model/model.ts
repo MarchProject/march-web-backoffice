@@ -1,4 +1,4 @@
-import { dateFormat, dateTimeNoSecFormat, timeZone } from '../common'
+import { dateFormat, marchFormat, timeZone } from '../common'
 import dayjs from '../common/dayjs'
 
 export class Model {
@@ -52,7 +52,7 @@ export class Model {
     if (value) {
       instance[formattedFieldName] = dayjs(value)
         .tz(timeZone)
-        .format(time ? dateTimeNoSecFormat : dateFormat)
+        .format(time ? marchFormat : dateFormat)
       // moment(value)
       //   .tz(timezone)
       //   .format(dateTimeFormat)

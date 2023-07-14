@@ -125,7 +125,7 @@ export class Inventory extends Model {
   }
 }
 
-class TrashInventory extends Model {
+export class TrashInventory extends Model {
   _name: string
   get name(): string {
     return this._name

@@ -15,7 +15,9 @@ export const ButtonMenu = ({
   setTriggerGetInventoryNames,
   handleSearchInventoryType,
   handleSearchInventoryBrand,
-  setTriggerInventory
+  setTriggerInventory,
+  trashData,
+  setTriggerTrash,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -60,6 +62,8 @@ export const ButtonMenu = ({
           setTriggerGetInventoryNames={setTriggerGetInventoryNames}
           handleSearchInventoryType={handleSearchInventoryType}
           handleSearchInventoryBrand={handleSearchInventoryBrand}
+          trashData={trashData}
+          setTriggerTrash={setTriggerTrash}
         />
       </Menu>
     </>

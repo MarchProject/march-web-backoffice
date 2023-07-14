@@ -9,6 +9,7 @@ import { RiSearchLine } from 'react-icons/ri'
 import {
   BrandType,
   InventoryNamesClass,
+  InventoryTrash,
   InventoryType,
 } from '@/core/model/inventory'
 import { BiCaretDown } from 'react-icons/bi'
@@ -53,6 +54,10 @@ type InventoryManagementProps = {
   handleFavoriteChange: () => void
   favorite: IFavoriteStatus
   inventoryNamesData: InventoryNamesClass[]
+  trash: {
+    trashData: InventoryTrash
+    setTriggerTrash: (value: boolean) => void
+  }
 }
 
 export const InventoryManagement = ({
@@ -79,6 +84,7 @@ export const InventoryManagement = ({
   handleFavoriteChange,
   favorite,
   inventoryNamesData,
+  trash: { trashData, setTriggerTrash },
 }: InventoryManagementProps) => {
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
@@ -233,6 +239,8 @@ export const InventoryManagement = ({
               setTriggerGetInventoryNames={setTriggerGetInventoryNames}
               handleSearchInventoryType={handleSearchInventoryType}
               handleSearchInventoryBrand={handleSearchInventoryBrand}
+              trashData={trashData}
+              setTriggerTrash={setTriggerTrash}
             />
           </div>
         </div>

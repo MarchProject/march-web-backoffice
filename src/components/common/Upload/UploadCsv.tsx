@@ -99,7 +99,7 @@ export const UploadCsv = <T extends object>({
       onDragLeave={handleDrag}
       onDragOver={handleDrag}>
       <div
-        className={`rounded-lg border-dashed border-2 border-primary100 mx-auto h-[200px] ${
+        className={`drop-shadow-md rounded-lg border-dashed border-2 border-primary100 mx-auto h-[200px] ${
           dragActive ? 'bg-violet-200' : 'bg-violet-100'
         }`}>
         <div className="mt-[30px] flex justify-center">

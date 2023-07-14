@@ -39,6 +39,7 @@ const ContainerInventory = () => {
     setTriggerBrand,
     favoriteInventoryHandle,
     InventoryNames: { inventoryNamesData, setTriggerGetInventoryNames },
+    trash: { setTriggerTrash, trashData },
   } = useInventoryController()
   return (
     <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
@@ -71,6 +72,10 @@ const ContainerInventory = () => {
                 setTriggerBrand={setTriggerBrand}
                 setTriggerInventory={setTriggerInventory}
                 favorite={favorite}
+                trash={{
+                  setTriggerTrash,
+                  trashData,
+                }}
               />
               <DataTableMarch
                 rows={inventoryData?.getInventories?.inventories || []}

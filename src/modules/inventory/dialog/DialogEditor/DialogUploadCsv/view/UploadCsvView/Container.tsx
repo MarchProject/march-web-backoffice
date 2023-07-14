@@ -56,11 +56,12 @@ const UploadCsvView = ({
   const ValidateView = () => {
     const ui = validatedValues.map((v, index) => {
       if (v.inValidData.length > 0) {
+        console.log({ inValidData: v.inValidData, valid: v.validData })
         const inValids = v.inValidData.map((invalid, index) => {
           const message = invalid.message.map((inv, index) => {
             return (
               <div key={`${inv.name}-${index}`}>
-                <div className="flex bg-violet-700 px-[5px] py-[10px] rounded-lg text-white">
+                <div className="flex border-solid border-2 border-violet-300 px-[5px] py-[5px] rounded-lg text-black">
                   <p className="m-0 ml-[5px]">
                     {`${capitalizeFirstLetter(inv.name)}: ${inv.message}`}
                   </p>
@@ -69,18 +70,20 @@ const UploadCsvView = ({
             )
           })
           return (
-            <div className="mb-[10px] px-4 " key={`${invalid.id}-${index}`}>
-              <p className="my-[5px] p-[5px] bg-blue-400  rounded-lg text-white max-w-[20%]">
+            <div
+              className="mb-[10px] px-4 bg-white p-[20px] rounded-xl drop-shadow-md"
+              key={`${invalid.id}-${index}`}>
+              <p className="m-0 mb-[5px] p-[5px] border-solidx border-2 border-blue-500  rounded-lg max-w-[20%]">
                 id: {invalid.id}
               </p>
-              <div className="grid grid-cols-2 gap-4">{message}</div>
+              <div className="grid grid-cols-2 gap-[5px]">{message}</div>
             </div>
           )
         })
         return (
           <div
             key={v.name}
-            className="mb-[10px] w-full bg-violet-200 mx-auto rounded-lg border-2">
+            className="drop-shadow-md mb-[10px] w-full bg-violet-200 mx-auto rounded-lg border-2">
             <div className="p-[10px] flex justify-between px-[30px] py-[30px]">
               <div className="flex gap-[15px]">
                 <BsFiletypeCsv

@@ -20,9 +20,14 @@ import {
   getInventoryNamesQuery,
 } from '@/core/gql/inventory/inventory'
 import {
+  GetInventoryAllDeletedData,
+  getInventoryAllDeletedQuery,
+} from '@/core/gql/inventory/inventoryTrash'
+import {
   BrandType,
   InventoriesResponse,
   InventoryNamesClass,
+  InventoryTrash,
   InventoryType,
 } from '@/core/model/inventory'
 import {
@@ -37,6 +42,12 @@ const notificationErrorProp = (message) => {
     title: 'Inventory',
     message: `Fetch ${message}`,
   }
+}
+
+const notificationErrorFavoriteProp = {
+  severity: EnumSeverity.error,
+  title: 'Inventory',
+  message: 'Favorite Failed',
 }
 
 const notificationSuccessFavoriteProp = {
@@ -91,7 +102,7 @@ export const useInventoryController = () => {
     notification,
     setTriggerFavorite,
   })
-
+  const { setTriggerTrash, trashData } = useQueryTrash({ notification })
   const {
     inventoriesBrandData,
     inventoriesBrandDataError,
@@ -151,6 +162,10 @@ export const useInventoryController = () => {
       inventoryNamesLoading,
       setTriggerGetInventoryNames,
     },
+    trash: {
+      setTriggerTrash,
+      trashData,
+    },
   }
 }
 
@@ -172,8 +187,9 @@ const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
         setDataTranform(data)
       },
       onError: (error) => {
-        notification(notificationErrorProp(error))
+        notification(notificationErrorProp('Names Error'))
       },
+      globalLoading: true,
     },
   )
 
@@ -211,9 +227,10 @@ export const useQueryInventoryBrand = (trigger: any, notification) => {
       onSuccess: (data) => {
         setInventoriesBrandData(data)
       },
-      onError: (error) => {
-        notification(notificationErrorProp(error))
+      onError: () => {
+        notification(notificationErrorProp('Brand Error'))
       },
+      globalLoading: true,
     },
   )
 
@@ -270,9 +287,10 @@ export const useQueryInventoryType = (trigger: any, notification: any) => {
       onSuccess: (data) => {
         setInventoriesTypeData(data)
       },
-      onError: (error) => {
-        notification(notificationErrorProp(error))
+      onError: () => {
+        notification(notificationErrorProp('Type Error'))
       },
+      globalLoading: true,
     },
   )
 
@@ -339,8 +357,8 @@ const useQueryInventory = ({
       onSuccess: (data) => {
         setInventoriesData(data)
       },
-      onError: (error) => {
-        notification(notificationErrorProp(error))
+      onError: () => {
+        notification(notificationErrorProp('Inventories Error'))
       },
       globalLoading: true,
     },
@@ -478,8 +496,8 @@ const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
       notification(notificationSuccessFavoriteProp)
       setTriggerFavorite((prev) => !prev)
     },
-    onError: (error) => {
-      notification(notificationErrorProp(error))
+    onError: () => {
+      notification(notificationErrorFavoriteProp)
     },
     globalLoading: true,
   })
@@ -493,24 +511,45 @@ const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
     [favoriteInventory],
   )
 
-  // useEffect(() => {
-  //   if (favoriteInventoryData?.favoriteInventory?.id) {
-  //     notification(notificationSuccessFavoriteProp)
-  //     setTriggerFavorite((prev) => !prev)
-  //   }
-  // }, [
-  //   favoriteInventoryData?.favoriteInventory?.id,
-  //   notification,
-  //   setTriggerFavorite,
-  // ])
-
-  // useEffect(() => {
-  //   if (error) {
-  //     notification(notificationErrorProp(''))
-  //   }
-  // }, [error, notification])
-
   return {
     favoriteInventoryHandle,
+  }
+}
+
+const useQueryTrash = ({ notification }) => {
+  const [trashData, setTrashData] = useState<InventoryTrash>(null)
+  const [trigger, setTrigger] = useState(true)
+  const { trigger: getInventoryAllDeleted } = useLazyQueryData<
+    QueryKey.inventory,
+    GetInventoryAllDeletedData,
+    any
+  >(
+    QueryKey.inventory,
+    (tranform, data) => {
+      return tranform.inventoryTrash(data)
+    },
+    getInventoryAllDeletedQuery,
+    {
+      onSuccess: (data) => {
+        setTrashData(data)
+      },
+      onError: () => {
+        notification(notificationErrorProp('Trash Error'))
+      },
+      globalLoading: true,
+    },
+  )
+
+  const getInventoryTrashHandle = useCallback(() => {
+    getInventoryAllDeleted()
+  }, [getInventoryAllDeleted])
+
+  useEffect(() => {
+    getInventoryTrashHandle()
+  }, [getInventoryTrashHandle, trigger])
+
+  return {
+    trashData,
+    setTriggerTrash: setTrigger,
   }
 }

@@ -12,23 +12,25 @@ import {
   DeleteBrandData,
 } from '@/core/gql/inventory/inventory'
 import { EnumErrorType } from '@/core/utils/ErrorType'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   notificationTypeUsedDeleteErrorProp,
   notificationDeleteErrorProp,
   notificationDeleteSuccessProp,
   notificationUpdateErrorProp,
   notificationUpdateSuccessProp,
-  notificationTrashFetchErrorProp,
+  notificationTrashMutateErrorProp,
+  notificationTrashMutateSuccessProp,
 } from './notification'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
-import { MutateKey, QueryKey } from '@/core/adapter/interface'
-import { useLazyQueryData } from '@/core/adapter/hook/useLazyData'
+import { MutateKey } from '@/core/adapter/interface'
 import {
-  GetInventoryAllDeletedData,
-  getInventoryAllDeletedQuery,
+  EnumDeletedMode,
+  EnumDeletedType,
+  RecoveryHardDeletedData,
+  RecoveryHardDeletedVariable,
+  recoveryHardDeletedMutation,
 } from '@/core/gql/inventory/inventoryTrash'
-import { InventoryTrash } from '@/core/model/inventory'
 
 export enum TypeDialog {
   TYPE = 'type',
@@ -45,7 +47,11 @@ export const useDialogController = ({
   setTriggerType,
   setTriggerBrand,
   setTriggerInventory,
+  setTriggerTrash,
 }) => {
+  const triggerTrash = useCallback(() => {
+    setTriggerTrash((e: boolean) => !e)
+  }, [setTriggerTrash])
   const triggerInventory = useCallback(() => {
     setTriggerInventory((e: boolean) => !e)
   }, [setTriggerInventory])
@@ -71,20 +77,19 @@ export const useDialogController = ({
     handleOpenBrand,
     handleTypeDialogCreate,
   } = useHandleDialogMain()
-  const { trashData, setTriggerTrash } = useQueryTrash({ notification })
   const { deleteInventoryType, deleteInventoryTypeLoading, deleteTypeHandle } =
     useDeleteTypeHandle({
       notification,
       triggerType,
       setEditType,
-      setTriggerTrash,
+      triggerTrash,
     })
   const { deleteBrandType, deleteInventoryBrandLoading, deleteBrandHandle } =
     useDeleteBrandHandle({
       notification,
       triggerBrand,
       setEditType,
-      setTriggerTrash,
+      triggerTrash,
     })
   const {
     upsertInventoryType,
@@ -111,7 +116,13 @@ export const useDialogController = ({
   const { openDialogCsv, handleOpenCsv, handleCloseCsv } = useHandleDialogCsv()
   const { openDialogTrash, handleCloseTrash, handleOpenTrash } =
     useHandleDialogTrash()
-  const {} = useTrashHandle({ triggerInventory, triggerBrand, triggerType })
+  const { recoveryHardDeletedHandle } = useTrashHandle({
+    triggerInventory,
+    triggerBrand,
+    triggerType,
+    triggerTrash,
+    notification,
+  })
   return {
     deleteTypeHandle: {
       deleteInventoryType,
@@ -152,9 +163,11 @@ export const useDialogController = ({
       handleOpenBrand,
       handleTypeDialogCreate,
     },
-    dialogTrash: { openDialogTrash, handleCloseTrash, handleOpenTrash },
-    trashHanddle: {
-      trashData,
+    dialogTrash: {
+      openDialogTrash,
+      handleCloseTrash,
+      handleOpenTrash,
+      recoveryHardDeletedHandle,
     },
   }
 }
@@ -163,7 +176,7 @@ const useDeleteTypeHandle = ({
   notification,
   triggerType,
   setEditType,
-  setTriggerTrash,
+  triggerTrash,
 }) => {
   const {
     trigger: deleteInventoryType,
@@ -178,7 +191,7 @@ const useDeleteTypeHandle = ({
       notification(notificationDeleteSuccessProp('type'))
       setEditType(ModeDialog.VIEW)
       triggerType()
-      setTriggerTrash()
+      triggerTrash()
     },
     onError: (error) => {
       if (error === EnumErrorType.BADHAVETYPE) {
@@ -261,7 +274,7 @@ const useDeleteBrandHandle = ({
   notification,
   triggerBrand,
   setEditType,
-  setTriggerTrash,
+  triggerTrash,
 }) => {
   const {
     trigger: deleteBrandType,
@@ -276,7 +289,7 @@ const useDeleteBrandHandle = ({
       notification(notificationDeleteSuccessProp('brand'))
       setEditType(ModeDialog.VIEW)
       triggerBrand()
-      setTriggerTrash()
+      triggerTrash()
     },
     onError: (error) => {
       if (error === EnumErrorType.BADHAVETYPE) {
@@ -427,46 +440,47 @@ const useHandleDialogTrash = () => {
   }
 }
 
-const useQueryTrash = ({ notification }) => {
-  const [trashData, setTrashData] = useState<InventoryTrash>(null)
-  const [trigger, setTrigger] = useState(true)
-  const { trigger: getInventoryAllDeleted } = useLazyQueryData<
-    QueryKey.inventory,
-    GetInventoryAllDeletedData,
-    any
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.inventoryTrash(data)
+const useTrashHandle = ({
+  triggerInventory,
+  triggerBrand,
+  triggerType,
+  triggerTrash,
+  notification,
+}) => {
+  const { trigger: recoveryHardDeleted } = useMutationData<
+    MutateKey.inventory,
+    RecoveryHardDeletedData,
+    RecoveryHardDeletedVariable
+  >(MutateKey.inventory, null, recoveryHardDeletedMutation, {
+    onSuccess: (data) => {
+      notification(
+        notificationTrashMutateSuccessProp(data?.recoveryHardDeleted?.mode),
+      )
+      triggerType()
+      triggerBrand()
+      triggerInventory()
+      triggerTrash()
     },
-    getInventoryAllDeletedQuery,
-    {
-      onSuccess: (data) => {
-        setTrashData(data)
-      },
-      onError: () => {
-        notification(notificationTrashFetchErrorProp)
-      },
-      globalLoading: true,
+    onError: () => {
+      notification(notificationTrashMutateErrorProp)
     },
+    globalLoading: true,
+  })
+
+  const recoveryHardDeletedHandle = useCallback(
+    (id: string, type: EnumDeletedType, mode: EnumDeletedMode) => {
+      recoveryHardDeleted({
+        input: {
+          id: id,
+          type: type,
+          mode: mode,
+        },
+      })
+    },
+    [recoveryHardDeleted],
   )
 
-  const getInventoryTrashHandle = useCallback(() => {
-    getInventoryAllDeleted()
-  }, [getInventoryAllDeleted])
-
-  useEffect(() => {
-    getInventoryTrashHandle()
-  }, [getInventoryTrashHandle, trigger])
-
   return {
-    trashData,
-    setTriggerTrash: setTrigger,
+    recoveryHardDeletedHandle,
   }
-}
-
-const useTrashHandle = ({ triggerInventory, triggerBrand, triggerType }) => {
-  console.log({ triggerInventory, triggerBrand, triggerType })
-  //todo trash  recoveryHardDeleted
-  return {}
 }

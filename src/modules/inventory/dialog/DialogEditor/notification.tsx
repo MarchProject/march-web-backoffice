@@ -1,4 +1,5 @@
 import { EnumSeverity } from '@/context/notification'
+import { EnumDeletedMode } from '@/core/gql/inventory/inventoryTrash'
 
 export const notificationDeleteSuccessProp = (type = 'type') => {
   return {
@@ -46,5 +47,21 @@ export const notificationUpdateErrorProp = (
 export const notificationTrashFetchErrorProp = {
   severity: EnumSeverity.error,
   title: `Trash`,
-  message: "Fetch Error",
+  message: 'Fetch Error',
+}
+
+export const notificationTrashMutateErrorProp = {
+  severity: EnumSeverity.error,
+  title: `Trash`,
+  message: 'Fetch Error',
+}
+
+export const notificationTrashMutateSuccessProp = (
+  message: EnumDeletedMode,
+) => {
+  return {
+    severity: EnumSeverity.success,
+    title: `Trash`,
+    message: `${message === 'RECOVERY' ? 'Restore' : 'Delete'} Success`,
+  }
 }

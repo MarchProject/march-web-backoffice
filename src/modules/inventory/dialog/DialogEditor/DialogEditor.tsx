@@ -10,6 +10,7 @@ import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
 import {
   BrandType,
   InventoryNamesClass,
+  InventoryTrash,
   InventoryType,
 } from '@/core/model/inventory'
 import { DialogTrash } from './DialogTrash/DialogTrash'
@@ -32,6 +33,8 @@ interface IDialogEditor {
     value: string,
     reason: AutocompleteInputChangeReason,
   ) => void
+  trashData: InventoryTrash
+  setTriggerTrash: (e: boolean) => void
 }
 
 const DialogEditor = ({
@@ -44,6 +47,8 @@ const DialogEditor = ({
   setTriggerGetInventoryNames,
   handleSearchInventoryType,
   handleSearchInventoryBrand,
+  trashData,
+  setTriggerTrash,
 }: IDialogEditor) => {
   const {
     deleteTypeHandle: { deleteInventoryTypeLoading, deleteTypeHandle },
@@ -63,12 +68,17 @@ const DialogEditor = ({
       handleOpenBrand,
       handleTypeDialogCreate,
     },
-    dialogTrash: { openDialogTrash, handleCloseTrash, handleOpenTrash },
-    trashHanddle: { trashData },
+    dialogTrash: {
+      openDialogTrash,
+      handleCloseTrash,
+      handleOpenTrash,
+      recoveryHardDeletedHandle,
+    },
   } = useDialogController({
     setTriggerType,
     setTriggerBrand,
     setTriggerInventory,
+    setTriggerTrash,
   })
 
   return (
@@ -77,6 +87,7 @@ const DialogEditor = ({
         open={openDialogTrash}
         handleClose={handleCloseTrash}
         trashData={trashData}
+        recoveryHardDeletedHandle={recoveryHardDeletedHandle}
       />
       <DialogUploadCsv
         open={openDialogCsv}
@@ -150,10 +161,10 @@ const DialogEditor = ({
           )
         }}
       />
+      <MenuItem onClick={handleOpenCsv}>Upload CSV</MenuItem>
       <MenuItem onClick={handleOpenType}>Type</MenuItem>
       <MenuItem onClick={handleOpenBrand}>Brand</MenuItem>
-      <MenuItem onClick={handleOpenCsv}>Upload CSV</MenuItem>
-      <MenuItem onClick={handleCloseTrash}>Trash</MenuItem>
+      <MenuItem onClick={handleOpenTrash}>Trash</MenuItem>
     </>
   )
 }
