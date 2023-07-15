@@ -124,6 +124,7 @@ const Input = (props: IInputProps) => {
           onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
             e.stopPropagation()
           },
+          readOnly: disabled,
         }}
         placeholder={placeholder || inputLabel?.label}
         type={type}
@@ -132,7 +133,7 @@ const Input = (props: IInputProps) => {
         helperText={error}
         {...field}
         error={!!error}
-        disabled={disabled}
+        // disabled={disabled}
         size={size}
         {...rest}
         sx={{

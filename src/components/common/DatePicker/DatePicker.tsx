@@ -56,7 +56,8 @@ const DatePickerSelect = ({
           mask={mask}
           // maxDate={new Date('2700-12-31')}
           label={label}
-          disabled={disabled}
+          // disabled={disabled}
+          readOnly={disabled}
           acceptRegex={/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/}
           openTo="day"
           // views={['year', 'month', 'day']}
@@ -64,19 +65,25 @@ const DatePickerSelect = ({
           onError={onError}
           value={value}
           onChange={onChange}
-          renderInput={(params) => (
-            <TextField
-              sx={{
-                '& .MuiOutlinedInput-notchedOutline': {
-                  border: !!error ? 'solid 1px' : '',
-                  borderColor: !!error ? 'rgb(220 38 38)' : '',
-                },
-              }}
-              error={!!error}
-              {...params}
-              size={'small'}
-            />
-          )}
+          renderInput={(params) => {
+            const { disabled, ...rest } = params
+            return (
+              <TextField
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    border: !!error ? 'solid 1px' : '',
+                    borderColor: !!error ? 'rgb(220 38 38)' : '',
+                  },
+                }}
+                InputProps={{
+                  readOnly: disabled,
+                }}
+                error={!!error}
+                {...rest}
+                size={'small'}
+              />
+            )
+          }}
         />
       </LocalizationProvider>
       {error && <p className="text-xs text-red-600">{error}</p>}

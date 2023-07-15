@@ -84,6 +84,7 @@ const AutocompleteSelectAsync = <T extends object>({
   inputLabel,
   onChange,
   error,
+  disabled,
   ...otherProps
 }: IAutocompleteSelect<T>) => {
   const [open, setOpen] = useState(false)
@@ -143,22 +144,29 @@ const AutocompleteSelectAsync = <T extends object>({
         filterSelectedOptions
         {...field}
         {...otherProps}
-        renderInput={(params) => (
-          <TextField
-            sx={{
-              '& .Mui-error': {
-                marginLeft: 0,
-              },
-            }}
-            inputRef={inputRef}
-            {...params}
-            label={InputProps?.label}
-            placeholder={InputProps?.placeholder}
-            error={!!error}
-            value={value}
-            helperText={error}
-          />
-        )}
+        readOnly={disabled}
+        renderInput={(params) => {
+          const { disabled, ...restParams } = params
+          return (
+            <TextField
+              sx={{
+                '& .Mui-error': {
+                  marginLeft: 0,
+                },
+              }}
+              inputRef={inputRef}
+              InputProps={{
+                readOnly: disabled,
+              }}
+              {...restParams}
+              label={InputProps?.label}
+              placeholder={InputProps?.placeholder}
+              error={!!error}
+              value={value}
+              helperText={error}
+            />
+          )
+        }}
       />
     </>
   )

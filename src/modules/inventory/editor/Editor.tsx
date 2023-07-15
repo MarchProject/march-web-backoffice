@@ -67,7 +67,11 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       Back to inventory list
                     </p>
                     <h3 className="text-primary p-0 m-0 mt-[5px] text-2xl">
-                      {inventory ? 'Edit Item' : 'Add New Item'}
+                      {mode === EnumModeEditorPage.UPDATE
+                        ? 'Edit Item'
+                        : mode === EnumModeEditorPage.CREATE
+                        ? 'Add New Item'
+                        : 'View Item'}
                     </h3>
                   </div>
                 </div>
@@ -460,49 +464,51 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                         </CardContent>
                       </Card>
                     </div>
-                    <div className="mt-[15px]">
-                      <p className="text-xl m-0 text-primary">Pricing</p>
-                      <Card variant="outlined" sx={{ marginTop: '15px' }}>
-                        <CardContent>
-                          <div className="p-2">
-                            <div className="grid grid-cols-2 gap-[15px]">
-                              <InputForm
-                                control={control}
-                                classNames=""
-                                id="updatedBy"
-                                name="updatedBy"
-                                inputLabel={{
-                                  label: 'Last Updated By',
-                                  required: false,
-                                  classNames:
-                                    'text-base !text-secondary !font-semibold',
-                                }}
-                                type={'text'}
-                                variant={'outlined'}
-                                disabled={true}
-                              />
-                              <InputForm
-                                // required
-                                control={control}
-                                classNames=""
-                                id="updatedAt"
-                                name="updatedAt"
-                                // label='Item Name'
-                                inputLabel={{
-                                  label: 'Last Updated At',
-                                  required: false,
-                                  classNames:
-                                    'text-base !text-secondary !font-semibold',
-                                }}
-                                type={'text'}
-                                variant={'outlined'}
-                                disabled={true}
-                              />
+                    {mode !== EnumModeEditorPage.CREATE && (
+                      <div className="mt-[15px]">
+                        <p className="text-xl m-0 text-primary">User</p>
+                        <Card variant="outlined" sx={{ marginTop: '15px' }}>
+                          <CardContent>
+                            <div className="p-2">
+                              <div className="grid grid-cols-2 gap-[15px]">
+                                <InputForm
+                                  control={control}
+                                  classNames=""
+                                  id="updatedBy"
+                                  name="updatedBy"
+                                  inputLabel={{
+                                    label: 'Last Updated By',
+                                    required: false,
+                                    classNames:
+                                      'text-base !text-secondary !font-semibold',
+                                  }}
+                                  type={'text'}
+                                  variant={'outlined'}
+                                  disabled={true}
+                                />
+                                <InputForm
+                                  // required
+                                  control={control}
+                                  classNames=""
+                                  id="updatedAt"
+                                  name="updatedAt"
+                                  // label='Item Name'
+                                  inputLabel={{
+                                    label: 'Last Updated At',
+                                    required: false,
+                                    classNames:
+                                      'text-base !text-secondary !font-semibold',
+                                  }}
+                                  type={'text'}
+                                  variant={'outlined'}
+                                  disabled={true}
+                                />
+                              </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
                     <div className="mt-[20px] flex justify-end gap-[15px] h-[50px]">
                       {mode !== EnumModeEditorPage.VIEW && (
                         <div className="w-full max-w-[40px] my-auto">
