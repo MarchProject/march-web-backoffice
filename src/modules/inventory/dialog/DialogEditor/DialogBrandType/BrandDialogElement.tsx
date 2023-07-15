@@ -14,6 +14,7 @@ import { MdDeleteForever } from 'react-icons/md'
 import { RiEdit2Line, RiSearchLine } from 'react-icons/ri'
 import { ModeDialog } from '../controller'
 import { debounce } from 'lodash'
+import { warningDelete } from '@/constant'
 
 const BrandDialogElement = ({
   inventoriesBrandData,
@@ -75,10 +76,10 @@ const BrandDialogElement = ({
     <>
       {editType === ModeDialog.VIEW ? (
         <BlockUi tag="div" blocking={deleteInventoryBrandLoading}>
-          <div className="flex justify-end mb-[10px]">
+          <div className="flex justify-center mb-[10px]">
             <Input
               inputRef={searchFieldRef}
-              classNames="max-w-[220px] w-[100%] min-w-[220px]"
+              classNames="!w-[396px]"
               id="searchItems"
               variant="outlined"
               placeholder="Search Brand here"
@@ -145,6 +146,9 @@ const BrandDialogElement = ({
               </ListItem>
             ))}
           </List>
+          <p className="rounded font-semibold  text-white m-0 text-xs p-[10px] my-[10px] bg-[#ffd900] whitespace-pre-wrap">
+            {warningDelete}
+          </p>
         </BlockUi>
       ) : editType === ModeDialog.EDIT ? (
         <BlockUi tag="div" blocking={upsertInventoryBrandLoading}>

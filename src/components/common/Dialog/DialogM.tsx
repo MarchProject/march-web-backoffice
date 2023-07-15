@@ -1,7 +1,7 @@
 import { Breakpoint, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import classnames from 'classnames'
 import React from 'react'
-
+import { IoMdClose } from 'react-icons/io'
 interface IDialogM {
   open: boolean
   dialogTitle: string
@@ -39,12 +39,19 @@ export const DialogM = ({
           borderRadius: '10px',
         },
       }}>
-      <DialogTitle id="alert-dialog-title" className="text-primary">
-        {dialogTitle}
+      <DialogTitle
+        id="alert-dialog-title"
+        className="text-primary  flex justify-between">
+        <p className="m-0 font-bold">{dialogTitle}</p>
+        <IoMdClose
+          className="text-gray-500 cursor-pointer hover:text-gray-800"
+          size={20}
+          onClick={handleClose}
+        />
       </DialogTitle>
       {dialogContentTextRender()}
       {contentRender()}
-      <DialogActions>{actionRender()}</DialogActions>
+      <DialogActions className="mb-[16px]">{actionRender()}</DialogActions>
     </Dialog>
   )
 }

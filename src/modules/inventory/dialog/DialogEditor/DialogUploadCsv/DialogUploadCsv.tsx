@@ -69,11 +69,11 @@ const DialogUploadCsv = ({
           return (
             <>
               <ButtonForm
-                classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
+                classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px]"
                 label={'Upload'}
                 color={'primary'}
                 disabled={!isValid || !isPass}
-                variant="text"
+                variant={!isValid || !isPass ? 'text' : 'contained'}
                 onClick={onUploadHandle}
               />
               <DownLoadCsv
@@ -82,22 +82,22 @@ const DialogUploadCsv = ({
                 contents={() => {
                   return (
                     <ButtonForm
-                      classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case"
+                      classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px]"
                       label={'Download Template'}
                       color={'primary'}
-                      variant="text"
+                      variant="outlined"
                       onClick={handleClose}
                     />
                   )
                 }}
               />
-              <ButtonForm
+              {/* <ButtonForm
                 classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
                 label={'Close'}
                 color={'primary'}
                 variant="text"
                 onClick={handleClose}
-              />
+              /> */}
             </>
           )
         }}

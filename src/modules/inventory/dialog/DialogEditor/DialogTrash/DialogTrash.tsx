@@ -35,7 +35,7 @@ export const DialogTrash = ({
         return (
           <>
             <p className="text-secondary m-0 px-[24px] text-base">
-              Recovery or Delete from Trash.
+              Restore or Delete from Trash. (Auto delete in 30 days)
             </p>
           </>
         )
@@ -53,13 +53,13 @@ export const DialogTrash = ({
       actionRender={() => {
         return (
           <>
-            <ButtonForm
+            {/* <ButtonForm
               classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
               label={'Close'}
               color={'primary'}
               variant="text"
               onClick={handleClose}
-            />
+            /> */}
           </>
         )
       }}

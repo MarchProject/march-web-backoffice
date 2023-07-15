@@ -108,7 +108,7 @@ const DialogEditor = ({
         handleClose={handleCloseTypeBrandDialog}
         contentRender={() => {
           return (
-            <div className="px-[30px]">
+            <div className="px-[24px]">
               {typeDialogMain === TypeDialog.TYPE ? (
                 <TypeDialogElement
                   inventoriesTypeData={inventoriesTypeData}
@@ -136,7 +136,6 @@ const DialogEditor = ({
                   handleSearchInventoryBrand={handleSearchInventoryBrand}
                 />
               )}
-              <p className="text-primary text-xs mb-0 pb-0">{warningDelete}</p>
             </div>
           )
         }}
@@ -145,26 +144,42 @@ const DialogEditor = ({
             <>
               {editType === ModeDialog.VIEW && (
                 <ButtonForm
-                  classNames="!normal-case max-w-[80px]"
+                  classNames="!normal-case max-w-[180px] !mr-[16px]"
                   label={'Create'}
-                  variant="text"
+                  variant="contained"
                   onClick={handleTypeDialogCreate}
                 />
               )}
-              <ButtonForm
+              {/* <ButtonForm
                 classNames="!normal-case max-w-[80px]"
                 label={'Close'}
                 variant="text"
                 onClick={handleCloseTypeBrandDialog}
-              />
+              /> */}
             </>
           )
         }}
       />
-      <MenuItem onClick={handleOpenCsv}>Upload CSV</MenuItem>
-      <MenuItem onClick={handleOpenType}>Type</MenuItem>
-      <MenuItem onClick={handleOpenBrand}>Brand</MenuItem>
-      <MenuItem onClick={handleOpenTrash}>Trash</MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-gray-200 !rounded"
+        onClick={handleOpenCsv}>
+        Upload CSV
+      </MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-gray-200 !rounded"
+        onClick={handleOpenType}>
+        Type
+      </MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-gray-200 !rounded"
+        onClick={handleOpenBrand}>
+        Brand
+      </MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-gray-200 !rounded"
+        onClick={handleOpenTrash}>
+        Trash
+      </MenuItem>
     </>
   )
 }

@@ -32,13 +32,14 @@ export const ButtonMenu = ({
     <>
       <ButtonForm
         classNames="!w-[150px] !h-[40px] !normal-case"
-        label={'Product'}
+        label={'Item'}
         color={'primary'}
         endIcon={<RiAddLine size={15} />}
         onClick={handleClick as any}
       />
       <Menu
         id="product-menu"
+        style={{ marginRight: 10 }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -46,11 +47,12 @@ export const ButtonMenu = ({
           'aria-labelledby': 'basic-button',
         }}>
         <MenuItem
+          className=" !mx-3 hover:!bg-gray-200 !rounded"
           onClick={() => {
             handleClose()
             router.push({ pathname: inventoryCreateRoute.path })
           }}>
-          Add Product
+          Add Item
         </MenuItem>
         <DialogEditor
           setTriggerType={setTriggerType}

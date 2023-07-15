@@ -30,7 +30,7 @@ export const columns = ({
     //   },
     {
       field: 'name',
-      headerName: 'Product Name',
+      headerName: 'Item Name',
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -44,7 +44,7 @@ export const columns = ({
     },
     {
       field: 'inventoryType',
-      headerName: 'Type',
+      headerName: 'Item Type',
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -58,7 +58,7 @@ export const columns = ({
     },
     {
       field: 'brandType',
-      headerName: 'Brand',
+      headerName: 'Item Brand',
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {

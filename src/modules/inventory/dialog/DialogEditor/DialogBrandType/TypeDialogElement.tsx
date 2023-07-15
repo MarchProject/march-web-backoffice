@@ -14,6 +14,7 @@ import BlockUi from 'react-block-ui'
 import { MdDeleteForever } from 'react-icons/md'
 import { RiEdit2Line, RiSearchLine } from 'react-icons/ri'
 import { ModeDialog } from '../controller'
+import { warningDelete } from '@/constant'
 
 const TypeDialogElement = ({
   inventoriesTypeData,
@@ -75,10 +76,10 @@ const TypeDialogElement = ({
     <>
       {editType === ModeDialog.VIEW ? (
         <BlockUi tag="div" blocking={deleteInventoryTypeLoading}>
-          <div className="flex justify-end mb-[10px]">
+          <div className="flex justify-center mb-[10px] w-full">
             <Input
               inputRef={searchFieldRef}
-              classNames="max-w-[220px] w-[100%] min-w-[220px]"
+              classNames="!w-[396px]"
               id="searchItems"
               variant="outlined"
               placeholder="Search Type here"
@@ -145,6 +146,9 @@ const TypeDialogElement = ({
               </ListItem>
             ))}
           </List>
+          <p className="rounded font-semibold  text-white m-0 text-xs p-[10px] my-[10px] bg-[#ffd900] whitespace-pre-wrap">
+            {warningDelete}
+          </p>
         </BlockUi>
       ) : editType === ModeDialog.EDIT ? (
         <BlockUi tag="div" blocking={upsertInventoryTypeLoading}>

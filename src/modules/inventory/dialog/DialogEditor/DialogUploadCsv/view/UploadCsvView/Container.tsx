@@ -12,7 +12,7 @@ import {
   InventoryType,
 } from '@/core/model/inventory'
 import AlertToast from '@/components/common/Alert/alert'
-import { warningDelete } from '@/constant'
+import { warningDup } from '@/constant'
 
 interface IUploadCsvView {
   inventoriesTypeData: InventoryType[]
@@ -154,20 +154,20 @@ const UploadCsvView = ({
         onCompleteValueObj={onCompleteValue}
         onChangeFile={onChangeFile}
       />
-      <div className="px-[24px] mt-[10px]">
+      <div className="px-[24px] mt-[20px] my-[12px]">
         <AlertToast
           classNames="mx-auto"
           severity="warning"
           variant="standard"
-          title="Warning !"
-          message={warningDelete}
+          title="Duplicate!"
+          message={warningDup}
         />
       </div>
       <div className="px-[24px] ">
         {validatedValues.length > 0 && (
           <>
-            <p className="text-xl m-0 mt-[20px] mb-[10px] text-primary ">
-              Validated files{' '}
+            <p className="text-xl m-0 mt-[0px] mb-[10px] text-primary ">
+              Validated files
               <span className="text-secondary text-base ">
                 (please remove invalid files or duplicate name before upload)
               </span>
