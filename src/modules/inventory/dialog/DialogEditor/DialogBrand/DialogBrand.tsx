@@ -1,36 +1,38 @@
 import { DialogM } from '@/components/common/Dialog/DialogM'
 
 import React, { useEffect, useRef } from 'react'
-import { TypeViewMain } from './view/Container'
-import { InventoryType } from '@/core/model/inventory'
-import { Input } from '@/components/common/Input'
-import InputAdornment from '@mui/material/InputAdornment'
+import { BrandViewMain } from './view/Container'
+import { BrandType } from '@/core/model/inventory'
+import {
+  AutocompleteInputChangeReason,
+  InputAdornment,
+  debounce,
+} from '@mui/material'
 import { RiSearchLine } from 'react-icons/ri'
-import { debounce } from 'lodash'
-import { AutocompleteInputChangeReason } from '@mui/material'
+import { Input } from '@/components/common/Input'
 import { useLoadingContext } from '@/context/loading'
 
-interface IDialogTypeProps {
+interface IDialogBrandProps {
   open: boolean
   handleClose: () => void
-  inventoriesTypeData: InventoryType[]
-  deleteTypeHandle: (id: string) => void
-  updateTypeHandle: (data: any) => void
-  handleSearchInventoryType: (
+  inventoriesBrandData: BrandType[]
+  deleteBrandHandle: (id: string) => void
+  updateBrandHandle: (data: any) => void
+  handleSearchInventoryBrand: (
     event: React.SyntheticEvent,
     value: string,
     reason: AutocompleteInputChangeReason,
   ) => void
 }
 
-export const DialogType = ({
+export const DialogBrand = ({
   open,
   handleClose,
-  inventoriesTypeData,
-  deleteTypeHandle,
-  updateTypeHandle,
-  handleSearchInventoryType,
-}: IDialogTypeProps) => {
+  inventoriesBrandData,
+  deleteBrandHandle,
+  updateBrandHandle,
+  handleSearchInventoryBrand,
+}: IDialogBrandProps) => {
   const searchFieldRef = useRef(null)
   const { zIndexLoading } = useLoadingContext()
   const handleReset = () => {
@@ -52,10 +54,9 @@ export const DialogType = ({
   const handleBlur = () => {
     zIndexLoading(9999)
   }
-
   return (
     <DialogM
-      dialogTitle="Type"
+      dialogTitle="Brand"
       open={open}
       maxWidth="sm"
       handleClose={handleClose}
@@ -63,7 +64,7 @@ export const DialogType = ({
         return (
           <>
             <p className="text-secondary m-0 px-[24px] text-base">
-              Add type for items
+              Add brand for items
             </p>
             <div
               onFocus={handleFocus}
@@ -74,7 +75,7 @@ export const DialogType = ({
                 classNames="!w-[552px]"
                 id="searchItems"
                 variant="outlined"
-                placeholder="Search Type here"
+                placeholder="Search Brand here"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -83,7 +84,7 @@ export const DialogType = ({
                   ),
                 }}
                 onChange={debounce((e) => {
-                  handleSearchInventoryType(
+                  handleSearchInventoryBrand(
                     undefined,
                     e.target.value,
                     undefined,
@@ -100,10 +101,10 @@ export const DialogType = ({
       contentRender={() => {
         return (
           <>
-            <TypeViewMain
-              inventoriesTypeData={inventoriesTypeData}
-              deleteTypeHandle={deleteTypeHandle}
-              updateTypeHandle={updateTypeHandle}
+            <BrandViewMain
+              inventoriesBrandData={inventoriesBrandData}
+              deleteBrandHandle={deleteBrandHandle}
+              updateBrandHandle={updateBrandHandle}
             />
           </>
         )

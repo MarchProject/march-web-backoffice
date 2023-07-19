@@ -106,7 +106,7 @@ export async function initApollo(uri?: string) {
                       },
                     })
 
-                    const newHeaders = operation.getContext().headers
+                    // const newHeaders = operation.getContext().headers
                     // console.log({ newHeaders })
                     // Retry the failed request
                     const subscriber = {

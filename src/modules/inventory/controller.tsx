@@ -186,7 +186,7 @@ const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
       onSuccess: (data) => {
         setDataTranform(data)
       },
-      onError: (error) => {
+      onError: () => {
         notification(notificationErrorProp('Names Error'))
       },
       globalLoading: true,

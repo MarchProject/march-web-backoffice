@@ -166,9 +166,9 @@ export const getInventoriesBrandQuery = gql`
       name
       description
       createdBy
-      # createdAt
+      createdAt
       updatedBy
-      # updatedAt
+      updatedAt
     }
   }
 `

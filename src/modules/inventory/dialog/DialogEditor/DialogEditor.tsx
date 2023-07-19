@@ -1,10 +1,6 @@
-import ButtonForm from '@/components/common/Button/button'
-import { DialogM } from '@/components/common/Dialog/DialogM'
-import React, { useState } from 'react'
-import { ModeDialog, TypeDialog, useDialogController } from './controller'
+import React from 'react'
+import { useDialogController } from './controller'
 import { AutocompleteInputChangeReason, MenuItem } from '@mui/material'
-import TypeDialogElement from './DialogBrandType/TypeDialogElement'
-import BrandDialogElement from './DialogBrandType/BrandDialogElement'
 import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
 import {
   BrandType,
@@ -14,6 +10,7 @@ import {
 } from '@/core/model/inventory'
 import { DialogTrash } from './DialogTrash/DialogTrash'
 import { DialogType } from './DialogType/DialogType'
+import { DialogBrand } from './DialogBrand/DialogBrand'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
@@ -51,43 +48,25 @@ const DialogEditor = ({
   setTriggerTrash,
 }: IDialogEditor) => {
   const {
-    deleteTypeHandle: { deleteInventoryTypeLoading, deleteTypeHandle },
-    upsertTypeHandle: { upsertInventoryTypeLoading, updateTypeHandle },
-    upsertBrandHandle: { upsertInventoryBrandLoading, updateBrandHandle },
-    deletBrandHandle: { deleteInventoryBrandLoading, deleteBrandHandle },
+    deleteTypeHandle: { deleteTypeHandle },
+    upsertTypeHandle: { updateTypeHandle },
+    upsertBrandHandle: { updateBrandHandle },
+    deletBrandHandle: { deleteBrandHandle },
     dialogCsv: { openDialogCsv, handleOpenCsv, handleCloseCsv },
-    dialogMain: {
-      setEditType,
-      editType,
-      openDialogMain,
-      typeDialogMain,
-      idType,
-      setIdType,
-      handleCloseTypeBrandDialog,
-      handleOpenType,
-      handleOpenBrand,
-      handleTypeDialogCreate,
-    },
     dialogTrash: {
       openDialogTrash,
       handleCloseTrash,
       handleOpenTrash,
       recoveryHardDeletedHandle,
     },
+    dialogType: { openDialogType, handleCloseType, handleOpenType },
+    dialogBrand: { openDialogBrand, handleCloseBrand, handleOpenBrand },
   } = useDialogController({
     setTriggerType,
     setTriggerBrand,
     setTriggerInventory,
     setTriggerTrash,
   })
-
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
 
   return (
     <>
@@ -107,68 +86,20 @@ const DialogEditor = ({
         setTriggerGetInventoryNames={setTriggerGetInventoryNames}
       />
       <DialogType
-        open={open}
-        handleClose={handleClose}
+        open={openDialogType}
+        handleClose={handleCloseType}
         inventoriesTypeData={inventoriesTypeData}
         deleteTypeHandle={deleteTypeHandle}
         updateTypeHandle={updateTypeHandle}
+        handleSearchInventoryType={handleSearchInventoryType}
       />
-      <DialogM
-        open={openDialogMain}
-        dialogTitle={
-          typeDialogMain === TypeDialog.TYPE
-            ? 'Inventory Type'
-            : 'Inventory Brand'
-        }
-        handleClose={handleCloseTypeBrandDialog}
-        maxWidth="sm"
-        contentRender={() => {
-          return (
-            <div className="px-[24px]">
-              {typeDialogMain === TypeDialog.TYPE ? (
-                <TypeDialogElement
-                  inventoriesTypeData={inventoriesTypeData}
-                  idType={idType}
-                  setIdType={setIdType}
-                  setEditType={setEditType}
-                  editType={editType}
-                  deleteInventoryTypeLoading={deleteInventoryTypeLoading}
-                  upsertInventoryTypeLoading={upsertInventoryTypeLoading}
-                  deleteTypeHandle={deleteTypeHandle}
-                  updateTypeHandle={updateTypeHandle}
-                  handleSearchInventoryType={handleSearchInventoryType}
-                />
-              ) : (
-                <BrandDialogElement
-                  inventoriesBrandData={inventoriesBrandData}
-                  idType={idType}
-                  setIdType={setIdType}
-                  setEditType={setEditType}
-                  editType={editType}
-                  deleteInventoryBrandLoading={deleteInventoryBrandLoading}
-                  upsertInventoryBrandLoading={upsertInventoryBrandLoading}
-                  deleteBrandHandle={deleteBrandHandle}
-                  updateBrandHandle={updateBrandHandle}
-                  handleSearchInventoryBrand={handleSearchInventoryBrand}
-                />
-              )}
-            </div>
-          )
-        }}
-        actionRender={() => {
-          return (
-            <>
-              {editType === ModeDialog.VIEW && (
-                <ButtonForm
-                  classNames="!normal-case max-w-[180px] !mr-[16px]"
-                  label={'Create'}
-                  variant="contained"
-                  onClick={handleTypeDialogCreate}
-                />
-              )}
-            </>
-          )
-        }}
+      <DialogBrand
+        open={openDialogBrand}
+        handleClose={handleCloseBrand}
+        inventoriesBrandData={inventoriesBrandData}
+        deleteBrandHandle={deleteBrandHandle}
+        updateBrandHandle={updateBrandHandle}
+        handleSearchInventoryBrand={handleSearchInventoryBrand}
       />
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl "
@@ -177,7 +108,7 @@ const DialogEditor = ({
       </MenuItem>
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
-        onClick={handleOpen}>
+        onClick={handleOpenType}>
         Type
       </MenuItem>
       <MenuItem

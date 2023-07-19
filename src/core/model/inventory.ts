@@ -12,8 +12,7 @@ export class InventoryNamesClass {
     this._name = name.split('|')[0]
   }
 }
-export class BrandType {
-  id: string
+export class BrandType  extends Model{
   _name: string
   get name(): string {
     return this._name
@@ -23,7 +22,6 @@ export class BrandType {
     this._name = name.split('|')[0]
   }
   description: string
-  createdBy: string
 }
 export class InventoriesResponse {
   _inventories: Inventory[]
