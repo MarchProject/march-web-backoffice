@@ -56,7 +56,7 @@ function Layout({ children }) {
   const IconTab = ({ value }) => {
     const styleIcon: React.CSSProperties = {
       color: tab === value ? '#FFFFFF' : '#878787',
-      backgroundColor: tab === value ? '#9A73B5' : '', //#E9E4ED
+      backgroundColor: tab === value ? '#a78bfa' : '', //#E9E4ED
       padding: '4px',
       borderRadius: '4px',
       marginTop: 'auto',

@@ -12,14 +12,24 @@ declare module '@mui/material/styles' {
 
 const { palette } = createTheme()
 const { augmentColor } = palette
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor }, mainShade: 200 })
+const createColor = (mainColor) =>
+  augmentColor({ color: { main: mainColor }, mainShade: 200 })
 
 export const theme = createTheme({
   palette: {
-    primary: createColor('#8B5FBF'),
+    primary: createColor('#a78bfa'),
     secondary: createColor('#000000'),
     text100: createColor('#4A4A4A'),
     text200: createColor('#525252'),
     violet: createColor('#BC00A3'),
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        containedPrimary: {
+          color: '#FFFFFF', // Set the text color for primary buttons to white
+        },
+      },
+    },
   },
 })

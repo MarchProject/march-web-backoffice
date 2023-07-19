@@ -36,7 +36,7 @@ export const DialogM = ({
         '& .MuiPaper-root': {
           // maxWidth: '440px',
           // width: '100%',
-          borderRadius: '10px',
+          borderRadius: '12px',
         },
       }}>
       <DialogTitle

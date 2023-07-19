@@ -39,7 +39,13 @@ export const ButtonMenu = ({
       />
       <Menu
         id="product-menu"
-        style={{ marginRight: 10 }}
+        sx={{
+          '& .MuiMenu-paper': {
+            borderRadius: '16px',
+            marginTop: '5px',
+            marginLeft: '3px',
+          },
+        }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -47,7 +53,7 @@ export const ButtonMenu = ({
           'aria-labelledby': 'basic-button',
         }}>
         <MenuItem
-          className=" !mx-3 hover:!bg-gray-200 !rounded"
+          className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mt-[3px]"
           onClick={() => {
             handleClose()
             router.push({ pathname: inventoryCreateRoute.path })

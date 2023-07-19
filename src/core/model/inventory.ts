@@ -55,8 +55,7 @@ export class SplitShop {
   }
 }
 
-export class InventoryType {
-  id: string
+export class InventoryType extends Model {
   _name: string
   get name(): string {
     return this._name
@@ -66,7 +65,6 @@ export class InventoryType {
     this._name = name.split('|')[0]
   }
   description: string
-  createdBy: string
 }
 
 export class Inventory extends Model {

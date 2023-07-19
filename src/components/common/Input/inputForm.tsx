@@ -1,6 +1,6 @@
 import { noop } from '@/utils/common/noop'
 import { FormControl, OutlinedInputProps, TextField } from '@mui/material'
-import React, { ChangeEvent, ChangeEventHandler } from 'react'
+import React, { ChangeEvent, ChangeEventHandler, useState } from 'react'
 import {
   Control,
   Controller,
@@ -97,6 +97,7 @@ const Input = (props: IInputProps) => {
       onChange(_e)
     }
   }
+  const [focus, setFocus] = useState(false)
   return (
     <FormControl
       variant="standard"
@@ -106,7 +107,9 @@ const Input = (props: IInputProps) => {
         <div
           className={classnames(
             inputLabel.classNames,
-            'text-xs text-gray-600 mb-[4px]',
+            `text-xs ${
+              focus ? ' !text-violet-400 ' : ' !text-gray-600 '
+            } mb-[4px]`,
           )}>
           {inputLabel.label}
           {inputLabel.required && <span className="text-rose-600"> * </span>}
@@ -115,7 +118,7 @@ const Input = (props: IInputProps) => {
       <TextField
         inputRef={inputRef}
         id={id}
-        className={classnames(classNames)}
+        className={classnames(classNames, '!rounded-full')}
         name={name}
         variant={variant}
         value={value}
@@ -125,6 +128,13 @@ const Input = (props: IInputProps) => {
             e.stopPropagation()
           },
           readOnly: disabled,
+          className: '!rounded-2xl',
+        }}
+        onFocus={() => {
+          setFocus(true)
+        }}
+        onBlur={() => {
+          setFocus(false)
         }}
         placeholder={placeholder || inputLabel?.label}
         type={type}
@@ -143,6 +153,11 @@ const Input = (props: IInputProps) => {
           '& .MuiInputBase-input': {
             // height: '28px',
             // paddingY: '6px',
+          },
+          '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: '#a78bfa',
+            },
           },
         }}
       />

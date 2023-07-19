@@ -1,6 +1,6 @@
 export const styleIconMarch: React.CSSProperties = {
   color: '#FFFFFF',
-  backgroundColor: '#9A73B5',
+  backgroundColor: '#a78bfa',
   padding: '4px',
   borderRadius: '4px',
   marginTop: 'auto',
@@ -10,7 +10,7 @@ export const styleIconMarch: React.CSSProperties = {
 
 export const styleIconUpload: React.CSSProperties = {
   color: '#FFFFFF',
-  backgroundColor: '#9A73B5',
+  backgroundColor: '#a78bfa',
   padding: '4px',
   borderRadius: '4px',
   marginTop: 'auto',

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -37,12 +37,15 @@ const DatePickerSelect = ({
   onError,
   disabled,
 }: IDatePickerSelect) => {
+  const [focus, setFocus] = useState(false)
   return (
     <>
       {inputLabel && (
         <div
           className={classnames(
-            'text-xs text-gray-600 mb-[4px]',
+            `text-xs ${
+              focus ? ' !text-violet-400 ' : ' !text-gray-600 '
+            } mb-[4px]`,
             inputLabel.classNames,
           )}>
           {inputLabel.label}
@@ -73,7 +76,19 @@ const DatePickerSelect = ({
                   '& .MuiOutlinedInput-notchedOutline': {
                     border: !!error ? 'solid 1px' : '',
                     borderColor: !!error ? 'rgb(220 38 38)' : '',
+                    borderRadius: '12px',
                   },
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: '#a78bfa',
+                    },
+                  },
+                }}
+                onFocus={() => {
+                  setFocus(true)
+                }}
+                onBlur={() => {
+                  setFocus(false)
                 }}
                 InputProps={{
                   readOnly: disabled,

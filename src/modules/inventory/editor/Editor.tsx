@@ -32,11 +32,11 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
     formHandler: { control, onSubmit, setValue },
     inventoriesType: { inventoriesTypeData, inventoriesTypeLoading },
     inventoriesBrand: { inventoriesBrandData, inventoriesBrandLoading },
-    inventory: { inventory, deleteInventoryHandle },
+    inventory: { deleteInventoryHandle },
   } = useEditorInventoryController({ idInventory })
 
   const styleIconPageMarch: React.CSSProperties = {
-    color: '#9A73B5',
+    color: '#a78bfa',
     backgroundColor: '#FFFFFF',
     padding: '8px',
     borderRadius: '4px',
@@ -188,7 +188,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               control={control}
                               id="brand"
                               disabled={disabled}
-                              classNames=" mx-auto mt-[20px]"
+                              classNames=" mx-auto mt-[10px]"
                               labelIndex="name"
                               valueIndex="id"
                               multiple={false}

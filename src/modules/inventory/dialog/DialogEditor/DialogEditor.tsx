@@ -1,10 +1,9 @@
 import ButtonForm from '@/components/common/Button/button'
 import { DialogM } from '@/components/common/Dialog/DialogM'
-import React from 'react'
+import React, { useState } from 'react'
 import { ModeDialog, TypeDialog, useDialogController } from './controller'
 import { AutocompleteInputChangeReason, MenuItem } from '@mui/material'
 import TypeDialogElement from './DialogBrandType/TypeDialogElement'
-import { warningDelete } from '@/constant'
 import BrandDialogElement from './DialogBrandType/BrandDialogElement'
 import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
 import {
@@ -14,6 +13,7 @@ import {
   InventoryType,
 } from '@/core/model/inventory'
 import { DialogTrash } from './DialogTrash/DialogTrash'
+import { DialogType } from './DialogType/DialogType'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
@@ -81,6 +81,14 @@ const DialogEditor = ({
     setTriggerTrash,
   })
 
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   return (
     <>
       <DialogTrash
@@ -98,6 +106,13 @@ const DialogEditor = ({
         inventoryNamesData={inventoryNamesData}
         setTriggerGetInventoryNames={setTriggerGetInventoryNames}
       />
+      <DialogType
+        open={open}
+        handleClose={handleClose}
+        inventoriesTypeData={inventoriesTypeData}
+        deleteTypeHandle={deleteTypeHandle}
+        updateTypeHandle={updateTypeHandle}
+      />
       <DialogM
         open={openDialogMain}
         dialogTitle={
@@ -106,6 +121,7 @@ const DialogEditor = ({
             : 'Inventory Brand'
         }
         handleClose={handleCloseTypeBrandDialog}
+        maxWidth="sm"
         contentRender={() => {
           return (
             <div className="px-[24px]">
@@ -150,33 +166,27 @@ const DialogEditor = ({
                   onClick={handleTypeDialogCreate}
                 />
               )}
-              {/* <ButtonForm
-                classNames="!normal-case max-w-[80px]"
-                label={'Close'}
-                variant="text"
-                onClick={handleCloseTypeBrandDialog}
-              /> */}
             </>
           )
         }}
       />
       <MenuItem
-        className="!mx-3 hover:!bg-gray-200 !rounded"
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl "
         onClick={handleOpenCsv}>
         Upload CSV
       </MenuItem>
       <MenuItem
-        className="!mx-3 hover:!bg-gray-200 !rounded"
-        onClick={handleOpenType}>
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
+        onClick={handleOpen}>
         Type
       </MenuItem>
       <MenuItem
-        className="!mx-3 hover:!bg-gray-200 !rounded"
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
         onClick={handleOpenBrand}>
         Brand
       </MenuItem>
       <MenuItem
-        className="!mx-3 hover:!bg-gray-200 !rounded"
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mb-[3px]"
         onClick={handleOpenTrash}>
         Trash
       </MenuItem>

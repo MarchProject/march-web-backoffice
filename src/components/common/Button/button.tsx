@@ -32,7 +32,7 @@ function ButtonForm(props: ButtonFormProps) {
   } = props
   return (
     <Button
-      className={classnames(classNames, 'w-[100%]')}
+      className={classnames(classNames, '!w-[100%] !rounded-xl')}
       size="medium"
       variant={variant}
       color={color}

@@ -12,7 +12,7 @@ module.exports = {
       colors: {
         primary: '#4A4A4A',
         secondary: '#878787',
-        primary100: '#8B5FBF',
+        primary100: '#a78bfa',
         primary200: '#61398F',
         primary300: '#FFFFFF',
         accent100: '#D6C6E1',
@@ -24,7 +24,7 @@ module.exports = {
         bg300: '#FFFFFF',
       },
       screen: {
-        sm: '640px', 
+        sm: '640px',
       },
     },
   },

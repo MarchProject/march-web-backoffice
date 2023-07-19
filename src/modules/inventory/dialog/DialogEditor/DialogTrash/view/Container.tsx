@@ -7,6 +7,7 @@ import { styleIconMarch } from '@/utils/style/utill'
 import { Tab, Tabs } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { BsFillBoxSeamFill, BsTrash } from 'react-icons/bs'
+import { HiOutlineWallet } from 'react-icons/hi2'
 interface ITrash {
   trashData: InventoryTrash
   recoveryHardDeletedHandle: (
@@ -40,15 +41,24 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
     ) => void,
     type: EnumDeletedType,
   ) => {
-    console.log({ trashObjs })
-
     const trashObj = trashObjs?.map((t) => {
       return (
         <div className="flex justify-between mt-[10px]" key={t.key}>
           <div className="flex gap-[15px]">
-            <BsFillBoxSeamFill
-              style={{ ...styleIconMarch, fontSize: '40px' }}
-            />
+            {type === EnumDeletedType.inventory ? (
+              <BsFillBoxSeamFill
+                style={{ ...styleIconMarch, fontSize: '40px' }}
+              />
+            ) : type === EnumDeletedType.inventoryType ? (
+              <HiOutlineWallet
+                style={{ ...styleIconMarch, fontSize: '40px' }}
+              />
+            ) : (
+              <HiOutlineWallet
+                style={{ ...styleIconMarch, fontSize: '40px' }}
+              />
+            )}
+
             <div>
               <div className="text-primary text-lg font-semibold">
                 {t._name}
@@ -60,14 +70,14 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
           </div>
           <div className="flex justify-between text-center w-[150px] items-center">
             <div
-              className="hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded"
+              className="hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded-xl"
               onClick={() => {
                 recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.RECOVERY)
               }}>
               <p className="m-0 text-white">Restore</p>
             </div>
             <div
-              className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded"
+              className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded-xl"
               onClick={() => {
                 recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.DELETE)
               }}>

@@ -20,16 +20,19 @@ interface ILoadingProvider {
 interface ILoadingContext {
   openLoading: () => void
   closeLoading: () => void
+  zIndexLoading: (value: number) => void
 }
 
 const LoadingContext = createContext<ILoadingContext>({
   openLoading: noop,
   closeLoading: noop,
+  zIndexLoading: noop,
 })
 
 export const LoadingProvider: FC<ILoadingProvider> = (props) => {
   const { children } = props
   const [loading, setLoading] = useState(false)
+  const [zIndex, setZIndex] = useState(9999)
 
   const openLoading = useCallback(() => {
     setLoading(true)
@@ -41,14 +44,19 @@ export const LoadingProvider: FC<ILoadingProvider> = (props) => {
     }, 600)
   }, [])
 
+  const zIndexLoading = useCallback((value) => {
+    setZIndex(value)
+  }, [])
+
   const contextValue = useMemo(() => {
     return {
       closeLoading,
       openLoading,
+      zIndexLoading,
     }
-  }, [closeLoading, openLoading])
+  }, [closeLoading, openLoading, zIndexLoading])
   const propsLoader = {
-    color: '#8B5FBF',
+    color: '#a78bfa',
   }
 
   return (
@@ -56,6 +64,7 @@ export const LoadingProvider: FC<ILoadingProvider> = (props) => {
       <BlockUi
         tag="div"
         blocking={loading}
+        style={{ zIndex: zIndex }}
         loader={<Loader active type={'ball-pulse'} {...propsLoader} />}>
         {children}
       </BlockUi>

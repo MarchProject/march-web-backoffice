@@ -18,6 +18,7 @@ import { AutocompleteSelectAsync } from '@/components/common/Autocomplete/Autoco
 import { DialogM } from '@/components/common/Dialog/DialogM'
 import { ButtonMenu } from './ButtonMenu'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+import { useLoadingContext } from '@/context/loading'
 
 type InventoryManagementProps = {
   setSearch: (value: string) => void
@@ -89,7 +90,7 @@ export const InventoryManagement = ({
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
   const brandFieldRef = useRef(null)
-
+  const { zIndexLoading } = useLoadingContext()
   const handleReset = () => {
     handleClearChange()
     searchFieldRef.current.value = ''
@@ -100,11 +101,13 @@ export const InventoryManagement = ({
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
+    zIndexLoading(20)
     setOpen(true)
   }
 
   const handleClose = () => {
     setOpen(false)
+    zIndexLoading(9999)
   }
 
   return (
@@ -144,10 +147,10 @@ export const InventoryManagement = ({
                 loading={inventoriesTypeLoading}
                 onInputChange={handleSearchInventoryType}
               />
-              <div className="mx-auto !mx-[30px] mt-[20px]">
+              <div className="!mx-[30px] mt-[20px]">
                 <div className="flex gap-[10px] justify-start max-w-[380px]">
                   <ButtonForm
-                    classNames="!w-[150px] !h-[40px] !normal-case"
+                    classNames="!w-[120px] !h-[40px] !normal-case"
                     label={'Favorite'}
                     variant="outlined"
                     color="error"
@@ -175,22 +178,22 @@ export const InventoryManagement = ({
         }}
         actionRender={() => {
           return (
-            <>
+            <div className="px-[24px] flex gap-2">
               <ButtonForm
-                classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
+                classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
                 label={'Clear'}
                 color={'primary'}
-                variant="text"
+                variant="outlined"
                 onClick={handleReset}
               />
               <ButtonForm
-                classNames="!w-[60px] !h-[40px] !w-[100%] !normal-case"
+                classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
                 label={'Close'}
                 color={'primary'}
-                variant="text"
+                variant="contained"
                 onClick={handleClose}
               />
-            </>
+            </div>
           )
         }}
       />

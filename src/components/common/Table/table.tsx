@@ -48,6 +48,11 @@ export default function DataTableMarch({
     return (
       <Pagination
         color="primary"
+        sx={{
+          '& .Mui-selected': {
+            color: 'white !important',
+          },
+        }}
         count={pageCount}
         page={page}
         onChange={(_, value) => {
@@ -71,12 +76,63 @@ export default function DataTableMarch({
         <CustomPagination />
         <div className="pr-4 flex">
           <GridPagination
+            SelectProps={{
+              MenuProps: {
+                sx: {
+                  '& .MuiPaper-root': {
+                    backgroundColor: '#fff',
+                    borderRadius: '8px',
+                  },
+                  '& .Mui-selected': {
+                    backgroundColor: '#a78bfa !important',
+                    color: 'white',
+                  },
+                  '& .Mui-selected:hover': {
+                    backgroundColor: '#8b5cf6 !important',
+                  },
+                  '& .MuiButtonBase-root:hover': {
+                    backgroundColor: '#8b5cf6',
+                    color: '#fff',
+                  },
+                  '& .MuiButtonBase-root': {
+                    // marginX: 'auto',
+                    // width: '30px',
+                    // height: '30px',
+                    // display: 'flex',
+                    // justifyContent: 'center',
+                    // borderRadius: '8px',
+                  },
+                  '& .MuiList-root': {
+                    display: 'grid',
+                    // gap: '8px',
+                  },
+                },
+              },
+            }}
             sx={{
               '& .MuiInputBase-root': {
                 marginRight: '5px',
               },
+              '& .MuiPaper-root': {
+                backgroundColor: 'red',
+              },
+              '& .MuiTablePagination-selectLabel': {
+                color: '#878787',
+                fontSize: '12px',
+                fontWeight: '600',
+              },
+              '& .MuiSelect-select': {
+                color: '#878787',
+                fontSize: '12px',
+                fontWeight: '600',
+              },
+              //MuiPaper-root
             }}
-            labelDisplayedRows={() => <>entries</>}
+            labelDisplayedRows={() => (
+              <div className="text-secondary text-xs font-semibold">
+                entries
+              </div>
+            )}
             labelRowsPerPage={'Show'}
             ActionsComponent={() => <></>}
             getItemAriaLabel={undefined}

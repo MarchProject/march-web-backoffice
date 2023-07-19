@@ -1,4 +1,4 @@
-import { countBy } from 'lodash'
+import { countBy, defaultTo, get } from 'lodash'
 
 export type Normalization = (value: string) => boolean
 
@@ -19,3 +19,7 @@ export const removeTypename = (obj) =>
     }
     return acc
   }, {})
+
+export const defaultGet = (obj: any, field: string, defaultValue: any = '') => {
+  return defaultTo(get(obj, field, defaultValue), defaultValue)
+}

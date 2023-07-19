@@ -131,9 +131,9 @@ export const getInventoriesTypeQuery = gql`
       name
       description
       createdBy
-      # createdAt
+      createdAt
       updatedBy
-      # updatedAt
+      updatedAt
     }
   }
 `

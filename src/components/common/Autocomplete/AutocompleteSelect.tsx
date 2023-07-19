@@ -5,6 +5,7 @@ import {
   AutocompleteChangeReason,
   AutocompleteInputChangeReason,
   FilterOptionsState,
+  Paper,
   TextField,
 } from '@mui/material'
 import classnames from 'classnames'
@@ -92,13 +93,17 @@ const AutocompleteSelectAsync = <T extends object>({
   const _classLogic = `${
     open ? classLogic.classLogicTrue : classLogic.classLogicFalse
   }`
+
+  const [focus, setFocus] = useState(false)
   return (
     <>
       {inputLabel && (
         <div
           className={classnames(
             inputLabel.classNames,
-            'text-xs text-gray-600 mb-[4px]',
+            `text-xs ${
+              focus ? ' !text-violet-400 ' : ' !text-gray-600 '
+            } mb-[4px]`,
           )}>
           {inputLabel.label}
           {inputLabel.required && <span className="text-rose-600"> * </span>}
@@ -112,10 +117,20 @@ const AutocompleteSelectAsync = <T extends object>({
           '& .MuiInputBase-input': {
             height: 'auto',
           },
+          '& .MuiInputBase-root': {
+            borderRadius: '12px',
+          },
+          '& .MuiChip-root': {
+            backgroundColor: '#a78bfa',
+            color: '#FFFFFF',
+          },
+          '& .MuiChip-deleteIcon': {
+            color: '#FFFFFF !important',
+          },
         }}
         multiple={multiple}
         open={multiple ? open : undefined}
-        style={{ zIndex: 999, backgroundColor: 'white' }}
+        style={{ zIndex: 78, backgroundColor: 'white' }}
         className={classnames(_classLogic, classNames, 'w-[100%]')}
         onFocus={() => {
           setOpen(true)
@@ -134,6 +149,26 @@ const AutocompleteSelectAsync = <T extends object>({
         isOptionEqualToValue={(option: T, value: T) =>
           option[valueIndex] === value[valueIndex]
         }
+        PaperComponent={({ children }) => (
+          <Paper
+            style={{
+              maxHeight: '200px',
+              overflow: 'auto',
+              backgroundColor: 'white',
+              borderRadius: '12px',
+            }}>
+            {children}
+          </Paper>
+        )}
+        renderOption={(props: any, option: any) => {
+          return (
+            <div
+              {...props}
+              className="MuiAutocomplete-option mx-2 !p-2 rounded-xl hover:!bg-violet-400 hover:!text-white">
+              <div>{option.name}</div>
+            </div>
+          )
+        }}
         onInputChange={debounce(onInputChange, 1000)}
         getOptionLabel={(option) => {
           if (typeof option === 'string') return option
@@ -153,12 +188,23 @@ const AutocompleteSelectAsync = <T extends object>({
                 '& .Mui-error': {
                   marginLeft: 0,
                 },
+                '& .MuiOutlinedInput-root': {
+                  '&:hover fieldset': {
+                    borderColor: '#a78bfa',
+                  },
+                },
               }}
               inputRef={inputRef}
               InputProps={{
                 readOnly: disabled,
               }}
               {...restParams}
+              onFocus={() => {
+                setFocus(true)
+              }}
+              onBlur={() => {
+                setFocus(false)
+              }}
               label={InputProps?.label}
               placeholder={InputProps?.placeholder}
               error={!!error}

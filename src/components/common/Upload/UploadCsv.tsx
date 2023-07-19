@@ -15,7 +15,7 @@ interface IUploadCsv<T> {
 }
 
 export const styleIconUpload: React.CSSProperties = {
-  color: '#9A73B5',
+  color: '#a78bfa',
   padding: '4px',
   borderRadius: '4px',
   marginTop: 'auto',
@@ -99,7 +99,7 @@ export const UploadCsv = <T extends object>({
       onDragLeave={handleDrag}
       onDragOver={handleDrag}>
       <div
-        className={`drop-shadow-md rounded-lg border-dashed border-2 border-primary100 mx-auto h-[200px] ${
+        className={`rounded-lg border-dashed border-2 border-primary100 mx-auto h-[200px] ${
           dragActive ? 'bg-violet-200' : 'bg-violet-100'
         }`}>
         <div className="mt-[30px] flex justify-center">

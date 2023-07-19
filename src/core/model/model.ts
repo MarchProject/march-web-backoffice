@@ -21,6 +21,7 @@ export class Model {
       '_createdAt',
       'formattedCreatedAt',
       value,
+      true,
     )
   }
   _updatedAt: string

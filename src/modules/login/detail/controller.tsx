@@ -55,7 +55,6 @@ const useSignInState = ({ notification }) => {
 
   useEffect(() => {
     if (error) {
-
       notification(notificationErrorProp)
     }
   }, [error, notification])
@@ -76,10 +75,12 @@ const useSignInState = ({ notification }) => {
   }, [notification])
   useEffect(() => {
     if (data) {
-      signAxios({
-        access_token: data?.signIn?.access_token,
-        refresh_token: data?.signIn?.refresh_token,
-      })
+      if (data[Object?.keys(data)[0]] !== null) {
+        signAxios({
+          access_token: data?.signIn?.access_token,
+          refresh_token: data?.signIn?.refresh_token,
+        })
+      }
     }
   }, [data])
 

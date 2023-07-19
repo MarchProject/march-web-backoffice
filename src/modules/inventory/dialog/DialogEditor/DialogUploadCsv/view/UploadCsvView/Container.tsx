@@ -94,7 +94,7 @@ const UploadCsvView = ({
               </div>
               <TiDelete
                 size={30}
-                className="cursor-pointer my-auto text-gray-400"
+                className="cursor-pointer my-auto text-white"
                 onClick={() => {
                   removeItem(index)
                 }}
@@ -118,16 +118,16 @@ const UploadCsvView = ({
                     style={styleIconUploadFileFailed(isPass)}
                   />
                   <p
-                    className={`m-0 my-auto text-${
-                      isPass ? 'violet' : 'red'
-                    }-500`}>
+                    className={`m-0 my-auto ${
+                      isPass ? ' text-violet-600 ' : ' text-red-500 '
+                    }`}>
                     {v.name}
                   </p>
                 </div>
                 <TiDelete
                   size={30}
                   className={`cursor-pointer my-auto text-${
-                    isPass ? 'gray' : 'red'
+                    isPass ? 'white ' : 'red'
                   }-400`}
                   onClick={() => {
                     removeItem(index)
@@ -167,9 +167,9 @@ const UploadCsvView = ({
         {validatedValues.length > 0 && (
           <>
             <p className="text-xl m-0 mt-[0px] mb-[10px] text-primary ">
-              Validated files
+              Validated files{" "}
               <span className="text-secondary text-base ">
-                (please remove invalid files or duplicate name before upload)
+                (Please remove invalid files or duplicate name before upload)
               </span>
             </p>
             <ValidateView />

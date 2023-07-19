@@ -103,8 +103,8 @@ export function init(router: Router, nextServer: NextServer) {
       )
       res.send(response)
     } catch (error) {
-      res.status(error.response.data.statusCode).send({
-        message: error.response.data.message,
+      res.status(error?.response?.data?.statusCode).send({
+        message: error?.response?.data?.message,
       })
     }
   })
