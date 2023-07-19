@@ -107,6 +107,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               type={'text'}
                               variant={'outlined'}
                               disabled={disabled}
+                              normalizes={[max(50)]}
                             />
                           </div>
                           <div className="p-2 pb-0">
@@ -126,6 +127,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               type={'text'}
                               variant={'outlined'}
                               disabled={disabled}
+                              normalizes={[max(290)]}
                             />
                           </div>
                           <div className="p-2 pb-0 mt-2">
@@ -230,7 +232,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 }}
                                 type={'text'}
                                 variant={'outlined'}
-                                normalizes={[onlyNumber, max(6)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                             </div>
@@ -252,6 +254,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 type={'text'}
                                 variant={'outlined'}
                                 disabled={disabled}
+                                normalizes={[max(120)]}
                               />
                             </div>
                           </div>
@@ -275,7 +278,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               }}
                               type={'text'}
                               variant={'outlined'}
-                              normalizes={[onlyNumber, max(6)]}
+                              normalizes={[onlyNumber, max(8)]}
                               disabled={disabled}
                             />
                           </div>
@@ -313,12 +316,12 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               }}
                               type={'text'}
                               variant={'outlined'}
-                              normalizes={[onlyNumber, max(6)]}
+                              normalizes={[onlyNumber, max(8)]}
                               disabled={disabled}
                             />
                           </div>
-                          <h5 className="px-2">
-                            Package Size(The package size use to ship your
+                          <h5 className="px-2 text-primary">
+                            Package Size (The package size use to ship your
                             product)
                           </h5>
                           <div className="p-2">
@@ -345,7 +348,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                     </InputAdornment>
                                   ),
                                 }}
-                                normalizes={[onlyNumber, max(10)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                               <InputForm
@@ -370,7 +373,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                     </InputAdornment>
                                   ),
                                 }}
-                                normalizes={[onlyNumber, max(10)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                               <InputForm
@@ -395,7 +398,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                     </InputAdornment>
                                   ),
                                 }}
-                                normalizes={[onlyNumber, max(10)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                             </div>
@@ -431,7 +434,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 }}
                                 type={'text'}
                                 variant={'outlined'}
-                                normalizes={[onlyNumber, max(10)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                               <InputForm
@@ -456,7 +459,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 }}
                                 type={'text'}
                                 variant={'outlined'}
-                                normalizes={[onlyNumber, max(10)]}
+                                normalizes={[onlyNumber, max(8)]}
                                 disabled={disabled}
                               />
                             </div>

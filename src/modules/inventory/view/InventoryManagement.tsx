@@ -19,6 +19,7 @@ import { DialogM } from '@/components/common/Dialog/DialogM'
 import { ButtonMenu } from './ButtonMenu'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 import { useLoadingContext } from '@/context/loading'
+import { max } from '@/utils/common/normalizeInput'
 
 type InventoryManagementProps = {
   setSearch: (value: string) => void
@@ -222,6 +223,7 @@ export const InventoryManagement = ({
               type={'text'}
               name="searchItems"
               size="small"
+              normalizes={[max(60)]}
             />
           </div>
           <div className="flex my-auto gap-[12px]">

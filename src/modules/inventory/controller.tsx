@@ -240,7 +240,9 @@ export const useQueryInventoryBrand = (trigger: any, notification) => {
       value: string,
       __: AutocompleteInputChangeReason,
     ) => {
-      setSearch(value)
+      if (value.length < 40) {
+        setSearch(value)
+      }
     },
     [setSearch],
   )
@@ -300,7 +302,9 @@ export const useQueryInventoryType = (trigger: any, notification: any) => {
       value: string,
       __: AutocompleteInputChangeReason,
     ) => {
-      setSearch(value)
+      if (value.length < 40) {
+        setSearch(value)
+      }
     },
     [setSearch],
   )

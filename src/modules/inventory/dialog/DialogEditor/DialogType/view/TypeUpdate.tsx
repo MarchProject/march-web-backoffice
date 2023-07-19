@@ -1,6 +1,7 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
 import { InventoryType } from '@/core/model/inventory'
+import { max } from '@/utils/common/normalizeInput'
 import { defaultGet } from '@/utils/common/utils'
 import React, { useEffect, useState } from 'react'
 
@@ -73,6 +74,7 @@ export const TypeObjUpdate = ({
                     name: e.target.value,
                   }))
                 }}
+                normalizes={[max(40)]}
               />
               <Input
                 id={'description'}
@@ -92,6 +94,7 @@ export const TypeObjUpdate = ({
                     description: e.target.value,
                   }))
                 }}
+                normalizes={[max(290)]}
               />
               <Input
                 id={'formattedCreatedAt'}

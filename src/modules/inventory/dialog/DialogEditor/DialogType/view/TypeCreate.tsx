@@ -1,5 +1,6 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
+import { max } from '@/utils/common/normalizeInput'
 import React, { useState } from 'react'
 
 interface ITypeObjUpdate {
@@ -42,6 +43,7 @@ export const TypeObjCreate = ({
                   name: e.target.value,
                 }))
               }}
+              normalizes={[max(40)]}
             />
             <Input
               id={'description'}
@@ -61,6 +63,7 @@ export const TypeObjCreate = ({
                   description: e.target.value,
                 }))
               }}
+              normalizes={[max(290)]}
             />
           </div>
         </div>
