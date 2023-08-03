@@ -114,7 +114,6 @@ export async function initApollo(uri?: string) {
                       error: observer.error.bind(observer),
                       complete: observer.complete.bind(observer),
                     }
-
                     forward(operation).subscribe(subscriber)
                     router.reload()
                   } catch (err) {
@@ -129,8 +128,10 @@ export async function initApollo(uri?: string) {
           case 'Unauthorized ShopId':
             unAuthorizeHandle()
           case 'Unauthorized Role':
-            unAuthorizeHandle()
+          // unAuthorizeHandle()
           case 'Unauthorized Device':
+            unAuthorizeHandle()
+          case 'jwt expired':
             unAuthorizeHandle()
         }
       }

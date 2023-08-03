@@ -29,7 +29,7 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
   const [trashObjs, setTrashObjs] = useState<TrashInventory[]>(null)
 
   useEffect(() => {
-    setTrashObjs(trashData[value])
+    if (trashData) setTrashObjs(trashData[value])
   }, [trashData, value])
 
   const TrashOBJView = (

@@ -295,8 +295,8 @@ const useUpdateBransHandle = ({ notification, triggerBrand }) => {
       notification(notificationUpdateSuccessProp('brand', flagCreate))
       triggerBrand()
     },
-    onError: () => {
-      notification(notificationUpdateErrorProp('brand', flagCreate, 'error'))
+    onError: (error) => {
+      notification(notificationUpdateErrorProp('brand', flagCreate, error))
     },
     globalLoading: true,
   })
