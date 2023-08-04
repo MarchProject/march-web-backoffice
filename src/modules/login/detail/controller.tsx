@@ -6,29 +6,16 @@ import { useEffect, useState } from 'react'
 import * as clientConfig from '../../../config/client'
 import router from 'next/router'
 import { homeRoute } from '@/router/home'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ILoginForm } from './interface'
 import { schema } from './schema'
-
-const notificationSuccessProp = {
-  severity: EnumSeverity.success,
-  title: 'Sign In',
-  message: 'Sign In Success',
-}
-
-const notificationErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Sign In',
-  message: 'Sign In Error',
-}
-
-const notificationAuthErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Sign In',
-  message: 'Sign In Expire',
-}
+import {
+  notificationSignInErrorProp,
+  notificationSignInExpireErrorProp,
+  notificationSignInSuccessProp,
+} from '@/core/notification'
 
 export const useLoginController = () => {
   const { notification } = useNotificationContext()
@@ -55,7 +42,7 @@ const useSignInState = ({ notification }) => {
 
   useEffect(() => {
     if (error) {
-      notification(notificationErrorProp)
+      notification(notificationSignInErrorProp)
     }
   }, [error, notification])
 
@@ -69,7 +56,7 @@ const useSignInState = ({ notification }) => {
   useEffect(() => {
     const check = clientConfig.getAuthFailed()
     if (check === 'true') {
-      notification(notificationAuthErrorProp)
+      notification(notificationSignInExpireErrorProp)
       clientConfig.removeAuthFailed()
     }
   }, [notification])
@@ -87,7 +74,7 @@ const useSignInState = ({ notification }) => {
   useEffect(() => {
     if (dataSet) {
       if (!dataSet.accessToken) {
-        notification(notificationErrorProp)
+        notification(notificationSignInErrorProp)
         return () => {}
       }
 
@@ -102,7 +89,7 @@ const useSignInState = ({ notification }) => {
           functions: dataSet?.functions,
         })
       }
-      notification(notificationSuccessProp)
+      notification(notificationSignInSuccessProp)
       router.push({ pathname: homeRoute.path })
     }
   }, [dataSet, notification])
@@ -138,7 +125,7 @@ const useFormHandler = ({ notification, signIn }) => {
     reset()
   }
   const onError = () => {
-    notification(notificationErrorProp)
+    notification(notificationSignInErrorProp)
   }
 
   return {

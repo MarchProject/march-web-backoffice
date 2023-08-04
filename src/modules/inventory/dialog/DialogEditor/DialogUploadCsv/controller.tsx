@@ -7,23 +7,13 @@ import {
   uploadInventoryMutation,
 } from '@/core/gql/inventory/inventory'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
 import { MutateKey } from '@/core/adapter/interface'
-
-const notificationSuccessProp = {
-  severity: EnumSeverity.success,
-  title: 'Inventory',
-  message: 'Upload Success',
-}
-
-const notificationErrorProp = (message: string) => {
-  return {
-    severity: EnumSeverity.error,
-    title: 'Inventory',
-    message: `${message}`,
-  }
-}
+import {
+  notificationDialogUploadErrorProp,
+  notificationDialogUploadSuccessProp,
+} from '@/core/notification/inventory/inventory/dialogUpload'
 
 export const useControllerUplaod = ({
   inventoriesTypeData,
@@ -69,16 +59,18 @@ const useUploadCsvMutation = ({
     onSuccess: (data: UploadInventoryData) => {
       setTriggerGetInventoryNames((prev) => !prev)
       if (data.uploadInventory.success === true) {
-        notification(notificationSuccessProp)
+        notification(notificationDialogUploadSuccessProp)
         setIsPass(true)
         handleClose()
       } else {
-        notification(notificationErrorProp(data?.uploadInventory?.reason))
+        notification(
+          notificationDialogUploadErrorProp(data?.uploadInventory?.reason),
+        )
         setIsPass(false)
       }
     },
     onError: () => {
-      notificationErrorProp('Upload Failed')
+      notification(notificationDialogUploadErrorProp('Upload Failed'))
     },
     globalLoading: true,
   })

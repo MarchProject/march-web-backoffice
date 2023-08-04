@@ -11,7 +11,7 @@ import {
   deleteBrandTypeMutation,
   DeleteBrandData,
 } from '@/core/gql/inventory/inventory'
-import { EnumErrorType } from '@/core/utils/ErrorType'
+import { errorMarch } from '@/core/utils/ErrorType'
 import { useCallback, useState } from 'react'
 import {
   notificationTypeUsedDeleteErrorProp,
@@ -21,7 +21,7 @@ import {
   notificationUpdateSuccessProp,
   notificationTrashMutateErrorProp,
   notificationTrashMutateSuccessProp,
-} from './notification'
+} from '@/core/notification'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
 import { MutateKey } from '@/core/adapter/interface'
 import {
@@ -163,7 +163,7 @@ const useDeleteTypeHandle = ({ notification, triggerType, triggerTrash }) => {
       triggerTrash()
     },
     onError: (error) => {
-      if (error === EnumErrorType.BADHAVETYPE) {
+      if (error === errorMarch.EnumErrorType.BAD_HAVE_TYPE) {
         notification(notificationTypeUsedDeleteErrorProp('type'))
       } else {
         notification(notificationDeleteErrorProp('type'))
@@ -253,7 +253,7 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, triggerTrash }) => {
       triggerTrash()
     },
     onError: (error) => {
-      if (error === EnumErrorType.BADHAVETYPE) {
+      if (error === errorMarch.EnumErrorType.BAD_HAVE_TYPE) {
         notification(notificationTypeUsedDeleteErrorProp('brand'))
       } else {
         notification(notificationDeleteErrorProp('brand'))

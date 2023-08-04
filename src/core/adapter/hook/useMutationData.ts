@@ -5,6 +5,7 @@ import { ApolloError, DocumentNode, useMutation } from '@apollo/client'
 import { useCallback, useEffect } from 'react'
 import { IMutatePropsMock, IMutateProvider } from '../interface'
 import { mutateSelector } from '../provider/selector'
+import { errorTextTranform } from '@/core/utils/errorText'
 
 type MutateFunction<T extends keyof IMutatePropsMock, U> = (
   provider: IMutatePropsMock[T],
@@ -38,9 +39,9 @@ export const useMutationData = <T extends keyof IMutateProvider, U, K>(
   const handleError = useCallback(
     (error) => {
       if (error instanceof ApolloError) {
-        onError(error.message)
+        onError(errorTextTranform(error.message))
       } else {
-        onError(error.message)
+        onError(errorTextTranform(error.message))
       }
     },
     [onError],

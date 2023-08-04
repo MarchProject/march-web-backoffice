@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { useLazyQueryData } from '@/core/adapter/hook/useLazyData'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
 import { MutateKey, QueryKey } from '@/core/adapter/interface'
@@ -31,30 +31,15 @@ import {
   InventoryType,
 } from '@/core/model/inventory'
 import {
+  notificationFavoriteInventoryErrorProp,
+  notificationFavoriteInventorySuccessProp,
+  notificationFetchInventoryErrorProp,
+} from '@/core/notification'
+import {
   AutocompleteChangeReason,
   AutocompleteInputChangeReason,
 } from '@mui/material'
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
-
-const notificationErrorProp = (message) => {
-  return {
-    severity: EnumSeverity.error,
-    title: 'Inventory',
-    message: `Fetch ${message}`,
-  }
-}
-
-const notificationErrorFavoriteProp = {
-  severity: EnumSeverity.error,
-  title: 'Inventory',
-  message: 'Favorite Failed',
-}
-
-const notificationSuccessFavoriteProp = {
-  severity: EnumSeverity.success,
-  title: 'Inventory',
-  message: 'Favorite Success',
-}
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
@@ -187,7 +172,7 @@ const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
         setDataTranform(data)
       },
       onError: () => {
-        notification(notificationErrorProp('Names Error'))
+        notification(notificationFetchInventoryErrorProp('Names Error'))
       },
       globalLoading: true,
     },
@@ -228,7 +213,7 @@ export const useQueryInventoryBrand = (trigger: any, notification) => {
         setInventoriesBrandData(data)
       },
       onError: () => {
-        notification(notificationErrorProp('Brand Error'))
+        notification(notificationFetchInventoryErrorProp('Brand Error'))
       },
       globalLoading: true,
     },
@@ -290,7 +275,7 @@ export const useQueryInventoryType = (trigger: any, notification: any) => {
         setInventoriesTypeData(data)
       },
       onError: () => {
-        notification(notificationErrorProp('Type Error'))
+        notification(notificationFetchInventoryErrorProp('Type Error'))
       },
       globalLoading: true,
     },
@@ -362,7 +347,7 @@ const useQueryInventory = ({
         setInventoriesData(data)
       },
       onError: () => {
-        notification(notificationErrorProp('Inventories Error'))
+        notification(notificationFetchInventoryErrorProp('Inventories Error'))
       },
       globalLoading: true,
     },
@@ -497,11 +482,11 @@ const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
     FavoriteInventoryVariables
   >(MutateKey.inventory, null, favoriteInventoryMutation, {
     onSuccess: () => {
-      notification(notificationSuccessFavoriteProp)
+      notification(notificationFavoriteInventorySuccessProp)
       setTriggerFavorite((prev) => !prev)
     },
     onError: () => {
-      notification(notificationErrorFavoriteProp)
+      notification(notificationFavoriteInventoryErrorProp)
     },
     globalLoading: true,
   })
@@ -538,7 +523,7 @@ const useQueryTrash = ({ notification }) => {
         setTrashData(data)
       },
       onError: () => {
-        notification(notificationErrorProp('Trash Error'))
+        notification(notificationFetchInventoryErrorProp('Trash Error'))
       },
       globalLoading: true,
     },

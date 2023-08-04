@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { SubmitHandler, UseFormReset, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IInventoryForm } from './interface'
@@ -23,26 +23,12 @@ import { Inventory } from '@/core/model/inventory'
 import { transfromInventory } from '../dto/inventory.dto'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
 import { MutateKey } from '@/core/adapter/interface'
-
-const notificationSuccessProp = (message) => {
-  return {
-    severity: EnumSeverity.success,
-    title: 'Inventory',
-    message: `${message} Success`,
-  }
-}
-const notificationErrorProp = (message: string) => {
-  return {
-    severity: EnumSeverity.error,
-    title: 'Inventory',
-    message: `Create ${message}`,
-  }
-}
-const notificationValidErrorProp = {
-  severity: EnumSeverity.error,
-  title: 'Inventory',
-  message: 'Validate Fail',
-}
+import {
+  notificationEditorDeleteErrorProp,
+  notificationEditorErrorProp,
+  notificationEditorSuccessProp,
+  notificationEditorValidErrorProp,
+} from '@/core/notification'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
@@ -195,13 +181,13 @@ const useDeleteInventory = ({ notification, id }) => {
     DeleteTypeDataVariables
   >(MutateKey.inventory, null, deleteInventoryMutation, {
     onSuccess: () => {
-      notification(notificationSuccessProp('Delete'))
+      notification(notificationEditorSuccessProp('Delete'))
       router.push({
         pathname: inventoryRoute.path,
       })
     },
     onError: (error) => {
-      notification(notificationErrorProp(error))
+      notification(notificationEditorDeleteErrorProp(error))
     },
     globalLoading: true,
   })
@@ -224,14 +210,18 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
     UpsertInventoryTypeVariables
   >(MutateKey.inventory, null, upsertInventoryMutation, {
     onSuccess: () => {
-      notification(notificationSuccessProp(idInventory ? 'Update' : 'Create'))
+      notification(
+        notificationEditorSuccessProp(idInventory ? 'Update' : 'Create'),
+      )
       reset()
       router.push({
         pathname: inventoryRoute.path,
       })
     },
     onError: (error) => {
-      notification(notificationErrorProp(error))
+      notification(
+        notificationEditorErrorProp(idInventory ? 'Update' : 'Create', error),
+      )
     },
     globalLoading: true,
   })
@@ -243,11 +233,11 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
         ...InventoryInput,
       })
     } catch (error) {
-      notification(notificationErrorProp(error?.message))
+      notification(notificationEditorErrorProp('Server', error?.message))
     }
   }
   const onError = () => {
-    notification(notificationValidErrorProp)
+    notification(notificationEditorValidErrorProp)
   }
 
   return {

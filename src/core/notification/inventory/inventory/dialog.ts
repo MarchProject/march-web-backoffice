@@ -12,7 +12,9 @@ export const notificationTypeUsedDeleteErrorProp = (type = 'type') => {
   return {
     severity: EnumSeverity.error,
     title: `Product ${type === 'type' ? 'type' : 'brand'}`,
-    message: 'This type already use in product',
+    message: `This ${
+      type === 'type' ? 'type' : 'brand'
+    } already use in product`,
   }
 }
 export const notificationDeleteErrorProp = (type = 'type') => {
@@ -32,6 +34,7 @@ export const notificationUpdateSuccessProp = (
     message: `${create ? 'Create' : 'Update'} Success`,
   }
 }
+
 export const notificationUpdateErrorProp = (
   type = 'type',
   create: boolean = true,
