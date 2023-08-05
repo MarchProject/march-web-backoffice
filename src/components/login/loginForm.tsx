@@ -24,12 +24,12 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
           </div>
           <div className="p-[20px] max-w-[250px]">
             <CardContent>
-              <h2 className="mt-[40px] text-gray-600">Sign In</h2>
+              <h2 className="mt-[40px] text-gray-600 font-medium">Sign In</h2>
               <div className="mt-[10px] max-w-[220px]">
                 <InputForm
                   control={control}
                   id="username"
-                  classNames='!w-[100%] !max-w-[220px]'
+                  classNames="!w-[100%] !max-w-[220px]"
                   name="username"
                   inputLabel={{ label: 'username', required: true }}
                   type={'text'}
@@ -46,8 +46,9 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
                   variant={'standard'}
                 />
               </div>
-              <div className="mt-[30px]">
+              <div className="mt-[30px] ">
                 <ButtonForm
+                  classNames="!normal-case !font-normal"
                   color="primary"
                   label="Sign In"
                   onClick={onSubmit}

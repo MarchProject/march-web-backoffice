@@ -7,6 +7,8 @@ import router from 'next/router'
 import { inventoryUpdateRoute, inventoryViewRoute } from '@/router/inventory'
 import { AiOutlineEye } from 'react-icons/ai'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 const styleColumns: CSSProperties = {
   textOverflow: 'ellipsis',
@@ -20,6 +22,8 @@ interface ColumnInventory {
 export const columns = ({
   favoriteInventoryHandle,
 }: ColumnInventory): GridColDef[] => {
+  const { t: trans } = useTranslation()
+  const keys = tkeys.Inventory.MainPage.table
   return [
     //   {
     //     field: 'id',
@@ -30,7 +34,7 @@ export const columns = ({
     //   },
     {
       field: 'name',
-      headerName: 'Item Name',
+      headerName: trans(keys.name),
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -44,7 +48,7 @@ export const columns = ({
     },
     {
       field: 'inventoryType',
-      headerName: 'Item Type',
+      headerName: trans(keys.type),
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -58,7 +62,7 @@ export const columns = ({
     },
     {
       field: 'brandType',
-      headerName: 'Item Brand',
+      headerName: trans(keys.brand),
       flex: 1,
       minWidth: 100,
       renderCell: (params) => {
@@ -72,7 +76,7 @@ export const columns = ({
     },
     {
       field: 'amount',
-      headerName: 'On Hand',
+      headerName: trans(keys.amount),
       flex: 1,
       minWidth: 100,
       align: 'center',
@@ -80,7 +84,7 @@ export const columns = ({
     },
     {
       field: 'sold',
-      headerName: 'Sold',
+      headerName: trans(keys.sold),
       type: 'number',
       flex: 1,
       minWidth: 100,
@@ -89,7 +93,7 @@ export const columns = ({
     },
     {
       field: 'price',
-      headerName: 'Price',
+      headerName: trans(keys.price),
       type: 'number',
       flex: 1,
       minWidth: 100,
@@ -98,7 +102,7 @@ export const columns = ({
     },
     {
       field: 'formattedExpiryDate',
-      headerName: 'Expiry Date',
+      headerName: trans(keys.expiryDate),
       sortable: false,
       flex: 1,
       minWidth: 120,
@@ -107,7 +111,7 @@ export const columns = ({
     },
     {
       field: 'description',
-      headerName: 'Description',
+      headerName: trans(keys.description),
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       flex: 1,
@@ -129,7 +133,7 @@ export const columns = ({
     },
     {
       field: 'action',
-      headerName: 'Actions',
+      headerName: trans(keys.action),
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       // flex: 1,
@@ -168,10 +172,7 @@ export const columns = ({
                   size={18}
                 />
               ) : (
-                <FcLike
-                  className="cursor-pointer text-secondary"
-                  size={18}
-                />
+                <FcLike className="cursor-pointer text-secondary" size={18} />
               )}
             </div>
           </div>

@@ -10,6 +10,8 @@ import {
 } from '@mui/x-data-grid'
 import { Pagination } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 type DataTableMarchProps = {
   rows: any[]
@@ -43,7 +45,7 @@ export default function DataTableMarch({
   totalRow = 1,
 }: DataTableMarchProps) {
   const apiRef = useGridApiRef()
-
+  const { t: trans } = useTranslation()
   const CustomPagination = () => {
     return (
       <Pagination
@@ -68,8 +70,12 @@ export default function DataTableMarch({
       <GridFooterContainer>
         <div className="flex">
           {totalRow > 0 && (
-            <h5 className="text-secondary ml-4">
-              Show {offset + 1} - {offset + limit} of {totalRow} results
+            <h5 className="text-secondary ml-4 font-medium">
+              {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
+                offset + limit
+              } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
+                tkeys.table.footer.results,
+              )}`}
             </h5>
           )}
         </div>
@@ -114,26 +120,26 @@ export default function DataTableMarch({
                 marginRight: '5px',
               },
               '& .MuiPaper-root': {
-                backgroundColor: 'red',
+                // backgroundColor: 'red',
               },
               '& .MuiTablePagination-selectLabel': {
                 color: '#878787',
                 fontSize: '12px',
-                fontWeight: '600',
+                fontWeight: '500',
               },
               '& .MuiSelect-select': {
                 color: '#878787',
                 fontSize: '12px',
-                fontWeight: '600',
+                fontWeight: '400',
               },
               //MuiPaper-root
             }}
             labelDisplayedRows={() => (
-              <div className="text-secondary text-xs font-semibold">
-                entries
+              <div className="text-secondary text-xs font-medium">
+                {trans(tkeys.table.footer.entries)}
               </div>
             )}
-            labelRowsPerPage={'Show'}
+            labelRowsPerPage={trans(tkeys.table.footer.show)}
             ActionsComponent={() => <></>}
             getItemAriaLabel={undefined}
           />

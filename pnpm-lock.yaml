@@ -43,6 +43,7 @@ specifiers:
   express-session: ^1.17.3
   graphql: ^16.6.0
   graphql-request: ^5.2.0
+  i18next: ^23.4.1
   js-cookie: ^3.0.1
   jsonwebtoken: ^9.0.0
   loaders.css: ^0.1.2
@@ -57,6 +58,7 @@ specifiers:
   react-csv: ^2.2.2
   react-dom: 18.2.0
   react-hook-form: ^7.35.0
+  react-i18next: ^13.0.3
   react-icons: ^4.8.0
   react-loaders: ^3.0.1
   subscriptions-transport-ws: ^0.11.0
@@ -101,6 +103,7 @@ dependencies:
   express-session: 1.17.3
   graphql: 16.7.1
   graphql-request: 5.2.0_graphql@16.7.1
+  i18next: 23.4.1
   js-cookie: 3.0.5
   jsonwebtoken: 9.0.0
   loaders.css: 0.1.2
@@ -114,6 +117,7 @@ dependencies:
   react-csv: 2.2.2
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.45.1_react@18.2.0
+  react-i18next: 13.0.3_q5e3nrjmtugdv2lxjkgthx6iwa
   react-icons: 4.10.1_react@18.2.0
   react-loaders: 3.0.1_react@18.2.0
   subscriptions-transport-ws: 0.11.0_graphql@16.7.1
@@ -4492,6 +4496,12 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /http-cache-semantics/4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
     dev: false
@@ -4515,6 +4525,12 @@ packages:
   /human-signals/4.3.1:
     resolution: {integrity: sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==}
     engines: {node: '>=14.18.0'}
+    dev: false
+
+  /i18next/23.4.1:
+    resolution: {integrity: sha512-07ekE7hbUrbxTYj97VnBzyhKcGURTJC9p4iWTwCVC8t63T+YrgqQmb/n1LBQMivZYwR61pqS+PC0G2rtENycyQ==}
+    dependencies:
+      '@babel/runtime': 7.22.6
     dev: false
 
   /iconv-lite/0.4.24:
@@ -5824,6 +5840,26 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-i18next/13.0.3_q5e3nrjmtugdv2lxjkgthx6iwa:
+    resolution: {integrity: sha512-/t4kt4Y2o+21hbvx+o9zpVnmoiud7KLDncyZFGN0U6TGAWYaXdTsp/ytAHFcKKSAODg4noIMaOO3X7bMgCqLHw==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.22.6
+      html-parse-stringify: 3.0.1
+      i18next: 23.4.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-icons/4.10.1_react@18.2.0:
     resolution: {integrity: sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==}
     peerDependencies:
@@ -6790,6 +6826,11 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /void-elements/3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /webidl-conversions/3.0.1:

@@ -17,6 +17,7 @@ export namespace uam {
 export type Credential = {
   userId?: string
   username?: string
+  shopName?: string
   accessToken?: string
   refreshToken?: string
   expiresIn?: number

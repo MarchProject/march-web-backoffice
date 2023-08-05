@@ -9,8 +9,28 @@ import { Credential } from '../types/uam'
 
 const prefix = 'march.backOffice'
 
+const itemLocal = [
+  'userId',
+  'username',
+  'shopName',
+  'groups',
+  'functions',
+  'accessToken',
+  'refreshToken',
+  'authFailed',
+  'defaultLoginPath',
+]
+
 export function getDevelopment() {
   return localStorage.getItem(`${prefix}.development`)
+}
+
+export function getLanguage() {
+  return localStorage.getItem(`${prefix}.language`)
+}
+
+export function setLanguage(language: 'th' | 'en') {
+  return localStorage.setItem(`${prefix}.language`, language)
 }
 
 export function getAuthApiUrl() {
@@ -26,6 +46,9 @@ export function getUserId() {
 }
 export function getUsername() {
   return localStorage.getItem(`${prefix}.username`)
+}
+export function getShopName() {
+  return localStorage.getItem(`${prefix}.shopName`)
 }
 export function getGroups() {
   return localStorage.getItem(`${prefix}.groups`)
@@ -47,7 +70,11 @@ export function getRefreshToken() {
 export function removeRefreshToken() {
   localStorage.removeItem(`${prefix}.refreshToken`)
 }
-
+export function clearLocal() {
+  itemLocal.forEach((e) => {
+    localStorage.removeItem(`${prefix}.${e}`)
+  })
+}
 export function getAuthFailed() {
   return localStorage.getItem(`${prefix}.authFailed`)
 }

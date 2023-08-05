@@ -27,6 +27,9 @@ module.exports = {
         sm: '640px',
       },
     },
+    fontFamily: {
+      IBMPlexSansThai: ['IBM Plex Sans Thai'],
+    },
   },
   plugins: [],
   corePlugins: {

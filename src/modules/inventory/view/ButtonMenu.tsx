@@ -5,6 +5,8 @@ import router from 'next/router'
 import React, { useState } from 'react'
 import { RiAddLine } from 'react-icons/ri'
 import DialogEditor from '../dialog/DialogEditor/DialogEditor'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 export const ButtonMenu = ({
   inventoriesTypeData,
@@ -19,6 +21,7 @@ export const ButtonMenu = ({
   trashData,
   setTriggerTrash,
 }) => {
+  const { t: trans } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,7 +35,7 @@ export const ButtonMenu = ({
     <>
       <ButtonForm
         classNames="!w-[150px] !h-[40px] !normal-case"
-        label={'Item'}
+        label={trans(tkeys.button.menu)}
         color={'primary'}
         endIcon={<RiAddLine size={15} />}
         onClick={handleClick as any}
@@ -58,7 +61,7 @@ export const ButtonMenu = ({
             handleClose()
             router.push({ pathname: inventoryCreateRoute.path })
           }}>
-          Add Item
+          {trans(tkeys.Inventory.MainPage.menu.addItem)}
         </MenuItem>
         <DialogEditor
           setTriggerType={setTriggerType}

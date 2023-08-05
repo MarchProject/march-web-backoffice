@@ -23,6 +23,9 @@ export const theme = createTheme({
     text200: createColor('#525252'),
     violet: createColor('#BC00A3'),
   },
+  typography: {
+    fontFamily: "'IBM Plex Sans Thai'",
+  },
   components: {
     MuiButton: {
       styleOverrides: {

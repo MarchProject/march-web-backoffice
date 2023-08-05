@@ -77,8 +77,8 @@ const useSignInState = ({ notification }) => {
         notification(notificationSignInErrorProp)
         return () => {}
       }
-
-      localStorage.clear()
+      clientConfig.clearLocal()
+      // localStorage.clear()
       const config = dataSet.config
       if (config) {
         clientConfig.init(config, {
@@ -87,6 +87,7 @@ const useSignInState = ({ notification }) => {
           accessToken: dataSet?.accessToken,
           refreshToken: dataSet?.refreshToken,
           functions: dataSet?.functions,
+          shopName: dataSet?.shopName,
         })
       }
       notification(notificationSignInSuccessProp)

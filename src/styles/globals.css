@@ -2,13 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap'); */
 
-body {
-  font-family: 'Kanit', sans-serif !important;
-  margin: 0px !important;
-  height: '100%';
-  background-color: 'red' !important;
+@font-face {
+  font-family: 'IBM Plex Sans Thai';
+  src: url('/backoffice/public/static/fonts/IBMPlexSansThai-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Thai';
+  src: url('/backoffice/public/static/fonts/IBMPlexSansThai-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Thai';
+  src: url('/backoffice/public/static/fonts/IBMPlexSansThai-SemiBold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Thai';
+  src: url('/backoffice/public/static/fonts/IBMPlexSansThai-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
 }
 
 .card-login {
@@ -83,4 +105,10 @@ body {
   color: white !important;
   background-color: #a78bfa !important;
   border: '1px solid #red';
+}
+
+body {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  margin: 0px !important;
+  height: '100%';
 }

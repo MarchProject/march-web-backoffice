@@ -99,7 +99,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               name="name"
                               // label='Item Name'
                               inputLabel={{
-                                label: 'Item Name',
+                                label: 'ชื่อสินค้า',
                                 required: true,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',

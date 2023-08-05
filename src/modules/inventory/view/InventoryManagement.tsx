@@ -20,6 +20,8 @@ import { ButtonMenu } from './ButtonMenu'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 import { useLoadingContext } from '@/context/loading'
 import { max } from '@/utils/common/normalizeInput'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 type InventoryManagementProps = {
   setSearch: (value: string) => void
@@ -98,9 +100,8 @@ export const InventoryManagement = ({
     typeFieldRef.current.value = ''
     brandFieldRef.current.value = ''
   }
-
+  const { t: trans } = useTranslation()
   const [open, setOpen] = useState(false)
-
   const handleClickOpen = () => {
     zIndexLoading(20)
     setOpen(true)
@@ -114,7 +115,7 @@ export const InventoryManagement = ({
   return (
     <>
       <DialogM
-        dialogTitle="Filter"
+        dialogTitle={trans(tkeys.Inventory.MainPage.filter.label)}
         open={open}
         handleClose={handleClose}
         contentRender={() => {
@@ -129,7 +130,10 @@ export const InventoryManagement = ({
                 valueIndex={'id'}
                 multiple={true}
                 options={inventoriesBrandData}
-                InputProps={{ label: 'Brand Filter', placeholder: 'Brand' }}
+                InputProps={{
+                  label: trans(tkeys.Inventory.MainPage.filter.brand),
+                  placeholder: trans(tkeys.Inventory.MainPage.filter.brand),
+                }}
                 onChange={handleBrandChange}
                 loading={inventoriesBrandLoading}
                 onInputChange={handleSearchInventoryBrand}
@@ -142,7 +146,10 @@ export const InventoryManagement = ({
                 valueIndex={'id'}
                 multiple={true}
                 options={inventoriesTypeData}
-                InputProps={{ label: 'Type Filter', placeholder: 'Type' }}
+                InputProps={{
+                  label: trans(tkeys.Inventory.MainPage.filter.type),
+                  placeholder: trans(tkeys.Inventory.MainPage.filter.type),
+                }}
                 value={inventoryTypeValue}
                 onChange={handleTypeChange}
                 loading={inventoriesTypeLoading}
@@ -151,8 +158,8 @@ export const InventoryManagement = ({
               <div className="!mx-[30px] mt-[20px]">
                 <div className="flex gap-[10px] justify-start max-w-[380px]">
                   <ButtonForm
-                    classNames="!w-[120px] !h-[40px] !normal-case"
-                    label={'Favorite'}
+                    classNames="!w-[150px] !h-[40px] !normal-case"
+                    label={trans(tkeys.button.favorite)}
                     variant="outlined"
                     color="error"
                     endIcon={
@@ -182,14 +189,14 @@ export const InventoryManagement = ({
             <div className="px-[24px] flex gap-2">
               <ButtonForm
                 classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
-                label={'Clear'}
+                label={trans(tkeys.button.clear)}
                 color={'primary'}
                 variant="outlined"
                 onClick={handleReset}
               />
               <ButtonForm
                 classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
-                label={'Close'}
+                label={trans(tkeys.button.close)}
                 color={'primary'}
                 variant="contained"
                 onClick={handleClose}
@@ -202,7 +209,9 @@ export const InventoryManagement = ({
       <div id="navbar-inventory" className="flex justify-between w-[100%]">
         <div className="flex gap-[15px] my-auto w-[25%]">
           <BsBoxSeam style={styleIconMarch} />
-          <p className="text-base text-primary">Inventory Management</p>
+          <p className="text-base text-primary font-medium">
+            {trans(tkeys.Inventory.MainPage.HeadText)}
+          </p>
         </div>
         <div className="w-[75%] my-auto flex gap-[12px] justify-end">
           <div className="max-w-[220px] w-[100%] min-w-[220px] my-auto ">
@@ -211,7 +220,7 @@ export const InventoryManagement = ({
               classNames="max-w-[220px] w-[100%] min-w-[220px]"
               id="searchItems"
               variant="outlined"
-              placeholder="Search item here"
+              placeholder={trans(tkeys.Inventory.MainPage.searchText)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -229,7 +238,7 @@ export const InventoryManagement = ({
           <div className="flex my-auto gap-[12px]">
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-              label={'Filter'}
+              label={trans(tkeys.button.filter)}
               color={'primary'}
               endIcon={<BiCaretDown size={15} />}
               onClick={handleClickOpen}

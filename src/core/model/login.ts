@@ -8,6 +8,7 @@ export type SignInRequest = {
 export type SignInResponse = {
   userId: string
   username: string
+  shopName: string
   accessToken: string
   refreshToken: string
   config?: ClientConfig

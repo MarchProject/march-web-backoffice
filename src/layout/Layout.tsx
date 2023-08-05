@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Tab, Tabs, Tooltip } from '@mui/material'
-import React, { memo, useEffect, useState } from 'react'
-import { getUsername } from '@/config/client'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { getShopName, getUsername, setLanguage } from '@/config/client'
 import router from 'next/router'
 import * as clientConfig from '@/config/client'
 import jwt from 'jsonwebtoken'
@@ -15,6 +15,9 @@ import { FiDivideCircle } from 'react-icons/fi'
 import { FcWorkflow } from 'react-icons/fc'
 import { SlPeople } from 'react-icons/sl'
 import { FcOk } from 'react-icons/fc'
+import { useTranslation } from 'react-i18next'
+import { MdLanguage } from 'react-icons/md'
+
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
   'MENU:SALES': { id: 1, label: 'Sales', value: 'sales' },
@@ -24,11 +27,24 @@ const TabMenu = {
 }
 
 function Layout({ children }) {
+  const { t: trans, i18n } = useTranslation()
   const [tab, setTab] = useState(0)
   const [hide, setHide] = useState(false)
+
   const [tabMenu, setTabMenu] = useState([
     { id: 0, label: 'Home', value: 'home' },
   ])
+
+  const [shopName, setShopName] = useState('')
+  const [lg, setLg] = useState('')
+
+  useEffect(() => {
+    setShopName(getShopName())
+  }, [])
+
+  useEffect(() => {
+    setLg(i18n.language)
+  }, [i18n.language])
 
   useEffect(() => {
     // const pathName = router.pathname.replace('/', '')
@@ -93,13 +109,17 @@ function Layout({ children }) {
   }
 
   const TabM = (isMobile: boolean) => {
+    const tranT = useCallback((text: string) => {
+      return trans(`Menu.${text}`)
+    }, [])
+
     const test = orderBy(
       uniqBy(tabMenu, 'id').map((t) => {
         const Lable = () => {
           return (
             <div
               className={
-                'text-xs mt-[5px] sm:mt-0 ' +
+                ' text-base mt-[5px] sm:mt-0 font-medium ' +
                 (!hide
                   ? 'block opacity-100'
                   : 'overflow-hidden opacity-0 w-0 h-0 absolute')
@@ -107,7 +127,7 @@ function Layout({ children }) {
               style={{
                 transition: 'opacity 1s ease-in',
               }}>
-              {t.label}
+              {tranT(t.label)}
             </div>
           )
         }
@@ -115,7 +135,7 @@ function Layout({ children }) {
         const paddingInline = !hide ? '20px' : ''
         const fontWeight = isMobile ? 'normal' : 'bold'
         return (
-          <Tooltip title={t.value} key={t.id} arrow>
+          <Tooltip title={tranT(t.label)} key={t.id} arrow>
             <Tab
               sx={{
                 '& .MuiTab-labelIcon': {
@@ -225,12 +245,29 @@ function Layout({ children }) {
                   style={{
                     transition: 'opacity 0.7s',
                   }}>
-                  CurryShop
+                  {shopName}
                 </h3>
-
                 <FcOk
                   className={'my-auto ml-[5px] ' + (!hide ? 'block' : 'hidden')}
                 />
+                <div
+                  className={
+                    'flex cursor-pointer ' + (!hide ? 'block' : 'hidden')
+                  }
+                  onClick={() => {
+                    setLanguage(lg === 'th' ? 'en' : 'th')
+                    i18n.changeLanguage(lg === 'th' ? 'en' : 'th')
+                  }}>
+                  <MdLanguage
+                    color="rgb(135 135 135)"
+                    className={
+                      'my-auto ml-[15px] ' + (!hide ? 'block' : 'hidden')
+                    }
+                  />
+                  <p className="text-xs font-semibold text-secondary ml-[2px]">
+                    {lg.toUpperCase()}
+                  </p>
+                </div>
               </div>
             </div>
             <Tabs

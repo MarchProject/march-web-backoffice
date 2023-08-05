@@ -11,6 +11,8 @@ import {
 import { DialogTrash } from './DialogTrash/DialogTrash'
 import { DialogType } from './DialogType/DialogType'
 import { DialogBrand } from './DialogBrand/DialogBrand'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
@@ -47,6 +49,7 @@ const DialogEditor = ({
   trashData,
   setTriggerTrash,
 }: IDialogEditor) => {
+  const { t: trans } = useTranslation()
   const {
     deleteTypeHandle: { deleteTypeHandle },
     upsertTypeHandle: { updateTypeHandle },
@@ -104,22 +107,22 @@ const DialogEditor = ({
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl "
         onClick={handleOpenCsv}>
-        Upload CSV
+        {trans(tkeys.Inventory.MainPage.menu.upload)}
       </MenuItem>
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
         onClick={handleOpenType}>
-        Type
+        {trans(tkeys.Inventory.MainPage.menu.type)}
       </MenuItem>
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
         onClick={handleOpenBrand}>
-        Brand
+        {trans(tkeys.Inventory.MainPage.menu.brand)}
       </MenuItem>
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mb-[3px]"
         onClick={handleOpenTrash}>
-        Trash
+        {trans(tkeys.Inventory.MainPage.menu.trash)}
       </MenuItem>
     </>
   )
