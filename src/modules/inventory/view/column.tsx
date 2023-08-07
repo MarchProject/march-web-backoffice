@@ -22,7 +22,7 @@ interface ColumnInventory {
 export const columns = ({
   favoriteInventoryHandle,
 }: ColumnInventory): GridColDef[] => {
-  const { t: trans } = useTranslation()
+  const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.table
   return [
     //   {

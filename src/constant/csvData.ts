@@ -47,6 +47,45 @@ export interface IDataTemplateCsvValidate extends IDataTemplateCsv {
 }
 export const dataTemplateCsv = [
   {
+    id: '1',
+    name: 'Tuna',
+    type: 'ทั่วไป',
+    brand: 'ทั่วไป',
+    description: 'กระป๋อง',
+    expiryDate: '11-12-2029',
+    amount: '100',
+    sku: 'SKU-TUN-29-SML',
+    reorderLevel: '20',
+    price: '25',
+    priceMember: '22',
+    favorite: 'yes',
+    weight: '12',
+    width: '10',
+    height: '10',
+    length: '10',
+  },
+  {
+    id: '2',
+    name: 'Salmon',
+    type: 'ทั่วไป',
+    brand: 'ทั่วไป',
+    description: '',
+    expiryDate: '',
+    amount: '110',
+    sku: '',
+    reorderLevel: '',
+    price: '189',
+    priceMember: '',
+    favorite: '',
+    weight: '',
+    width: '',
+    height: '',
+    length: '',
+  },
+]
+
+export const dataTemplateCsv2 = [
+  {
     id: '-1 example pls remove',
     name: 'required Tuna',
     type: 'required CatFOOD add type first! use same name',

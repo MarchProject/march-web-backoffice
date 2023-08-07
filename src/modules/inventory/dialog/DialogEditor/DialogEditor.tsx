@@ -49,7 +49,7 @@ const DialogEditor = ({
   trashData,
   setTriggerTrash,
 }: IDialogEditor) => {
-  const { t: trans } = useTranslation()
+  const { t: trans }: any = useTranslation()
   const {
     deleteTypeHandle: { deleteTypeHandle },
     upsertTypeHandle: { updateTypeHandle },

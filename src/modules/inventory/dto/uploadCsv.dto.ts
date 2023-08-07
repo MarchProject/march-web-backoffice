@@ -33,6 +33,9 @@ export const tranFromUploadCsv = (
     const width = defaultTo(get(v, 'width'), undefined)
     const length = defaultTo(get(v, 'length'), undefined)
     const height = defaultTo(get(v, 'height'), undefined)
+    const _expiryDate = expiryDate
+      ? dayjs(expiryDate, dateFormat).format(DbFormat)
+      : undefined
 
     const size =
       weight === '' && length === '' && width === '' && height === ''
@@ -56,7 +59,7 @@ export const tranFromUploadCsv = (
       size: size,
       price: parseInt(price),
       priceMember: parseInt(priceMember),
-      expiryDate: dayjs(expiryDate, dateFormat).format(DbFormat),
+      expiryDate: _expiryDate,
       description: description,
     }
   })

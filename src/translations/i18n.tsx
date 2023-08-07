@@ -1,8 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { extractObjectPath } from './utills'
-import { en } from './resources'
-import { th } from './resources'
+import { en, th } from './resources'
 
 const DEFAULT_LANGUAGE = 'en'
 

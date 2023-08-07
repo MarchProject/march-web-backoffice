@@ -21,7 +21,7 @@ export const ButtonMenu = ({
   trashData,
   setTriggerTrash,
 }) => {
-  const { t: trans } = useTranslation()
+  const { t: trans }: any = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

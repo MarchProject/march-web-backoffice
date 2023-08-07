@@ -4,6 +4,8 @@ import { BrandObjView } from './BrandView'
 import { BrandType } from '@/core/model/inventory'
 import { BrandObjUpdate } from './BrandUpdate'
 import { BrandObjCreate } from './BrandCreate'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 const typeTab = [
   { key: 'view', Label: 'View', secondaryLabel: 'Update' },
@@ -22,6 +24,8 @@ export const BrandViewMain = ({
   deleteBrandHandle,
   updateBrandHandle,
 }: IBrandViewMain) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.brand
   const [value, setValue] = useState('view')
   const [idBrand, setIdBrand] = useState('')
   const [inventoryBrandData, setInventoryBrandData] = useState<BrandType>(null)
@@ -40,10 +44,11 @@ export const BrandViewMain = ({
 
   const TabBrand = (typeTab, value) => {
     const Tabs = typeTab.map((n) => {
+      const labelMode = n.Label.toString().toLowerCase()
       return (
         <Tab
           key={n.key}
-          label={n.Label}
+          label={trans(keys.mode[labelMode].label)}
           style={{ borderRadius: '5px', zIndex: 2, fontWeight: 600 }}
           onClick={() => {
             setValue(n.key)

@@ -27,7 +27,7 @@ const TabMenu = {
 }
 
 function Layout({ children }) {
-  const { t: trans, i18n } = useTranslation()
+  const { t: trans, i18n }: any = useTranslation()
   const [tab, setTab] = useState(0)
   const [hide, setHide] = useState(false)
 

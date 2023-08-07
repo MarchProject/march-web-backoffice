@@ -1,5 +1,7 @@
 import { BrandType } from '@/core/model/inventory'
+import { tkeys } from '@/translations/i18n'
 import { styleIconMarch } from '@/utils/style/utill'
+import { useTranslation } from 'react-i18next'
 import { BsTrash } from 'react-icons/bs'
 import { HiOutlineWallet } from 'react-icons/hi2'
 
@@ -16,6 +18,8 @@ export const BrandObjView = ({
   deleteBrandHandle,
   setIdBrand,
 }: IBrandObjView) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.brand.mode.view
   const BrandObj = inventoriesBrandData?.map((t) => {
     return (
       <div
@@ -33,25 +37,26 @@ export const BrandObjView = ({
               </p>
             </div>
             <div className="text-secondary text-base ">
-              create by {t.createdBy} on {t.formattedCreatedAt}
+              {trans(keys.field.createdBy)} {t.createdBy} {trans(keys.field.on)}{' '}
+              {t.formattedCreatedAt}
             </div>
           </div>
         </div>
         <div className="flex justify-between text-center w-[150px] items-center">
           <div
-            className="w-[50px] hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded"
+            className="w-[50px] hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded min-w-[40px]"
             onClick={() => {
               setValue('update')
               setIdBrand(t.id)
             }}>
-            <p className="m-0 text-white">Edit</p>
+            <p className="m-0 text-white">{trans(tkeys.button.edit)}</p>
           </div>
           <div
-            className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded"
+            className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded min-w-[60px]"
             onClick={() => {
               deleteBrandHandle(t.id)
             }}>
-            <p className="m-0 text-white">Delete</p>
+            <p className="m-0 text-white">{trans(tkeys.button.delete)}</p>
           </div>
         </div>
       </div>
@@ -64,9 +69,11 @@ export const BrandObjView = ({
   return (
     <div className="mt-[10px] h-[350px] overflow-y-auto">
       <div className="flex items-center justify-center h-full">
-        <div>
+        <div className="w-full">
           <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
-          <p className="m-0 mt-[5px] text-secondary">Empty</p>
+          <p className="m-0 mt-[5px] text-secondary">
+            {trans(tkeys.button.empty)}
+          </p>
         </div>
       </div>
     </div>

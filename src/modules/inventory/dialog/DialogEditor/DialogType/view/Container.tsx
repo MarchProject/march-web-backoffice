@@ -4,6 +4,8 @@ import { TypeObjView } from './TypeView'
 import { InventoryType } from '@/core/model/inventory'
 import { TypeObjUpdate } from './TypeUpdate'
 import { TypeObjCreate } from './TypeCreate'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 const typeTab = [
   { key: 'view', Label: 'View', secondaryLabel: 'Update' },
@@ -22,6 +24,8 @@ export const TypeViewMain = ({
   deleteTypeHandle,
   updateTypeHandle,
 }: ITypeViewMain) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.type
   const [value, setValue] = useState('view')
   const [idType, setIdType] = useState('')
   const [inventoryTypeData, setInventoryTypeData] =
@@ -41,10 +45,12 @@ export const TypeViewMain = ({
 
   const TabType = (typeTab, value) => {
     const Tabs = typeTab.map((n) => {
+      const labelMode = n.Label.toString().toLowerCase()
       return (
         <Tab
           key={n.key}
-          label={n.Label}
+          label={trans(keys.mode[labelMode].label)}
+          // label={n.Label}
           style={{ borderRadius: '5px', zIndex: 2, fontWeight: 600 }}
           onClick={() => {
             setValue(n.key)

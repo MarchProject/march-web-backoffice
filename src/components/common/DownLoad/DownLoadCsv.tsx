@@ -12,6 +12,7 @@ const DownLoadCsv = ({ data, headers, contents }: IDownLoadCsv) => {
   return (
     <CSVLink
       id="csv-download"
+      className="!no-underline"
       filename="Template_CSV_Upload_Item.csv"
       data={data}
       target="_blank"

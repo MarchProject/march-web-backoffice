@@ -13,6 +13,8 @@ import {
 } from '@/core/model/inventory'
 import AlertToast from '@/components/common/Alert/alert'
 import { warningDup } from '@/constant'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IUploadCsvView {
   inventoriesTypeData: InventoryType[]
@@ -45,6 +47,8 @@ const UploadCsvView = ({
   inventoryNamesData,
   isPass = true,
 }: IUploadCsvView) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.upload
   const { onCompleteValue, onChangeFile, validatedValues, removeItem } =
     useControllerUploadCsvView({
       inventoriesTypeData,
@@ -159,17 +163,18 @@ const UploadCsvView = ({
           classNames="mx-auto"
           severity="warning"
           variant="standard"
-          title="Duplicate!"
-          message={warningDup}
+          title={trans(keys.waning.header)}
+          message={trans(keys.waning.text)}
         />
       </div>
       <div className="px-[24px] ">
         {validatedValues.length > 0 && (
           <>
             <p className="text-xl m-0 mt-[0px] mb-[10px] text-primary ">
-              Validated files{" "}
+              {trans(keys.validated.header)}
               <span className="text-secondary text-base ">
-                (Please remove invalid files or duplicate name before upload)
+                {' '}
+                {trans(keys.validated.text)}
               </span>
             </p>
             <ValidateView />

@@ -1,9 +1,11 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
 import { InventoryType } from '@/core/model/inventory'
+import { tkeys } from '@/translations/i18n'
 import { max } from '@/utils/common/normalizeInput'
 import { defaultGet } from '@/utils/common/utils'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ITypeObjUpdate {
   inventoryTypeData: InventoryType
@@ -20,6 +22,8 @@ export const TypeObjUpdate = ({
   updateTypeHandle,
   setValueMode,
 }: ITypeObjUpdate) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.type.mode.update
   const [inventoryTypeDataValue, setInventoryTypeDataValue] = useState({
     id: null,
     name: null,
@@ -63,7 +67,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'name'}
                 inputLabel={{
-                  label: 'Name',
+                  label: trans(keys.field.name),
                   required: true,
                 }}
                 variant="outlined"
@@ -81,7 +85,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'description'}
                 inputLabel={{
-                  label: 'Description',
+                  label: trans(keys.field.description),
                   required: false,
                 }}
                 rows={6}
@@ -101,7 +105,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'formattedCreatedAt'}
                 inputLabel={{
-                  label: 'Created At',
+                  label: trans(keys.field.createdAt),
                   required: false,
                 }}
                 disabled
@@ -119,7 +123,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'createdBy'}
                 inputLabel={{
-                  label: 'Created By',
+                  label: trans(keys.field.createdBy),
                   required: false,
                 }}
                 disabled
@@ -137,7 +141,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'formattedUpdatedAt'}
                 inputLabel={{
-                  label: 'Updated At',
+                  label: trans(keys.field.updatedAt),
                   required: false,
                 }}
                 disabled
@@ -155,7 +159,7 @@ export const TypeObjUpdate = ({
                 type={'text'}
                 name={'updatedBy'}
                 inputLabel={{
-                  label: 'Updated By',
+                  label: trans(keys.field.updatedBy),
                   required: false,
                 }}
                 disabled
@@ -173,7 +177,7 @@ export const TypeObjUpdate = ({
           <div className="flex justify-end my-[10px]">
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-              label={'Update'}
+              label={trans(tkeys.button.update)}
               color={'primary'}
               variant="contained"
               disabled={

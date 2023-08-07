@@ -9,12 +9,14 @@ import { theme } from '@/theme/theme'
 import '../translations/i18n'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { getLanguage, setLanguage } from '@/config/client'
+import { getLanguage } from '@/config/client'
 
 export default function App({ Component, pageProps }: AppProps) {
   const title = `March ${process.env.version}`
+  
   const { i18n } = useTranslation()
   const [lg, setLg] = useState(null)
+
   useEffect(() => {
     setLg(getLanguage())
   }, [])

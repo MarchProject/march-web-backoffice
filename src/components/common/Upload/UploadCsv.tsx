@@ -8,6 +8,8 @@ import {
   notificationFileSizeErrorProp,
   notificationMultiErrorProp,
 } from './notification'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IUploadCsv<T> {
   onCompleteValueObj: (result: ParseResult<T>, file: File) => void
@@ -31,7 +33,8 @@ export const UploadCsv = <T extends object>({
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef(null)
   const [key, setKey] = useState(0)
-
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.upload
   const handleKey = () => {
     setKey((prevKey) => prevKey + 1)
   }
@@ -105,12 +108,8 @@ export const UploadCsv = <T extends object>({
         <div className="mt-[30px] flex justify-center">
           <div className="text-center m-auto">
             <BiCloudUpload style={styleIconUpload} />
-            <p className="text-primary m-0 text-xl">
-              Drag & drop your CSV here
-            </p>
-            <p className="text-secondary">
-              or, click to browse (single file, 4MB max)
-            </p>
+            <p className="text-primary m-0 text-xl">{trans(keys.body.text)}</p>
+            <p className="text-secondary">{trans(keys.body.sub)}</p>
           </div>
         </div>
       </div>

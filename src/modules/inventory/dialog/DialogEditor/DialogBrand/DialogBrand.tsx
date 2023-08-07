@@ -11,6 +11,8 @@ import {
 import { RiSearchLine } from 'react-icons/ri'
 import { Input } from '@/components/common/Input'
 import { useLoadingContext } from '@/context/loading'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IDialogBrandProps {
   open: boolean
@@ -33,6 +35,8 @@ export const DialogBrand = ({
   updateBrandHandle,
   handleSearchInventoryBrand,
 }: IDialogBrandProps) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.brand
   const searchFieldRef = useRef(null)
   const { zIndexLoading } = useLoadingContext()
   const handleReset = () => {
@@ -56,7 +60,7 @@ export const DialogBrand = ({
   }
   return (
     <DialogM
-      dialogTitle="Brand"
+      dialogTitle={trans(keys.header.lable)}
       open={open}
       maxWidth="sm"
       handleClose={handleClose}
@@ -64,7 +68,7 @@ export const DialogBrand = ({
         return (
           <>
             <p className="text-secondary m-0 px-[24px] text-base">
-              Add brand for items
+              {trans(keys.header.sub)}
             </p>
             <div
               onFocus={handleFocus}
@@ -75,7 +79,7 @@ export const DialogBrand = ({
                 classNames="!w-[552px]"
                 id="searchItems"
                 variant="outlined"
-                placeholder="Search Brand here"
+                placeholder={trans(keys.search)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

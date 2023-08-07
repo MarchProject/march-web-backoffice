@@ -6,6 +6,8 @@ import {
   EnumDeletedMode,
   EnumDeletedType,
 } from '@/core/gql/inventory/inventoryTrash'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IDialogTrashProps {
   open: boolean
@@ -24,9 +26,11 @@ export const DialogTrash = ({
   trashData,
   recoveryHardDeletedHandle,
 }: IDialogTrashProps) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.trash
   return (
     <DialogM
-      dialogTitle="Trash"
+      dialogTitle={trans(keys.header.lable)}
       open={open}
       maxWidth="sm"
       handleClose={handleClose}
@@ -34,7 +38,7 @@ export const DialogTrash = ({
         return (
           <>
             <p className="text-secondary m-0 px-[24px] text-base">
-              Restore or Delete from Trash. (Auto delete in 30 days)
+              {trans(keys.header.sub)}
             </p>
           </>
         )

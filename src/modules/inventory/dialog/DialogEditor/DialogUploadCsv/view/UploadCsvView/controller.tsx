@@ -10,6 +10,8 @@ import {
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface IUseControllerUploadCsvViewProps {
   inventoryNamesData: InventoryNamesClass[]
@@ -45,9 +47,11 @@ const validateDataCsv = (
   inventoriesTypeData: InventoryType[],
   inventoriesBrandData: BrandType[],
   inventoryNamesData: InventoryNamesClass[],
+  trans: any,
 ) => {
   const _values = result.data
   const values = tranfromCsvFile(_values)
+  const keys = tkeys.Inventory.MainPage.dialog.upload
   const requiredFields = ['name', 'type', 'brand', 'amount', 'price']
   const integerFields = [
     'reorderLevel',
@@ -66,12 +70,18 @@ const validateDataCsv = (
     const invalidFields = []
 
     if (obj.id === undefined || obj.id === null || obj.id === '') {
-      invalidFields.push({ name: 'id', message: 'not found' })
+      invalidFields.push({
+        name: 'id',
+        message: trans(keys.validated.field.notFound),
+      })
     } else if (!ids.includes(obj.id)) {
       ids.push(obj.id)
     } else {
       isValid = false
-      invalidFields.push({ name: 'id', message: 'duplicated' })
+      invalidFields.push({
+        name: 'id',
+        message: trans(keys.validated.field.duplicated),
+      })
     }
 
     requiredFields.forEach((field) => {
@@ -83,13 +93,13 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `this field is requried!`,
+            message: trans(keys.validated.field.requried),
           })
         } else if (!findType) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `${value} not found!`,
+            message: `${value} ${trans(keys.validated.field.notFound)}`,
           })
         }
       } else if (field === 'brand') {
@@ -99,13 +109,13 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `this field is requried!`,
+            message: trans(keys.validated.field.requried),
           })
         } else if (!findType) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `${value} not found!`,
+            message: `${value} ${trans(keys.validated.field.notFound)}`,
           })
         }
       } else if (field === 'price') {
@@ -116,13 +126,13 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `this field is requried!`,
+            message: trans(keys.validated.field.requried),
           })
         } else if (!findInt) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `${value} is not an integer!`,
+            message: `${value} ${trans(keys.validated.field.notInt)}`,
           })
         }
       } else if (field === 'amount') {
@@ -133,19 +143,19 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `this field is requried!`,
+            message: trans(keys.validated.field.requried),
           })
         } else if (!findInt) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `${value} is not an integer!`,
+            message: `${value} ${trans(keys.validated.field.notInt)}`,
           })
         } else if (value.length > 10) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `length exceeds maximum limit!(10)`,
+            message: trans(keys.validated.field.maxLength10),
           })
         }
       } else if (field === 'name') {
@@ -155,19 +165,19 @@ const validateDataCsv = (
           isValid = false
           invalidFields.push({
             name: field,
-            message: `this field is requried!`,
+            message: trans(keys.validated.field.requried),
           })
         } else if (value.length > 20) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `length exceeds maximum limit!(20)`,
+            message: trans(keys.validated.field.maxLength20),
           })
         } else if (findName) {
           isValid = false
           invalidFields.push({
             name: field,
-            message: `name is duplicated (inventory or trash)`,
+            message: trans(keys.validated.field.duplicatedTrash),
           })
         }
       }
@@ -179,11 +189,11 @@ const validateDataCsv = (
         const findInt =
           Number.isInteger(parseInt(value, 10)) && /^\d+$/.test(value)
         if (field === 'favorite') {
-          if (value !== '1' && value !== '0') {
+          if (value.toLowerCase() !== 'yes' && value.toLowerCase() !== 'no') {
             isValid = false
             invalidFields.push({
               name: field,
-              message: `this value must be 1 or 0!`,
+              message: trans(keys.validated.field.mustBe),
             })
           }
         } else {
@@ -191,13 +201,13 @@ const validateDataCsv = (
             isValid = false
             invalidFields.push({
               name: field,
-              message: `${value} is not an integer!`,
+              message: `${value} ${trans(keys.validated.field.notInt)}`,
             })
           } else if (value.length > 10) {
             isValid = false
             invalidFields.push({
               name: field,
-              message: `length exceeds maximum limit!(10)`,
+              message: trans(keys.validated.field.maxLength10),
             })
           }
         }
@@ -216,13 +226,13 @@ const validateDataCsv = (
             isValid = false
             invalidFields.push({
               name: field,
-              message: `${value} is not valid. Example (18-11-2024), not in future or year > 2099`,
+              message: `${value} ${trans(keys.validated.field.expiryDate)}`,
             })
           } else if (!valid) {
             isValid = false
             invalidFields.push({
               name: field,
-              message: `${value} is not valid. Example (18-11-2024), not in future or year > 2099`,
+              message: `${value} ${trans(keys.validated.field.expiryDate)}`,
             })
           }
         } else if (field === 'sku') {
@@ -230,15 +240,15 @@ const validateDataCsv = (
             isValid = false
             invalidFields.push({
               name: field,
-              message: `length exceeds maximum limit!(20)`,
+              message: trans(keys.validated.field.maxLength20),
             })
           }
         } else if (field === 'description') {
-          if (value.length > 100) {
+          if (value.length > 300) {
             isValid = false
             invalidFields.push({
               name: field,
-              message: `length exceeds maximum limit!(100)`,
+              message: trans(keys.validated.field.maxLength300),
             })
           }
         }
@@ -268,7 +278,7 @@ const useHandleUploadCsv = ({
 }: IUseControllerUploadCsvViewProps) => {
   // const [selectedFile, setSelectFile] = useState<File[]>(null)
   const [validatedValues, setValidatedValues] = useState<IValidatedValues[]>([])
-
+  const { t: trans }: any = useTranslation()
   const onCompleteValue = (
     result: ParseResult<IDataTemplateCsv>,
     file: File,
@@ -283,6 +293,7 @@ const useHandleUploadCsv = ({
       inventoriesTypeData,
       inventoriesBrandData,
       inventoryNamesData,
+      trans,
     )
 
     const validatedValue: IValidatedValues = {

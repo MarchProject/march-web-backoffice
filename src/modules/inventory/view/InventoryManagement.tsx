@@ -100,7 +100,7 @@ export const InventoryManagement = ({
     typeFieldRef.current.value = ''
     brandFieldRef.current.value = ''
   }
-  const { t: trans } = useTranslation()
+  const { t: trans }: any = useTranslation()
   const [open, setOpen] = useState(false)
   const handleClickOpen = () => {
     zIndexLoading(20)

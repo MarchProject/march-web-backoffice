@@ -1,5 +1,5 @@
 import { InputForm } from '@/components/common/Input'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import BlockUi from 'react-block-ui'
 import { useEditorInventoryController } from './controller'
 import { Card, CardContent, InputAdornment } from '@mui/material'
@@ -10,12 +10,13 @@ import { max, onlyNumber } from '@/utils/common/normalizeInput'
 import { DatePickerSelectForm } from '@/components/common/DatePicker/DatePicker'
 import ButtonForm from '@/components/common/Button/button'
 import { inventoryRoute } from '@/router/inventory'
-import { warningDelete } from '@/constant'
 import { EnumModeEditorPage } from '@/modules/interface'
 import { MdFavorite } from 'react-icons/md'
 import { CheckBoxForm } from '@/components/common/Checkbox/CheckBox'
 import AlertToast from '@/components/common/Alert/alert'
 import { dateFormat } from '@/core/common'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 interface IEditorInventoryPage {
   mode: EnumModeEditorPage
 }
@@ -23,6 +24,11 @@ interface IEditorInventoryPage {
 const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
   const idInventory = router.query.id
   const [disabled, setDisable] = useState(false)
+  const { t: trans }: any = useTranslation()
+
+  const keyEditor = useMemo(() => {
+    return tkeys.Inventory.MainPage.editor
+  }, [])
 
   useEffect(() => {
     if (mode === EnumModeEditorPage.VIEW) setDisable(true)
@@ -64,14 +70,14 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                   />
                   <div className="ml-4 my-auto">
                     <p className="text-secondary p-0 m-0 text-sm">
-                      Back to inventory list
+                      {trans(keyEditor.back)}
                     </p>
                     <h3 className="text-primary p-0 m-0 mt-[5px] text-2xl">
                       {mode === EnumModeEditorPage.UPDATE
-                        ? 'Edit Item'
+                        ? trans(keyEditor.headers.update)
                         : mode === EnumModeEditorPage.CREATE
-                        ? 'Add New Item'
-                        : 'View Item'}
+                        ? trans(keyEditor.headers.create)
+                        : trans(keyEditor.headers.view)}
                     </h3>
                   </div>
                 </div>
@@ -80,14 +86,16 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                     classNames="mt-[10px]"
                     severity="warning"
                     variant="standard"
-                    title="Warning !"
-                    message={warningDelete}
+                    title={trans(keyEditor.warning.header)}
+                    message={trans(keyEditor.warning.text)}
                   />
                 )}
                 <div className="md:grid gap-4 md:grid-cols-2 mt-[20px]">
                   <div className="w-[100%]">
                     <div className="">
-                      <p className="text-xl m-0 text-primary">Description</p>
+                      <p className="text-xl m-0 text-primary">
+                        {trans(keyEditor.type.description.label)}
+                      </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="p-2">
@@ -99,7 +107,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               name="name"
                               // label='Item Name'
                               inputLabel={{
-                                label: 'ชื่อสินค้า',
+                                label: trans(
+                                  keyEditor.type.description.fields.name,
+                                ),
                                 required: true,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -119,7 +129,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               rows={6}
                               multiline
                               inputLabel={{
-                                label: 'Description',
+                                label: trans(
+                                  keyEditor.type.description.fields.description,
+                                ),
                                 required: false,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -137,7 +149,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               control={control}
                               disabled={disabled}
                               inputLabel={{
-                                label: 'Expiry Date',
+                                label: trans(
+                                  keyEditor.type.description.fields.expiryDate,
+                                ),
                                 required: false,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -155,7 +169,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       </Card>
                     </div>
                     <div className="mt-[15px]">
-                      <p className="text-xl m-0 text-primary">Category</p>
+                      <p className="text-xl m-0 text-primary">
+                        {trans(keyEditor.type.category.label)}
+                      </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="p-2">
@@ -175,7 +191,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 placeholder: 'Type',
                               }}
                               inputLabel={{
-                                label: 'Item Type',
+                                label: trans(
+                                  keyEditor.type.category.fields.type,
+                                ),
                                 required: true,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -196,7 +214,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               multiple={false}
                               options={inventoriesBrandData}
                               inputLabel={{
-                                label: 'Item Brand',
+                                label: trans(
+                                  keyEditor.type.category.fields.brand,
+                                ),
                                 required: true,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -212,7 +232,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       </Card>
                     </div>
                     <div className="mt-[15px]">
-                      <p className="text-xl m-0 text-primary">Inventory</p>
+                      <p className="text-xl m-0 text-primary">
+                        {trans(keyEditor.type.inventory.label)}
+                      </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="grid grid-cols-12 gap-[10px]">
@@ -225,7 +247,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="quantity"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Quantity',
+                                  label: trans(
+                                    keyEditor.type.inventory.fields.amount,
+                                  ),
                                   required: true,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -246,7 +270,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 // label='Item Name'
                                 placeholder="CAT-FOD-KID-S"
                                 inputLabel={{
-                                  label: 'SKU (Optional)',
+                                  label: trans(
+                                    keyEditor.type.inventory.fields.sku,
+                                  ),
                                   required: false,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -259,8 +285,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                             </div>
                           </div>
                           <div className="p-2">
-                            <h5 className="">
-                              The minimum quantity for warning to reorder
+                            <h5 className="text-primary font-medium">
+                              {trans(keyEditor.type.inventory.text)}
                             </h5>
                             <InputForm
                               // required
@@ -269,9 +295,13 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               id="reorder"
                               name="reorder"
                               // label='Item Name'
-                              placeholder="minimum"
+                              placeholder={trans(
+                                keyEditor.type.inventory.fields.reorder,
+                              )}
                               inputLabel={{
-                                label: 'Reorder Level',
+                                label: trans(
+                                  keyEditor.type.inventory.fields.reorder,
+                                ),
                                 required: false,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -289,7 +319,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                   <div className="w-[100%]">
                     <div className="">
                       <p className="text-xl m-0 text-primary">
-                        Shipping and Delivery
+                        {trans(keyEditor.type.shipping.label)}
                       </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
@@ -302,7 +332,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               name="weight"
                               // label='Item Name'
                               inputLabel={{
-                                label: 'Item Weight',
+                                label: trans(
+                                  keyEditor.type.shipping.fields.weight,
+                                ),
                                 required: false,
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
@@ -310,7 +342,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               InputProps={{
                                 endAdornment: (
                                   <InputAdornment position="start">
-                                    kg
+                                    {trans(keyEditor.type.shipping.fields.kg)}
                                   </InputAdornment>
                                 ),
                               }}
@@ -320,9 +352,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               disabled={disabled}
                             />
                           </div>
-                          <h5 className="px-2 text-primary">
-                            Package Size (The package size use to ship your
-                            product)
+                          <h5 className="px-2 text-primary font-medium">
+                            {trans(keyEditor.type.shipping.text)}
                           </h5>
                           <div className="p-2">
                             <div className="grid grid-cols-3 gap-[10px]">
@@ -334,7 +365,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="width"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Width',
+                                  label: trans(
+                                    keyEditor.type.shipping.fields.width,
+                                  ),
                                   required: false,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -344,7 +377,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 InputProps={{
                                   endAdornment: (
                                     <InputAdornment position="start">
-                                      cm
+                                      {trans(keyEditor.type.shipping.fields.cm)}
                                     </InputAdornment>
                                   ),
                                 }}
@@ -359,7 +392,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="length"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Length',
+                                  label: trans(
+                                    keyEditor.type.shipping.fields.length,
+                                  ),
                                   required: false,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -369,7 +404,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 InputProps={{
                                   endAdornment: (
                                     <InputAdornment position="start">
-                                      cm
+                                      {trans(keyEditor.type.shipping.fields.cm)}
                                     </InputAdornment>
                                   ),
                                 }}
@@ -384,7 +419,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="height"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Height',
+                                  label: trans(
+                                    keyEditor.type.shipping.fields.height,
+                                  ),
                                   required: false,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -394,7 +431,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 InputProps={{
                                   endAdornment: (
                                     <InputAdornment position="start">
-                                      cm
+                                      {trans(keyEditor.type.shipping.fields.cm)}
                                     </InputAdornment>
                                   ),
                                 }}
@@ -407,7 +444,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       </Card>
                     </div>
                     <div className="mt-[15px]">
-                      <p className="text-xl m-0 text-primary">Pricing</p>
+                      <p className="text-xl m-0 text-primary">
+                        {trans(keyEditor.type.pricing.lebel)}
+                      </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="p-2">
@@ -420,7 +459,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="price"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Price',
+                                  label: trans(
+                                    keyEditor.type.pricing.fields.price,
+                                  ),
                                   required: true,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -428,7 +469,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
-                                      ฿
+                                      {trans(keyEditor.type.pricing.b)}
                                     </InputAdornment>
                                   ),
                                 }}
@@ -445,7 +486,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 name="memberPrice"
                                 // label='Item Name'
                                 inputLabel={{
-                                  label: 'Member Price',
+                                  label: trans(
+                                    keyEditor.type.pricing.fields.memberPrice,
+                                  ),
                                   required: false,
                                   classNames:
                                     'text-base !text-secondary !font-semibold',
@@ -453,7 +496,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
-                                      ฿
+                                      {trans(keyEditor.type.pricing.b)}
                                     </InputAdornment>
                                   ),
                                 }}
@@ -469,7 +512,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                     </div>
                     {mode !== EnumModeEditorPage.CREATE && (
                       <div className="mt-[15px]">
-                        <p className="text-xl m-0 text-primary">User</p>
+                        <p className="text-xl m-0 text-primary">
+                          {trans(keyEditor.type.user.label)}
+                        </p>
                         <Card variant="outlined" sx={{ marginTop: '15px' }}>
                           <CardContent>
                             <div className="p-2">
@@ -480,7 +525,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                   id="updatedBy"
                                   name="updatedBy"
                                   inputLabel={{
-                                    label: 'Last Updated By',
+                                    label: trans(
+                                      keyEditor.type.user.field.updateBy,
+                                    ),
                                     required: false,
                                     classNames:
                                       'text-base !text-secondary !font-semibold',
@@ -497,7 +544,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                   name="updatedAt"
                                   // label='Item Name'
                                   inputLabel={{
-                                    label: 'Last Updated At',
+                                    label: trans(
+                                      keyEditor.type.user.field.updateAt,
+                                    ),
                                     required: false,
                                     classNames:
                                       'text-base !text-secondary !font-semibold',
@@ -533,7 +582,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                           router.push({ pathname: inventoryRoute.path })
                         }}
                         label={
-                          mode === EnumModeEditorPage.VIEW ? 'Back' : 'Discard'
+                          mode === EnumModeEditorPage.VIEW
+                            ? trans(tkeys.button.back)
+                            : trans(tkeys.button.discard)
                         }
                       />
                       {mode === EnumModeEditorPage.UPDATE && (
@@ -542,7 +593,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                           color="error"
                           variant="contained"
                           onClick={deleteInventoryHandle}
-                          label={'Delete'}
+                          label={trans(tkeys.button.delete)}
                         />
                       )}
                       {mode !== EnumModeEditorPage.VIEW && (
@@ -551,8 +602,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                           onClick={onSubmit}
                           label={
                             mode === EnumModeEditorPage.UPDATE
-                              ? 'Update Item'
-                              : 'Add Item'
+                              ? trans(tkeys.button.updateItem)
+                              : trans(tkeys.button.addItem)
                           }
                         />
                       )}

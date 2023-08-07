@@ -1,7 +1,9 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
+import { tkeys } from '@/translations/i18n'
 import { max } from '@/utils/common/normalizeInput'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ITypeObjUpdate {
   updateTypeHandle: (data: {
@@ -16,6 +18,8 @@ export const TypeObjCreate = ({
   setValueMode,
   updateTypeHandle,
 }: ITypeObjUpdate) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.type.mode.create
   const [inventoryTypeDataValue, setInventoryTypeDataValue] = useState({
     id: null,
     name: null,
@@ -32,7 +36,7 @@ export const TypeObjCreate = ({
               type={'text'}
               name={'name'}
               inputLabel={{
-                label: 'Name',
+                label: trans(keys.field.name),
                 required: true,
               }}
               variant="outlined"
@@ -52,7 +56,7 @@ export const TypeObjCreate = ({
               rows={6}
               multiline
               inputLabel={{
-                label: 'Description',
+                label: trans(keys.field.description),
                 required: false,
               }}
               variant="outlined"
@@ -70,7 +74,7 @@ export const TypeObjCreate = ({
         <div className="flex justify-end gap-[10px] my[10px]">
           <ButtonForm
             classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-            label={'Back'}
+            label={trans(tkeys.button.back)}
             color={'secondary'}
             variant="outlined"
             onClick={() => {
@@ -79,7 +83,7 @@ export const TypeObjCreate = ({
           />
           <ButtonForm
             classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-            label={'Create'}
+            label={trans(tkeys.button.create)}
             color={'primary'}
             variant="contained"
             disabled={!inventoryTypeDataValue?.name}

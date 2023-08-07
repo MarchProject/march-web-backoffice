@@ -3,9 +3,11 @@ import {
   EnumDeletedType,
 } from '@/core/gql/inventory/inventoryTrash'
 import { InventoryTrash, TrashInventory } from '@/core/model/inventory'
+import { tkeys } from '@/translations/i18n'
 import { styleIconMarch } from '@/utils/style/utill'
 import { Tab, Tabs } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BsFillBoxSeamFill, BsTrash } from 'react-icons/bs'
 import { HiOutlineWallet } from 'react-icons/hi2'
 interface ITrash {
@@ -41,6 +43,8 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
     ) => void,
     type: EnumDeletedType,
   ) => {
+    const { t: trans }: any = useTranslation()
+    const keys = tkeys.Inventory.MainPage.dialog.trash
     const trashObj = trashObjs?.map((t) => {
       return (
         <div className="flex justify-between mt-[10px]" key={t.key}>
@@ -64,24 +68,25 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
                 {t._name}
               </div>
               <div className="text-secondary text-base ">
-                by {t.updatedBy} on {t.formattedUpdatedAt}
+                {trans(keys.header.by)} {t.updatedBy} {trans(keys.header.on)}{' '}
+                {t.formattedUpdatedAt}
               </div>
             </div>
           </div>
           <div className="flex justify-between text-center w-[150px] items-center">
             <div
-              className="hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded-xl"
+              className="hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded-xl min-w-[40px]"
               onClick={() => {
                 recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.RECOVERY)
               }}>
-              <p className="m-0 text-white">Restore</p>
+              <p className="m-0 text-white">{trans(tkeys.button.restore)}</p>
             </div>
             <div
-              className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded-xl"
+              className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded-xl min-w-[60px]"
               onClick={() => {
                 recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.DELETE)
               }}>
-              <p className="m-0 text-white">Delete</p>
+              <p className="m-0 text-white">{trans(tkeys.button.delete)}</p>
             </div>
           </div>
         </div>
@@ -96,8 +101,12 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
       <div className="mt-[10px] h-[350px] overflow-y-auto">
         <div className="flex items-center justify-center h-full">
           <div>
-            <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
-            <p className="m-0 mt-[5px] text-secondary">Empty</p>
+            <div className="w-full text-center">
+              <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
+              <p className="m-0 mt-[5px] text-secondary">
+                {trans(tkeys.button.empty)}
+              </p>
+            </div>
           </div>
         </div>
       </div>

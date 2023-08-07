@@ -45,7 +45,7 @@ export default function DataTableMarch({
   totalRow = 1,
 }: DataTableMarchProps) {
   const apiRef = useGridApiRef()
-  const { t: trans } = useTranslation()
+  const { t: trans }: any = useTranslation()
   const CustomPagination = () => {
     return (
       <Pagination

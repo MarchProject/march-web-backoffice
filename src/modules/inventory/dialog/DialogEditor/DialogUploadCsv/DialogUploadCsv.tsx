@@ -10,6 +10,8 @@ import {
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 interface IDialogUploadCsv {
   open: boolean
   handleOpen: () => void
@@ -28,6 +30,8 @@ const DialogUploadCsv = ({
   inventoryNamesData,
   setTriggerGetInventoryNames,
 }: IDialogUploadCsv) => {
+  const { t: trans }: any = useTranslation()
+  const keys = tkeys.Inventory.MainPage.dialog.upload
   const { uploadHandle, isValid, onUploadHandle, isPass } = useControllerUplaod(
     {
       inventoriesTypeData,
@@ -39,7 +43,7 @@ const DialogUploadCsv = ({
   return (
     <>
       <DialogM
-        dialogTitle="Import Items"
+        dialogTitle={trans(keys.header.lable)}
         open={open}
         maxWidth="md"
         handleClose={handleClose}
@@ -47,7 +51,7 @@ const DialogUploadCsv = ({
           return (
             <>
               <p className="text-secondary m-0 px-[24px] text-base">
-                Upload a CSV to import item data to your inventory.
+                {trans(keys.header.sub)}
               </p>
             </>
           )
@@ -70,7 +74,7 @@ const DialogUploadCsv = ({
             <>
               <ButtonForm
                 classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px]"
-                label={'Upload'}
+                label={trans(tkeys.button.upload)}
                 color={'primary'}
                 disabled={!isValid || !isPass}
                 variant={!isValid || !isPass ? 'text' : 'contained'}
@@ -82,8 +86,8 @@ const DialogUploadCsv = ({
                 contents={() => {
                   return (
                     <ButtonForm
-                      classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px]"
-                      label={'Download Template'}
+                      classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px] !no-underline"
+                      label={trans(tkeys.button.downloadTemp)}
                       color={'primary'}
                       variant="outlined"
                       onClick={handleClose}

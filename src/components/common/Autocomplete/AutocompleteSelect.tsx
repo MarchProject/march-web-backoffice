@@ -149,7 +149,7 @@ const AutocompleteSelectAsync = <T extends object>({
         isOptionEqualToValue={(option: T, value: T) =>
           option[valueIndex] === value[valueIndex]
         }
-        PaperComponent={({ children }) => (
+        PaperComponent={({ children }: any) => (
           <Paper
             style={{
               maxHeight: '200px',
