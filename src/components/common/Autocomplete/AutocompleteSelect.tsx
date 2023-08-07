@@ -180,8 +180,8 @@ const AutocompleteSelectAsync = <T extends object>({
         {...field}
         {...otherProps}
         readOnly={disabled}
-        renderInput={(params) => {
-          const { disabled, ...restParams } = params
+        renderInput={(params: any) => {
+          const { disabled, InputLabelProps, ...restParams } = params
           return (
             <TextField
               sx={{
@@ -205,8 +205,8 @@ const AutocompleteSelectAsync = <T extends object>({
               onBlur={() => {
                 setFocus(false)
               }}
-              label={InputProps?.label}
-              placeholder={InputProps?.placeholder}
+              label={InputProps?.label as any}
+              placeholder={InputProps?.placeholder as any}
               error={!!error}
               value={value}
               helperText={error}

@@ -12,7 +12,6 @@ import {
   InventoryType,
 } from '@/core/model/inventory'
 import AlertToast from '@/components/common/Alert/alert'
-import { warningDup } from '@/constant'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 
