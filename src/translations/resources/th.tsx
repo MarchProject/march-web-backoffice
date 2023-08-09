@@ -32,6 +32,7 @@ export const th = {
     Inventory: 'คลังสินค้า',
     Customer: 'ลูกค้า',
     Dashboard: 'แดชบอร์ด',
+    User: 'ผู้่ใช้',
   },
   Inventory: {
     MainPage: {

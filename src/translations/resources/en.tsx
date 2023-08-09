@@ -32,6 +32,7 @@ export const en = {
     Inventory: 'Inventory',
     Customer: 'Customer',
     Dashboard: 'Dashboard',
+    User: 'user',
   },
   Inventory: {
     MainPage: {

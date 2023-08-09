@@ -17,6 +17,7 @@ import { SlPeople } from 'react-icons/sl'
 import { FcOk } from 'react-icons/fc'
 import { useTranslation } from 'react-i18next'
 import { MdLanguage } from 'react-icons/md'
+import { LiaUserShieldSolid } from 'react-icons/lia'
 
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
@@ -24,6 +25,7 @@ const TabMenu = {
   'MENU:INVENTORY': { id: 2, label: 'Inventory', value: 'inventory' },
   'MENU:CUSTOMER': { id: 3, label: 'Customer', value: 'customer' },
   'MENU:DASHBOARD': { id: 4, label: 'Dashboard', value: 'dashboard' },
+  'MENU:USER': { id: 5, label: 'User', value: 'user' },
 }
 
 function Layout({ children }) {
@@ -95,6 +97,9 @@ function Layout({ children }) {
         )}
         {value === 3 && (
           <SlPeople className="cursor-pointer" style={styleIcon} />
+        )}
+        {value === 5 && (
+          <LiaUserShieldSolid className="cursor-pointer" style={styleIcon} />
         )}
       </div>
     )
