@@ -55,6 +55,7 @@ export default function DataTableMarch({
             color: 'white !important',
           },
         }}
+        style={{ margin: 'auto' }}
         count={pageCount}
         page={page}
         onChange={(_, value) => {
@@ -68,81 +69,83 @@ export default function DataTableMarch({
     const offset = page * limit - limit || 0
     return (
       <GridFooterContainer>
-        <div className="flex">
-          {totalRow > 0 && (
-            <h5 className="text-secondary ml-4 font-medium">
-              {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
-                offset + limit
-              } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
-                tkeys.table.footer.results,
-              )}`}
-            </h5>
-          )}
-        </div>
-        <CustomPagination />
-        <div className="pr-4 flex">
-          <GridPagination
-            SelectProps={{
-              MenuProps: {
-                sx: {
-                  '& .MuiPaper-root': {
-                    backgroundColor: '#fff',
-                    borderRadius: '8px',
-                  },
-                  '& .Mui-selected': {
-                    backgroundColor: '#a78bfa !important',
-                    color: 'white',
-                  },
-                  '& .Mui-selected:hover': {
-                    backgroundColor: '#8b5cf6 !important',
-                  },
-                  '& .MuiButtonBase-root:hover': {
-                    backgroundColor: '#8b5cf6',
-                    color: '#fff',
-                  },
-                  '& .MuiButtonBase-root': {
-                    // marginX: 'auto',
-                    // width: '30px',
-                    // height: '30px',
-                    // display: 'flex',
-                    // justifyContent: 'center',
-                    // borderRadius: '8px',
-                  },
-                  '& .MuiList-root': {
-                    display: 'grid',
-                    // gap: '8px',
+        <div className="flex justify-between w-full">
+          <div className="flex w-[220px]">
+            {totalRow > 0 && (
+              <h5 className="text-secondary ml-4 font-medium">
+                {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
+                  offset + limit
+                } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
+                  tkeys.table.footer.results,
+                )}`}
+              </h5>
+            )}
+          </div>
+          <CustomPagination />
+          <div className="pr-4 flex w-[220px] justify-end">
+            <GridPagination
+              SelectProps={{
+                MenuProps: {
+                  sx: {
+                    '& .MuiPaper-root': {
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                    },
+                    '& .Mui-selected': {
+                      backgroundColor: '#a78bfa !important',
+                      color: 'white',
+                    },
+                    '& .Mui-selected:hover': {
+                      backgroundColor: '#8b5cf6 !important',
+                    },
+                    '& .MuiButtonBase-root:hover': {
+                      backgroundColor: '#8b5cf6',
+                      color: '#fff',
+                    },
+                    '& .MuiButtonBase-root': {
+                      // marginX: 'auto',
+                      // width: '30px',
+                      // height: '30px',
+                      // display: 'flex',
+                      // justifyContent: 'center',
+                      // borderRadius: '8px',
+                    },
+                    '& .MuiList-root': {
+                      display: 'grid',
+                      // gap: '8px',
+                    },
                   },
                 },
-              },
-            }}
-            sx={{
-              '& .MuiInputBase-root': {
-                marginRight: '5px',
-              },
-              '& .MuiPaper-root': {
-                // backgroundColor: 'red',
-              },
-              '& .MuiTablePagination-selectLabel': {
-                color: '#878787',
-                fontSize: '12px',
-                fontWeight: '500',
-              },
-              '& .MuiSelect-select': {
-                color: '#878787',
-                fontSize: '12px',
-                fontWeight: '400',
-              },
-              //MuiPaper-root
-            }}
-            labelDisplayedRows={() => (
-              <div className="text-secondary text-xs font-medium">
-                {trans(tkeys.table.footer.entries)}
-              </div>
-            )}
-            labelRowsPerPage={trans(tkeys.table.footer.show)}
-            ActionsComponent={() => <></>}
-            getItemAriaLabel={undefined}
-          />
+              }}
+              sx={{
+                '& .MuiInputBase-root': {
+                  marginRight: '5px',
+                },
+                '& .MuiPaper-root': {
+                  // backgroundColor: 'red',
+                },
+                '& .MuiTablePagination-selectLabel': {
+                  color: '#878787',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                },
+                '& .MuiSelect-select': {
+                  color: '#878787',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                },
+                //MuiPaper-root
+              }}
+              labelDisplayedRows={() => (
+                <div className="text-secondary text-xs font-medium">
+                  {trans(tkeys.table.footer.entries)}
+                </div>
+              )}
+              labelRowsPerPage={trans(tkeys.table.footer.show)}
+              ActionsComponent={() => <></>}
+              getItemAriaLabel={undefined}
+            />
+          </div>
         </div>
       </GridFooterContainer>
     )
