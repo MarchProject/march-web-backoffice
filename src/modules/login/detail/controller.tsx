@@ -1,8 +1,8 @@
-import { signinMutation } from '@/core/gql/auth'
+import { OAuthUrlData, oAuthUrlMutation, signinMutation } from '@/core/gql/auth'
 import { LoginResult, SigninVariables } from '@/core/model'
 import { useMutation } from '@apollo/client'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import * as clientConfig from '../../../config/client'
 import router from 'next/router'
 import { homeRoute } from '@/router/home'
@@ -24,12 +24,16 @@ export const useLoginController = () => {
     notification,
     signIn,
   })
+  const { signInOAuthHandle } = useSignInOAuth({ notification })
   return {
     signInState: {
       signIn,
       signInLoading,
     },
     formHandler: { register, errors, onSubmit, control },
+    OAuth: {
+      signInOAuthHandle,
+    },
   }
 }
 
@@ -134,5 +138,33 @@ const useFormHandler = ({ notification, signIn }) => {
     onSubmit: handleSubmit(onSubmit, onError),
     errors,
     control,
+  }
+}
+
+const useSignInOAuth = ({ notification }) => {
+  const [signInOAuth, { loading: _loading, error, data }] = useMutation<
+    OAuthUrlData,
+    any
+  >(oAuthUrlMutation)
+
+  const signInOAuthHandle = useCallback(() => {
+    signInOAuth()
+  }, [signInOAuth])
+
+  useEffect(() => {
+    if (data?.oAuthUrl) {
+      window.location.assign(data.oAuthUrl)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (error) {
+      console.log({ error })
+      notification(notificationSignInErrorProp)
+    }
+  }, [error, notification])
+
+  return {
+    signInOAuthHandle,
   }
 }

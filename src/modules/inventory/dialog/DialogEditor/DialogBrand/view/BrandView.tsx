@@ -69,7 +69,7 @@ export const BrandObjView = ({
   return (
     <div className="mt-[10px] h-[350px] overflow-y-auto">
       <div className="flex items-center justify-center h-full">
-        <div className="w-full">
+        <div>
           <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
           <p className="m-0 mt-[5px] text-secondary">
             {trans(tkeys.button.empty)}

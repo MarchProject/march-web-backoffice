@@ -6,6 +6,7 @@ export type SignInRequest = {
 }
 
 export type SignInResponse = {
+  picture: string
   userId: string
   username: string
   shopName: string
@@ -30,6 +31,14 @@ type LoginResultSignIn = {
 
 export type LoginResult = {
   signIn: LoginResultSignIn
+}
+
+export type SigninOAuthData = {
+  signInOAuth: LoginResultSignIn
+}
+
+export type SigninOAuthVariables = {
+  code: string
 }
 
 export type SigninVariables = {

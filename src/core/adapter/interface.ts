@@ -13,6 +13,7 @@ export enum QueryKey {
 export enum MutateKey {
   inventory = 'inventory',
   sales = 'sales',
+  login = 'login',
 }
 
 // export enum InventoryQueryKey {

@@ -27,11 +27,30 @@ export const verifyAccessTokenMutation = gql`
   }
 `
 
-
 export const tokenExpireMutation = gql`
   mutation tokenExpire($refreshToken: String!) {
     tokenExpire(refreshToken: $refreshToken) {
       access_token
+    }
+  }
+`
+
+export const oAuthUrlMutation = gql`
+  mutation oAuthUrl {
+    oAuthUrl
+  }
+`
+export type OAuthUrlData = {
+  oAuthUrl: string
+}
+
+export const signInOAuthMutation = gql`
+  mutation signInOAuth($code: String!) {
+    signInOAuth(code: $code) {
+      access_token
+      refresh_token
+      userId
+      username
     }
   }
 `

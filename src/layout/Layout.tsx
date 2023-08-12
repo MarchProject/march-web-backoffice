@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Tab, Tabs, Tooltip } from '@mui/material'
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { getShopName, getUsername, setLanguage } from '@/config/client'
+import {
+  getPicture,
+  getShopName,
+  getUsername,
+  setLanguage,
+} from '@/config/client'
 import router from 'next/router'
 import * as clientConfig from '@/config/client'
 import jwt from 'jsonwebtoken'
@@ -18,6 +23,7 @@ import { FcOk } from 'react-icons/fc'
 import { useTranslation } from 'react-i18next'
 import { MdLanguage } from 'react-icons/md'
 import { LiaUserShieldSolid } from 'react-icons/lia'
+
 
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
@@ -175,6 +181,9 @@ function Layout({ children }) {
   }
   const UserUI = () => {
     const username = getUsername()
+    const basePic = `${process.env.basePath}/man.png`
+    const urlPic = getPicture() || basePic
+
     return (
       <div
         className={
@@ -183,10 +192,10 @@ function Layout({ children }) {
         }>
         <img
           className={
-            'max-w-[30px] max-h-[30px] my-auto block ' +
+            'max-w-[30px] max-h-[30px] my-auto block !border-2! border-violet-500 border-solid rounded-full ' +
             (hide ? ' mx-auto' : '')
           }
-          src={`${process.env.basePath}/man.png`}
+          src={urlPic}
           alt="user-icon"
         />
         <h3
@@ -304,7 +313,8 @@ function Layout({ children }) {
       >
         <div
           className={'mainBg overflow-y-auto'}
-          style={{ overflowY: 'scroll' }}>
+          // style={{ overflowY: 'scroll' }}
+        >
           {children}
         </div>
       </div>

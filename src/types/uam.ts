@@ -15,6 +15,7 @@ export namespace uam {
 }
 
 export type Credential = {
+  picture?: string
   userId?: string
   username?: string
   shopName?: string

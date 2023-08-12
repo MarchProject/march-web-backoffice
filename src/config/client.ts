@@ -47,6 +47,9 @@ export function getUserId() {
 export function getUsername() {
   return localStorage.getItem(`${prefix}.username`)
 }
+export function getPicture() {
+  return localStorage.getItem(`${prefix}.picture`)
+}
 export function getShopName() {
   return localStorage.getItem(`${prefix}.shopName`)
 }

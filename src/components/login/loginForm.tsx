@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card, CardContent } from '@mui/material'
+import { Button, Card, CardContent } from '@mui/material'
 import React from 'react'
 import ButtonForm from '../common/Button/button'
 import { Control, FieldValues } from 'react-hook-form'
@@ -8,9 +8,10 @@ import { InputForm } from '../common/Input'
 type LoginFormProps = {
   onSubmit: any
   control: Control<FieldValues, any>
+  signInOAuthHandle: () => void
 }
 
-function LoginForm({ onSubmit, control }: LoginFormProps) {
+function LoginForm({ onSubmit, control, signInOAuthHandle }: LoginFormProps) {
   return (
     <div className="">
       <Card className="card-login" sx={{ minWidth: 275, borderRadius: '20px' }}>
@@ -53,6 +54,19 @@ function LoginForm({ onSubmit, control }: LoginFormProps) {
                   label="Sign In"
                   onClick={onSubmit}
                 />
+              </div>
+              <div className="mt-[30px] ">
+                <Button
+                  className="w-full !normal-case !font-normal !bg-white !text-primary !rounded-xl"
+                  variant="contained"
+                  onClick={signInOAuthHandle}>
+                  <img
+                    className="w-[18px] mr-[15px]"
+                    src={`${process.env.basePath}/public/google.svg`}
+                    alt=""
+                  />
+                  <span>Sign In Google</span>
+                </Button>
               </div>
             </CardContent>
           </div>
