@@ -88,6 +88,7 @@ const ContainerInventory = () => {
                 loading={inventoryLoading}
                 limit={inventoryLimit}
                 totalRow={inventoryData?.getInventories?.totalRow}
+                idNav="navbar-inventory"
               />
             </div>
           </div>

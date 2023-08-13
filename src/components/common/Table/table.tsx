@@ -9,9 +9,9 @@ import {
   useGridApiRef,
 } from '@mui/x-data-grid'
 import { Pagination } from '@mui/material'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import { useResize } from '@/core/utils/hook/resizeHook'
 
 type DataTableMarchProps = {
   rows: any[]
@@ -30,6 +30,7 @@ type DataTableMarchProps = {
   loading: boolean
   limit: number
   totalRow: number
+  idNav?: string
 }
 
 export default function DataTableMarch({
@@ -43,6 +44,7 @@ export default function DataTableMarch({
   loading,
   limit,
   totalRow = 1,
+  idNav,
 }: DataTableMarchProps) {
   const apiRef = useGridApiRef()
   const { t: trans }: any = useTranslation()
@@ -151,25 +153,25 @@ export default function DataTableMarch({
     )
   }
 
-  const [gridHeight, setGridHeight] = useState(0)
+  // const [gridHeight, setGridHeight] = useState(0)
 
-  useEffect(() => {
-    const handleResize = () => {
-      const windowHeight = window.innerHeight
-      const navbarHeight =
-        document.getElementById('navbar-inventory')?.offsetHeight
-      const availableHeight = windowHeight - navbarHeight - 65
-      setGridHeight(availableHeight)
-    }
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const windowHeight = window.innerHeight
+  //     const navbarHeight =
+  //       document.getElementById('navbar-inventory')?.offsetHeight
+  //     const availableHeight = windowHeight - navbarHeight - 65
+  //     setGridHeight(availableHeight)
+  //   }
 
-    window.addEventListener('resize', handleResize)
-    handleResize()
+  //   window.addEventListener('resize', handleResize)
+  //   handleResize()
 
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize)
+  //   }
+  // }, [])
+  const gridHeight = useResize(idNav)
   return (
     <div className={'w-full'} style={{ height: gridHeight }}>
       <DataGrid

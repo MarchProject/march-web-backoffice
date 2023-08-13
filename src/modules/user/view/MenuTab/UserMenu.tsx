@@ -1,18 +1,14 @@
 import { Tab, Tabs } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
+import { IUserTab } from '../../controller'
 
-const UserMenu = () => {
-  const [value, setValue] = useState(0)
-  const userTabs = [
-    { id: 0, key: 'details', Label: 'Details' },
-    { id: 1, key: 'profile', Label: 'Profile' },
-    { id: 2, key: 'team', Label: 'Team' },
-    { id: 3, key: 'role', Label: 'Role' },
-    { id: 4, key: 'plan', Label: 'Plan' },
-    { id: 5, key: 'billing', Label: 'Billing' },
-    { id: 6, key: 'notification', Label: 'Notification' },
-  ]
+interface IUserMenuProps {
+  userTabs: IUserTab[]
+  handleValueTab: (value: number) => void
+  valueTab: number
+}
 
+const UserMenu = ({ userTabs, handleValueTab, valueTab }: IUserMenuProps) => {
   const TabUser = (nameTab) => {
     const Tabs = nameTab.map((n) => {
       return (
@@ -25,10 +21,9 @@ const UserMenu = () => {
             borderRadius: '5px',
             zIndex: 2,
             fontWeight: 600,
-            // maxWidth: '120px',
           }}
           onClick={() => {
-            setValue(n.id)
+            handleValueTab(n.id)
           }}
           value={n.id}
         />
@@ -49,24 +44,19 @@ const UserMenu = () => {
             marginInline: '4px',
           },
         }}
-        value={value}
-        // variant="fullWidth"
+        value={valueTab}
         TabIndicatorProps={{
           style: {
             backgroundColor: 'white',
             marginBottom: 4,
-            // paddingInline: 4,
             height: '48px',
             zIndex: 1,
             borderRadius: '12px',
             textAlign: 'center',
-            // margin: '5px',
-            // padding: '5px',
           },
         }}>
         {TabUser(userTabs)}
       </Tabs>
-      {/* {TrashOBJView(trashObjs, recoveryHardDeletedHandle, type)} */}
     </div>
   )
 }
