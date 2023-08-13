@@ -11,8 +11,14 @@ import {
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
+import { useLoadingContext } from '@/context/loading'
 
 const Index = () => {
+  const { closeLoading } = useLoadingContext()
+
+  useEffect(() => {
+    closeLoading()
+  }, [closeLoading])
   return <div></div>
 }
 
@@ -56,12 +62,12 @@ function Container(props: any) {
 
   return (
     <Layout>
-    {(client && (
-      <ApolloProvider client={client}>
-        <Index {...props} />
-      </ApolloProvider>
-    )) || <>loading, Please wait ...</>}
-  </Layout>
+      {(client && (
+        <ApolloProvider client={client}>
+          <Index {...props} />
+        </ApolloProvider>
+      )) || <>loading, Please wait ...</>}
+    </Layout>
   )
 }
 

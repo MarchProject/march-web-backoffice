@@ -9,5 +9,5 @@ export const homeRoute: Route = {
 export const permissionRoute: Route = {
   path: '/permission',
   auth: false,
-  regex: /(\/(en|th)|)\/home/,
+  regex: /(\/(en|th)|)\/permissionRoute/,
 }

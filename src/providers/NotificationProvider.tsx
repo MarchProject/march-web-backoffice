@@ -13,7 +13,6 @@ const Notification = (props: any) => {
 
 const NotificationProvider: FC<INotificationProvider> = ({ children }) => {
   const { notificationProps } = useNotificationContext()
-  console.log({ notificationProps })
 
   return (
     <>

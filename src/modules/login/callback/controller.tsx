@@ -12,7 +12,7 @@ import {
 } from '@/core/notification'
 import router from 'next/router'
 import { homeRoute } from '@/router/home'
-import { uamLoginRoute } from '@/router/user'
+import { noAccessRoute, uamLoginRoute } from '@/router/user'
 import { useLoadingContext } from '@/context/loading'
 
 export const useControllerCallback = () => {
@@ -57,6 +57,8 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
     if (_loading) {
       openLoading()
     } else {
+    }
+    return () => {
       closeLoading()
     }
   }, [_loading, closeLoading, openLoading])
@@ -64,7 +66,11 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
   useEffect(() => {
     if (error) {
       notification(notificationSignInErrorProp)
-      router.push({ pathname: uamLoginRoute.path })
+      if (error.message === 'Unauthorized No Access') {
+        router.push({ pathname: noAccessRoute.path })
+      } else {
+        router.push({ pathname: uamLoginRoute.path })
+      }
     }
   }, [error, notification])
 

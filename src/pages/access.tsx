@@ -1,7 +1,7 @@
 import React from 'react'
 import { MdCancel } from 'react-icons/md'
 
-const Permission = () => {
+const Access = () => {
   return (
     <div className="w-screen h-screen">
       <div className="flex justify-center  items-center h-screen">
@@ -9,15 +9,15 @@ const Permission = () => {
           <MdCancel size={140} className="text-red-500" />
           <h2 className="text-primary">Access Denied</h2>
           <p className="text-secondary">
-            You do not have permission to view this page.
+            You do not have permission to view this site.
           </p>
-          <p className="text-secondary">
+          {/* <p className="text-secondary">
             Please check your credentials and try again.
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
   )
 }
 
-export default Permission
+export default Access
