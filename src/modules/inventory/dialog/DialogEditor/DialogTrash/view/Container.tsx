@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BsFillBoxSeamFill, BsTrash } from 'react-icons/bs'
 import { HiOutlineWallet } from 'react-icons/hi2'
+import { MdDeleteForever, MdRestore } from 'react-icons/md'
 interface ITrash {
   trashData: InventoryTrash
   recoveryHardDeletedHandle: (
@@ -47,18 +48,21 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
     const keys = tkeys.Inventory.MainPage.dialog.trash
     const trashObj = trashObjs?.map((t) => {
       return (
-        <div className="flex justify-between mt-[10px]" key={t.key}>
-          <div className="flex gap-[15px]">
+        <div className="mt-[10px] grid grid-cols-6" key={t.key}>
+          <div className="flex gap-[15px] col-span-5 lg:col-span-5">
             {type === EnumDeletedType.inventory ? (
               <BsFillBoxSeamFill
+                className="lg:!block !hidden"
                 style={{ ...styleIconMarch, fontSize: '40px' }}
               />
             ) : type === EnumDeletedType.inventoryType ? (
               <HiOutlineWallet
+                className="lg:!block !hidden"
                 style={{ ...styleIconMarch, fontSize: '40px' }}
               />
             ) : (
               <HiOutlineWallet
+                className="lg:!block !hidden"
                 style={{ ...styleIconMarch, fontSize: '40px' }}
               />
             )}
@@ -67,35 +71,45 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
               <div className="text-primary text-lg font-semibold">
                 {t._name}
               </div>
-              <div className="text-secondary text-base ">
+              <div className="text-secondary text-base lg:block hidden">
                 {trans(keys.header.by)} {t.updatedBy} {trans(keys.header.on)}{' '}
                 {t.formattedUpdatedAt}
               </div>
+              <div className="text-secondary text-base lg:hidden block">
+                <p className="m-0">
+                  {trans(keys.header.by)} {t.updatedBy}
+                </p>
+                <p className="m-0">{t.formattedUpdatedAt}</p>
+              </div>
             </div>
           </div>
-          <div className="flex justify-between text-center w-[150px] items-center">
-            <div
-              className="hover:bg-emerald-600 bg-emerald-400 p-[8px] cursor-pointer rounded-xl min-w-[40px]"
-              onClick={() => {
-                recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.RECOVERY)
-              }}>
-              <p className="m-0 text-white">{trans(tkeys.button.restore)}</p>
-            </div>
-            <div
-              className="hover:bg-rose-600 bg-rose-400 p-[8px] cursor-pointer rounded-xl min-w-[60px]"
-              onClick={() => {
-                recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.DELETE)
-              }}>
-              <p className="m-0 text-white">{trans(tkeys.button.delete)}</p>
+          <div className="flex justify-between text-center items-center gap-[10px]">
+            <div className="lg flex gap-[10px] justify-end ml-auto pr-[10px]">
+              <MdRestore
+                onClick={() => {
+                  recoveryHardDeletedHandle(
+                    t.id,
+                    type,
+                    EnumDeletedMode.RECOVERY,
+                  )
+                }}
+                className="cursor-pointer text-primary200"
+                size={20}
+              />
+              <MdDeleteForever
+                onClick={() => {
+                  recoveryHardDeletedHandle(t.id, type, EnumDeletedMode.DELETE)
+                }}
+                className="cursor-pointer text-primary200"
+                size={20}
+              />
             </div>
           </div>
         </div>
       )
     })
     if (trashObjs?.length > 0) {
-      return (
-        <div className="mt-[10px] h-[350px] overflow-y-auto">{trashObj}</div>
-      )
+      return <div className="mt-[10px] max-h-[350px]">{trashObj}</div>
     }
     return (
       <div className="mt-[10px] h-[350px] overflow-y-auto">

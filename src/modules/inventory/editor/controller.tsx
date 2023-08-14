@@ -154,19 +154,22 @@ const useQueryInventory = (
 ) => {
   const [inventory, setInventory] = useState<Inventory>(null)
   if (idInventory) {
-    const getInventory = useQuery(getInventoryQuery, {
+    const { data, error } = useQuery(getInventoryQuery, {
       variables: { id: idInventory },
     })
     useEffect(() => {
-      if (getInventory?.data?.getInventory) {
-        const _inventory = plainToInstance(
-          Inventory,
-          getInventory.data.getInventory,
-        )
+      if (data?.getInventory) {
+        const _inventory = plainToInstance(Inventory, data.getInventory)
         reset(transfromInventory(_inventory))
         setInventory(_inventory)
       }
-    }, [getInventory.data, reset])
+    }, [data, reset])
+
+    useEffect(() => {
+      if (error?.message === 'FORBIDDEN') {
+        router.push({ pathname: inventoryRoute.path })
+      }
+    }, [error])
   }
 
   return {

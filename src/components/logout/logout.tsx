@@ -7,6 +7,8 @@ import router from 'next/router'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { initApollo } from '@/core/apollo'
 import dynamic from 'next/dynamic'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 type SignOut = {
   signOut: {
@@ -16,6 +18,7 @@ type SignOut = {
 
 const Index = () => {
   const [signOut, { data }] = useMutation<SignOut, any>(signOutMutation)
+  const { t: trans }: any = useTranslation()
   useEffect(() => {
     if (data?.signOut?.id) {
       clientConfig.removeAccessToken()
@@ -34,15 +37,16 @@ const Index = () => {
     })
   }
   return (
-    <div className="text-right my-auto">
+    <div className="text-right my-auto w-full">
       <div
-        className={'flex justify-center cursor-pointer gap-[10px] items-center'}
+        className={
+          'flex lg:justify-center cursor-pointer gap-[10px] items-center justify-between'
+        }
         onClick={handleSignOut}>
-        <p className="m-0 lg:hidden text-primary font-medium">Sign out</p>
-        <LogoutIcon
-          className="text-secondary my-auto"
-          style={{ fontSize: '18px' }}
-        />
+        <p className="m-0 lg:hidden text-xs font-semibold text-secondary ml-[2px]">
+          {trans(tkeys.button.signOut)}
+        </p>
+        <LogoutIcon className="text-secondary my-auto lg:!text-lg !text-sm" />
       </div>
     </div>
   )

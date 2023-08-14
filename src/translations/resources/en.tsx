@@ -17,6 +17,8 @@ export const en = {
     empty: 'Empty',
     create: 'Create',
     update: 'Update',
+    signOut: 'Sign out',
+    language:'Language'
   },
   table: {
     footer: {

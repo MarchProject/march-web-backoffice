@@ -8,19 +8,44 @@ import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Avatar from '@mui/material/Avatar'
-import MenuItem from '@mui/material/MenuItem'
 import { uniqBy } from 'lodash'
 import { orderBy } from 'lodash'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import SignOut from '@/components/logout/logout'
+import { MdLanguage } from 'react-icons/md'
+import { getUsername, setLanguage } from '@/config/client'
+import { tkeys } from '@/translations/i18n'
 
 const AppBarMobile = ({ tabMenu, handlePath, tab, profiles }) => {
-  const { t: trans }: any = useTranslation()
+  const { t: trans, i18n }: any = useTranslation()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   )
+  const [lg, setLg] = useState('')
+
+  const username = getUsername()
+
+  useEffect(() => {
+    setLg(i18n.language)
+  }, [i18n.language])
+
+  const LgChange = () => {
+    return (
+      <div
+        className={'flex cursor-pointer  justify-between w-full'}
+        onClick={() => {
+          setLanguage(lg === 'th' ? 'en' : 'th')
+          i18n.changeLanguage(lg === 'th' ? 'en' : 'th')
+        }}>
+        <p className="text-xs font-semibold text-secondary m-0 ml-[2px]">
+          {trans(tkeys.button.language)}
+        </p>
+        <MdLanguage color="rgb(135 135 135)" className={'my-auto ml-[15px] '} />
+      </div>
+    )
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -140,9 +165,11 @@ const AppBarMobile = ({ tabMenu, handlePath, tab, profiles }) => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}>
-              <MenuItem onClick={handleCloseUserMenu}>
+              <div className="px-2 flex flex-col gap-[10px]">
+                <p className='m-0 lg:hidden text-xs font-semibold text-secondary ml-[2px]'>{username}</p>
+                <LgChange />
                 <SignOut />
-              </MenuItem>
+              </div>
             </Menu>
           </Box>
         </Toolbar>

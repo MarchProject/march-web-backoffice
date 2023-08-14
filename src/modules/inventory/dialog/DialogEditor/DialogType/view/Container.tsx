@@ -17,12 +17,14 @@ interface ITypeViewMain {
   inventoriesTypeData: InventoryType[]
   deleteTypeHandle: (id: string) => void
   updateTypeHandle: (data: any) => void
+  setIsEdit: (data: boolean) => void
 }
 
 export const TypeViewMain = ({
   inventoriesTypeData,
   deleteTypeHandle,
   updateTypeHandle,
+  setIsEdit,
 }: ITypeViewMain) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.type
@@ -37,6 +39,13 @@ export const TypeViewMain = ({
     }
   }, [idType, inventoriesTypeData])
 
+  useEffect(() => {
+    if (value !== 'view') {
+      setIsEdit(true)
+    } else {
+      setIsEdit(false)
+    }
+  }, [setIsEdit, value])
   // useEffect(() => {
   //   if (value === 'view' || value === 'create') {
   //     setInventoryTypeData(null)

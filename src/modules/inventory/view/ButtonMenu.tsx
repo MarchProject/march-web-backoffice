@@ -34,7 +34,7 @@ export const ButtonMenu = ({
   return (
     <>
       <ButtonForm
-        classNames="!w-[150px] !h-[40px] !normal-case"
+        classNames="lg:!w-[120px] !w-[60px] !h-[40px] !normal-case"
         label={trans(tkeys.button.menu)}
         color={'primary'}
         endIcon={<RiAddLine size={15} />}

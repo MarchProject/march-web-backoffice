@@ -3,7 +3,7 @@ export const th = {
     favorite: 'รายการโปรด',
     clear: 'ล้างค่า',
     close: 'ปิด',
-    filter: 'ตัวกรอง',
+    filter: 'กรอง',
     menu: 'เมนู',
     discard: 'ยกเลิก',
     addItem: 'เพิ่มสินค้า',
@@ -17,6 +17,8 @@ export const th = {
     empty: 'ว่างเปล่า',
     create: 'สร้าง',
     update: 'อัปเดต',
+    signOut: 'ลงชื่อออก',
+    language: 'ภาษา',
   },
   table: {
     footer: {

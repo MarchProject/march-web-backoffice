@@ -121,64 +121,66 @@ export const InventoryManagement = ({
         contentRender={() => {
           return (
             <div className="mx-auto w-full pb-[20px]">
-              <AutocompleteSelectAsync
-                inputRef={brandFieldRef}
-                value={inventoryBrandValue}
-                classNames="max-w-[380px] mx-auto p-2"
-                id="brandFilter"
-                labelIndex="name"
-                valueIndex={'id'}
-                multiple={true}
-                options={inventoriesBrandData}
-                InputProps={{
-                  label: trans(tkeys.Inventory.MainPage.filter.brand),
-                  placeholder: trans(tkeys.Inventory.MainPage.filter.brand),
-                }}
-                onChange={handleBrandChange}
-                loading={inventoriesBrandLoading}
-                onInputChange={handleSearchInventoryBrand}
-              />
-              <AutocompleteSelectAsync
-                inputRef={typeFieldRef}
-                id="typeFilter"
-                classNames="max-w-[380px] mx-auto mt-[10px]"
-                labelIndex="name"
-                valueIndex={'id'}
-                multiple={true}
-                options={inventoriesTypeData}
-                InputProps={{
-                  label: trans(tkeys.Inventory.MainPage.filter.type),
-                  placeholder: trans(tkeys.Inventory.MainPage.filter.type),
-                }}
-                value={inventoryTypeValue}
-                onChange={handleTypeChange}
-                loading={inventoriesTypeLoading}
-                onInputChange={handleSearchInventoryType}
-              />
-              <div className="!mx-[30px] mt-[20px]">
-                <div className="flex gap-[10px] justify-start max-w-[380px]">
-                  <ButtonForm
-                    classNames="!w-[150px] !h-[40px] !normal-case"
-                    label={trans(tkeys.button.favorite)}
-                    variant="outlined"
-                    color="error"
-                    endIcon={
-                      favorite === 'DEFAULT' ? (
-                        <FcLikePlaceholder
-                          className="cursor-pointer text-secondary my-auto"
-                          size={18}
-                        />
-                      ) : (
-                        <FcLike
-                          className="cursor-pointer text-secondary my-auto"
-                          size={18}
-                        />
-                      )
-                    }
-                    onClick={() => {
-                      handleFavoriteChange()
-                    }}
-                  />
+              <div className="px-5">
+                <AutocompleteSelectAsync
+                  inputRef={brandFieldRef}
+                  value={inventoryBrandValue}
+                  classNames="mx-auto"
+                  id="brandFilter"
+                  labelIndex="name"
+                  valueIndex={'id'}
+                  multiple={true}
+                  options={inventoriesBrandData}
+                  InputProps={{
+                    label: trans(tkeys.Inventory.MainPage.filter.brand),
+                    placeholder: trans(tkeys.Inventory.MainPage.filter.brand),
+                  }}
+                  onChange={handleBrandChange}
+                  loading={inventoriesBrandLoading}
+                  onInputChange={handleSearchInventoryBrand}
+                />
+                <AutocompleteSelectAsync
+                  inputRef={typeFieldRef}
+                  id="typeFilter"
+                  classNames="mx-auto mt-[10px]"
+                  labelIndex="name"
+                  valueIndex={'id'}
+                  multiple={true}
+                  options={inventoriesTypeData}
+                  InputProps={{
+                    label: trans(tkeys.Inventory.MainPage.filter.type),
+                    placeholder: trans(tkeys.Inventory.MainPage.filter.type),
+                  }}
+                  value={inventoryTypeValue}
+                  onChange={handleTypeChange}
+                  loading={inventoriesTypeLoading}
+                  onInputChange={handleSearchInventoryType}
+                />
+                <div className="  mt-[20px]">
+                  <div className="flex gap-[10px] justify-start max-w-[380px]">
+                    <ButtonForm
+                      classNames="!w-[150px] !h-[40px] !normal-case"
+                      label={trans(tkeys.button.favorite)}
+                      variant="outlined"
+                      color="error"
+                      endIcon={
+                        favorite === 'DEFAULT' ? (
+                          <FcLikePlaceholder
+                            className="cursor-pointer text-secondary my-auto"
+                            size={18}
+                          />
+                        ) : (
+                          <FcLike
+                            className="cursor-pointer text-secondary my-auto"
+                            size={18}
+                          />
+                        )
+                      }
+                      onClick={() => {
+                        handleFavoriteChange()
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,7 +188,7 @@ export const InventoryManagement = ({
         }}
         actionRender={() => {
           return (
-            <div className="px-[24px] flex gap-2">
+            <div className="pr-[12px] flex gap-2">
               <ButtonForm
                 classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
                 label={trans(tkeys.button.clear)}
@@ -206,38 +208,48 @@ export const InventoryManagement = ({
         }}
       />
 
-      <div id="navbar-inventory" className="flex justify-between w-[100%]">
-        <div className="flex gap-[15px] my-auto w-[25%]">
+      <div
+        id="navbar-inventory"
+        className="grid grid-cols-1 lg:grid-cols-3 w-[100%] pb-[15px]">
+        <div className="flex gap-[15px] my-auto">
           <BsBoxSeam style={styleIconMarch} />
           <p className="text-base text-primary font-medium">
             {trans(tkeys.Inventory.MainPage.HeadText)}
           </p>
         </div>
-        <div className="w-[75%] my-auto flex gap-[12px] justify-end">
-          <div className="max-w-[220px] w-[100%] min-w-[220px] my-auto ">
-            <Input
-              inputRef={searchFieldRef}
-              classNames="max-w-[220px] w-[100%] min-w-[220px]"
-              id="searchItems"
-              variant="outlined"
-              placeholder={trans(tkeys.Inventory.MainPage.searchText)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <RiSearchLine />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={debounce(setSearch, 1000)}
-              type={'text'}
-              name="searchItems"
-              size="small"
-              normalizes={[max(60)]}
-            />
-          </div>
-          <div className="flex my-auto gap-[12px]">
+        <div className="my-auto grid lg:grid-cols-1 gap-[15px] lg:col-span-2">
+          {/* <div className="lg:masx-w-[220px] my-auto lg:ml-auto w-full lg:col-span-6"></div> */}
+          <div className="flex justify-end gap-[15px] items-center ">
+            <div className="flex items-center col-span-3">
+              <Input
+                inputRef={searchFieldRef}
+                classNames="lg:!max-w-[220px] !w-[100%] !ml-auto !my-auto "
+                id="searchItems"
+                variant="outlined"
+                placeholder={trans(tkeys.Inventory.MainPage.searchText)}
+                inputLabel={{
+                  classNames: '!w-full !my-auto',
+                  label: '',
+                  required: false,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <RiSearchLine size={12} className="lg:!hidden block" />
+                      <RiSearchLine className="lg:!block hidden" />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={debounce(setSearch, 1000)}
+                type={'text'}
+                name="searchItems"
+                size="small"
+                normalizes={[max(60)]}
+              />
+            </div>
+
             <ButtonForm
-              classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
+              classNames="lg:!w-[120px] !w-[60px] !h-[40px] !normal-case"
               label={trans(tkeys.button.filter)}
               color={'primary'}
               endIcon={<BiCaretDown size={15} />}

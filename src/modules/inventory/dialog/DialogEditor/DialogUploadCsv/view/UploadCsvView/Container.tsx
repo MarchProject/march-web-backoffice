@@ -65,8 +65,8 @@ const UploadCsvView = ({
             return (
               <div key={`${inv.name}-${index}`}>
                 <div className="flex  px-[5px] py-[5px] rounded-lg text-black items-center">
-                  <FcCancel size={20} />
-                  <p className="m-0 ml-[5px]">
+                  {/* <FcCancel size={20} /> */}
+                  <p className="m-0 ml-[5px] lg:text-base text-xs">
                     {`${capitalizeFirstLetter(inv.name)}: ${inv.message}`}
                   </p>
                 </div>
@@ -77,9 +77,12 @@ const UploadCsvView = ({
             <div
               className="mb-[10px] px-4 bg-white p-[20px] rounded-xl drop-shadow-md"
               key={`${invalid.id}-${index}`}>
-              <p className="m-0 mb-[5px] p-[5px] bordesr-solid borsder-2 bordesr-blue-500  rounded-lg max-w-[20%]">
-                id: {invalid.id}
-              </p>
+              <div className='flex items-center'>
+                <p className="m-0 p-[5px] max-w-[20%]">
+                  id: {invalid.id}
+                </p>
+                <FcCancel size={20} />
+              </div>
               <div className="grid grid-cols-1 gap-[5px] px-[15px]">
                 {message}
               </div>
@@ -148,7 +151,9 @@ const UploadCsvView = ({
       }
     })
     return (
-      <div className="p-0 max-h-[300px]" style={{ overflowY: 'auto' }}>
+      <div className="p-0 max-h-[300px]" 
+      style={{ overflowY: 'auto' }}
+      >
         {ui}
       </div>
     )

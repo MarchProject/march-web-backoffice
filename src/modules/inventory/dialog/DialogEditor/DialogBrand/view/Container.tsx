@@ -17,12 +17,14 @@ interface IBrandViewMain {
   inventoriesBrandData: BrandType[]
   deleteBrandHandle: (id: string) => void
   updateBrandHandle: (data: any) => void
+  setIsEdit: (data: boolean) => void
 }
 
 export const BrandViewMain = ({
   inventoriesBrandData,
   deleteBrandHandle,
   updateBrandHandle,
+  setIsEdit,
 }: IBrandViewMain) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.brand
@@ -35,6 +37,14 @@ export const BrandViewMain = ({
       setInventoryBrandData(inventoriesBrandData.find((e) => e.id === idBrand))
     }
   }, [idBrand, inventoriesBrandData])
+
+  useEffect(() => {
+    if (value !== 'view') {
+      setIsEdit(true)
+    }else{
+      setIsEdit(false)
+    }
+  }, [setIsEdit, value])
 
   // useEffect(() => {
   //   if (value === 'view' || value === 'create') {
@@ -97,7 +107,7 @@ export const BrandViewMain = ({
   }
 
   return (
-    <div className="px-[24px] mt-[10px]">
+    <div className="px-[20px] mt-[10px]">
       <Tabs
         className="bg-gray-100 rounded-xl p-[5px] gap-[10px]"
         value={value}

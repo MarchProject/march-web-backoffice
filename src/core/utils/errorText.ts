@@ -3,7 +3,7 @@ import { errorMarch } from './ErrorType'
 export const errorTextTranform = (error: string) => {
   switch (error) {
     case errorMarch.EnumErrorType.BAD_HAVE_TYPE: {
-      return 'Already use in product'
+      return 'BADHAVETYPE'
     }
     case errorMarch.EnumErrorType.INTERNAL_ERROR: {
       return 'Internal error'

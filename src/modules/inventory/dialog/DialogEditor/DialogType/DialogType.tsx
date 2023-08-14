@@ -1,6 +1,6 @@
 import { DialogM } from '@/components/common/Dialog/DialogM'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TypeViewMain } from './view/Container'
 import { InventoryType } from '@/core/model/inventory'
 import { Input } from '@/components/common/Input'
@@ -56,7 +56,7 @@ export const DialogType = ({
   const handleBlur = () => {
     zIndexLoading(9999)
   }
-
+  const [isEdit, setIsEdit] = useState(false)
   return (
     <DialogM
       dialogTitle={trans(keys.header.lable)}
@@ -65,40 +65,47 @@ export const DialogType = ({
       handleClose={handleClose}
       dialogContentTextRender={() => {
         return (
-          <>
-            <p className="text-secondary m-0 px-[24px] text-base">
+          <div className="px-5">
+            <p className="text-secondary m-0 px-[4px] text-base">
               {trans(keys.header.sub)}
             </p>
             <div
               onFocus={handleFocus}
               onBlur={handleBlur}
               className="flex justify-center mb-[10px] w-full mt-[10px]">
-              <Input
-                inputRef={searchFieldRef}
-                classNames="!w-[552px]"
-                id="searchItems"
-                variant="outlined"
-                placeholder={trans(keys.search)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <RiSearchLine />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={debounce((e) => {
-                  handleSearchInventoryType(
-                    undefined,
-                    e.target.value,
-                    undefined,
-                  )
-                }, 1000)}
-                type={'text'}
-                name="searchItems"
-                size="small"
-              />
+              {!isEdit && (
+                <Input
+                  inputRef={searchFieldRef}
+                  classNames=""
+                  id="searchItems"
+                  variant="outlined"
+                  placeholder={trans(keys.search)}
+                  inputLabel={{
+                    classNames: '!w-full',
+                    label: '',
+                    required: false,
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <RiSearchLine />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={debounce((e) => {
+                    handleSearchInventoryType(
+                      undefined,
+                      e.target.value,
+                      undefined,
+                    )
+                  }, 1000)}
+                  type={'text'}
+                  name="searchItems"
+                  size="small"
+                />
+              )}
             </div>
-          </>
+          </div>
         )
       }}
       contentRender={() => {
@@ -108,6 +115,7 @@ export const DialogType = ({
               inventoriesTypeData={inventoriesTypeData}
               deleteTypeHandle={deleteTypeHandle}
               updateTypeHandle={updateTypeHandle}
+              setIsEdit={setIsEdit}
             />
           </>
         )

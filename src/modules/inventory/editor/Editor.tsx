@@ -54,9 +54,9 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
   }
   return (
     <BlockUi tag="div" blocking={false}>
-      <div className="w-full mainBg h-screen">
+      <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
         <div className="p-[15px]">
-          <div className="bg-white m-0 rounded-lg p-[35px]">
+          <div className="bg-white m-0 rounded-lg lg:p-[35px] lg:min-h-[calc(100vh-63px)] min-h-[calc(100vh-56px)]">
             <div className="mb-[0px] h-full">
               <div className="p-4">
                 <div className="flex">
@@ -90,7 +90,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                     message={trans(keyEditor.warning.text)}
                   />
                 )}
-                <div className="md:grid gap-4 md:grid-cols-2 mt-[20px]">
+                <div className="lg:grid gap-4 lg:grid-cols-2 mt-[20px]">
                   <div className="w-[100%]">
                     <div className="">
                       <p className="text-xl m-0 text-primary">
@@ -237,8 +237,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       </p>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
-                          <div className="grid grid-cols-12 gap-[10px]">
-                            <div className="col-span-4 p-2">
+                          <div className="grid lg:grid-cols-12 gap-[10px]">
+                            <div className="lg:col-span-4 p-2">
                               <InputForm
                                 // required
                                 control={control}
@@ -260,7 +260,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 disabled={disabled}
                               />
                             </div>
-                            <div className="col-span-8 p-2">
+                            <div className="lg:col-span-8 p-2">
                               <InputForm
                                 // required
                                 control={control}
@@ -284,7 +284,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               />
                             </div>
                           </div>
-                          <div className="p-2">
+                          <div className="p-2 lg:max-w-[250px]">
                             <h5 className="text-primary font-medium">
                               {trans(keyEditor.type.inventory.text)}
                             </h5>
@@ -317,7 +317,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                     </div>
                   </div>
                   <div className="w-[100%]">
-                    <div className="">
+                    <div className="mt-[15px] lg:mt-0">
                       <p className="text-xl m-0 text-primary">
                         {trans(keyEditor.type.shipping.label)}
                       </p>
@@ -356,7 +356,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                             {trans(keyEditor.type.shipping.text)}
                           </h5>
                           <div className="p-2">
-                            <div className="grid grid-cols-3 gap-[10px]">
+                            <div className="grid lg:grid-cols-3 gap-[10px]">
                               <InputForm
                                 // required
                                 control={control}
@@ -450,7 +450,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="p-2">
-                            <div className="grid grid-cols-2 gap-[15px]">
+                            <div className="grid lg:grid-cols-2 gap-[15px]">
                               <InputForm
                                 // required
                                 control={control}
@@ -518,7 +518,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                         <Card variant="outlined" sx={{ marginTop: '15px' }}>
                           <CardContent>
                             <div className="p-2">
-                              <div className="grid grid-cols-2 gap-[15px]">
+                              <div className="grid lg:grid-cols-2 gap-[15px]">
                                 <InputForm
                                   control={control}
                                   classNames=""

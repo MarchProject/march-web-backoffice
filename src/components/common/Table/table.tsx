@@ -8,7 +8,7 @@ import {
   GridRowSelectionModel,
   useGridApiRef,
 } from '@mui/x-data-grid'
-import { Pagination } from '@mui/material'
+import { Pagination, TablePagination } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { useResize } from '@/core/utils/hook/resizeHook'
@@ -48,17 +48,20 @@ export default function DataTableMarch({
 }: DataTableMarchProps) {
   const apiRef = useGridApiRef()
   const { t: trans }: any = useTranslation()
+
   const CustomPagination = () => {
     return (
       <Pagination
+        size="small"
         color="primary"
         sx={{
           '& .Mui-selected': {
             color: 'white !important',
           },
         }}
-        style={{ margin: 'auto' }}
+        // style={{ margin: 'auto' }}
         count={pageCount}
+        siblingCount={0}
         page={page}
         onChange={(_, value) => {
           setPage(value)
@@ -71,20 +74,31 @@ export default function DataTableMarch({
     const offset = page * limit - limit || 0
     return (
       <GridFooterContainer>
-        <div className="flex justify-between w-full">
-          <div className="flex w-[220px]">
-            {totalRow > 0 && (
-              <h5 className="text-secondary ml-4 font-medium">
-                {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
-                  offset + limit
-                } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
-                  tkeys.table.footer.results,
-                )}`}
-              </h5>
-            )}
+        <div className="grid grid-cols-3 w-full">
+          <div className="">
+            <div className="lg:flex hidden">
+              {totalRow > 0 && (
+                <h5 className="text-secondary ml-4 font-medium">
+                  {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
+                    offset + limit
+                  } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
+                    tkeys.table.footer.results,
+                  )}`}
+                </h5>
+              )}
+            </div>
+            <div className="lg:hidden flex justify-center items-center text-center w-full h-full">
+              {totalRow > 0 && (
+                <p className="text-secondary m-0 font-medium text-xs">
+                  {`${offset + 1} - ${offset + limit} / ${totalRow}`}
+                </p>
+              )}
+            </div>
           </div>
-          <CustomPagination />
-          <div className="pr-4 flex w-[220px] justify-end">
+          <div className="col-span-2 lg:col-span-1 lg:my-auto lg:mx-auto flex lg:block justify-end px-[5px]">
+            <CustomPagination />
+          </div>
+          <div className="pr-4 justify-end items-center lg:flex hidden">
             <GridPagination
               SelectProps={{
                 MenuProps: {
@@ -139,7 +153,7 @@ export default function DataTableMarch({
                 //MuiPaper-root
               }}
               labelDisplayedRows={() => (
-                <div className="text-secondary text-xs font-medium">
+                <div className="text-secondary text-xs font-medium lg:block hidden">
                   {trans(tkeys.table.footer.entries)}
                 </div>
               )}
@@ -196,7 +210,7 @@ export default function DataTableMarch({
         }}
         onPaginationModelChange={onPaginationModelChange}
         pageSizeOptions={[15, 30]}
-        checkboxSelection
+        // checkboxSelection
         disableRowSelectionOnClick
         disableColumnMenu
         disableColumnSelector

@@ -42,9 +42,9 @@ const ContainerInventory = () => {
     trash: { setTriggerTrash, trashData },
   } = useInventoryController()
   return (
-    <div className="w-full mainBg h-screen" style={{ height: '100%' }}>
+    <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
       <div className="p-[15px]">
-        <div className="bg-white m-0 rounded-lg " style={{ height: '100%' }}>
+        <div className="bg-white m-0 rounded-lg lg:min-h-[calc(100vh-63px)] min-h-[calc(100vh-56px)]">
           <div className="mb-[0px] h-full">
             <div className="p-4">
               <InventoryManagement

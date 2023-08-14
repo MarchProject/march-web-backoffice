@@ -36,7 +36,7 @@ export const columns = ({
       field: 'name',
       headerName: trans(keys.name),
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       renderCell: (params) => {
         const name = params.row?.name
         return (
@@ -50,7 +50,7 @@ export const columns = ({
       field: 'inventoryType',
       headerName: trans(keys.type),
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       renderCell: (params) => {
         const type = params.row?.inventoryType?.name
         return (
@@ -64,7 +64,7 @@ export const columns = ({
       field: 'brandType',
       headerName: trans(keys.brand),
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       renderCell: (params) => {
         const brand = params.row?.brandType?.name
         return (
@@ -78,7 +78,7 @@ export const columns = ({
       field: 'amount',
       headerName: trans(keys.amount),
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       align: 'center',
       headerAlign: 'center',
     },
@@ -87,7 +87,7 @@ export const columns = ({
       headerName: trans(keys.sold),
       type: 'number',
       flex: 1,
-      minWidth: 100,
+      minWidth: 120,
       align: 'center',
       headerAlign: 'center',
     },
@@ -96,7 +96,7 @@ export const columns = ({
       headerName: trans(keys.price),
       type: 'number',
       flex: 1,
-      minWidth: 100,
+      minWidth: 120,
       align: 'center',
       headerAlign: 'center',
     },
@@ -105,7 +105,7 @@ export const columns = ({
       headerName: trans(keys.expiryDate),
       sortable: false,
       flex: 1,
-      minWidth: 120,
+      minWidth: 150,
       align: 'center',
       headerAlign: 'center',
     },
@@ -115,7 +115,7 @@ export const columns = ({
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => {
