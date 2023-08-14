@@ -59,6 +59,12 @@ const GeneralTabUser = ({ generalProps }) => {
       mode: 'Management',
       details: [{ name: 'Customer', package: '0/100' }],
     },
+    {
+      id: 5,
+      name: 'Customer',
+      mode: 'Management',
+      details: [{ name: 'Customer', package: '0/100' }],
+    },
   ]
 
   const IconServices = ({ value }) => {
@@ -105,7 +111,7 @@ const GeneralTabUser = ({ generalProps }) => {
             </div>
           </div>
           <div className="flex flex-col gap-[10px] my-auto w-full mt-[15px]">
-            <div className="grid grid-cols-2">
+            <div className="lg:grid lg:grid-cols-2">
               <div>{details}</div>
             </div>
           </div>
@@ -187,15 +193,15 @@ const GeneralTabUser = ({ generalProps }) => {
           Starter
         </h3>
       </div>
-      <div className="grid grid-cols-2 gap-4 ">
+      <div className="lg:grid lg:grid-cols-2 gap-4 overflow-y-hidden">
         <div className="px-[15px] ">
           <h3 className="font-medium text-primary m-0">Services</h3>
-          <div className="overflow-y-auto max-h-[450px]">
+          <div className="lg:overflow-y-auto lg:h-auto lg:max-h-[calc(100vh-350px)]">
             <List className="!px-[10px]">{ListItems()}</List>
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-full mt-[15px] lg:mt-0">
           <div className="flex gap-[15px] justify-between items-center">
             <h3 className="font-medium text-primary m-0">Profile</h3>
             <TbSettingsCheck
@@ -203,7 +209,7 @@ const GeneralTabUser = ({ generalProps }) => {
               className="bg-violet-700 text-white rounded-full p-[2px] cursor-pointer"
             />
           </div>
-          <List className="">{ListProfiles()}</List>
+          <List className="!px-[10px]">{ListProfiles()}</List>
         </div>
       </div>
     </div>

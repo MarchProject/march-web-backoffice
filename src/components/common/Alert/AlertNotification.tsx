@@ -11,20 +11,22 @@ const AlertNoti = ({
   title,
 }: any) => {
   return (
-    <Snackbar
-      open={open}
-      autoHideDuration={duration}
-      style={{ width: '100%', maxWidth: '400px' }}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+    <div className="flex justify-center">
+      <Snackbar
+        open={open}
+        autoHideDuration={duration}
+        onClose={onClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert
-          style={{ width: '100%', borderRadius: '15px' }}
+          className="xl:w-[400px] w-[270px] rounded-xl"
+          // style={{ width: '100%', borderRadius: '15px' }}
           severity={severity}
           onClose={onClick}>
           <AlertTitle>{title}</AlertTitle>
           {message}
         </Alert>
-    </Snackbar>
+      </Snackbar>
+    </div>
   )
 }
 

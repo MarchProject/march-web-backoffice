@@ -23,7 +23,7 @@ import { FcOk } from 'react-icons/fc'
 import { useTranslation } from 'react-i18next'
 import { MdLanguage } from 'react-icons/md'
 import { LiaUserShieldSolid } from 'react-icons/lia'
-
+import AppBarMobile from './AppBarMobile'
 
 const TabMenu = {
   'MENU:HOME': { id: 0, label: 'Home', value: 'home' },
@@ -33,13 +33,21 @@ const TabMenu = {
   'MENU:DASHBOARD': { id: 4, label: 'Dashboard', value: 'dashboard' },
   'MENU:USER': { id: 5, label: 'User', value: 'user' },
 }
+export interface ITabMenu {
+  id: number
+  label: string
+  value: string
+}
 
 function Layout({ children }) {
   const { t: trans, i18n }: any = useTranslation()
   const [tab, setTab] = useState(0)
   const [hide, setHide] = useState(false)
+  const username = getUsername()
+  const basePic = `${process.env.basePath}/man.png`
+  const urlPic = getPicture() || basePic
 
-  const [tabMenu, setTabMenu] = useState([
+  const [tabMenu, setTabMenu] = useState<ITabMenu[]>([
     { id: 0, label: 'Home', value: 'home' },
   ])
 
@@ -180,10 +188,6 @@ function Layout({ children }) {
     return test
   }
   const UserUI = () => {
-    const username = getUsername()
-    const basePic = `${process.env.basePath}/man.png`
-    const urlPic = getPicture() || basePic
-
     return (
       <div
         className={
@@ -236,89 +240,105 @@ function Layout({ children }) {
     backgroundColor: '#F5F3F7',
   }
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <div style={leftSide}>
-        <div
-          className={'flex flex-col justify-between bg-white ' + 'h-full'}
-          onMouseEnter={() => setHide(false)}
-          onMouseLeave={() => setHide(true)}
-          style={{
-            borderRight: '1px solid #CCCCCC',
-            overflowX: 'hidden',
-            transition: 'width 0.7s',
-          }}>
-          <div>
-            <div className="flex justify-between py-[20px]">
-              <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
-                <FcWorkflow className="my-auto" style={{ fontSize: '30px' }} />
-                <h3
-                  className={
-                    'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
-                    (!hide ? 'block' : 'hidden')
-                  }
-                  style={{
-                    transition: 'opacity 0.7s',
-                  }}>
-                  {shopName}
-                </h3>
-                <FcOk
-                  className={'my-auto ml-[5px] ' + (!hide ? 'block' : 'hidden')}
-                />
-                <div
-                  className={
-                    'flex cursor-pointer ' + (!hide ? 'block' : 'hidden')
-                  }
-                  onClick={() => {
-                    setLanguage(lg === 'th' ? 'en' : 'th')
-                    i18n.changeLanguage(lg === 'th' ? 'en' : 'th')
-                  }}>
-                  <MdLanguage
-                    color="rgb(135 135 135)"
+    <>
+      <div style={{ height: '100vh' }} className="lg:flex hidden">
+        <div style={leftSide}>
+          <div
+            className={'flex flex-col justify-between bg-white ' + 'h-full'}
+            onMouseEnter={() => setHide(false)}
+            onMouseLeave={() => setHide(true)}
+            style={{
+              borderRight: '1px solid #CCCCCC',
+              overflowX: 'hidden',
+              transition: 'width 0.7s',
+            }}>
+            <div>
+              <div className="flex justify-between py-[20px]">
+                <div className={'flex ' + (!hide ? 'px-[20px]' : 'mx-auto ')}>
+                  <FcWorkflow
+                    className="my-auto"
+                    style={{ fontSize: '30px' }}
+                  />
+                  <h3
                     className={
-                      'my-auto ml-[15px] ' + (!hide ? 'block' : 'hidden')
+                      'text-left text-primary capitalize font-normal ml-[5px] my-auto ' +
+                      (!hide ? 'block' : 'hidden')
+                    }
+                    style={{
+                      transition: 'opacity 0.7s',
+                    }}>
+                    {shopName}
+                  </h3>
+                  <FcOk
+                    className={
+                      'my-auto ml-[5px] ' + (!hide ? 'block' : 'hidden')
                     }
                   />
-                  <p className="text-xs font-semibold text-secondary ml-[2px]">
-                    {lg.toUpperCase()}
-                  </p>
+                  <div
+                    className={
+                      'flex cursor-pointer ' + (!hide ? 'block' : 'hidden')
+                    }
+                    onClick={() => {
+                      setLanguage(lg === 'th' ? 'en' : 'th')
+                      i18n.changeLanguage(lg === 'th' ? 'en' : 'th')
+                    }}>
+                    <MdLanguage
+                      color="rgb(135 135 135)"
+                      className={
+                        'my-auto ml-[15px] ' + (!hide ? 'block' : 'hidden')
+                      }
+                    />
+                    <p className="text-xs font-semibold text-secondary ml-[2px]">
+                      {lg.toUpperCase()}
+                    </p>
+                  </div>
                 </div>
               </div>
+              <Tabs
+                className=""
+                orientation="vertical"
+                variant="scrollable"
+                value={tab}
+                aria-label="Vertical tabs example"
+                sx={{
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  width: '100%',
+                  '& .MuiTab-labelIcon': {
+                    minWidth: 0,
+                  },
+                }}>
+                {TabM(false)}
+              </Tabs>
             </div>
-            <Tabs
-              className=""
-              orientation="vertical"
-              variant="scrollable"
-              value={tab}
-              aria-label="Vertical tabs example"
-              sx={{
-                borderRight: 1,
-                borderColor: 'divider',
-                width: '100%',
-                '& .MuiTab-labelIcon': {
-                  minWidth: 0,
-                },
-              }}>
-              {TabM(false)}
-            </Tabs>
-          </div>
-          <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
-            <UserUI />
+            <div className="pb-[10px] w-[100%] max-w-[260px] cursor-pointer">
+              <UserUI />
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        style={rightSide}
-        onMouseEnter={() => setHide(true)}
-        // onMouseLeave={() => setHide(false)}
-      >
         <div
-          className={'mainBg overflow-y-auto'}
-          // style={{ overflowY: 'scroll' }}
+          style={rightSide}
+          onMouseEnter={() => setHide(true)}
+          // onMouseLeave={() => setHide(false)}
         >
-          {children}
+          <div
+            className={'mainBg overflow-y-auto'}
+            // style={{ overflowY: 'scroll' }}
+          >
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+      <div style={{ height: '100vh' }} className="block lg:hidden">
+        <AppBarMobile
+          tabMenu={tabMenu}
+          handlePath={handlePath}
+          tab={tab}
+          profiles={{ pic: urlPic, userName: username }}
+        />
+        {children}
+      </div>
+    </>
   )
 }
 

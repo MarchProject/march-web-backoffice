@@ -42,8 +42,10 @@ const UserMenu = ({ userTabs, handleValueTab, valueTab }: IUserMenuProps) => {
           },
           '& .MuiTabs-scroller': {
             marginInline: '4px',
+            overflow: 'auto !important',
           },
         }}
+        // variant="fullWidth"
         value={valueTab}
         TabIndicatorProps={{
           style: {
