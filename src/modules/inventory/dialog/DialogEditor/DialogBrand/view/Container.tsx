@@ -18,6 +18,7 @@ interface IBrandViewMain {
   deleteBrandHandle: (id: string) => void
   updateBrandHandle: (data: any) => void
   setIsEdit: (data: boolean) => void
+  isEditPage: boolean
 }
 
 export const BrandViewMain = ({
@@ -25,6 +26,7 @@ export const BrandViewMain = ({
   deleteBrandHandle,
   updateBrandHandle,
   setIsEdit,
+  isEditPage,
 }: IBrandViewMain) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.brand
@@ -39,9 +41,15 @@ export const BrandViewMain = ({
   }, [idBrand, inventoriesBrandData])
 
   useEffect(() => {
+    if (isEditPage) {
+      setValue('create')
+    }
+  }, [isEditPage])
+
+  useEffect(() => {
     if (value !== 'view') {
       setIsEdit(true)
-    }else{
+    } else {
       setIsEdit(false)
     }
   }, [setIsEdit, value])
@@ -63,7 +71,11 @@ export const BrandViewMain = ({
           onClick={() => {
             setValue(n.key)
           }}
-          disabled={n.key === 'update' && value !== 'update'}
+          disabled={
+            !isEditPage
+              ? n.key === 'update' && value !== 'update'
+              : n.key !== 'create'
+          }
           value={n.key}
         />
       )
@@ -88,6 +100,7 @@ export const BrandViewMain = ({
           <BrandObjCreate
             updateBrandHandle={updateBrandHandle}
             setValueMode={setValue}
+            isEditPage={isEditPage}
           />
         )
       }

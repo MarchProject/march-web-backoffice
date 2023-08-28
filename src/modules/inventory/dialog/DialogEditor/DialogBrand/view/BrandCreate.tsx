@@ -12,11 +12,13 @@ interface IBrandObjUpdate {
     description?: string
   }) => void
   setValueMode: (value: string) => void
+  isEditPage: boolean
 }
 
 export const BrandObjCreate = ({
   setValueMode,
   updateBrandHandle,
+  isEditPage,
 }: IBrandObjUpdate) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.brand.mode.create
@@ -72,15 +74,17 @@ export const BrandObjCreate = ({
           </div>
         </div>
         <div className="flex justify-end gap-[10px] my[10px]">
-          <ButtonForm
-            classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-            label={trans(tkeys.button.back)}
-            color={'secondary'}
-            variant="outlined"
-            onClick={() => {
-              setValueMode('view')
-            }}
-          />
+          {!isEditPage && (
+            <ButtonForm
+              classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
+              label={trans(tkeys.button.back)}
+              color={'secondary'}
+              variant="outlined"
+              onClick={() => {
+                setValueMode('view')
+              }}
+            />
+          )}
           <ButtonForm
             classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
             label={trans(tkeys.button.create)}
@@ -93,7 +97,7 @@ export const BrandObjCreate = ({
                 description: inventoryBrandDataValue?.description,
                 name: inventoryBrandDataValue?.name,
               })
-              setValueMode('view')
+              setValueMode(!isEditPage ? 'view' : 'create')
             }}
           />
         </div>

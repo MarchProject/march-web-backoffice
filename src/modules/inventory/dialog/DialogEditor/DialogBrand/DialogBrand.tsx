@@ -25,6 +25,7 @@ interface IDialogBrandProps {
     value: string,
     reason: AutocompleteInputChangeReason,
   ) => void
+  isEditPage?: boolean
 }
 
 export const DialogBrand = ({
@@ -34,6 +35,7 @@ export const DialogBrand = ({
   deleteBrandHandle,
   updateBrandHandle,
   handleSearchInventoryBrand,
+  isEditPage = false,
 }: IDialogBrandProps) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.brand
@@ -119,6 +121,7 @@ export const DialogBrand = ({
               deleteBrandHandle={deleteBrandHandle}
               updateBrandHandle={updateBrandHandle}
               setIsEdit={setIsEdit}
+              isEditPage={isEditPage}
             />
           </>
         )

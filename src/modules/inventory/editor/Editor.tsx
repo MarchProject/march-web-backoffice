@@ -17,6 +17,8 @@ import AlertToast from '@/components/common/Alert/alert'
 import { dateFormat } from '@/core/common'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import { DialogType } from '../dialog/DialogEditor/DialogType/DialogType'
+import { DialogBrand } from '../dialog/DialogEditor/DialogBrand/DialogBrand'
 interface IEditorInventoryPage {
   mode: EnumModeEditorPage
 }
@@ -39,6 +41,10 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
     inventoriesType: { inventoriesTypeData, inventoriesTypeLoading },
     inventoriesBrand: { inventoriesBrandData, inventoriesBrandLoading },
     inventory: { deleteInventoryHandle },
+    dialogType: { openDialogType, handleCloseType, handleOpenType },
+    upsertTypeHandle: { updateTypeHandle },
+    dialogBrand: { openDialogBrand, handleCloseBrand, handleOpenBrand },
+    upsertBrandHandle: { updateBrandHandle },
   } = useEditorInventoryController({ idInventory })
 
   const styleIconPageMarch: React.CSSProperties = {
@@ -54,6 +60,24 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
   }
   return (
     <BlockUi tag="div" blocking={false}>
+      <DialogType
+        open={openDialogType}
+        handleClose={handleCloseType}
+        inventoriesTypeData={inventoriesTypeData}
+        deleteTypeHandle={() => {}}
+        updateTypeHandle={updateTypeHandle}
+        handleSearchInventoryType={() => {}}
+        isEditPage={true}
+      />
+      <DialogBrand
+        open={openDialogBrand}
+        handleClose={handleCloseBrand}
+        inventoriesBrandData={inventoriesBrandData}
+        deleteBrandHandle={() => {}}
+        updateBrandHandle={updateBrandHandle}
+        handleSearchInventoryBrand={() => {}}
+        isEditPage={true}
+      />
       <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
         <div className="p-[15px]">
           <div className="bg-white m-0 rounded-lg lg:p-[35px] lg:min-h-[calc(100vh-63px)] min-h-[calc(100vh-56px)]">
@@ -169,9 +193,31 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                       </Card>
                     </div>
                     <div className="mt-[15px]">
-                      <p className="text-xl m-0 text-primary">
-                        {trans(keyEditor.type.category.label)}
-                      </p>
+                      <div className="flex justify-between h-[50px]">
+                        <p className="text-xl m-0 text-primary">
+                          {trans(keyEditor.type.category.label)}
+                        </p>
+                        <div className="flex gap-[15px]">
+                          <ButtonForm
+                            classNames="!w-[150px] !normal-case"
+                            label={`${trans(
+                              tkeys.Inventory.MainPage.menu.type,
+                            )} +`}
+                            color={'primary'}
+                            variant="outlined"
+                            onClick={handleOpenType}
+                          />
+                          <ButtonForm
+                            classNames="!w-[150px] !normal-case"
+                            label={`${trans(
+                              tkeys.Inventory.MainPage.menu.brand,
+                            )} +`}
+                            color={'primary'}
+                            variant="outlined"
+                            onClick={handleOpenBrand}
+                          />
+                        </div>
+                      </div>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
                         <CardContent>
                           <div className="p-2">

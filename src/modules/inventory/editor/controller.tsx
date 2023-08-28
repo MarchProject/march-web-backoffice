@@ -29,11 +29,31 @@ import {
   notificationEditorSuccessProp,
   notificationEditorValidErrorProp,
 } from '@/core/notification'
+import {
+  useHandleDialogBrand,
+  useHandleDialogType,
+  useUpdateBransHandle,
+  useUpdateTypeHandle,
+} from '../dialog/DialogEditor/controller'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
   const [triggerType, setTriggerType] = useState(true)
   const [triggerBrand, setTriggerBrand] = useState(true)
+
+  const triggerTypeCB = useCallback(() => {
+    setTriggerType((e: boolean) => !e)
+  }, [setTriggerType])
+
+  const triggerBrandCB = useCallback(() => {
+    setTriggerBrand((e: boolean) => !e)
+  }, [setTriggerBrand])
+
+  const { openDialogType, handleCloseType, handleOpenType } =
+    useHandleDialogType()
+
+  const { openDialogBrand, handleCloseBrand, handleOpenBrand } =
+    useHandleDialogBrand()
   const {
     register,
     errors,
@@ -69,6 +89,27 @@ export const useEditorInventoryController = ({ idInventory }) => {
     notification,
     id: idInventory,
   })
+
+  const {
+    upsertInventoryType,
+    upsertInventoryTypeData,
+    upsertInventoryTypeLoading,
+    updateTypeHandle,
+  } = useUpdateTypeHandle({
+    notification,
+    triggerType: triggerTypeCB,
+  })
+
+  const {
+    upsertBrandType,
+    updateBrandHandle,
+    upsertInventoryBrandLoading,
+    upsertInventoryBrandData,
+  } = useUpdateBransHandle({
+    notification,
+    triggerBrand: triggerBrandCB,
+  })
+
   return {
     formHandler: {
       register,
@@ -95,8 +136,26 @@ export const useEditorInventoryController = ({ idInventory }) => {
       inventory,
       deleteInventoryHandle,
     },
+    upsertTypeHandle: {
+      upsertInventoryType,
+      updateTypeHandle,
+      upsertInventoryTypeData,
+      upsertInventoryTypeLoading,
+    },
+    upsertBrandHandle: {
+      upsertBrandType,
+      updateBrandHandle,
+      upsertInventoryBrandLoading,
+      upsertInventoryBrandData,
+    },
     setTriggerType: setTriggerType,
     setTriggerBrand: setTriggerBrand,
+    dialogType: { openDialogType, handleCloseType, handleOpenType },
+    dialogBrand: {
+      openDialogBrand,
+      handleCloseBrand,
+      handleOpenBrand,
+    },
   }
 }
 

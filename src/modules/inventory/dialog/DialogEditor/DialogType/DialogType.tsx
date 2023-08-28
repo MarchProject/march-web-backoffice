@@ -23,6 +23,7 @@ interface IDialogTypeProps {
     value: string,
     reason: AutocompleteInputChangeReason,
   ) => void
+  isEditPage?: boolean
 }
 
 export const DialogType = ({
@@ -32,6 +33,7 @@ export const DialogType = ({
   deleteTypeHandle,
   updateTypeHandle,
   handleSearchInventoryType,
+  isEditPage = false,
 }: IDialogTypeProps) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.type
@@ -116,6 +118,7 @@ export const DialogType = ({
               deleteTypeHandle={deleteTypeHandle}
               updateTypeHandle={updateTypeHandle}
               setIsEdit={setIsEdit}
+              isEditPage={isEditPage}
             />
           </>
         )

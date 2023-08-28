@@ -189,7 +189,7 @@ const useDeleteTypeHandle = ({ notification, triggerType, triggerTrash }) => {
   }
 }
 
-const useUpdateTypeHandle = ({ notification, triggerType }) => {
+export const useUpdateTypeHandle = ({ notification, triggerType }) => {
   const [flagCreate, setFlagCreate] = useState(true)
 
   const {
@@ -279,7 +279,7 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, triggerTrash }) => {
   }
 }
 
-const useUpdateBransHandle = ({ notification, triggerBrand }) => {
+export const useUpdateBransHandle = ({ notification, triggerBrand }) => {
   const [flagCreate, setFlagCreate] = useState(true)
 
   const {
@@ -399,7 +399,7 @@ const useHandleDialogTrash = () => {
   }
 }
 
-const useHandleDialogType = () => {
+export const useHandleDialogType = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(true)
@@ -415,7 +415,7 @@ const useHandleDialogType = () => {
   }
 }
 
-const useHandleDialogBrand = () => {
+export const useHandleDialogBrand = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(true)

@@ -18,6 +18,7 @@ interface ITypeViewMain {
   deleteTypeHandle: (id: string) => void
   updateTypeHandle: (data: any) => void
   setIsEdit: (data: boolean) => void
+  isEditPage: boolean
 }
 
 export const TypeViewMain = ({
@@ -25,6 +26,7 @@ export const TypeViewMain = ({
   deleteTypeHandle,
   updateTypeHandle,
   setIsEdit,
+  isEditPage,
 }: ITypeViewMain) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.type
@@ -32,6 +34,12 @@ export const TypeViewMain = ({
   const [idType, setIdType] = useState('')
   const [inventoryTypeData, setInventoryTypeData] =
     useState<InventoryType>(null)
+
+  useEffect(() => {
+    if (isEditPage) {
+      setValue('create')
+    }
+  }, [isEditPage])
 
   useEffect(() => {
     if (idType) {
@@ -46,13 +54,14 @@ export const TypeViewMain = ({
       setIsEdit(false)
     }
   }, [setIsEdit, value])
+
   // useEffect(() => {
   //   if (value === 'view' || value === 'create') {
   //     setInventoryTypeData(null)
   //   }
   // }, [value])
 
-  const TabType = (typeTab, value) => {
+  const TabType = (typeTab, value, isEditPage) => {
     const Tabs = typeTab.map((n) => {
       const labelMode = n.Label.toString().toLowerCase()
       return (
@@ -64,7 +73,11 @@ export const TypeViewMain = ({
           onClick={() => {
             setValue(n.key)
           }}
-          disabled={n.key === 'update' && value !== 'update'}
+          disabled={
+            !isEditPage
+              ? n.key === 'update' && value !== 'update'
+              : n.key !== 'create'
+          }
           value={n.key}
         />
       )
@@ -87,6 +100,7 @@ export const TypeViewMain = ({
       case 'create': {
         return (
           <TypeObjCreate
+            isEditPage={isEditPage}
             updateTypeHandle={updateTypeHandle}
             setValueMode={setValue}
           />
@@ -121,7 +135,7 @@ export const TypeViewMain = ({
             borderRadius: '12px',
           },
         }}>
-        {TabType(typeTab, value)}
+        {TabType(typeTab, value, isEditPage)}
       </Tabs>
       {ModeType(value, inventoriesTypeData, setValue)}
     </div>
