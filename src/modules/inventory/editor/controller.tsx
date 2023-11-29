@@ -1,26 +1,18 @@
 import { useNotificationContext } from '@/context/notification'
-import { SubmitHandler, UseFormReset, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { IInventoryForm } from './interface'
+import { IInventoryForm, IUseQueryHandlerProps } from './interface'
 import { schema } from './schema'
 import { useQueryInventoryBrand, useQueryInventoryType } from '../controller'
-import { useCallback, useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useCallback, useState } from 'react'
 import {
   DeleteInventoryData,
   DeleteTypeDataVariables,
-  UpsertInventoryTypeData,
-  UpsertInventoryTypeVariables,
   deleteInventoryMutation,
-  getInventoryQuery,
-  upsertInventoryMutation,
 } from '@/core/gql/inventory/inventory'
 import { tranFromUpsertInventoryDto } from '../dto/upsert.dto'
 import router from 'next/router'
 import { inventoryRoute } from '@/router/inventory'
-import { plainToInstance } from 'class-transformer'
-import { Inventory } from '@/core/model/inventory'
-import { transfromInventory } from '../dto/inventory.dto'
 import { useMutationData } from '@/core/adapter/hook/useMutationData'
 import { MutateKey } from '@/core/adapter/interface'
 import {
@@ -35,6 +27,8 @@ import {
   useUpdateBransHandle,
   useUpdateTypeHandle,
 } from '../dialog/DialogEditor/controller'
+import { useQueryInventory } from '../fetcher/useQueryInventory'
+import { useUpsertInventory } from '../fetcher/useUpsertInventory'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
@@ -63,12 +57,19 @@ export const useEditorInventoryController = ({ idInventory }) => {
     setError,
     clearErrors,
     setValue,
-  }: any = useFormHandler()
+  } = useFormHandler()
 
+  const { inventory, mainLoading, upsertInventory } = useQueryHandler({
+    getInventoryProps: { reset, idInventory },
+    upsertInventoryProps: {
+      reset,
+      idInventory,
+    },
+  })
   const { onError, onSubmit: onSubmitCallback } = useSubmitForm({
     notification,
-    reset,
     idInventory,
+    upsertInventory: upsertInventory.upsertInventory,
   })
   const {
     inventoriesTypeData,
@@ -84,7 +85,6 @@ export const useEditorInventoryController = ({ idInventory }) => {
     handleSearchInventoryBrand,
   } = useQueryInventoryBrand(triggerBrand, notification)
 
-  const { inventory } = useQueryInventory(idInventory, reset)
   const { deleteInventoryHandle } = useDeleteInventory({
     notification,
     id: idInventory,
@@ -207,35 +207,6 @@ const useFormHandler = () => {
   }
 }
 
-const useQueryInventory = (
-  idInventory: string,
-  reset: UseFormReset<IInventoryForm>,
-) => {
-  const [inventory, setInventory] = useState<Inventory>(null)
-  if (idInventory) {
-    const { data, error } = useQuery(getInventoryQuery, {
-      variables: { id: idInventory },
-    })
-    useEffect(() => {
-      if (data?.getInventory) {
-        const _inventory = plainToInstance(Inventory, data.getInventory)
-        reset(transfromInventory(_inventory))
-        setInventory(_inventory)
-      }
-    }, [data, reset])
-
-    useEffect(() => {
-      if (error?.message === 'FORBIDDEN') {
-        router.push({ pathname: inventoryRoute.path })
-      }
-    }, [error])
-  }
-
-  return {
-    inventory,
-  }
-}
-
 const useDeleteInventory = ({ notification, id }) => {
   const { trigger: deleteInventory } = useMutationData<
     MutateKey.inventory,
@@ -265,34 +236,14 @@ const useDeleteInventory = ({ notification, id }) => {
   }
 }
 
-const useSubmitForm = ({ notification, reset, idInventory }) => {
-  const { trigger: upsertInventory } = useMutationData<
-    MutateKey.inventory,
-    UpsertInventoryTypeData,
-    UpsertInventoryTypeVariables
-  >(MutateKey.inventory, null, upsertInventoryMutation, {
-    onSuccess: () => {
-      notification(
-        notificationEditorSuccessProp(idInventory ? 'Update' : 'Create'),
-      )
-      reset()
-      router.push({
-        pathname: inventoryRoute.path,
-      })
-    },
-    onError: (error) => {
-      notification(
-        notificationEditorErrorProp(idInventory ? 'Update' : 'Create', error),
-      )
-    },
-    globalLoading: true,
-  })
-
+const useSubmitForm = ({ notification, idInventory, upsertInventory }) => {
   const onSubmit: SubmitHandler<IInventoryForm> = (data) => {
     try {
       const InventoryInput = tranFromUpsertInventoryDto(data, idInventory)
       upsertInventory({
-        ...InventoryInput,
+        variables: {
+          ...InventoryInput,
+        },
       })
     } catch (error) {
       notification(notificationEditorErrorProp('Server', error?.message))
@@ -305,5 +256,25 @@ const useSubmitForm = ({ notification, reset, idInventory }) => {
   return {
     onSubmit,
     onError,
+  }
+}
+
+const useQueryHandler = ({
+  getInventoryProps,
+  upsertInventoryProps,
+}: IUseQueryHandlerProps) => {
+  const { inventory, inventoryLoading } = useQueryInventory({
+    ...getInventoryProps,
+  })
+  const { upsertInventory, upsertInventoryLoading } = useUpsertInventory({
+    ...upsertInventoryProps,
+  })
+
+  return {
+    inventory: { inventory },
+    upsertInventory: {
+      upsertInventory,
+    },
+    mainLoading: inventoryLoading || upsertInventoryLoading,
   }
 }

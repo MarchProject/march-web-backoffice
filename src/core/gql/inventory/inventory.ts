@@ -42,37 +42,6 @@ export type GetInventoriesVariables = {
   }
 }
 
-export const getInventoryQuery = gql`
-  query getInventory($id: String) {
-    getInventory(id: $id) {
-      id
-      name
-      amount
-      sold
-      price
-      sku
-      size
-      favorite
-      priceMember
-      reorderLevel
-      inventoryType {
-        id
-        name
-      }
-      brandType {
-        id
-        name
-      }
-      description
-      expiryDate
-      createdBy
-      createdAt
-      updatedBy
-      updatedAt
-    }
-  }
-`
-
 export const getInventoriesQuery = gql`
   query getInventories($params: ParamsInventory!) {
     getInventories(params: $params) {
@@ -195,25 +164,6 @@ export type UpsertInventoryData = {
   expiryDate?: string
 }
 
-export type UpsertInventoryTypeVariables = {
-  input: UpsertInventoryData
-}
-
-export type UpsertInventoryTypeData = {
-  upsertInventory: UpsertInventoryTypes
-}
-
-export type UpsertInventoryTypes = {
-  id: string
-}
-
-export const upsertInventoryMutation = gql`
-  mutation upsertInventory($input: UpsertInventoryInput!) {
-    upsertInventory(input: $input) {
-      id
-    }
-  }
-`
 export const upsertInventoryTypeMutation = gql`
   mutation upsertInventoryType($input: UpsertInventoryTypeInput!) {
     upsertInventoryType(input: $input) {

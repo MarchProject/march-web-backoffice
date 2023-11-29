@@ -1,3 +1,6 @@
+import { IUseUpsertInventoryProps } from '../fetcher/useUpsertInventory'
+import { IUseQueryInventoryProps } from '../fetcher/useQueryInventory'
+
 interface InventoryType {
   id: string
   name: string
@@ -24,4 +27,9 @@ export interface IInventoryForm {
   height: string
   price: number
   memberPrice: number
+}
+
+export interface IUseQueryHandlerProps {
+  getInventoryProps: IUseQueryInventoryProps
+  upsertInventoryProps: IUseUpsertInventoryProps
 }
