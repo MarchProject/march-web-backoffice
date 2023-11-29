@@ -1,7 +1,6 @@
 import * as yup from 'yup'
 
 export const schema = yup.lazy((_formalue) => {
-  console.log({ _formalue })
   return yup.object({
     // id: yup.string().required('ID is required'),
     name: yup.string().nullable().required('Name is required'),
