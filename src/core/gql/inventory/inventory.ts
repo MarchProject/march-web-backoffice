@@ -107,41 +107,6 @@ export const getInventoriesTypeQuery = gql`
   }
 `
 
-export type GetInventoriesBrandData = {
-  getBrandTypes: GetInventoryBrand[]
-}
-
-export type GetInventoryBrand = {
-  id: string
-  name: string
-  description: string
-  createdBy: string
-  createdAt: string
-  updatedBy: string
-  updatedAt: string
-}
-export type GetInventoriesBrandVariables = {
-  params?: {
-    search?: string
-    limit?: number
-    offset?: number
-  }
-}
-
-export const getInventoriesBrandQuery = gql`
-  query getBrandTypes($params: ParamsInventoryBrand) {
-    getBrandTypes(params: $params) {
-      id
-      name
-      description
-      createdBy
-      createdAt
-      updatedBy
-      updatedAt
-    }
-  }
-`
-
 export type UpsertInventoryData = {
   id?: string
   name: string
@@ -164,20 +129,6 @@ export type UpsertInventoryData = {
   expiryDate?: string
 }
 
-export const upsertInventoryTypeMutation = gql`
-  mutation upsertInventoryType($input: UpsertInventoryTypeInput!) {
-    upsertInventoryType(input: $input) {
-      id
-    }
-  }
-`
-export const upsertBrandTypeMutation = gql`
-  mutation upsertBrandType($input: UpsertBrandTypeInput!) {
-    upsertBrandType(input: $input) {
-      id
-    }
-  }
-`
 export const deleteInventoryTypeMutation = gql`
   mutation deleteInventoryType($id: String!) {
     deleteInventoryType(id: $id) {
@@ -192,62 +143,6 @@ export const deleteBrandTypeMutation = gql`
     }
   }
 `
-export const deleteInventoryMutation = gql`
-  mutation deleteInventory($id: String!) {
-    deleteInventory(id: $id) {
-      id
-    }
-  }
-`
-export const favoriteInventoryMutation = gql`
-  mutation favoriteInventory($id: String!) {
-    favoriteInventory(id: $id) {
-      id
-    }
-  }
-`
-
-export type FavoriteInventoryVariables = {
-  id: string
-}
-
-export type FavoriteInventoryData = {
-  favoriteInventory: {
-    id?: string
-  }
-}
-
-export type DeleteInventoryData = {
-  deleteInventory: {
-    id?: string
-  }
-}
-
-export type DeleteTypeDataVariables = {
-  id: string
-}
-
-export type UpsertInventoryBrandTypeVariables = {
-  input: {
-    id?: string
-    name: string
-    description?: string
-    createdBy?: string
-  }
-}
-
-export type UpsertInventoryType = {
-  upsertInventoryType: {
-    id?: string
-  }
-}
-
-export type UpsertBrandType = {
-  upsertBrandType: {
-    id?: string
-  }
-}
-
 export type DeleteTypeData = {
   deleteInventoryType: {
     id?: string

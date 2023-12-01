@@ -3,32 +3,24 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IInventoryForm, IUseQueryHandlerProps } from './interface'
 import { schema } from './schema'
-import { useQueryInventoryBrand, useQueryInventoryType } from '../controller'
+import { useQueryInventoryType } from '../fetcher/useQueryInventoryType'
+import { useQueryInventoryBrand } from '../fetcher/useQueryInventoryBrand'
 import { useCallback, useState } from 'react'
-import {
-  DeleteInventoryData,
-  DeleteTypeDataVariables,
-  deleteInventoryMutation,
-} from '@/core/gql/inventory/inventory'
 import { tranFromUpsertInventoryDto } from '../dto/upsert.dto'
-import router from 'next/router'
-import { inventoryRoute } from '@/router/inventory'
-import { useMutationData } from '@/core/adapter/hook/useMutationData'
-import { MutateKey } from '@/core/adapter/interface'
 import {
-  notificationEditorDeleteErrorProp,
   notificationEditorErrorProp,
-  notificationEditorSuccessProp,
   notificationEditorValidErrorProp,
 } from '@/core/notification'
 import {
   useHandleDialogBrand,
   useHandleDialogType,
-  useUpdateBransHandle,
-  useUpdateTypeHandle,
 } from '../dialog/DialogEditor/controller'
+import { useUpsertBrandHandler } from '../fetcher/useUpsertBrand'
+import { useUpsertTypeHandle } from '../fetcher/useUpsertType'
 import { useQueryInventory } from '../fetcher/useQueryInventory'
 import { useUpsertInventory } from '../fetcher/useUpsertInventory'
+import { useDeleteInventory } from '../fetcher/useDeleteInventory'
+import { useLoadingHandler } from '@/core/utils/hook/useLoadingHook'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
@@ -48,6 +40,7 @@ export const useEditorInventoryController = ({ idInventory }) => {
 
   const { openDialogBrand, handleCloseBrand, handleOpenBrand } =
     useHandleDialogBrand()
+
   const {
     register,
     errors,
@@ -59,35 +52,40 @@ export const useEditorInventoryController = ({ idInventory }) => {
     setValue,
   } = useFormHandler()
 
-  const { inventory, mainLoading, upsertInventory } = useQueryHandler({
-    getInventoryProps: { reset, idInventory },
-    upsertInventoryProps: {
-      reset,
-      idInventory,
-    },
-  })
-  const { onError, onSubmit: onSubmitCallback } = useSubmitForm({
-    notification,
-    idInventory,
-    upsertInventory: upsertInventory.upsertInventory,
-  })
   const {
     inventoriesTypeData,
     inventoriesTypeDataError,
     inventoriesTypeLoading,
     handleSearchInventoryType,
-  } = useQueryInventoryType(triggerType, notification)
+  } = useQueryInventoryType({ trigger: triggerType })
 
   const {
     inventoriesBrandData,
     inventoriesBrandDataError,
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
-  } = useQueryInventoryBrand(triggerBrand, notification)
+  } = useQueryInventoryBrand({ trigger: triggerBrand })
 
-  const { deleteInventoryHandle } = useDeleteInventory({
+  const { inventory, mainLoading, upsertInventory, deleteInventory } =
+    useQueryHandler({
+      getInventoryProps: { reset, idInventory },
+      upsertInventoryProps: {
+        reset,
+        idInventory,
+      },
+      deleteInventoryProps: {
+        id: idInventory,
+      },
+    })
+
+  useLoadingHandler(
+    mainLoading || inventoriesBrandLoading || inventoriesTypeLoading,
+  )
+
+  const { onError, onSubmit: onSubmitCallback } = useSubmitForm({
     notification,
-    id: idInventory,
+    idInventory,
+    upsertInventory: upsertInventory.upsertInventory,
   })
 
   const {
@@ -95,8 +93,7 @@ export const useEditorInventoryController = ({ idInventory }) => {
     upsertInventoryTypeData,
     upsertInventoryTypeLoading,
     updateTypeHandle,
-  } = useUpdateTypeHandle({
-    notification,
+  } = useUpsertTypeHandle({
     triggerType: triggerTypeCB,
   })
 
@@ -105,8 +102,7 @@ export const useEditorInventoryController = ({ idInventory }) => {
     updateBrandHandle,
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
-  } = useUpdateBransHandle({
-    notification,
+  } = useUpsertBrandHandler({
     triggerBrand: triggerBrandCB,
   })
 
@@ -134,7 +130,7 @@ export const useEditorInventoryController = ({ idInventory }) => {
     },
     inventory: {
       inventory,
-      deleteInventoryHandle,
+      deleteInventoryHandle: deleteInventory.deleteInventoryHandle,
     },
     upsertTypeHandle: {
       upsertInventoryType,
@@ -204,36 +200,7 @@ const useFormHandler = () => {
     setError,
     clearErrors,
     setValue,
-  }
-}
-
-const useDeleteInventory = ({ notification, id }) => {
-  const { trigger: deleteInventory } = useMutationData<
-    MutateKey.inventory,
-    DeleteInventoryData,
-    DeleteTypeDataVariables
-  >(MutateKey.inventory, null, deleteInventoryMutation, {
-    onSuccess: () => {
-      notification(notificationEditorSuccessProp('Delete'))
-      router.push({
-        pathname: inventoryRoute.path,
-      })
-    },
-    onError: (error) => {
-      notification(notificationEditorDeleteErrorProp(error))
-    },
-    globalLoading: true,
-  })
-
-  const deleteInventoryHandle = useCallback(() => {
-    deleteInventory({
-      id: id,
-    })
-  }, [deleteInventory, id])
-
-  return {
-    deleteInventoryHandle,
-  }
+  } as any
 }
 
 const useSubmitForm = ({ notification, idInventory, upsertInventory }) => {
@@ -262,6 +229,7 @@ const useSubmitForm = ({ notification, idInventory, upsertInventory }) => {
 const useQueryHandler = ({
   getInventoryProps,
   upsertInventoryProps,
+  deleteInventoryProps,
 }: IUseQueryHandlerProps) => {
   const { inventory, inventoryLoading } = useQueryInventory({
     ...getInventoryProps,
@@ -269,12 +237,18 @@ const useQueryHandler = ({
   const { upsertInventory, upsertInventoryLoading } = useUpsertInventory({
     ...upsertInventoryProps,
   })
-
+  const { deleteInventoryHandle, deleteInventoryLoading } = useDeleteInventory({
+    ...deleteInventoryProps,
+  })
   return {
     inventory: { inventory },
     upsertInventory: {
       upsertInventory,
     },
-    mainLoading: inventoryLoading || upsertInventoryLoading,
+    deleteInventory: {
+      deleteInventoryHandle,
+    },
+    mainLoading:
+      inventoryLoading || upsertInventoryLoading || deleteInventoryLoading,
   }
 }

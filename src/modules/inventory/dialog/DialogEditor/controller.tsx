@@ -1,24 +1,17 @@
 import { useNotificationContext } from '@/context/notification'
 import {
-  DeleteTypeDataVariables,
   DeleteTypeData,
   deleteInventoryTypeMutation,
-  upsertInventoryTypeMutation,
-  UpsertInventoryType,
-  UpsertInventoryBrandTypeVariables,
-  upsertBrandTypeMutation,
-  UpsertBrandType,
   deleteBrandTypeMutation,
   DeleteBrandData,
 } from '@/core/gql/inventory/inventory'
+import { DeleteTypeDataVariables } from '@/core/gql/inventory/deleteInventoryMutation'
 import { errorMarch } from '@/core/utils/ErrorType'
 import { useCallback, useState } from 'react'
 import {
   notificationTypeUsedDeleteErrorProp,
   notificationDeleteErrorProp,
   notificationDeleteSuccessProp,
-  notificationUpdateErrorProp,
-  notificationUpdateSuccessProp,
   notificationTrashMutateErrorProp,
   notificationTrashMutateSuccessProp,
 } from '@/core/notification'
@@ -31,6 +24,8 @@ import {
   RecoveryHardDeletedVariable,
   recoveryHardDeletedMutation,
 } from '@/core/gql/inventory/inventoryTrash'
+import { useUpsertTypeHandle } from '../../fetcher/useUpsertType'
+import { useUpsertBrandHandler } from '../../fetcher/useUpsertBrand'
 
 export const useDialogController = ({
   setTriggerType,
@@ -71,8 +66,7 @@ export const useDialogController = ({
     upsertInventoryTypeData,
     upsertInventoryTypeLoading,
     updateTypeHandle,
-  } = useUpdateTypeHandle({
-    notification,
+  } = useUpsertTypeHandle({
     triggerType,
   })
 
@@ -81,8 +75,7 @@ export const useDialogController = ({
     updateBrandHandle,
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
-  } = useUpdateBransHandle({
-    notification,
+  } = useUpsertBrandHandler({
     triggerBrand,
   })
 
@@ -189,54 +182,6 @@ const useDeleteTypeHandle = ({ notification, triggerType, triggerTrash }) => {
   }
 }
 
-export const useUpdateTypeHandle = ({ notification, triggerType }) => {
-  const [flagCreate, setFlagCreate] = useState(true)
-
-  const {
-    trigger: upsertInventoryType,
-    loading,
-    data: upsertInventoryTypeData,
-  } = useMutationData<
-    MutateKey.inventory,
-    UpsertInventoryType,
-    UpsertInventoryBrandTypeVariables
-  >(MutateKey.inventory, null, upsertInventoryTypeMutation, {
-    onSuccess: () => {
-      notification(notificationUpdateSuccessProp('type', flagCreate))
-      triggerType()
-    },
-    onError: (error) => {
-      notification(notificationUpdateErrorProp('type', flagCreate, error))
-    },
-    globalLoading: true,
-  })
-
-  const updateTypeHandle = useCallback(
-    (data) => {
-      if (data?.id) {
-        setFlagCreate(false)
-      } else {
-        setFlagCreate(true)
-      }
-      upsertInventoryType({
-        input: {
-          id: data?.id,
-          name: data?.name?.trim(),
-          description: data?.description?.trim(),
-        },
-      })
-    },
-    [upsertInventoryType],
-  )
-
-  return {
-    upsertInventoryType,
-    updateTypeHandle,
-    upsertInventoryTypeLoading: loading,
-    upsertInventoryTypeData,
-  }
-}
-
 const useDeleteBrandHandle = ({ notification, triggerBrand, triggerTrash }) => {
   const {
     trigger: deleteBrandType,
@@ -276,54 +221,6 @@ const useDeleteBrandHandle = ({ notification, triggerBrand, triggerTrash }) => {
     deleteInventoryBrandLoading: loading,
     deleteBrandTypeData,
     deleteBrandHandle,
-  }
-}
-
-export const useUpdateBransHandle = ({ notification, triggerBrand }) => {
-  const [flagCreate, setFlagCreate] = useState(true)
-
-  const {
-    trigger: upsertBrandType,
-    loading,
-    data: upsertInventoryBrandData,
-  } = useMutationData<
-    MutateKey.inventory,
-    UpsertBrandType,
-    UpsertInventoryBrandTypeVariables
-  >(MutateKey.inventory, null, upsertBrandTypeMutation, {
-    onSuccess: () => {
-      notification(notificationUpdateSuccessProp('brand', flagCreate))
-      triggerBrand()
-    },
-    onError: (error) => {
-      notification(notificationUpdateErrorProp('brand', flagCreate, error))
-    },
-    globalLoading: true,
-  })
-
-  const updateBrandHandle = useCallback(
-    (data) => {
-      if (data?.id) {
-        setFlagCreate(false)
-      } else {
-        setFlagCreate(true)
-      }
-      upsertBrandType({
-        input: {
-          id: data?.id,
-          name: data?.name?.trim(),
-          description: data?.description?.trim(),
-        },
-      })
-    },
-    [upsertBrandType],
-  )
-
-  return {
-    upsertBrandType,
-    updateBrandHandle,
-    upsertInventoryBrandLoading: loading,
-    upsertInventoryBrandData,
   }
 }
 

@@ -1,9 +1,9 @@
 import {
-  GetInventoriesBrandData,
   GetInventoriesData,
   GetInventoriesTypeData,
   InventoryNames,
 } from '../../../../gql/inventory/inventory'
+import { GetInventoriesBrandData } from '@/core/gql/inventory/getInventoriesBrandQuery'
 import {
   BrandType,
   InventoriesResponse,

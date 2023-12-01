@@ -1,5 +1,6 @@
 import { IUseUpsertInventoryProps } from '../fetcher/useUpsertInventory'
 import { IUseQueryInventoryProps } from '../fetcher/useQueryInventory'
+import { IUseDeleteInventoryProps } from '../fetcher/useDeleteInventory'
 
 interface InventoryType {
   id: string
@@ -32,4 +33,5 @@ export interface IInventoryForm {
 export interface IUseQueryHandlerProps {
   getInventoryProps: IUseQueryInventoryProps
   upsertInventoryProps: IUseUpsertInventoryProps
+  deleteInventoryProps: IUseDeleteInventoryProps
 }

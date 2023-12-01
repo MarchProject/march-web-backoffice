@@ -1,21 +1,11 @@
 import { useNotificationContext } from '@/context/notification'
 import { useLazyQueryData } from '@/core/adapter/hook/useLazyData'
-import { useMutationData } from '@/core/adapter/hook/useMutationData'
-import { MutateKey, QueryKey } from '@/core/adapter/interface'
+import { QueryKey } from '@/core/adapter/interface'
 import {
-  GetInventoriesBrandData,
-  GetInventoriesBrandVariables,
   GetInventoriesData,
-  GetInventoriesTypeData,
-  GetInventoriesTypeVariables,
   GetInventoriesVariables,
-  getInventoriesBrandQuery,
   getInventoriesQuery,
-  getInventoriesTypeQuery,
   IFavoriteStatus,
-  favoriteInventoryMutation,
-  FavoriteInventoryData,
-  FavoriteInventoryVariables,
   InventoryNames,
   getInventoryNamesQuery,
 } from '@/core/gql/inventory/inventory'
@@ -30,16 +20,12 @@ import {
   InventoryTrash,
   InventoryType,
 } from '@/core/model/inventory'
-import {
-  notificationFavoriteInventoryErrorProp,
-  notificationFavoriteInventorySuccessProp,
-  notificationFetchInventoryErrorProp,
-} from '@/core/notification'
-import {
-  AutocompleteChangeReason,
-  AutocompleteInputChangeReason,
-} from '@mui/material'
+import { notificationFetchInventoryErrorProp } from '@/core/notification'
+import { AutocompleteChangeReason } from '@mui/material'
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { useQueryInventoryBrand } from './fetcher/useQueryInventoryBrand'
+import { useQueryInventoryType } from './fetcher/useQueryInventoryType'
+import { useMutationFavorite } from './fetcher/useMutationFavorite'
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
@@ -80,7 +66,7 @@ export const useInventoryController = () => {
     inventoriesTypeDataError,
     inventoriesTypeLoading,
     handleSearchInventoryType,
-  } = useQueryInventoryType(triggerType, notification)
+  } = useQueryInventoryType({ trigger: triggerType })
   const { inventoryNamesData, inventoryNamesError, inventoryNamesLoading } =
     useGetNameItems({ notification, triggerGetInventoryNames })
   const { favoriteInventoryHandle } = useMutationFavorite({
@@ -93,7 +79,7 @@ export const useInventoryController = () => {
     inventoriesBrandDataError,
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
-  } = useQueryInventoryBrand(triggerBrand, notification)
+  } = useQueryInventoryBrand({ trigger: triggerBrand })
   const { handleTypeChange, handleBrandChange } = useHandleInventory({
     setType,
     setBrand,
@@ -186,129 +172,6 @@ const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
     inventoryNamesData: dataTranform,
     inventoryNamesError: error,
     inventoryNamesLoading: loading,
-  }
-}
-
-export const useQueryInventoryBrand = (trigger: any, notification) => {
-  const [search, setSearch] = useState<string>('')
-  const [inventoriesBrandData, setInventoriesBrandData] = useState<BrandType[]>(
-    [],
-  )
-  const {
-    trigger: getBrandTypesTrigger,
-    error: getBrandTypesError,
-    loading: getBrandTypesLoading,
-  } = useLazyQueryData<
-    QueryKey.inventory,
-    GetInventoriesBrandData,
-    GetInventoriesBrandVariables
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.inventoryBrands(data)
-    },
-    getInventoriesBrandQuery,
-    {
-      onSuccess: (data) => {
-        setInventoriesBrandData(data)
-      },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Brand Error'))
-      },
-      globalLoading: true,
-    },
-  )
-
-  const onInputBrandChange = useCallback(
-    (
-      _: React.SyntheticEvent,
-      value: string,
-      __: AutocompleteInputChangeReason,
-    ) => {
-      if (value.length < 40) {
-        setSearch(value)
-      }
-    },
-    [setSearch],
-  )
-
-  useEffect(() => {
-    getBrandTypesTrigger({
-      params: {
-        search,
-        // limit: 999,
-        // offset: 0,
-      },
-    })
-  }, [getBrandTypesTrigger, search, trigger])
-
-  return {
-    inventoriesBrandData: inventoriesBrandData,
-    inventoriesBrandDataError: getBrandTypesError,
-    inventoriesBrandLoading: getBrandTypesLoading,
-    handleSearchInventoryBrand: onInputBrandChange,
-  }
-}
-
-export const useQueryInventoryType = (trigger: any, notification: any) => {
-  const [search, setSearch] = useState<string>('')
-  const [inventoriesTypeData, setInventoriesTypeData] = useState<
-    InventoryType[]
-  >([])
-
-  const {
-    trigger: getInventoryTypesTrigger,
-    error: getInventoryTypesError,
-    loading: getInventoryTypesLoading,
-  } = useLazyQueryData<
-    QueryKey.inventory,
-    GetInventoriesTypeData,
-    GetInventoriesTypeVariables
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.InventoryType(data)
-    },
-    getInventoriesTypeQuery,
-    {
-      onSuccess: (data) => {
-        setInventoriesTypeData(data)
-      },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Type Error'))
-      },
-      globalLoading: true,
-    },
-  )
-
-  const onInputTypeChange = useCallback(
-    (
-      _: React.SyntheticEvent,
-      value: string,
-      __: AutocompleteInputChangeReason,
-    ) => {
-      if (value.length < 40) {
-        setSearch(value)
-      }
-    },
-    [setSearch],
-  )
-
-  useEffect(() => {
-    getInventoryTypesTrigger({
-      params: {
-        search,
-        // limit: 999,
-        // offset: 0,
-      },
-    })
-  }, [getInventoryTypesTrigger, search, trigger])
-
-  return {
-    inventoriesTypeData: inventoriesTypeData,
-    inventoriesTypeDataError: getInventoryTypesError,
-    inventoriesTypeLoading: getInventoryTypesLoading,
-    handleSearchInventoryType: onInputTypeChange,
   }
 }
 
@@ -472,36 +335,6 @@ const useHandleInventory = ({ setType, setBrand }) => {
   return {
     handleTypeChange,
     handleBrandChange,
-  }
-}
-
-const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
-  const { trigger: favoriteInventory } = useMutationData<
-    MutateKey.inventory,
-    FavoriteInventoryData,
-    FavoriteInventoryVariables
-  >(MutateKey.inventory, null, favoriteInventoryMutation, {
-    onSuccess: () => {
-      notification(notificationFavoriteInventorySuccessProp)
-      setTriggerFavorite((prev) => !prev)
-    },
-    onError: () => {
-      notification(notificationFavoriteInventoryErrorProp)
-    },
-    globalLoading: true,
-  })
-
-  const favoriteInventoryHandle = useCallback(
-    (id: string) => {
-      favoriteInventory({
-        id: id,
-      })
-    },
-    [favoriteInventory],
-  )
-
-  return {
-    favoriteInventoryHandle,
   }
 }
 

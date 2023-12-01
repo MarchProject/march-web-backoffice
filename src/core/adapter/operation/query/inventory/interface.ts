@@ -1,10 +1,10 @@
 import { GetInventoryAllDeletedData } from '@/core/gql/inventory/inventoryTrash'
 import {
-  GetInventoriesBrandData,
   GetInventoriesData,
   GetInventoriesTypeData,
   InventoryNames,
 } from '../../../../gql/inventory/inventory'
+import { GetInventoriesBrandData } from '@/core/gql/inventory/getInventoriesBrandQuery'
 import {
   BrandType,
   InventoriesResponse,
@@ -18,5 +18,5 @@ export interface IInventoryQuery {
   inventories: (payload: GetInventoriesData) => InventoriesResponse
   inventoryBrands: (payload: GetInventoriesBrandData) => BrandType
   InventoryType: (payload: GetInventoriesTypeData) => InventoryType
-  inventoryTrash:(payload:GetInventoryAllDeletedData) => InventoryTrash
+  inventoryTrash: (payload: GetInventoryAllDeletedData) => InventoryTrash
 }

@@ -28,7 +28,7 @@ export const useUpsertInventory = ({
     UpsertInventoryTypeVariables
   >(upsertInventoryMutation, {
     onCompleted: (data) => {
-      if (data.upsertInventory.status.code === StatusCode.SUCCESS) {
+      if (data?.upsertInventory?.status?.code === StatusCode.SUCCESS) {
         notification(
           notificationEditorSuccessProp(idInventory ? 'Update' : 'Create'),
         )

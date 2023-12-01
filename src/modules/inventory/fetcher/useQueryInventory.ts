@@ -30,7 +30,7 @@ export const useQueryInventory = ({
       {
         variables: { id: idInventory },
         onCompleted: (data) => {
-          if (data.getInventory.status.code === StatusCode.SUCCESS) {
+          if (data?.getInventory?.status?.code === StatusCode.SUCCESS) {
             const _inventory = plainToInstance(
               Inventory,
               data.getInventory.data,
