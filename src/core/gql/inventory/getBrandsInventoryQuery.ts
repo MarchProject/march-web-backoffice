@@ -1,11 +1,11 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
 
-export type GetInventoriesBrandData = {
-  getBrandTypes: ResponseData<GetInventoryBrand[]>
+export type GetInventoriesBrandResponse = {
+  getBrandsInventory: ResponseData<GetBrandsInventoryType[]>
 }
 
-export type GetInventoryBrand = {
+export type GetBrandsInventoryType = {
   id: string
   name: string
   description: string
@@ -14,7 +14,8 @@ export type GetInventoryBrand = {
   updatedBy: string
   updatedAt: string
 }
-export type GetInventoriesBrandVariables = {
+
+export type GetBrandInventoryVariables = {
   params?: {
     search?: string
     limit?: number
@@ -22,9 +23,9 @@ export type GetInventoriesBrandVariables = {
   }
 }
 
-export const getInventoriesBrandQuery = gql`
-  query getBrandTypes($params: ParamsInventoryBrand) {
-    getBrandTypes(params: $params) {
+export const getBrandsInventoryQuery = gql`
+  query getBrandsInventory($params: ParamsInventoryBrand) {
+    getBrandsInventory(params: $params) {
       data {
         id
         name

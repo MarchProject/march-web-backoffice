@@ -8,4 +8,5 @@ export interface ResponseData<T> {
 
 export enum StatusCode {
   SUCCESS = 1000,
+  ONUSE = 9004,
 }

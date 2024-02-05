@@ -1,11 +1,12 @@
 import { useNotificationContext } from '@/context/notification'
 import {
-  GetInventoriesTypeData,
+  GetTypesInventoryResponse,
   GetInventoriesTypeVariables,
-  getInventoriesTypeQuery,
-} from '@/core/gql/inventory/inventory'
+  getTypesInventoryQuery,
+} from '@/core/gql/inventory/getTypesInventoryQuery'
 import { InventoryType } from '@/core/model/inventory'
 import { notificationFetchInventoryErrorProp } from '@/core/notification'
+import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { AutocompleteInputChangeReason } from '@mui/material'
 import { plainToInstance } from 'class-transformer'
@@ -24,19 +25,23 @@ export const useQueryInventoryType = ({
     InventoryType[]
   >([])
   const [
-    getInventoryTypesTrigger,
+    getTypesInventory,
     { error: getInventoryTypesError, loading: getInventoryTypesLoading },
-  ] = useLazyQuery<GetInventoriesTypeData, GetInventoriesTypeVariables>(
-    getInventoriesTypeQuery,
+  ] = useLazyQuery<GetTypesInventoryResponse, GetInventoriesTypeVariables>(
+    getTypesInventoryQuery,
     {
       onCompleted: (data) => {
-        const response = plainToInstance(InventoryType, data.getInventoryTypes)
-
-        if (response) setInventoriesTypeData(response)
+        if (data?.getTypesInventory?.status?.code === StatusCode.SUCCESS) {
+          const response = plainToInstance(
+            InventoryType,
+            data.getTypesInventory.data,
+          )
+          if (response) setInventoriesTypeData(response)
+        } else {
+          notification(notificationFetchInventoryErrorProp('Type Error'))
+        }
       },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Type Error'))
-      },
+      onError: () => {},
     },
   )
 
@@ -54,14 +59,14 @@ export const useQueryInventoryType = ({
   )
 
   useEffect(() => {
-    getInventoryTypesTrigger({
+    getTypesInventory({
       variables: {
         params: {
           search,
         },
       },
     })
-  }, [getInventoryTypesTrigger, search, trigger])
+  }, [getTypesInventory, search, trigger])
 
   return {
     inventoriesTypeData: inventoriesTypeData,

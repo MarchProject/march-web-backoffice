@@ -1,7 +1,7 @@
 import {
   EnumDeletedMode,
   EnumDeletedType,
-} from '@/core/gql/inventory/inventoryTrash'
+} from '@/core/gql/inventory/recoveryHardDeletedMutation'
 import { InventoryTrash, TrashInventory } from '@/core/model/inventory'
 import { tkeys } from '@/translations/i18n'
 import { styleIconMarch } from '@/utils/style/utill'

@@ -15,7 +15,7 @@ export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
     FavoriteInventoryVariables
   >(favoriteInventoryMutation, {
     onCompleted: (data) => {
-      if (data.favoriteInventory.status.code === StatusCode.SUCCESS) {
+      if (data?.favoriteInventory?.status?.code === StatusCode.SUCCESS) {
         notification(notificationFavoriteInventorySuccessProp)
         setTriggerFavorite((prev) => !prev)
       } else {

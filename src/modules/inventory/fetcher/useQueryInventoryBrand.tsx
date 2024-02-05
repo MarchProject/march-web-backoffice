@@ -1,7 +1,7 @@
 import { useNotificationContext } from '@/context/notification'
-import { GetInventoriesBrandVariables } from '@/core/gql/inventory/getInventoriesBrandQuery'
-import { GetInventoriesBrandData } from '@/core/gql/inventory/getInventoriesBrandQuery'
-import { getInventoriesBrandQuery } from '@/core/gql/inventory/getInventoriesBrandQuery'
+import { GetBrandInventoryVariables } from '@/core/gql/inventory/getBrandsInventoryQuery'
+import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
+import { getBrandsInventoryQuery } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { BrandType } from '@/core/model/inventory'
 import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
@@ -26,13 +26,18 @@ export const useQueryInventoryBrand = ({
   const [
     getBrandTypesTrigger,
     { loading: getBrandTypesLoading, error: getBrandTypesError },
-  ] = useLazyQuery<GetInventoriesBrandData, GetInventoriesBrandVariables>(
-    getInventoriesBrandQuery,
+  ] = useLazyQuery<GetInventoriesBrandResponse, GetBrandInventoryVariables>(
+    getBrandsInventoryQuery,
     {
       onCompleted: (data) => {
-        if (data.getBrandTypes.status.code === StatusCode.SUCCESS) {
-          const response = plainToInstance(BrandType, data.getBrandTypes.data)
+        if (data?.getBrandsInventory?.status?.code === StatusCode.SUCCESS) {
+          const response = plainToInstance(
+            BrandType,
+            data.getBrandsInventory.data,
+          )
           if (response) setInventoriesBrandData(response)
+        } else {
+          notification(notificationFetchInventoryErrorProp('Brand Error'))
         }
       },
       onError: () => {

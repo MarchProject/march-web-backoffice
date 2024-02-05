@@ -1,5 +1,5 @@
 import { EnumSeverity } from '@/context/notification'
-import { EnumDeletedMode } from '@/core/gql/inventory/inventoryTrash'
+import { EnumDeletedMode } from '@/core/gql/inventory/recoveryHardDeletedMutation'
 
 export const notificationDeleteSuccessProp = (type = 'type') => {
   return {

@@ -1,7 +1,5 @@
-import {
-  GetInventoryTypes,
-  UploadInventoryVariable,
-} from '@/core/gql/inventory/inventory'
+import { GetTypesInventoryType } from '@/core/gql/inventory/getTypesInventoryQuery'
+import { UploadInventoryVariable } from '@/core/gql/inventory/uploadInventoryMutation'
 import { IValidatedValues } from '../dialog/DialogEditor/DialogUploadCsv/view/UploadCsvView/interface'
 import { defaultTo, get } from 'lodash'
 import { DbFormat, dateFormat } from '@/core/common'
@@ -9,8 +7,8 @@ import dayjs from '@/core/common/dayjs'
 
 export const tranFromUploadCsv = (
   validatedValue: IValidatedValues,
-  inventoriesTypeData: GetInventoryTypes[],
-  inventoriesBrandData: GetInventoryTypes[],
+  inventoriesTypeData: GetTypesInventoryType[],
+  inventoriesBrandData: GetTypesInventoryType[],
 ): UploadInventoryVariable => {
   const mapResponse = validatedValue.validData.map((v) => {
     const {

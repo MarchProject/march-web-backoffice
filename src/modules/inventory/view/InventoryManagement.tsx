@@ -1,5 +1,5 @@
 import { Input } from '@/components/common/Input'
-import { IFavoriteStatus } from '@/core/gql/inventory/inventory'
+import { IFavoriteStatus } from '@/core/gql/inventory/getInventoriesQuery'
 import { styleIconMarch } from '@/utils/style/utill'
 import { AutocompleteInputChangeReason, InputAdornment } from '@mui/material'
 import { debounce } from 'lodash'

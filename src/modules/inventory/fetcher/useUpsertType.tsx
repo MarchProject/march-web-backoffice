@@ -25,7 +25,7 @@ export const useUpsertTypeHandle = ({
       upsertTypeInventoryMutation,
       {
         onCompleted: (data) => {
-          if (data.upsertTypeInventory.status.code === StatusCode.SUCCESS) {
+          if (data?.upsertTypeInventory?.status?.code === StatusCode.SUCCESS) {
             notification(notificationUpdateSuccessProp('type', flagCreate))
             triggerType()
           } else {
@@ -33,14 +33,14 @@ export const useUpsertTypeHandle = ({
               notificationUpdateErrorProp(
                 'type',
                 flagCreate,
-                data.upsertTypeInventory.status.message,
+                data?.upsertTypeInventory?.status?.message,
               ),
             )
           }
         },
         onError: (error) => {
           notification(
-            notificationUpdateErrorProp('type', flagCreate, error.message),
+            notificationUpdateErrorProp('type', flagCreate, error?.message),
           )
         },
       },

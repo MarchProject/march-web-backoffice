@@ -14,14 +14,14 @@ export const deleteInventoryMutation = gql`
     }
   }
 `
-export type DeleteTypeDataVariables = {
+export type DeleteInventoryVariables = {
   id: string
 }
 
-export type DeleteInventory = {
+export type DeleteInventoryType = {
   id?: string
 }
 
 export type DeleteInventoryData = {
-  deleteInventory: ResponseData<DeleteInventory>
+  deleteInventory: ResponseData<DeleteInventoryType>
 }

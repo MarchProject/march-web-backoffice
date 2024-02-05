@@ -27,7 +27,7 @@ export const useUpsertBrandHandler = ({
       upsertBrandInventoryMutation,
       {
         onCompleted: (data) => {
-          if (data.upsertBrandInventory.status.code === StatusCode.SUCCESS) {
+          if (data?.upsertBrandInventory?.status?.code === StatusCode.SUCCESS) {
             notification(notificationUpdateSuccessProp('brand', flagCreate))
             triggerBrand()
           } else {
@@ -35,14 +35,14 @@ export const useUpsertBrandHandler = ({
               notificationUpdateErrorProp(
                 'brand',
                 flagCreate,
-                data.upsertBrandInventory.status.message,
+                data?.upsertBrandInventory?.status?.message,
               ),
             )
           }
         },
         onError: (error) => {
           notification(
-            notificationUpdateErrorProp('brand', flagCreate, error.message),
+            notificationUpdateErrorProp('brand', flagCreate, error?.message),
           )
         },
       },

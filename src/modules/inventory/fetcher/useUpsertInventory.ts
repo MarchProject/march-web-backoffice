@@ -1,5 +1,5 @@
 import { upsertInventoryMutation } from '@/core/gql/inventory/upsertInventory'
-import { UpsertInventoryTypeData } from '@/core/gql/inventory/upsertInventory'
+import { UpsertInventoryTypeResponse } from '@/core/gql/inventory/upsertInventory'
 import { UpsertInventoryTypeVariables } from '@/core/gql/inventory/upsertInventory'
 import {
   notificationEditorErrorProp,
@@ -24,7 +24,7 @@ export const useUpsertInventory = ({
 }: IUseUpsertInventoryProps) => {
   const { notification } = useNotificationContext()
   const [upsertInventory, { loading }] = useMutation<
-    UpsertInventoryTypeData,
+    UpsertInventoryTypeResponse,
     UpsertInventoryTypeVariables
   >(upsertInventoryMutation, {
     onCompleted: (data) => {
@@ -40,7 +40,7 @@ export const useUpsertInventory = ({
         notification(
           notificationEditorErrorProp(
             idInventory ? 'Update' : 'Create',
-            data.upsertInventory.status.message,
+            data?.upsertInventory?.status?.message,
           ),
         )
       }
@@ -49,7 +49,7 @@ export const useUpsertInventory = ({
       notification(
         notificationEditorErrorProp(
           idInventory ? 'Update' : 'Create',
-          error.message,
+          error?.message,
         ),
       )
     },

@@ -5,7 +5,7 @@ import { Trash } from './view/Container'
 import {
   EnumDeletedMode,
   EnumDeletedType,
-} from '@/core/gql/inventory/inventoryTrash'
+} from '@/core/gql/inventory/recoveryHardDeletedMutation'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 

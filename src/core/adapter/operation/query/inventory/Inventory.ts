@@ -1,9 +1,7 @@
-import {
-  GetInventoriesData,
-  GetInventoriesTypeData,
-  InventoryNames,
-} from '../../../../gql/inventory/inventory'
-import { GetInventoriesBrandData } from '@/core/gql/inventory/getInventoriesBrandQuery'
+import { GetInventoriesResponse } from '@/core/gql/inventory/getInventoriesQuery'
+import { InventoryNamesResponse } from '@/core/gql/inventory/getInventoryNamesQuery'
+import { GetTypesInventoryResponse } from '@/core/gql/inventory/getTypesInventoryQuery'
+import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import {
   BrandType,
   InventoriesResponse,
@@ -13,12 +11,12 @@ import {
 } from '../../../../model/inventory'
 import { plainToInstance } from 'class-transformer'
 import { IInventoryQuery } from './interface'
-import { GetInventoryAllDeletedData } from '@/core/gql/inventory/inventoryTrash'
+import { GetInventoryAllDeletedResponse } from '@/core/gql/inventory/getInventoryAllDeletedQuery'
 
 export class InventoryQuery implements IInventoryQuery {
   constructor() {}
 
-  inventories = (data: GetInventoriesData) => {
+  inventories = (data: GetInventoriesResponse) => {
     try {
       const property = Object.keys(data)[0]
       const response = plainToInstance(InventoriesResponse, data[property])
@@ -29,7 +27,7 @@ export class InventoryQuery implements IInventoryQuery {
     }
   }
 
-  inventoryNames = (data: InventoryNames) => {
+  inventoryNames = (data: InventoryNamesResponse) => {
     try {
       const property = Object.keys(data)[0]
       const response = plainToInstance(InventoryNamesClass, data[property])
@@ -40,7 +38,7 @@ export class InventoryQuery implements IInventoryQuery {
     }
   }
 
-  inventoryBrands(data: GetInventoriesBrandData) {
+  inventoryBrands(data: GetInventoriesBrandResponse) {
     try {
       const property = Object.keys(data)[0]
       const response = plainToInstance(BrandType, data[property])
@@ -51,7 +49,7 @@ export class InventoryQuery implements IInventoryQuery {
     }
   }
 
-  InventoryType(data: GetInventoriesTypeData) {
+  InventoryType(data: GetTypesInventoryResponse) {
     try {
       const property = Object.keys(data)[0]
       const response = plainToInstance(InventoryType, data[property])
@@ -62,7 +60,7 @@ export class InventoryQuery implements IInventoryQuery {
     }
   }
 
-  inventoryTrash(data: GetInventoryAllDeletedData) {
+  inventoryTrash(data: GetInventoryAllDeletedResponse) {
     try {
       const property = Object.keys(data)[0]
       const response = plainToInstance(InventoryTrash, data[property])

@@ -1,31 +1,10 @@
 import { useNotificationContext } from '@/context/notification'
-import {
-  DeleteTypeData,
-  deleteInventoryTypeMutation,
-  deleteBrandTypeMutation,
-  DeleteBrandData,
-} from '@/core/gql/inventory/inventory'
-import { DeleteTypeDataVariables } from '@/core/gql/inventory/deleteInventoryMutation'
-import { errorMarch } from '@/core/utils/ErrorType'
 import { useCallback, useState } from 'react'
-import {
-  notificationTypeUsedDeleteErrorProp,
-  notificationDeleteErrorProp,
-  notificationDeleteSuccessProp,
-  notificationTrashMutateErrorProp,
-  notificationTrashMutateSuccessProp,
-} from '@/core/notification'
-import { useMutationData } from '@/core/adapter/hook/useMutationData'
-import { MutateKey } from '@/core/adapter/interface'
-import {
-  EnumDeletedMode,
-  EnumDeletedType,
-  RecoveryHardDeletedData,
-  RecoveryHardDeletedVariable,
-  recoveryHardDeletedMutation,
-} from '@/core/gql/inventory/inventoryTrash'
 import { useUpsertTypeHandle } from '../../fetcher/useUpsertType'
 import { useUpsertBrandHandler } from '../../fetcher/useUpsertBrand'
+import { useDeleteBrandInventoryHandler } from '../../fetcher/useDeleteBrand'
+import { useDeleteTypeInventoryHandler } from '../../fetcher/useDeleteType'
+import { useRecoveryTrashHandler } from '../../fetcher/useRecoveryTrash'
 
 export const useDialogController = ({
   setTriggerType,
@@ -50,14 +29,14 @@ export const useDialogController = ({
   const { notification } = useNotificationContext()
 
   const { deleteInventoryType, deleteInventoryTypeLoading, deleteTypeHandle } =
-    useDeleteTypeHandle({
+    useDeleteTypeInventoryHandler({
       notification,
       triggerType,
       triggerTrash,
     })
+
   const { deleteBrandType, deleteInventoryBrandLoading, deleteBrandHandle } =
-    useDeleteBrandHandle({
-      notification,
+    useDeleteBrandInventoryHandler({
       triggerBrand,
       triggerTrash,
     })
@@ -86,7 +65,7 @@ export const useDialogController = ({
     useHandleDialogType()
   const { openDialogBrand, handleCloseBrand, handleOpenBrand } =
     useHandleDialogBrand()
-  const { recoveryHardDeletedHandle } = useTrashHandle({
+  const { recoveryHardDeletedHandle } = useRecoveryTrashHandler({
     triggerInventory,
     triggerBrand,
     triggerType,
@@ -137,90 +116,6 @@ export const useDialogController = ({
       handleCloseBrand,
       handleOpenBrand,
     },
-  }
-}
-
-const useDeleteTypeHandle = ({ notification, triggerType, triggerTrash }) => {
-  const {
-    trigger: deleteInventoryType,
-    loading,
-    data: deleteInventoryTypeData,
-  } = useMutationData<
-    MutateKey.inventory,
-    DeleteTypeData,
-    DeleteTypeDataVariables
-  >(MutateKey.inventory, null, deleteInventoryTypeMutation, {
-    onSuccess: () => {
-      notification(notificationDeleteSuccessProp('type'))
-      triggerType()
-      triggerTrash()
-    },
-    onError: (error) => {
-      if (error === errorMarch.EnumErrorType.BAD_HAVE_TYPE) {
-        notification(notificationTypeUsedDeleteErrorProp('type'))
-      } else {
-        notification(notificationDeleteErrorProp('type'))
-      }
-    },
-    globalLoading: true,
-  })
-
-  const deleteTypeHandle = useCallback(
-    (data) => {
-      deleteInventoryType({
-        id: data,
-      })
-    },
-    [deleteInventoryType],
-  )
-
-  return {
-    deleteInventoryType,
-    deleteInventoryTypeLoading: loading,
-    deleteInventoryTypeData,
-    deleteTypeHandle,
-  }
-}
-
-const useDeleteBrandHandle = ({ notification, triggerBrand, triggerTrash }) => {
-  const {
-    trigger: deleteBrandType,
-    loading,
-    data: deleteBrandTypeData,
-  } = useMutationData<
-    MutateKey.inventory,
-    DeleteBrandData,
-    DeleteTypeDataVariables
-  >(MutateKey.inventory, null, deleteBrandTypeMutation, {
-    onSuccess: () => {
-      notification(notificationDeleteSuccessProp('brand'))
-      triggerBrand()
-      triggerTrash()
-    },
-    onError: (error) => {
-      if (error === errorMarch.EnumErrorType.BAD_HAVE_TYPE) {
-        notification(notificationTypeUsedDeleteErrorProp('brand'))
-      } else {
-        notification(notificationDeleteErrorProp('brand'))
-      }
-    },
-    globalLoading: true,
-  })
-
-  const deleteBrandHandle = useCallback(
-    (data) => {
-      deleteBrandType({
-        id: data,
-      })
-    },
-    [deleteBrandType],
-  )
-
-  return {
-    deleteBrandType,
-    deleteInventoryBrandLoading: loading,
-    deleteBrandTypeData,
-    deleteBrandHandle,
   }
 }
 
@@ -325,50 +220,5 @@ export const useHandleDialogBrand = () => {
     openDialogBrand: open,
     handleOpenBrand: handleOpen,
     handleCloseBrand: handleClose,
-  }
-}
-
-const useTrashHandle = ({
-  triggerInventory,
-  triggerBrand,
-  triggerType,
-  triggerTrash,
-  notification,
-}) => {
-  const { trigger: recoveryHardDeleted } = useMutationData<
-    MutateKey.inventory,
-    RecoveryHardDeletedData,
-    RecoveryHardDeletedVariable
-  >(MutateKey.inventory, null, recoveryHardDeletedMutation, {
-    onSuccess: (data) => {
-      notification(
-        notificationTrashMutateSuccessProp(data?.recoveryHardDeleted?.mode),
-      )
-      triggerType()
-      triggerBrand()
-      triggerInventory()
-      triggerTrash()
-    },
-    onError: () => {
-      notification(notificationTrashMutateErrorProp)
-    },
-    globalLoading: true,
-  })
-
-  const recoveryHardDeletedHandle = useCallback(
-    (id: string, type: EnumDeletedType, mode: EnumDeletedMode) => {
-      recoveryHardDeleted({
-        input: {
-          id: id,
-          type: type,
-          mode: mode,
-        },
-      })
-    },
-    [recoveryHardDeleted],
-  )
-
-  return {
-    recoveryHardDeletedHandle,
   }
 }

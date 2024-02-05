@@ -1,6 +1,6 @@
 import { useNotificationContext } from '@/context/notification'
 import { DeleteInventoryData } from '@/core/gql/inventory/deleteInventoryMutation'
-import { DeleteTypeDataVariables } from '@/core/gql/inventory/deleteInventoryMutation'
+import { DeleteInventoryVariables } from '@/core/gql/inventory/deleteInventoryMutation'
 import { deleteInventoryMutation } from '@/core/gql/inventory/deleteInventoryMutation'
 import {
   notificationEditorDeleteErrorProp,
@@ -20,7 +20,7 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
   const { notification } = useNotificationContext()
   const [deleteInventory, { loading }] = useMutation<
     DeleteInventoryData,
-    DeleteTypeDataVariables
+    DeleteInventoryVariables
   >(deleteInventoryMutation, {
     onCompleted: (data) => {
       if (data?.deleteInventory?.status?.code === StatusCode.SUCCESS) {
@@ -31,13 +31,13 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
       } else {
         notification(
           notificationEditorDeleteErrorProp(
-            data.deleteInventory.status.message,
+            data?.deleteInventory?.status?.message,
           ),
         )
       }
     },
     onError: (error) => {
-      notification(notificationEditorDeleteErrorProp(error.message))
+      notification(notificationEditorDeleteErrorProp(error?.message))
     },
   })
 

@@ -1,31 +1,13 @@
 import { useNotificationContext } from '@/context/notification'
-import { useLazyQueryData } from '@/core/adapter/hook/useLazyData'
-import { QueryKey } from '@/core/adapter/interface'
-import {
-  GetInventoriesData,
-  GetInventoriesVariables,
-  getInventoriesQuery,
-  IFavoriteStatus,
-  InventoryNames,
-  getInventoryNamesQuery,
-} from '@/core/gql/inventory/inventory'
-import {
-  GetInventoryAllDeletedData,
-  getInventoryAllDeletedQuery,
-} from '@/core/gql/inventory/inventoryTrash'
-import {
-  BrandType,
-  InventoriesResponse,
-  InventoryNamesClass,
-  InventoryTrash,
-  InventoryType,
-} from '@/core/model/inventory'
-import { notificationFetchInventoryErrorProp } from '@/core/notification'
+import { BrandType, InventoryType } from '@/core/model/inventory'
 import { AutocompleteChangeReason } from '@mui/material'
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { SyntheticEvent, useCallback, useState } from 'react'
 import { useQueryInventoryBrand } from './fetcher/useQueryInventoryBrand'
 import { useQueryInventoryType } from './fetcher/useQueryInventoryType'
 import { useMutationFavorite } from './fetcher/useMutationFavorite'
+import { useGetInventoryNames } from './fetcher/useGetInventoryNames'
+import { useQueryInventories } from './fetcher/useQueryInventories'
+import { useQueryTrashHandler } from './fetcher/useQueryTrash'
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
@@ -52,7 +34,7 @@ export const useInventoryController = () => {
     handleClearChange,
     inventoryTypeValue,
     inventoryBrandValue,
-  } = useQueryInventory({
+  } = useQueryInventories({
     notification,
     triggerType,
     triggerBrand,
@@ -68,12 +50,12 @@ export const useInventoryController = () => {
     handleSearchInventoryType,
   } = useQueryInventoryType({ trigger: triggerType })
   const { inventoryNamesData, inventoryNamesError, inventoryNamesLoading } =
-    useGetNameItems({ notification, triggerGetInventoryNames })
+    useGetInventoryNames({ triggerGetInventoryNames })
   const { favoriteInventoryHandle } = useMutationFavorite({
     notification,
     setTriggerFavorite,
   })
-  const { setTriggerTrash, trashData } = useQueryTrash({ notification })
+  const { setTriggerTrash, trashData } = useQueryTrashHandler({ notification })
   const {
     inventoriesBrandData,
     inventoriesBrandDataError,
@@ -140,165 +122,6 @@ export const useInventoryController = () => {
   }
 }
 
-const useGetNameItems = ({ notification, triggerGetInventoryNames }) => {
-  const [dataTranform, setDataTranform] = useState<InventoryNamesClass[]>([])
-
-  const { trigger, error, loading } = useLazyQueryData<
-    QueryKey.inventory,
-    InventoryNames,
-    any
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.inventoryNames(data)
-    },
-    getInventoryNamesQuery,
-    {
-      onSuccess: (data) => {
-        setDataTranform(data)
-      },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Names Error'))
-      },
-      globalLoading: true,
-    },
-  )
-
-  useEffect(() => {
-    trigger()
-  }, [trigger, triggerGetInventoryNames])
-
-  return {
-    inventoryNamesData: dataTranform,
-    inventoryNamesError: error,
-    inventoryNamesLoading: loading,
-  }
-}
-
-const useQueryInventory = ({
-  notification,
-  triggerBrand,
-  triggerType,
-  triggerFavorite,
-  triggerGetInventoryNames,
-  triggerInventory,
-}) => {
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(15)
-  const [search, setSearch] = useState('')
-  const [type, setType] = useState<InventoryType[]>([])
-  const [brand, setBrand] = useState<BrandType[]>([])
-  const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
-  const [inventoriesData, setInventoriesData] = useState<InventoriesResponse>()
-
-  const {
-    trigger: getInventoriesTrigger,
-    error: getInventoriesError,
-    loading: getInventoriesLoading,
-  } = useLazyQueryData<
-    QueryKey.inventory,
-    GetInventoriesData,
-    GetInventoriesVariables
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.inventories(data)
-    },
-    getInventoriesQuery,
-    {
-      onSuccess: (data) => {
-        setInventoriesData(data)
-      },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Inventories Error'))
-      },
-      globalLoading: true,
-    },
-  )
-
-  const handleSearchChange = (value: any) => {
-    setSearch(value.target.value)
-  }
-
-  const handleFavoriteChange = () => {
-    setFavorite((prevFavorite) =>
-      prevFavorite === 'DEFAULT' ? 'LIKE' : 'DEFAULT',
-    )
-  }
-
-  const handleClearChange = () => {
-    setSearch('')
-    setType([])
-    setBrand([])
-    setFavorite('DEFAULT')
-  }
-
-  useEffect(() => {
-    getInventoriesTrigger({
-      params: {
-        limit: limit,
-        pageNo: page,
-        search: search,
-        favorite: favorite,
-        type: type.map((e: any) => {
-          return e.id
-        }),
-        brand: brand.map((e: any) => {
-          return e.id
-        }),
-      },
-    })
-  }, [
-    triggerBrand,
-    triggerType,
-    triggerFavorite,
-    triggerGetInventoryNames,
-    getInventoriesTrigger,
-    triggerInventory,
-    limit,
-    page,
-    search,
-    favorite,
-    type,
-    brand,
-  ])
-
-  useEffect(() => {
-    if (inventoriesData?.inventories?.length === 0) {
-      setPage(inventoriesData?.totalPage === 0 ? 1 : inventoriesData?.totalPage)
-    }
-  }, [inventoriesData?.inventories, inventoriesData?.totalPage])
-
-  const onRow = (rows, reason) => {
-    console.log({ rows, reason })
-  }
-
-  const onPaginationModelChange = (model, _) => {
-    setLimit(model.pageSize)
-  }
-
-  return {
-    inventoryData: { getInventories: inventoriesData },
-    inventoryLoading: getInventoriesLoading,
-    inventoryError: getInventoriesError,
-    handleClearChange,
-    inventoryPage: page,
-    inventoryLimit: limit,
-    inventorySearch: search,
-    onPaginationModelChange,
-    onRow,
-    handleChangeInventory: handleSearchChange,
-    setType,
-    setPage,
-    setBrand,
-    setFavorite,
-    favorite,
-    handleFavoriteChange,
-    inventoryTypeValue: type,
-    inventoryBrandValue: brand,
-  }
-}
-
 // const useGlobalInventory = ({}) => {}
 
 const useHandleInventory = ({ setType, setBrand }) => {
@@ -335,43 +158,5 @@ const useHandleInventory = ({ setType, setBrand }) => {
   return {
     handleTypeChange,
     handleBrandChange,
-  }
-}
-
-const useQueryTrash = ({ notification }) => {
-  const [trashData, setTrashData] = useState<InventoryTrash>(null)
-  const [trigger, setTrigger] = useState(true)
-  const { trigger: getInventoryAllDeleted } = useLazyQueryData<
-    QueryKey.inventory,
-    GetInventoryAllDeletedData,
-    any
-  >(
-    QueryKey.inventory,
-    (tranform, data) => {
-      return tranform.inventoryTrash(data)
-    },
-    getInventoryAllDeletedQuery,
-    {
-      onSuccess: (data) => {
-        setTrashData(data)
-      },
-      onError: () => {
-        notification(notificationFetchInventoryErrorProp('Trash Error'))
-      },
-      globalLoading: true,
-    },
-  )
-
-  const getInventoryTrashHandle = useCallback(() => {
-    getInventoryAllDeleted()
-  }, [getInventoryAllDeleted])
-
-  useEffect(() => {
-    getInventoryTrashHandle()
-  }, [getInventoryTrashHandle, trigger])
-
-  return {
-    trashData,
-    setTriggerTrash: setTrigger,
   }
 }
