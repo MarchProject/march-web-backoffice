@@ -18,6 +18,7 @@ export const getInventoryQuery = gql`
         sold
         price
         sku
+        serialNumber
         size
         favorite
         priceMember
@@ -26,7 +27,11 @@ export const getInventoryQuery = gql`
           id
           name
         }
-        brandType {
+        inventoryBrand {
+          id
+          name
+        }
+        inventoryBranch {
           id
           name
         }

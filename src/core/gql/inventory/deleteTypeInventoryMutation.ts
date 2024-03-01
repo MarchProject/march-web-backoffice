@@ -1,9 +1,9 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
 
-export const deleteTypeInventoryMutation = gql`
-  mutation deleteTypeInventory($id: String!) {
-    deleteTypeInventory(id: $id) {
+export const deleteInventoryTypeMutation = gql`
+  mutation deleteInventoryType($id: String!) {
+    deleteInventoryType(id: $id) {
       data {
         id
       }
@@ -23,5 +23,5 @@ export type DeleteTypeInventoryType = {
 }
 
 export type DeleteTypeInventoryResponse = {
-  deleteTypeInventory: ResponseData<DeleteTypeInventoryType>
+  deleteInventoryType: ResponseData<DeleteTypeInventoryType>
 }

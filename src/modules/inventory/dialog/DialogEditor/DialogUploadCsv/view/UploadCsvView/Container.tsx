@@ -7,7 +7,8 @@ import { TiDelete } from 'react-icons/ti'
 import { IValidatedValues } from './interface'
 import { capitalizeFirstLetter } from '@/utils/common/utils'
 import {
-  BrandType,
+  InventoryBranch,
+  InventoryBrand,
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
@@ -17,7 +18,8 @@ import { tkeys } from '@/translations/i18n'
 import { FcCancel } from 'react-icons/fc'
 interface IUploadCsvView {
   inventoriesTypeData: InventoryType[]
-  inventoriesBrandData: BrandType[]
+  inventoriesBrandData: InventoryBrand[]
+  inventoriesBranchData: InventoryBranch[]
   uploadHandle: (value: IValidatedValues[]) => void
   inventoryNamesData: InventoryNamesClass[]
   isPass?: boolean
@@ -42,6 +44,7 @@ export const styleIconUploadFileFailed = (
 const UploadCsvView = ({
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   uploadHandle,
   inventoryNamesData,
   isPass = true,
@@ -52,6 +55,7 @@ const UploadCsvView = ({
     useControllerUploadCsvView({
       inventoriesTypeData,
       inventoriesBrandData,
+      inventoriesBranchData,
       inventoryNamesData,
       uploadHandle,
     })
@@ -77,10 +81,8 @@ const UploadCsvView = ({
             <div
               className="mb-[10px] px-4 bg-white p-[20px] rounded-xl drop-shadow-md"
               key={`${invalid.id}-${index}`}>
-              <div className='flex items-center'>
-                <p className="m-0 p-[5px] max-w-[20%]">
-                  id: {invalid.id}
-                </p>
+              <div className="flex items-center">
+                <p className="m-0 p-[5px] max-w-[20%]">id: {invalid.id}</p>
                 <FcCancel size={20} />
               </div>
               <div className="grid grid-cols-1 gap-[5px] px-[15px]">
@@ -151,9 +153,7 @@ const UploadCsvView = ({
       }
     })
     return (
-      <div className="p-0 max-h-[300px]" 
-      style={{ overflowY: 'auto' }}
-      >
+      <div className="p-0 max-h-[300px]" style={{ overflowY: 'auto' }}>
         {ui}
       </div>
     )

@@ -18,11 +18,12 @@ import { StatusCode } from '@/types/response'
 export const useRecoveryTrashHandler = ({
   triggerInventory,
   triggerBrand,
+  triggerBranch,
   triggerType,
   triggerTrash,
   notification,
 }) => {
-  const [recoveryHardDeleted, { loading }] = useMutation<
+  const [recoveryHardDeleted] = useMutation<
     RecoveryHardDeletedResponse,
     RecoveryHardDeletedVariable
   >(recoveryHardDeletedMutation, {
@@ -35,6 +36,7 @@ export const useRecoveryTrashHandler = ({
         )
         triggerType()
         triggerBrand()
+        triggerBranch()
         triggerInventory()
         triggerTrash()
       } else {

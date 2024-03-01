@@ -23,7 +23,8 @@ interface ITrash {
 const nameTab = [
   { key: 'inventory', Label: 'Inventory', type: EnumDeletedType.inventory },
   { key: 'type', Label: 'Type', type: EnumDeletedType.inventoryType },
-  { key: 'brand', Label: 'Brand', type: EnumDeletedType.brandType },
+  { key: 'brand', Label: 'Brand', type: EnumDeletedType.inventoryBrand },
+  { key: 'branch', Label: 'Branch', type: EnumDeletedType.inventoryBranch },
 ]
 
 export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
@@ -109,7 +110,7 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
       )
     })
     if (trashObjs?.length > 0) {
-      return <div className="mt-[10px] max-h-[350px]">{trashObj}</div>
+      return <div className="mt-[10px] min-h-[350px] max-h-[350px]">{trashObj}</div>
     }
     return (
       <div className="mt-[10px] h-[350px] overflow-y-auto">

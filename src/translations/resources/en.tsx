@@ -18,7 +18,7 @@ export const en = {
     create: 'Create',
     update: 'Update',
     signOut: 'Sign out',
-    language:'Language'
+    language: 'Language',
   },
   table: {
     footer: {
@@ -43,6 +43,7 @@ export const en = {
       filter: {
         label: 'Filter',
         brand: 'Brand Filter',
+        branch: 'Branch Filter',
         type: 'Type Filter',
       },
       menu: {
@@ -50,12 +51,15 @@ export const en = {
         upload: 'Upload Csv',
         type: 'Type',
         brand: 'Brand',
+        branch: 'Branch',
         trash: 'Trash',
       },
       table: {
         name: 'Item Name',
         type: 'Item Type',
         brand: 'Item Brand',
+        branch: 'Branch',
+        serialNumber: 'serialNumber',
         amount: 'On Hand',
         sold: 'Sold',
         price: 'Price',
@@ -88,6 +92,7 @@ export const en = {
             fields: {
               type: 'Item type',
               brand: 'Item Brand',
+              branch: 'Item Branch',
             },
           },
           inventory: {
@@ -97,6 +102,7 @@ export const en = {
               amount: 'Quantity',
               sku: 'SKU',
               reorder: 'Reoder Level',
+              serialNumber: 'Serial Number',
             },
           },
           shipping: {
@@ -208,6 +214,40 @@ export const en = {
             sub: 'Add brand for items',
           },
           search: 'Search brand here',
+          mode: {
+            view: {
+              label: 'VIEW',
+              field: {
+                createdBy: 'create by',
+                on: 'on',
+              },
+            },
+            create: {
+              label: 'CREATE',
+              field: {
+                name: 'Name',
+                description: 'Description',
+              },
+            },
+            update: {
+              label: 'UPDATE',
+              field: {
+                name: 'Name',
+                description: 'Description',
+                createdAt: 'Created At',
+                createdBy: 'Created By',
+                updatedAt: 'Updated At',
+                updatedBy: 'Updated By',
+              },
+            },
+          },
+        },
+        branch: {
+          header: {
+            lable: 'Branch',
+            sub: 'Add branch for items',
+          },
+          search: 'Search branch here',
           mode: {
             view: {
               label: 'VIEW',

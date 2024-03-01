@@ -37,6 +37,7 @@ export const columns = ({
       headerName: trans(keys.name),
       flex: 1,
       minWidth: 150,
+      valueGetter: (params) => params.row?.name,
       renderCell: (params) => {
         const name = params.row?.name
         return (
@@ -51,6 +52,7 @@ export const columns = ({
       headerName: trans(keys.type),
       flex: 1,
       minWidth: 150,
+      valueGetter: (params) => params.row?.inventoryType?.name,
       renderCell: (params) => {
         const type = params.row?.inventoryType?.name
         return (
@@ -61,15 +63,52 @@ export const columns = ({
       },
     },
     {
-      field: 'brandType',
+      field: 'inventoryBrand',
       headerName: trans(keys.brand),
       flex: 1,
       minWidth: 150,
+      valueGetter: (params) => params.row?.inventoryBrand?.name,
       renderCell: (params) => {
-        const brand = params.row?.brandType?.name
+        const brand = params.row?.inventoryBrand?.name
         return (
           <Tooltip title={brand} arrow placement="top" enterTouchDelay={0}>
             <p style={styleColumns}>{brand}</p>
+          </Tooltip>
+        )
+      },
+    },
+    {
+      field: 'serialNumber',
+      headerName: trans(keys.serialNumber),
+      flex: 1,
+      minWidth: 150,
+      sortable: true,
+      valueGetter: (params) => params.row?.serialNumber,
+      renderCell: (params) => {
+        const serialNumber = params.row?.serialNumber
+        return (
+          <Tooltip
+            title={serialNumber}
+            arrow
+            placement="top"
+            enterTouchDelay={0}>
+            <p style={styleColumns}>{serialNumber}</p>
+          </Tooltip>
+        )
+      },
+    },
+    {
+      field: 'inventoryBranch',
+      headerName: trans(keys.branch),
+      flex: 1,
+      minWidth: 150,
+      sortable: true,
+      valueGetter: (params) => params.row?.inventoryBranch?.name,
+      renderCell: (params) => {
+        const branch = params.row?.inventoryBranch?.name
+        return (
+          <Tooltip title={branch} arrow placement="top" enterTouchDelay={0}>
+            <p style={styleColumns}>{branch}</p>
           </Tooltip>
         )
       },
@@ -118,6 +157,7 @@ export const columns = ({
       minWidth: 150,
       align: 'center',
       headerAlign: 'center',
+      valueGetter: (params) => params.row?.description,
       renderCell: (params) => {
         const description = params.row?.description
         return (

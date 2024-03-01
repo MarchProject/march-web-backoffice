@@ -2,7 +2,7 @@ import {
   DeleteBrandInventoryResponse,
   DeleteBrandInventoryVariables,
 } from '@/core/gql/inventory/deleteBrandInventoryMutation'
-import { deleteBrandInventoryMutation } from '@/core/gql/inventory/deleteBrandInventoryMutation'
+import { deleteInventoryBrandMutation } from '@/core/gql/inventory/deleteBrandInventoryMutation'
 import { useCallback } from 'react'
 import {
   notificationDeleteErrorProp,
@@ -23,17 +23,17 @@ export const useDeleteBrandInventoryHandler = ({
   triggerTrash,
 }: IUseDeleteBrandHandlerProps) => {
   const { notification } = useNotificationContext()
-  const [deleteBrandType, { loading }] = useMutation<
+  const [deleteInventoryBrand, { loading }] = useMutation<
     DeleteBrandInventoryResponse,
     DeleteBrandInventoryVariables
-  >(deleteBrandInventoryMutation, {
+  >(deleteInventoryBrandMutation, {
     onCompleted: (data) => {
-      if (data?.deleteBrandInventory?.status?.code === StatusCode.SUCCESS) {
+      if (data?.deleteInventoryBrand?.status?.code === StatusCode.SUCCESS) {
         notification(notificationDeleteSuccessProp('brand'))
         triggerBrand()
         triggerTrash()
       } else if (
-        data?.deleteBrandInventory?.status?.code === StatusCode.ONUSE
+        data?.deleteInventoryBrand?.status?.code === StatusCode.ONUSE
       ) {
         notification(notificationTypeUsedDeleteErrorProp('brand'))
       } else {
@@ -47,15 +47,15 @@ export const useDeleteBrandInventoryHandler = ({
 
   const deleteBrandHandle = useCallback(
     (data) => {
-      deleteBrandType({
+      deleteInventoryBrand({
         variables: { id: data },
       })
     },
-    [deleteBrandType],
+    [deleteInventoryBrand],
   )
 
   return {
-    deleteBrandType,
+    deleteInventoryBrand,
     deleteInventoryBrandLoading: loading,
     deleteBrandHandle,
   }

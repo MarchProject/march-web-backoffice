@@ -1,6 +1,6 @@
 import ButtonForm from '@/components/common/Button/button'
 import { inventoryCreateRoute } from '@/router/inventory'
-import { Menu, MenuItem } from '@mui/material'
+import { AutocompleteInputChangeReason, Menu, MenuItem } from '@mui/material'
 import router from 'next/router'
 import React, { useState } from 'react'
 import { RiAddLine } from 'react-icons/ri'
@@ -20,6 +20,9 @@ export const ButtonMenu = ({
   setTriggerInventory,
   trashData,
   setTriggerTrash,
+  inventoriesBranchData,
+  handleSearchInventoryBranch,
+  setTriggerBranch,
 }) => {
   const { t: trans }: any = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -75,6 +78,9 @@ export const ButtonMenu = ({
           handleSearchInventoryBrand={handleSearchInventoryBrand}
           trashData={trashData}
           setTriggerTrash={setTriggerTrash}
+          inventoriesBranchData={inventoriesBranchData}
+          handleSearchInventoryBranch={handleSearchInventoryBranch}
+          setTriggerBranch={setTriggerBranch}
         />
       </Menu>
     </>

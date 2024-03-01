@@ -16,12 +16,14 @@ const typeTab = [
 interface ITypeViewMain {
   inventoriesTypeData: InventoryType[]
   deleteTypeHandle: (id: string) => void
+  handleClose: () => void
   updateTypeHandle: (data: any) => void
   setIsEdit: (data: boolean) => void
   isEditPage: boolean
 }
 
 export const TypeViewMain = ({
+  handleClose,
   inventoriesTypeData,
   deleteTypeHandle,
   updateTypeHandle,
@@ -103,6 +105,7 @@ export const TypeViewMain = ({
             isEditPage={isEditPage}
             updateTypeHandle={updateTypeHandle}
             setValueMode={setValue}
+            handleClose={handleClose}
           />
         )
       }

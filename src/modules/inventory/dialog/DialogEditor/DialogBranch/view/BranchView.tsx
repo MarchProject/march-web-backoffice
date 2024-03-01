@@ -1,4 +1,4 @@
-import { InventoryBrand } from '@/core/model/inventory'
+import { InventoryBranch } from '@/core/model/inventory'
 import { tkeys } from '@/translations/i18n'
 import { styleIconMarch } from '@/utils/style/utill'
 import { useTranslation } from 'react-i18next'
@@ -7,22 +7,22 @@ import { HiOutlineWallet } from 'react-icons/hi2'
 import { RiEdit2Line } from 'react-icons/ri'
 import { AiOutlineDelete } from 'react-icons/ai'
 
-interface IBrandObjView {
-  inventoriesBrandData: InventoryBrand[]
+interface IBranchObjView {
+  inventoriesBranchData: InventoryBranch[]
   setValue: (value: string) => void
-  setIdBrand: (value: string) => void
-  deleteBrandHandle: (id: string) => void
+  setIdBranch: (value: string) => void
+  deleteBranchHandle: (id: string) => void
 }
 
-export const BrandObjView = ({
-  inventoriesBrandData,
+export const BranchObjView = ({
+  inventoriesBranchData,
   setValue,
-  deleteBrandHandle,
-  setIdBrand,
-}: IBrandObjView) => {
+  deleteBranchHandle,
+  setIdBranch,
+}: IBranchObjView) => {
   const { t: trans }: any = useTranslation()
-  const keys = tkeys.Inventory.MainPage.dialog.brand.mode.view
-  const BrandObj = inventoriesBrandData?.map((t) => {
+  const keys = tkeys.Inventory.MainPage.dialog.branch.mode.view
+  const BranchObj = inventoriesBranchData?.map((t) => {
     return (
       <div key={t.id} className="mt-[10px] grid grid-cols-6">
         <div className="flex gap-[15px] col-span-5 lg:col-span-5">
@@ -56,14 +56,14 @@ export const BrandObjView = ({
             <RiEdit2Line
               onClick={() => {
                 setValue('update')
-                setIdBrand(t.id)
+                setIdBranch(t.id)
               }}
               className="cursor-pointer text-primary200"
               size={20}
             />
             <AiOutlineDelete
               onClick={() => {
-                deleteBrandHandle(t.id)
+                deleteBranchHandle(t.id)
               }}
               className="cursor-pointer text-primary200"
               size={20}
@@ -74,8 +74,8 @@ export const BrandObjView = ({
     )
   })
 
-  if (inventoriesBrandData.length > 0) {
-    return <div className="mt-[10px] h-[350px]">{BrandObj}</div>
+  if (inventoriesBranchData.length > 0) {
+    return <div className="mt-[10px] h-[350px]">{BranchObj}</div>
   }
   return (
     <div className="mt-[10px] h-[350px] overflow-y-auto">

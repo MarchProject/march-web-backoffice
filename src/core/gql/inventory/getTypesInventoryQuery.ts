@@ -1,9 +1,9 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
 
-export const getTypesInventoryQuery = gql`
-  query getTypesInventory($params: ParamsInventoryType) {
-    getTypesInventory(params: $params) {
+export const getInventoryTypesQuery = gql`
+  query getInventoryTypes($params: ParamsInventoryType) {
+    getInventoryTypes(params: $params) {
       data {
         id
         name
@@ -21,7 +21,7 @@ export const getTypesInventoryQuery = gql`
   }
 `
 export type GetTypesInventoryResponse = {
-  getTypesInventory: ResponseData<GetTypesInventoryType[]>
+  getInventoryTypes: ResponseData<GetTypesInventoryType[]>
 }
 
 export type GetTypesInventoryType = {

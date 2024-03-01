@@ -21,6 +21,7 @@ export const tranFromUpsertInventoryDto = (
       amount: Number(input.quantity),
       price: Number(input.price),
       sku: get(input, 'sku', undefined),
+      serialNumber: get(input, 'serialNumber', undefined),
       size: Object.keys(size).length !== 0 ? size : undefined,
       favorite: get(input, 'favorite', false),
       priceMember: isNil(input?.memberPrice)
@@ -30,7 +31,8 @@ export const tranFromUpsertInventoryDto = (
       description: get(input, 'description', undefined),
       createdBy: userId,
       inventoryTypeId: input.type.id,
-      brandTypeId: input.brand.id,
+      inventoryBrandId: input.brand.id,
+      inventoryBranchId: input.branch.id,
       expiryDate: get(input, 'expiryDate', undefined),
     },
   }

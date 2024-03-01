@@ -1,13 +1,14 @@
 import { IUseUpsertInventoryProps } from '../fetcher/useUpsertInventory'
 import { IUseQueryInventoryProps } from '../fetcher/useQueryInventory'
 import { IUseDeleteInventoryProps } from '../fetcher/useDeleteInventory'
+import { InventoryBranch } from '@/core/model/inventory'
 
 interface InventoryType {
   id: string
   name: string
 }
 
-interface BrandType {
+interface InventoryBrand {
   id: string
   name: string
 }
@@ -18,9 +19,11 @@ export interface IInventoryForm {
   expiryDate: string
   favorite: boolean
   type: InventoryType
-  brand: BrandType
+  brand: InventoryBrand
+  branch: InventoryBranch
   quantity: number
   sku: string
+  serialNumber: string
   reorder: number
   weight: string
   width: string

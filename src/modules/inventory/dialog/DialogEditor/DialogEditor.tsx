@@ -3,7 +3,8 @@ import { useDialogController } from './controller'
 import { AutocompleteInputChangeReason, MenuItem } from '@mui/material'
 import DialogUploadCsv from './DialogUploadCsv/DialogUploadCsv'
 import {
-  BrandType,
+  InventoryBranch,
+  InventoryBrand,
   InventoryNamesClass,
   InventoryTrash,
   InventoryType,
@@ -13,6 +14,7 @@ import { DialogType } from './DialogType/DialogType'
 import { DialogBrand } from './DialogBrand/DialogBrand'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import { DialogBranch } from './DialogBranch/DialogBrand'
 
 interface IDialogEditor {
   setTriggerType: (e: any) => void
@@ -20,7 +22,7 @@ interface IDialogEditor {
   setTriggerBrand: (e: any) => void
   setTriggerInventory: (e: any) => void
   setTriggerGetInventoryNames: (e: boolean) => void
-  inventoriesBrandData: BrandType[]
+  inventoriesBrandData: InventoryBrand[]
   inventoryNamesData: InventoryNamesClass[]
   handleSearchInventoryType: (
     event: React.SyntheticEvent,
@@ -34,6 +36,13 @@ interface IDialogEditor {
   ) => void
   trashData: InventoryTrash
   setTriggerTrash: (e: boolean) => void
+  inventoriesBranchData: InventoryBranch[]
+  handleSearchInventoryBranch: (
+    event: React.SyntheticEvent,
+    value: string,
+    reason: AutocompleteInputChangeReason,
+  ) => void
+  setTriggerBranch: (e: boolean) => void
 }
 
 const DialogEditor = ({
@@ -48,13 +57,18 @@ const DialogEditor = ({
   handleSearchInventoryBrand,
   trashData,
   setTriggerTrash,
+  inventoriesBranchData,
+  handleSearchInventoryBranch,
+  setTriggerBranch,
 }: IDialogEditor) => {
   const { t: trans }: any = useTranslation()
   const {
     deleteTypeHandle: { deleteTypeHandle },
     upsertTypeHandle: { updateTypeHandle },
     upsertBrandHandle: { updateBrandHandle },
+    upsertBranchHandle: { updateBranchHandle },
     deletBrandHandle: { deleteBrandHandle },
+    deletBranchHandle: { deleteBranchHandle },
     dialogCsv: { openDialogCsv, handleOpenCsv, handleCloseCsv },
     dialogTrash: {
       openDialogTrash,
@@ -64,9 +78,11 @@ const DialogEditor = ({
     },
     dialogType: { openDialogType, handleCloseType, handleOpenType },
     dialogBrand: { openDialogBrand, handleCloseBrand, handleOpenBrand },
+    dialogBranch: { openDialogBranch, handleCloseBranch, handleOpenBranch },
   } = useDialogController({
     setTriggerType,
     setTriggerBrand,
+    setTriggerBranch,
     setTriggerInventory,
     setTriggerTrash,
   })
@@ -85,6 +101,7 @@ const DialogEditor = ({
         handleClose={handleCloseCsv}
         inventoriesTypeData={inventoriesTypeData}
         inventoriesBrandData={inventoriesBrandData}
+        inventoriesBranchData={inventoriesBranchData}
         inventoryNamesData={inventoryNamesData}
         setTriggerGetInventoryNames={setTriggerGetInventoryNames}
       />
@@ -104,6 +121,14 @@ const DialogEditor = ({
         updateBrandHandle={updateBrandHandle}
         handleSearchInventoryBrand={handleSearchInventoryBrand}
       />
+      <DialogBranch
+        open={openDialogBranch}
+        handleClose={handleCloseBranch}
+        inventoriesBranchData={inventoriesBranchData}
+        deleteBranchHandle={deleteBranchHandle}
+        updateBranchHandle={updateBranchHandle}
+        handleSearchInventoryBranch={handleSearchInventoryBranch}
+      />
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl "
         onClick={handleOpenCsv}>
@@ -118,6 +143,11 @@ const DialogEditor = ({
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
         onClick={handleOpenBrand}>
         {trans(tkeys.Inventory.MainPage.menu.brand)}
+      </MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl"
+        onClick={handleOpenBranch}>
+        {trans(tkeys.Inventory.MainPage.menu.branch)}
       </MenuItem>
       <MenuItem
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mb-[3px]"

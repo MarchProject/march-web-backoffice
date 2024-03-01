@@ -1,15 +1,15 @@
 import ButtonForm from '@/components/common/Button/button'
 import { Input } from '@/components/common/Input'
-import { InventoryBrand } from '@/core/model/inventory'
+import { InventoryBranch } from '@/core/model/inventory'
 import { tkeys } from '@/translations/i18n'
 import { max } from '@/utils/common/normalizeInput'
 import { defaultGet } from '@/utils/common/utils'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface IBrandObjUpdate {
-  inventoryBrandData: InventoryBrand
-  updateBrandHandle: (data: {
+interface IBranchObjUpdate {
+  inventoryBranchData: InventoryBranch
+  updateBranchHandle: (data: {
     id: string
     name: string
     description?: string
@@ -17,14 +17,14 @@ interface IBrandObjUpdate {
   setValueMode: (value: string) => void
 }
 
-export const BrandObjUpdate = ({
-  inventoryBrandData,
-  updateBrandHandle,
+export const BranchObjUpdate = ({
+  inventoryBranchData,
+  updateBranchHandle,
   setValueMode,
-}: IBrandObjUpdate) => {
+}: IBranchObjUpdate) => {
   const { t: trans }: any = useTranslation()
-  const keys = tkeys.Inventory.MainPage.dialog.brand.mode.update
-  const [inventoryBrandDataValue, setInventoryBrandDataValue] = useState({
+  const keys = tkeys.Inventory.MainPage.dialog.branch.mode.update
+  const [inventoryBranchDataValue, setInventoryBranchDataValue] = useState({
     id: null,
     name: null,
     description: null,
@@ -35,28 +35,28 @@ export const BrandObjUpdate = ({
   })
 
   useEffect(() => {
-    if (inventoryBrandData) {
-      setInventoryBrandDataValue({
-        id: defaultGet(inventoryBrandData, 'id', ''),
-        name: defaultGet(inventoryBrandData, 'name', ''),
-        description: defaultGet(inventoryBrandData, 'description', ''),
+    if (inventoryBranchData) {
+      setInventoryBranchDataValue({
+        id: defaultGet(inventoryBranchData, 'id', ''),
+        name: defaultGet(inventoryBranchData, 'name', ''),
+        description: defaultGet(inventoryBranchData, 'description', ''),
         formattedCreatedAt: defaultGet(
-          inventoryBrandData,
+          inventoryBranchData,
           'formattedCreatedAt',
           '',
         ),
         formattedUpdatedAt: defaultGet(
-          inventoryBrandData,
+          inventoryBranchData,
           'formattedUpdatedAt',
           '',
         ),
-        createdBy: defaultGet(inventoryBrandData, 'createdBy', ''),
-        updatedBy: defaultGet(inventoryBrandData, 'updatedBy', ''),
+        createdBy: defaultGet(inventoryBranchData, 'createdBy', ''),
+        updatedBy: defaultGet(inventoryBranchData, 'updatedBy', ''),
       })
     }
-  }, [inventoryBrandData])
+  }, [inventoryBranchData])
 
-  if (inventoryBrandData) {
+  if (inventoryBranchData) {
     return (
       <div>
         <div className="mt-[10px] h-[350px]">
@@ -71,9 +71,9 @@ export const BrandObjUpdate = ({
                   required: true,
                 }}
                 variant="outlined"
-                value={inventoryBrandDataValue?.name}
+                value={inventoryBranchDataValue?.name}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     name: e.target.value,
                   }))
@@ -91,9 +91,9 @@ export const BrandObjUpdate = ({
                 rows={6}
                 multiline
                 variant="outlined"
-                value={inventoryBrandDataValue?.description}
+                value={inventoryBranchDataValue?.description}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     description: e.target.value,
                   }))
@@ -110,9 +110,9 @@ export const BrandObjUpdate = ({
                 }}
                 disabled
                 variant="outlined"
-                value={inventoryBrandDataValue?.formattedCreatedAt}
+                value={inventoryBranchDataValue?.formattedCreatedAt}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     formattedCreatedAt: e.target.value,
                   }))
@@ -128,9 +128,9 @@ export const BrandObjUpdate = ({
                 }}
                 disabled
                 variant="outlined"
-                value={inventoryBrandDataValue?.createdBy}
+                value={inventoryBranchDataValue?.createdBy}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     createdBy: e.target.value,
                   }))
@@ -146,9 +146,9 @@ export const BrandObjUpdate = ({
                 }}
                 disabled
                 variant="outlined"
-                value={inventoryBrandDataValue?.formattedUpdatedAt}
+                value={inventoryBranchDataValue?.formattedUpdatedAt}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     formattedUpdatedAt: e.target.value,
                   }))
@@ -164,9 +164,9 @@ export const BrandObjUpdate = ({
                 }}
                 disabled
                 variant="outlined"
-                value={inventoryBrandDataValue?.updatedBy}
+                value={inventoryBranchDataValue?.updatedBy}
                 onChange={(e) => {
-                  setInventoryBrandDataValue((prev) => ({
+                  setInventoryBranchDataValue((prev) => ({
                     ...prev,
                     updatedBy: e.target.value,
                   }))
@@ -181,17 +181,17 @@ export const BrandObjUpdate = ({
               color={'primary'}
               variant="contained"
               disabled={
-                !inventoryBrandDataValue?.id || !inventoryBrandDataValue?.name
+                !inventoryBranchDataValue?.id || !inventoryBranchDataValue?.name
               }
               onClick={() => {
                 if (
-                  inventoryBrandDataValue?.id &&
-                  inventoryBrandDataValue?.name
+                  inventoryBranchDataValue?.id &&
+                  inventoryBranchDataValue?.name
                 ) {
-                  updateBrandHandle({
-                    id: inventoryBrandDataValue.id,
-                    description: inventoryBrandDataValue?.description,
-                    name: inventoryBrandDataValue.name,
+                  updateBranchHandle({
+                    id: inventoryBranchDataValue.id,
+                    description: inventoryBranchDataValue?.description,
+                    name: inventoryBranchDataValue.name,
                   })
                 }
                 setValueMode('view')

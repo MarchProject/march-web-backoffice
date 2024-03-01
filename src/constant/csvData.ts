@@ -4,9 +4,11 @@ export const headersTemplateCsv = [
   { label: 'description', key: 'description' },
   { label: 'type*', key: 'type' },
   { label: 'brand*', key: 'brand' },
+  { label: 'branch*', key: 'branch' },
   { label: 'expiryDate', key: 'expiryDate' },
   { label: 'amount*', key: 'amount' },
   { label: 'sku', key: 'sku' },
+  { label: 'serialNumber', key: 'serialNumber' },
   { label: 'weight', key: 'weight' },
   { label: 'width', key: 'width' },
   { label: 'height', key: 'height' },
@@ -21,11 +23,13 @@ export interface IDataTemplateCsv {
   id: string
   name: string
   type: string
-  brand: string
   description: string
+  brand: string
+  branch: string
   expiryDate: string
   amount: string
   sku: string
+  serialNumber: string
   reorderLevel: string
   price: string
   priceMember: string
@@ -48,17 +52,19 @@ export interface IDataTemplateCsvValidate extends IDataTemplateCsv {
 export const dataTemplateCsv = [
   {
     id: '1',
-    name: 'Tuna',
-    type: 'ทั่วไป',
-    brand: 'ทั่วไป',
-    description: 'กระป๋อง',
-    expiryDate: '11-12-2029',
+    name: 'INTEL I7-13700KS',
+    type: 'CPU-GEN13-1700',
+    brand: 'INTEL',
+    branch: '4',
+    description: 'GEN13',
+    expiryDate: '',
     amount: '100',
     sku: 'SKU-TUN-29-SML',
+    serialNumber: '#12345',
     reorderLevel: '20',
-    price: '25',
-    priceMember: '22',
-    favorite: 'yes',
+    price: '13800',
+    priceMember: '13600',
+    favorite: 'no',
     weight: '12',
     width: '10',
     height: '10',
@@ -67,12 +73,14 @@ export const dataTemplateCsv = [
   {
     id: '2',
     name: 'Salmon',
-    type: 'ทั่วไป',
-    brand: 'ทั่วไป',
+    type: 'CPU-GEN13-1700',
+    brand: 'INTEL',
+    branch: '1',
     description: '',
     expiryDate: '',
     amount: '110',
     sku: '',
+    serialNumber: '',
     reorderLevel: '',
     price: '189',
     priceMember: '',

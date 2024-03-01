@@ -2,7 +2,7 @@ import { useNotificationContext } from '@/context/notification'
 import {
   GetTypesInventoryResponse,
   GetInventoriesTypeVariables,
-  getTypesInventoryQuery,
+  getInventoryTypesQuery,
 } from '@/core/gql/inventory/getTypesInventoryQuery'
 import { InventoryType } from '@/core/model/inventory'
 import { notificationFetchInventoryErrorProp } from '@/core/notification'
@@ -28,13 +28,13 @@ export const useQueryInventoryType = ({
     getTypesInventory,
     { error: getInventoryTypesError, loading: getInventoryTypesLoading },
   ] = useLazyQuery<GetTypesInventoryResponse, GetInventoriesTypeVariables>(
-    getTypesInventoryQuery,
+    getInventoryTypesQuery,
     {
       onCompleted: (data) => {
-        if (data?.getTypesInventory?.status?.code === StatusCode.SUCCESS) {
+        if (data?.getInventoryTypes?.status?.code === StatusCode.SUCCESS) {
           const response = plainToInstance(
             InventoryType,
-            data.getTypesInventory.data,
+            data.getInventoryTypes.data,
           )
           if (response) setInventoriesTypeData(response)
         } else {

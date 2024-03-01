@@ -3,7 +3,7 @@ import { InventoryNamesResponse } from '@/core/gql/inventory/getInventoryNamesQu
 import { GetTypesInventoryResponse } from '@/core/gql/inventory/getTypesInventoryQuery'
 import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import {
-  BrandType,
+  InventoryBrand,
   InventoriesResponse,
   InventoryNamesClass,
   InventoryTrash,
@@ -41,7 +41,7 @@ export class InventoryQuery implements IInventoryQuery {
   inventoryBrands(data: GetInventoriesBrandResponse) {
     try {
       const property = Object.keys(data)[0]
-      const response = plainToInstance(BrandType, data[property])
+      const response = plainToInstance(InventoryBrand, data[property])
 
       if (response) return response
     } catch (error) {

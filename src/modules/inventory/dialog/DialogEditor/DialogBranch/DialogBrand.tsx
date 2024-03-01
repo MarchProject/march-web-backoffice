@@ -1,8 +1,8 @@
 import { DialogM } from '@/components/common/Dialog/DialogM'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { BrandViewMain } from './view/Container'
-import { InventoryBrand } from '@/core/model/inventory'
+import { BranchViewMain } from './view/Container'
+import { InventoryBranch } from '@/core/model/inventory'
 import {
   AutocompleteInputChangeReason,
   InputAdornment,
@@ -17,10 +17,10 @@ import { tkeys } from '@/translations/i18n'
 interface IDialogBrandProps {
   open: boolean
   handleClose: () => void
-  inventoriesBrandData: InventoryBrand[]
-  deleteBrandHandle: (id: string) => void
-  updateBrandHandle: (data: any) => void
-  handleSearchInventoryBrand: (
+  inventoriesBranchData: InventoryBranch[]
+  deleteBranchHandle: (id: string) => void
+  updateBranchHandle: (data: any) => void
+  handleSearchInventoryBranch: (
     event: React.SyntheticEvent,
     value: string,
     reason: AutocompleteInputChangeReason,
@@ -28,17 +28,17 @@ interface IDialogBrandProps {
   isEditPage?: boolean
 }
 
-export const DialogBrand = ({
+export const DialogBranch = ({
   open,
   handleClose,
-  inventoriesBrandData,
-  deleteBrandHandle,
-  updateBrandHandle,
-  handleSearchInventoryBrand,
+  inventoriesBranchData,
+  deleteBranchHandle,
+  updateBranchHandle,
+  handleSearchInventoryBranch,
   isEditPage = false,
 }: IDialogBrandProps) => {
   const { t: trans }: any = useTranslation()
-  const keys = tkeys.Inventory.MainPage.dialog.brand
+  const keys = tkeys.Inventory.MainPage.dialog.branch
   const searchFieldRef = useRef(null)
   const { zIndexLoading } = useLoadingContext()
   const handleReset = () => {
@@ -98,7 +98,7 @@ export const DialogBrand = ({
                     ),
                   }}
                   onChange={debounce((e) => {
-                    handleSearchInventoryBrand(
+                    handleSearchInventoryBranch(
                       undefined,
                       e.target.value,
                       undefined,
@@ -116,10 +116,10 @@ export const DialogBrand = ({
       contentRender={() => {
         return (
           <>
-            <BrandViewMain
-              inventoriesBrandData={inventoriesBrandData}
-              deleteBrandHandle={deleteBrandHandle}
-              updateBrandHandle={updateBrandHandle}
+            <BranchViewMain
+              inventoriesBranchData={inventoriesBranchData}
+              deleteBranchHandle={deleteBranchHandle}
+              updateBranchHandle={updateBranchHandle}
               setIsEdit={setIsEdit}
               isEditPage={isEditPage}
               handleClose={handleClose}

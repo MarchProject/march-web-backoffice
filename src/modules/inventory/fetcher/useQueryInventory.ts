@@ -30,13 +30,19 @@ export const useQueryInventory = ({
       {
         variables: { id: idInventory },
         onCompleted: (data) => {
+          console.log({ data })
           if (data?.getInventory?.status?.code === StatusCode.SUCCESS) {
-            const _inventory = plainToInstance(
-              Inventory,
-              data.getInventory.data,
-            )
-            reset(transfromInventory(_inventory))
-            setInventory(_inventory)
+            try {
+              const _inventory = plainToInstance(
+                Inventory,
+                data.getInventory.data,
+              )
+              console.log({ _inventory })
+              reset(transfromInventory(_inventory))
+              setInventory(_inventory)
+            } catch (err) {
+              console.log({ err })
+            }
           }
         },
         onError: () => {

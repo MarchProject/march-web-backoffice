@@ -5,9 +5,15 @@ import { ResponseData } from '@/types/response'
 export const uploadInventoryMutation = gql`
   mutation uploadInventory($input: UploadInventoryInput!) {
     uploadInventory(input: $input) {
-      id
-      success
-      reason
+      data {
+        id
+        success
+        reason
+      }
+      status {
+        code
+        message
+      }
     }
   }
 `

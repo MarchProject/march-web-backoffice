@@ -119,6 +119,7 @@ export const DialogType = ({
               updateTypeHandle={updateTypeHandle}
               setIsEdit={setIsEdit}
               isEditPage={isEditPage}
+              handleClose={handleClose}
             />
           </>
         )

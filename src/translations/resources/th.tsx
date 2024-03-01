@@ -43,6 +43,7 @@ export const th = {
       filter: {
         label: 'กรองสินค้า',
         brand: 'ยี่ห้อสินค้า',
+        branch: 'สาขา',
         type: 'ประเภทสินค้่า',
       },
       menu: {
@@ -50,12 +51,15 @@ export const th = {
         upload: 'อัปโหลด Csv',
         type: 'ประเภท',
         brand: 'ยี่ห้อ',
+        branch: 'สาขา',
         trash: 'ถังขยะ',
       },
       table: {
         name: 'ชื่อสินค้า',
         type: 'ประเภทสินค้า',
         brand: 'ยี่ห้อสินค้า',
+        branch: 'สาขา',
+        serialNumber: 'serial number',
         amount: 'จำนวน',
         sold: 'ขายแล้ว',
         price: 'ราคา',
@@ -88,6 +92,7 @@ export const th = {
             fields: {
               type: 'ประเภทสินค้า',
               brand: 'ยี่ห้อสินค้า',
+              branch: 'สาขา',
             },
           },
           inventory: {
@@ -96,6 +101,7 @@ export const th = {
             fields: {
               amount: 'จำนวน',
               sku: 'SKU',
+              serialNumber: 'หมายเลขประจำตัวผลิตภัณฑ์',
               reorder: 'ขั้นต่ำจำนวนสินค้า',
             },
           },
@@ -209,6 +215,40 @@ export const th = {
             sub: 'เพิ่มยี่ห้อสำหรับสินค้า',
           },
           search: 'ค้นหายี่ห้อ',
+          mode: {
+            view: {
+              label: 'ดู',
+              field: {
+                createdBy: 'สร้างโดย',
+                on: 'เมื่อ',
+              },
+            },
+            create: {
+              label: 'สร้าง',
+              field: {
+                name: 'ชื่อ',
+                description: 'คำอธิบาย',
+              },
+            },
+            update: {
+              label: 'อัปเดต',
+              field: {
+                name: 'ชื่อ',
+                description: 'คำอธิบาย',
+                createdAt: 'สร้างเมื่อ',
+                createdBy: 'สร้างโดย',
+                updatedAt: 'อัปเดตเมื่อ',
+                updatedBy: 'อัปเดตโดย',
+              },
+            },
+          },
+        },
+        branch: {
+          header: {
+            lable: 'สาขา',
+            sub: 'เพิ่มสาขาสำหรับสินค้า',
+          },
+          search: 'ค้นหาสาขา',
           mode: {
             view: {
               label: 'ดู',

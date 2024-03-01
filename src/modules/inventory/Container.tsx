@@ -20,6 +20,7 @@ const ContainerInventory = () => {
       handleClearChange,
       inventoryTypeValue,
       inventoryBrandValue,
+      inventoryBranchValue,
       handleFavoriteChange,
       favorite,
       setTriggerInventory,
@@ -34,9 +35,19 @@ const ContainerInventory = () => {
       inventoriesBrandLoading,
       handleSearchInventoryBrand,
     },
-    handleInventory: { handleTypeChange, handleBrandChange },
+    inventoriesBranch: {
+      inventoriesBranchData,
+      inventoriesBranchLoading,
+      handleSearchInventoryBranch,
+    },
+    handleInventory: {
+      handleTypeChange,
+      handleBrandChange,
+      handleBranchChange,
+    },
     setTriggerType,
     setTriggerBrand,
+    setTriggerBranch,
     favoriteInventoryHandle,
     InventoryNames: { inventoryNamesData, setTriggerGetInventoryNames },
     trash: { setTriggerTrash, trashData },
@@ -52,6 +63,7 @@ const ContainerInventory = () => {
                 setSearch={handleChangeInventory}
                 handleTypeChange={handleTypeChange}
                 handleBrandChange={handleBrandChange}
+                handleBranchChange={handleBranchChange}
                 handleClearChange={handleClearChange}
                 inventoryType={{
                   inventoriesTypeData,
@@ -67,14 +79,21 @@ const ContainerInventory = () => {
                 setTriggerGetInventoryNames={setTriggerGetInventoryNames}
                 inventoryTypeValue={inventoryTypeValue}
                 inventoryBrandValue={inventoryBrandValue}
+                inventoryBranchValue={inventoryBranchValue}
                 handleFavoriteChange={handleFavoriteChange}
                 setTriggerType={setTriggerType}
                 setTriggerBrand={setTriggerBrand}
+                setTriggerBranch={setTriggerBranch}
                 setTriggerInventory={setTriggerInventory}
                 favorite={favorite}
                 trash={{
                   setTriggerTrash,
                   trashData,
+                }}
+                inventoryBranch={{
+                  inventoriesBranchData,
+                  inventoriesBranchLoading,
+                  handleSearchInventoryBranch,
                 }}
               />
               <DataTableMarch

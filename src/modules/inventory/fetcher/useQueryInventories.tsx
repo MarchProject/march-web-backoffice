@@ -5,9 +5,10 @@ import {
   getInventoriesQuery,
 } from '@/core/gql/inventory/getInventoriesQuery'
 import {
-  BrandType,
+  InventoryBrand,
   InventoriesResponse,
   InventoryType,
+  InventoryBranch,
 } from '@/core/model/inventory'
 import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
@@ -18,6 +19,7 @@ import { useEffect, useState } from 'react'
 export const useQueryInventories = ({
   notification,
   triggerBrand,
+  triggerBranch,
   triggerType,
   triggerFavorite,
   triggerGetInventoryNames,
@@ -27,7 +29,8 @@ export const useQueryInventories = ({
   const [limit, setLimit] = useState(15)
   const [search, setSearch] = useState('')
   const [type, setType] = useState<InventoryType[]>([])
-  const [brand, setBrand] = useState<BrandType[]>([])
+  const [brand, setBrand] = useState<InventoryBrand[]>([])
+  const [branch, setBranch] = useState<InventoryBranch[]>([])
   const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
   const [inventoriesData, setInventoriesData] = useState<InventoriesResponse>()
 
@@ -39,12 +42,16 @@ export const useQueryInventories = ({
     {
       onCompleted: (data) => {
         if (data?.getInventories?.status?.code === StatusCode.SUCCESS) {
-          const response = plainToInstance(
-            InventoriesResponse,
-            data.getInventories.data,
-          )
-
-          if (response) setInventoriesData(response)
+          try {
+            const response = plainToInstance(
+              InventoriesResponse,
+              data.getInventories.data,
+            )
+            console.log({ response })
+            if (response) setInventoriesData(response)
+          } catch (error) {
+            console.log({ error })
+          }
         }
       },
       onError: () => {
@@ -67,6 +74,7 @@ export const useQueryInventories = ({
     setSearch('')
     setType([])
     setBrand([])
+    setBranch([])
     setFavorite('DEFAULT')
   }
 
@@ -84,11 +92,15 @@ export const useQueryInventories = ({
           brand: brand.map((e: any) => {
             return e.id
           }),
+          branch: branch.map((e: any) => {
+            return e.id
+          }),
         },
       },
     })
   }, [
     triggerBrand,
+    triggerBranch,
     triggerType,
     triggerFavorite,
     triggerGetInventoryNames,
@@ -100,6 +112,7 @@ export const useQueryInventories = ({
     favorite,
     type,
     brand,
+    branch,
   ])
 
   useEffect(() => {
@@ -130,10 +143,12 @@ export const useQueryInventories = ({
     setType,
     setPage,
     setBrand,
+    setBranch,
     setFavorite,
     favorite,
     handleFavoriteChange,
     inventoryTypeValue: type,
     inventoryBrandValue: brand,
+    inventoryBranchValue: branch,
   }
 }

@@ -1,7 +1,7 @@
 import { DeleteTypeInventoryResponse } from '@/core/gql/inventory/deleteTypeInventoryMutation'
 import {
   DeleteTypeInventoryVariables,
-  deleteTypeInventoryMutation,
+  deleteInventoryTypeMutation,
 } from '@/core/gql/inventory/deleteTypeInventoryMutation'
 import { useCallback } from 'react'
 import {
@@ -20,13 +20,13 @@ export const useDeleteTypeInventoryHandler = ({
   const [deleteInventoryType, { loading }] = useMutation<
     DeleteTypeInventoryResponse,
     DeleteTypeInventoryVariables
-  >(deleteTypeInventoryMutation, {
+  >(deleteInventoryTypeMutation, {
     onCompleted: (data) => {
-      if (data?.deleteTypeInventory?.status?.code === StatusCode.SUCCESS) {
+      if (data?.deleteInventoryType?.status?.code === StatusCode.SUCCESS) {
         notification(notificationDeleteSuccessProp('type'))
         triggerType()
         triggerTrash()
-      } else if (data?.deleteTypeInventory?.status?.code === StatusCode.ONUSE) {
+      } else if (data?.deleteInventoryType?.status?.code === StatusCode.ONUSE) {
         notification(notificationTypeUsedDeleteErrorProp('type'))
       } else {
         notification(notificationDeleteErrorProp('type'))

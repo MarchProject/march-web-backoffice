@@ -1,8 +1,8 @@
 import { useNotificationContext } from '@/context/notification'
 import { GetBrandInventoryVariables } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
-import { getBrandsInventoryQuery } from '@/core/gql/inventory/getBrandsInventoryQuery'
-import { BrandType } from '@/core/model/inventory'
+import { getInventoryBrandsQuery } from '@/core/gql/inventory/getBrandsInventoryQuery'
+import { InventoryBrand } from '@/core/model/inventory'
 import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
@@ -19,21 +19,21 @@ export const useQueryInventoryBrand = ({
 }: IUseQueryInventoryBrandProps) => {
   const { notification } = useNotificationContext()
   const [search, setSearch] = useState<string>('')
-  const [inventoriesBrandData, setInventoriesBrandData] = useState<BrandType[]>(
-    [],
-  )
+  const [inventoriesBrandData, setInventoriesBrandData] = useState<
+    InventoryBrand[]
+  >([])
 
   const [
-    getBrandTypesTrigger,
-    { loading: getBrandTypesLoading, error: getBrandTypesError },
+    getInventoryBrandsTrigger,
+    { loading: getInventoryBrandsLoading, error: getInventoryBrandsError },
   ] = useLazyQuery<GetInventoriesBrandResponse, GetBrandInventoryVariables>(
-    getBrandsInventoryQuery,
+    getInventoryBrandsQuery,
     {
       onCompleted: (data) => {
-        if (data?.getBrandsInventory?.status?.code === StatusCode.SUCCESS) {
+        if (data?.getInventoryBrands?.status?.code === StatusCode.SUCCESS) {
           const response = plainToInstance(
-            BrandType,
-            data.getBrandsInventory.data,
+            InventoryBrand,
+            data.getInventoryBrands.data,
           )
           if (response) setInventoriesBrandData(response)
         } else {
@@ -60,19 +60,19 @@ export const useQueryInventoryBrand = ({
   )
 
   useEffect(() => {
-    getBrandTypesTrigger({
+    getInventoryBrandsTrigger({
       variables: {
         params: {
           search,
         },
       },
     })
-  }, [getBrandTypesTrigger, search, trigger])
+  }, [getInventoryBrandsTrigger, search, trigger])
 
   return {
     inventoriesBrandData: inventoriesBrandData,
-    inventoriesBrandDataError: getBrandTypesError,
-    inventoriesBrandLoading: getBrandTypesLoading,
+    inventoriesBrandDataError: getInventoryBrandsError,
+    inventoriesBrandLoading: getInventoryBrandsLoading,
     handleSearchInventoryBrand: onInputBrandChange,
   }
 }

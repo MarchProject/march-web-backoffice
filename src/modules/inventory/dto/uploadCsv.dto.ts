@@ -9,6 +9,7 @@ export const tranFromUploadCsv = (
   validatedValue: IValidatedValues,
   inventoriesTypeData: GetTypesInventoryType[],
   inventoriesBrandData: GetTypesInventoryType[],
+  inventoriesBranchData: GetTypesInventoryType[],
 ): UploadInventoryVariable => {
   const mapResponse = validatedValue.validData.map((v) => {
     const {
@@ -18,15 +19,18 @@ export const tranFromUploadCsv = (
       amount,
       type,
       brand,
+      branch,
       sku,
       reorderLevel,
       price,
       priceMember,
       expiryDate,
+      serialNumber,
       description,
     } = v
     const typeId = inventoriesTypeData.find((e) => e._name === type)
     const brandId = inventoriesBrandData.find((e) => e._name === brand)
+    const branchId = inventoriesBranchData.find((e) => e._name === branch)
     const weight = defaultTo(get(v, 'weight'), undefined)
     const width = defaultTo(get(v, 'width'), undefined)
     const length = defaultTo(get(v, 'length'), undefined)
@@ -49,10 +53,12 @@ export const tranFromUploadCsv = (
       id: defaultTo(id, ''),
       name: defaultTo(name, ''),
       inventoryTypeId: typeId.id,
-      brandTypeId: brandId.id,
+      inventoryBrandId: brandId.id,
+      inventoryBranchId: branchId.id,
       favorite: favorite === '1' ? true : false,
       amount: parseInt(defaultTo(amount, '0')),
       sku: sku,
+      serialNumber: serialNumber,
       reorderLevel: parseInt(reorderLevel),
       size: size,
       price: parseInt(price),

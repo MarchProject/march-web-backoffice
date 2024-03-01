@@ -12,7 +12,18 @@ export class InventoryNamesClass {
     this._name = name.split('|')[0]
   }
 }
-export class BrandType  extends Model{
+export class InventoryBrand extends Model {
+  _name: string
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name.split('|')[0]
+  }
+  description: string
+}
+export class InventoryBranch extends Model {
   _name: string
   get name(): string {
     return this._name
@@ -71,12 +82,14 @@ export class Inventory extends Model {
   sold: number
   price: number
   sku: string
+  serialNumber: string
   reorderLevel: number
   size: string
   favorite: boolean
   priceMember: number
   _inventoryType: InventoryType
-  _brandType: BrandType
+  _inventoryBrand: InventoryBrand
+  _inventoryBranch: InventoryBranch
   description: string
   _expiryDate: string
   formattedExpiryDate: string
@@ -98,13 +111,22 @@ export class Inventory extends Model {
     this._inventoryType = inventoryType
   }
 
-  get brandType(): BrandType {
-    return this._brandType
+  get inventoryBrand(): InventoryBrand {
+    return this._inventoryBrand
   }
 
-  set brandType(brandType: BrandType) {
-    brandType.name = brandType.name.split('|')[0]
-    this._brandType = brandType
+  set inventoryBrand(inventoryBrand: InventoryBrand) {
+    inventoryBrand.name = inventoryBrand.name.split('|')[0]
+    this._inventoryBrand = inventoryBrand
+  }
+
+  get inventoryBranch(): InventoryBranch {
+    return this._inventoryBranch
+  }
+
+  set inventoryBranch(inventoryBranch: InventoryBranch) {
+    inventoryBranch.name = inventoryBranch.name.split('|')[0]
+    this._inventoryBranch = inventoryBranch
   }
 
   get expiryDate() {
@@ -135,6 +157,7 @@ export class TrashInventory extends Model {
 export class InventoryTrash {
   _inventory: TrashInventory[]
   _brand: TrashInventory[]
+  _branch: TrashInventory[]
   _type: TrashInventory[]
 
   get inventory(): TrashInventory[] {
@@ -151,6 +174,14 @@ export class InventoryTrash {
 
   set brand(brand: TrashInventory[]) {
     this._brand = plainToInstance(TrashInventory, brand)
+  }
+  
+  get branch(): TrashInventory[] {
+    return this._branch
+  }
+
+  set branch(branch: TrashInventory[]) {
+    this._branch = plainToInstance(TrashInventory, branch)
   }
 
   get type(): TrashInventory[] {

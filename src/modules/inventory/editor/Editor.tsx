@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { DialogType } from '../dialog/DialogEditor/DialogType/DialogType'
 import { DialogBrand } from '../dialog/DialogEditor/DialogBrand/DialogBrand'
+import { DialogBranch } from '../dialog/DialogEditor/DialogBranch/DialogBrand'
 interface IEditorInventoryPage {
   mode: EnumModeEditorPage
 }
@@ -40,11 +41,14 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
     formHandler: { control, onSubmit, setValue },
     inventoriesType: { inventoriesTypeData, inventoriesTypeLoading },
     inventoriesBrand: { inventoriesBrandData, inventoriesBrandLoading },
+    inventoriesBranch: { inventoriesBranchData, inventoriesBranchLoading },
     inventory: { deleteInventoryHandle },
     dialogType: { openDialogType, handleCloseType, handleOpenType },
     upsertTypeHandle: { updateTypeHandle },
     dialogBrand: { openDialogBrand, handleCloseBrand, handleOpenBrand },
+    dialogBranch: { openDialogBranch, handleCloseBranch, handleOpenBranch },
     upsertBrandHandle: { updateBrandHandle },
+    upsertBranchHandle: { updateBranchHandle },
   } = useEditorInventoryController({ idInventory })
 
   const styleIconPageMarch: React.CSSProperties = {
@@ -76,6 +80,15 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
         deleteBrandHandle={() => {}}
         updateBrandHandle={updateBrandHandle}
         handleSearchInventoryBrand={() => {}}
+        isEditPage={true}
+      />
+      <DialogBranch
+        open={openDialogBranch}
+        handleClose={handleCloseBranch}
+        inventoriesBranchData={inventoriesBranchData}
+        deleteBranchHandle={() => {}}
+        updateBranchHandle={updateBranchHandle}
+        handleSearchInventoryBranch={() => {}}
         isEditPage={true}
       />
       <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
@@ -216,6 +229,15 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                             variant="outlined"
                             onClick={handleOpenBrand}
                           />
+                          <ButtonForm
+                            classNames="!w-[150px] !normal-case"
+                            label={`${trans(
+                              tkeys.Inventory.MainPage.menu.branch,
+                            )} +`}
+                            color={'primary'}
+                            variant="outlined"
+                            onClick={handleOpenBranch}
+                          />
                         </div>
                       </div>
                       <Card variant="outlined" sx={{ marginTop: '15px' }}>
@@ -274,6 +296,33 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               loading={inventoriesBrandLoading}
                             />
                           </div>
+                          <div className="p-2 pb-0">
+                            <AutocompleteSelectAsyncFrom
+                              // inputRef={typeFieldRef}
+                              name="branch"
+                              control={control}
+                              id="branch"
+                              disabled={disabled}
+                              classNames=" mx-auto mt-[10px]"
+                              labelIndex="name"
+                              valueIndex="id"
+                              multiple={false}
+                              options={inventoriesBranchData}
+                              inputLabel={{
+                                label: trans(
+                                  keyEditor.type.category.fields.branch,
+                                ),
+                                required: true,
+                                classNames:
+                                  'text-base !text-secondary !font-semibold',
+                              }}
+                              InputProps={{
+                                label: 'Branch',
+                                placeholder: 'Branch',
+                              }}
+                              loading={inventoriesBranchLoading}
+                            />
+                          </div>
                         </CardContent>
                       </Card>
                     </div>
@@ -318,6 +367,30 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 inputLabel={{
                                   label: trans(
                                     keyEditor.type.inventory.fields.sku,
+                                  ),
+                                  required: false,
+                                  classNames:
+                                    'text-base !text-secondary !font-semibold',
+                                }}
+                                type={'text'}
+                                variant={'outlined'}
+                                disabled={disabled}
+                                normalizes={[max(120)]}
+                              />
+                            </div>
+                            <div className="lg:col-span-8 p-2">
+                              <InputForm
+                                // required
+                                control={control}
+                                classNames=""
+                                id="serialNumber"
+                                name="serialNumber"
+                                // label='Item Name'
+                                placeholder="#123"
+                                inputLabel={{
+                                  label: trans(
+                                    keyEditor.type.inventory.fields
+                                      .serialNumber,
                                   ),
                                   required: false,
                                   classNames:

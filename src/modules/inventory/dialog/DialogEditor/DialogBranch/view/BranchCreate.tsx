@@ -5,8 +5,8 @@ import { max } from '@/utils/common/normalizeInput'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface ITypeObjUpdate {
-  updateTypeHandle: (data: {
+interface IBranchObjUpdate {
+  updateBranchHandle: (data: {
     id: string
     name: string
     description?: string
@@ -16,15 +16,15 @@ interface ITypeObjUpdate {
   isEditPage: boolean
 }
 
-export const TypeObjCreate = ({
+export const BranchObjCreate = ({
   setValueMode,
-  updateTypeHandle,
+  updateBranchHandle,
   isEditPage,
   handleClose,
-}: ITypeObjUpdate) => {
+}: IBranchObjUpdate) => {
   const { t: trans }: any = useTranslation()
-  const keys = tkeys.Inventory.MainPage.dialog.type.mode.create
-  const [inventoryTypeDataValue, setInventoryTypeDataValue] = useState({
+  const keys = tkeys.Inventory.MainPage.dialog.branch.mode.create
+  const [inventoryBranchDataValue, setInventoryBranchDataValue] = useState({
     id: null,
     name: null,
     description: null,
@@ -44,9 +44,9 @@ export const TypeObjCreate = ({
                 required: true,
               }}
               variant="outlined"
-              value={inventoryTypeDataValue?.name}
+              value={inventoryBranchDataValue?.name}
               onChange={(e) => {
-                setInventoryTypeDataValue((prev) => ({
+                setInventoryBranchDataValue((prev) => ({
                   ...prev,
                   name: e.target.value,
                 }))
@@ -64,9 +64,9 @@ export const TypeObjCreate = ({
                 required: false,
               }}
               variant="outlined"
-              value={inventoryTypeDataValue?.description}
+              value={inventoryBranchDataValue?.description}
               onChange={(e) => {
-                setInventoryTypeDataValue((prev) => ({
+                setInventoryBranchDataValue((prev) => ({
                   ...prev,
                   description: e.target.value,
                 }))
@@ -92,14 +92,13 @@ export const TypeObjCreate = ({
             label={trans(tkeys.button.create)}
             color={'primary'}
             variant="contained"
-            disabled={!inventoryTypeDataValue?.name}
+            disabled={!inventoryBranchDataValue?.name}
             onClick={() => {
-              updateTypeHandle({
+              updateBranchHandle({
                 id: undefined,
-                description: inventoryTypeDataValue?.description,
-                name: inventoryTypeDataValue?.name,
+                description: inventoryBranchDataValue?.description,
+                name: inventoryBranchDataValue?.name,
               })
-              setValueMode(!isEditPage ? 'view' : 'create')
               if (!isEditPage) {
                 setValueMode('view')
               } else {

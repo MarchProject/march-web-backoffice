@@ -7,7 +7,8 @@ import React, { useRef, useState } from 'react'
 import { BsBoxSeam } from 'react-icons/bs'
 import { RiSearchLine } from 'react-icons/ri'
 import {
-  BrandType,
+  InventoryBranch,
+  InventoryBrand,
   InventoryNamesClass,
   InventoryTrash,
   InventoryType,
@@ -27,10 +28,12 @@ type InventoryManagementProps = {
   setSearch: (value: string) => void
   handleClearChange: () => void
   inventorySearch: string
-  inventoryBrandValue: BrandType[]
+  inventoryBrandValue: InventoryBrand[]
+  inventoryBranchValue: InventoryBranch[]
   inventoryTypeValue: InventoryType[]
   handleTypeChange: (event, value, reason) => void
   handleBrandChange: (event, value, reason) => void
+  handleBranchChange: (event, value, reason) => void
   inventoryType: {
     setInventoryType?: (value: string) => void
     inventoriesTypeData: InventoryType[]
@@ -43,9 +46,19 @@ type InventoryManagementProps = {
   }
   inventoryBrand: {
     setInventoryBrand?: (value: string) => void
-    inventoriesBrandData: BrandType[]
+    inventoriesBrandData: InventoryBrand[]
     inventoriesBrandLoading: boolean
     handleSearchInventoryBrand: (
+      event: React.SyntheticEvent,
+      value: string,
+      reason: AutocompleteInputChangeReason,
+    ) => void
+  }
+  inventoryBranch: {
+    setInventoryBranch?: (value: string) => void
+    inventoriesBranchData: InventoryBrand[]
+    inventoriesBranchLoading: boolean
+    handleSearchInventoryBranch: (
       event: React.SyntheticEvent,
       value: string,
       reason: AutocompleteInputChangeReason,
@@ -54,6 +67,7 @@ type InventoryManagementProps = {
   setTriggerType: (value: boolean) => void
   setTriggerGetInventoryNames: (value: boolean) => void
   setTriggerBrand: (value: boolean) => void
+  setTriggerBranch: (value: boolean) => void
   setTriggerInventory: (value: boolean) => void
   handleFavoriteChange: () => void
   favorite: IFavoriteStatus
@@ -67,10 +81,12 @@ type InventoryManagementProps = {
 export const InventoryManagement = ({
   setSearch,
   inventoryBrandValue,
+  inventoryBranchValue,
   inventoryTypeValue,
   handleTypeChange,
   handleClearChange,
   handleBrandChange,
+  handleBranchChange,
   setTriggerGetInventoryNames,
   inventoryType: {
     inventoriesTypeData,
@@ -82,8 +98,14 @@ export const InventoryManagement = ({
     inventoriesBrandLoading,
     handleSearchInventoryBrand,
   },
+  inventoryBranch: {
+    inventoriesBranchData,
+    inventoriesBranchLoading,
+    handleSearchInventoryBranch,
+  },
   setTriggerType,
   setTriggerBrand,
+  setTriggerBranch,
   setTriggerInventory,
   handleFavoriteChange,
   favorite,
@@ -93,6 +115,7 @@ export const InventoryManagement = ({
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
   const brandFieldRef = useRef(null)
+  const branchFieldRef = useRef(null)
   const { zIndexLoading } = useLoadingContext()
   const handleReset = () => {
     handleClearChange()
@@ -138,6 +161,23 @@ export const InventoryManagement = ({
                   onChange={handleBrandChange}
                   loading={inventoriesBrandLoading}
                   onInputChange={handleSearchInventoryBrand}
+                />
+                <AutocompleteSelectAsync
+                  inputRef={branchFieldRef}
+                  value={inventoryBranchValue}
+                  classNames="mx-auto mt-[10px]"
+                  id="branchFilter"
+                  labelIndex="name"
+                  valueIndex={'id'}
+                  multiple={true}
+                  options={inventoriesBranchData}
+                  InputProps={{
+                    label: trans(tkeys.Inventory.MainPage.filter.branch),
+                    placeholder: trans(tkeys.Inventory.MainPage.filter.branch),
+                  }}
+                  onChange={handleBranchChange}
+                  loading={inventoriesBranchLoading}
+                  onInputChange={handleSearchInventoryBranch}
                 />
                 <AutocompleteSelectAsync
                   inputRef={typeFieldRef}
@@ -267,6 +307,9 @@ export const InventoryManagement = ({
               handleSearchInventoryBrand={handleSearchInventoryBrand}
               trashData={trashData}
               setTriggerTrash={setTriggerTrash}
+              inventoriesBranchData={inventoriesBranchData}
+              handleSearchInventoryBranch={handleSearchInventoryBranch}
+              setTriggerBranch={setTriggerBranch}
             />
           </div>
         </div>

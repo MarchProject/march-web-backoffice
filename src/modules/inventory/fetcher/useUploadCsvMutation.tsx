@@ -17,6 +17,7 @@ import { StatusCode } from '@/types/response'
 export const useUploadCsvMutation = ({
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   setTriggerGetInventoryNames,
   handleClose,
 }) => {
@@ -58,10 +59,16 @@ export const useUploadCsvMutation = ({
           validatedValues[0],
           inventoriesTypeData,
           inventoriesBrandData,
+          inventoriesBranchData,
         ),
       })
     },
-    [inventoriesBrandData, inventoriesTypeData, uploadInventory],
+    [
+      inventoriesBrandData,
+      inventoriesBranchData,
+      inventoriesTypeData,
+      uploadInventory,
+    ],
   )
 
   return {

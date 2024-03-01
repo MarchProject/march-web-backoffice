@@ -1,6 +1,6 @@
 import { UpsertTypeInventoryVariables } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { UpsertTypeInventoryResponse } from '@/core/gql/inventory/upsertTypeInventoryMutation'
-import { upsertTypeInventoryMutation } from '@/core/gql/inventory/upsertTypeInventoryMutation'
+import { upsertInventoryTypeMutation } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { useCallback, useState } from 'react'
 import {
   notificationUpdateErrorProp,
@@ -22,10 +22,10 @@ export const useUpsertTypeHandle = ({
 
   const [upsertTypeInventory, { data: upsertInventoryTypeData, loading }] =
     useMutation<UpsertTypeInventoryResponse, UpsertTypeInventoryVariables>(
-      upsertTypeInventoryMutation,
+      upsertInventoryTypeMutation,
       {
         onCompleted: (data) => {
-          if (data?.upsertTypeInventory?.status?.code === StatusCode.SUCCESS) {
+          if (data?.upsertInventoryType?.status?.code === StatusCode.SUCCESS) {
             notification(notificationUpdateSuccessProp('type', flagCreate))
             triggerType()
           } else {
@@ -33,7 +33,7 @@ export const useUpsertTypeHandle = ({
               notificationUpdateErrorProp(
                 'type',
                 flagCreate,
-                data?.upsertTypeInventory?.status?.message,
+                data?.upsertInventoryType?.status?.message,
               ),
             )
           }
@@ -70,6 +70,6 @@ export const useUpsertTypeHandle = ({
     upsertInventoryType: upsertTypeInventory,
     updateTypeHandle,
     upsertInventoryTypeLoading: loading,
-    upsertInventoryTypeData: upsertInventoryTypeData?.upsertTypeInventory?.data,
+    upsertInventoryTypeData: upsertInventoryTypeData?.upsertInventoryType?.data,
   }
 }

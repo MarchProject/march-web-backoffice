@@ -6,12 +6,14 @@ import { useUploadCsvMutation } from '../../../fetcher/useUploadCsvMutation'
 export const useControllerUplaod = ({
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   setTriggerGetInventoryNames,
   handleClose,
 }) => {
   const { uploadCsvCallback, isPass, setIsPass } = useUploadCsvMutation({
     inventoriesTypeData,
     inventoriesBrandData,
+    inventoriesBranchData,
     setTriggerGetInventoryNames,
     handleClose,
   })

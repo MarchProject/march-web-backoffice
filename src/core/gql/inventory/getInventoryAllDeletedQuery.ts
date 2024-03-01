@@ -40,6 +40,14 @@ export const getInventoryAllDeletedQuery = gql`
           updatedAt
           createdAt
         }
+        branch {
+          id
+          name
+          createdBy
+          updatedBy
+          updatedAt
+          createdAt
+        }
         type {
           id
           name

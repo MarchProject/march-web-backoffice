@@ -12,6 +12,7 @@ import {
   notificationEditorValidErrorProp,
 } from '@/core/notification'
 import {
+  useHandleDialogBranch,
   useHandleDialogBrand,
   useHandleDialogType,
 } from '../dialog/DialogEditor/controller'
@@ -21,11 +22,14 @@ import { useQueryInventory } from '../fetcher/useQueryInventory'
 import { useUpsertInventory } from '../fetcher/useUpsertInventory'
 import { useDeleteInventory } from '../fetcher/useDeleteInventory'
 import { useLoadingHandler } from '@/core/utils/hook/useLoadingHook'
+import { useQueryInventoryBranch } from '../fetcher/useQueryInventoryBranch'
+import { useUpsertBranchHandler } from '../fetcher/useUpsertBranch'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
   const [triggerType, setTriggerType] = useState(true)
   const [triggerBrand, setTriggerBrand] = useState(true)
+  const [triggerBranch, setTriggerBranch] = useState(true)
 
   const triggerTypeCB = useCallback(() => {
     setTriggerType((e: boolean) => !e)
@@ -35,11 +39,18 @@ export const useEditorInventoryController = ({ idInventory }) => {
     setTriggerBrand((e: boolean) => !e)
   }, [setTriggerBrand])
 
+  const triggerBranchCB = useCallback(() => {
+    setTriggerBranch((e: boolean) => !e)
+  }, [setTriggerBranch])
+
   const { openDialogType, handleCloseType, handleOpenType } =
     useHandleDialogType()
 
   const { openDialogBrand, handleCloseBrand, handleOpenBrand } =
     useHandleDialogBrand()
+
+  const { openDialogBranch, handleCloseBranch, handleOpenBranch } =
+    useHandleDialogBranch()
 
   const {
     register,
@@ -66,6 +77,13 @@ export const useEditorInventoryController = ({ idInventory }) => {
     handleSearchInventoryBrand,
   } = useQueryInventoryBrand({ trigger: triggerBrand })
 
+  const {
+    inventoriesBranchData,
+    inventoriesBranchDataError,
+    inventoriesBranchLoading,
+    handleSearchInventoryBranch,
+  } = useQueryInventoryBranch({ trigger: triggerBranch })
+
   const { inventory, mainLoading, upsertInventory, deleteInventory } =
     useQueryHandler({
       getInventoryProps: { reset, idInventory },
@@ -79,7 +97,10 @@ export const useEditorInventoryController = ({ idInventory }) => {
     })
 
   useLoadingHandler(
-    mainLoading || inventoriesBrandLoading || inventoriesTypeLoading,
+    mainLoading ||
+      inventoriesBrandLoading ||
+      inventoriesTypeLoading ||
+      inventoriesBranchLoading,
   )
 
   const { onError, onSubmit: onSubmitCallback } = useSubmitForm({
@@ -98,12 +119,21 @@ export const useEditorInventoryController = ({ idInventory }) => {
   })
 
   const {
-    upsertBrandType,
+    upsertInventoryBrand,
     updateBrandHandle,
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
   } = useUpsertBrandHandler({
     triggerBrand: triggerBrandCB,
+  })
+
+  const {
+    upsertInventoryBranch,
+    updateBranchHandle,
+    upsertInventoryBranchLoading,
+    upsertInventoryBranchData,
+  } = useUpsertBranchHandler({
+    triggerBranch: triggerBranchCB,
   })
 
   return {
@@ -128,6 +158,12 @@ export const useEditorInventoryController = ({ idInventory }) => {
       inventoriesBrandLoading,
       handleSearchInventoryBrand,
     },
+    inventoriesBranch: {
+      inventoriesBranchData,
+      inventoriesBranchDataError,
+      inventoriesBranchLoading,
+      handleSearchInventoryBranch,
+    },
     inventory: {
       inventory,
       deleteInventoryHandle: deleteInventory.deleteInventoryHandle,
@@ -139,18 +175,30 @@ export const useEditorInventoryController = ({ idInventory }) => {
       upsertInventoryTypeLoading,
     },
     upsertBrandHandle: {
-      upsertBrandType,
+      upsertInventoryBrand,
       updateBrandHandle,
       upsertInventoryBrandLoading,
       upsertInventoryBrandData,
     },
+    upsertBranchHandle: {
+      upsertInventoryBranch,
+      updateBranchHandle,
+      upsertInventoryBranchLoading,
+      upsertInventoryBranchData,
+    },
     setTriggerType: setTriggerType,
     setTriggerBrand: setTriggerBrand,
+    setTriggerBranch: setTriggerBranch,
     dialogType: { openDialogType, handleCloseType, handleOpenType },
     dialogBrand: {
       openDialogBrand,
       handleCloseBrand,
       handleOpenBrand,
+    },
+    dialogBranch: {
+      openDialogBranch,
+      handleCloseBranch,
+      handleOpenBranch,
     },
   }
 }
@@ -174,8 +222,10 @@ const useFormHandler = () => {
       expiryDate: null,
       type: null,
       brand: null,
+      branch: null,
       quantity: 0,
       sku: '',
+      serialNumber: '',
       reorder: 0,
       weight: '',
       width: '',

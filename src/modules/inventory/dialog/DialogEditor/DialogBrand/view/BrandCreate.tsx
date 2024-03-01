@@ -12,6 +12,7 @@ interface IBrandObjUpdate {
     description?: string
   }) => void
   setValueMode: (value: string) => void
+  handleClose: () => void
   isEditPage: boolean
 }
 
@@ -19,6 +20,7 @@ export const BrandObjCreate = ({
   setValueMode,
   updateBrandHandle,
   isEditPage,
+  handleClose,
 }: IBrandObjUpdate) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.dialog.brand.mode.create
@@ -97,7 +99,12 @@ export const BrandObjCreate = ({
                 description: inventoryBrandDataValue?.description,
                 name: inventoryBrandDataValue?.name,
               })
-              setValueMode(!isEditPage ? 'view' : 'create')
+              if (!isEditPage) {
+                setValueMode('view')
+              } else {
+                setValueMode('create')
+                handleClose()
+              }
             }}
           />
         </div>

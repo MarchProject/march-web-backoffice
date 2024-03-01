@@ -1,9 +1,9 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
 
-export const upsertTypeInventoryMutation = gql`
-  mutation upsertTypeInventory($input: UpsertTypeInventoryInput!) {
-    upsertTypeInventory(input: $input) {
+export const upsertInventoryTypeMutation = gql`
+  mutation upsertInventoryType($input: UpsertInventoryTypeInput!) {
+    upsertInventoryType(input: $input) {
       data {
         id
       }
@@ -19,7 +19,7 @@ export type UpsertTypeInventoryType = {
 }
 
 export type UpsertTypeInventoryResponse = {
-  upsertTypeInventory: ResponseData<UpsertTypeInventoryType>
+  upsertInventoryType: ResponseData<UpsertTypeInventoryType>
 }
 
 export type UpsertTypeInventoryVariables = {

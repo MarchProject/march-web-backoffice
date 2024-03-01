@@ -4,7 +4,7 @@ import { InventoryNamesResponse } from '@/core/gql/inventory/getInventoryNamesQu
 import { GetTypesInventoryResponse } from '@/core/gql/inventory/getTypesInventoryQuery'
 import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import {
-  BrandType,
+  InventoryBrand,
   InventoriesResponse,
   InventoryNamesClass,
   InventoryTrash,
@@ -14,7 +14,7 @@ import {
 export interface IInventoryQuery {
   inventoryNames: (payload: InventoryNamesResponse) => InventoryNamesClass
   inventories: (payload: GetInventoriesResponse) => InventoriesResponse
-  inventoryBrands: (payload: GetInventoriesBrandResponse) => BrandType
+  inventoryBrands: (payload: GetInventoriesBrandResponse) => InventoryBrand
   InventoryType: (payload: GetTypesInventoryResponse) => InventoryType
   inventoryTrash: (payload: GetInventoryAllDeletedResponse) => InventoryTrash
 }

@@ -1,9 +1,9 @@
 import { Tab, Tabs } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { BrandObjView } from './BrandView'
-import { InventoryBrand } from '@/core/model/inventory'
-import { BrandObjUpdate } from './BrandUpdate'
-import { BrandObjCreate } from './BrandCreate'
+import { BranchObjView } from './BranchView'
+import { InventoryBranch } from '@/core/model/inventory'
+import { BranchObjUpdate } from './BranchUpdate'
+import { BranchObjCreate } from './BranchCreate'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 
@@ -13,35 +13,37 @@ const typeTab = [
   { key: 'update', Label: 'Update', secondaryLabel: 'Create' },
 ]
 
-interface IBrandViewMain {
-  inventoriesBrandData: InventoryBrand[]
-  deleteBrandHandle: (id: string) => void
-  updateBrandHandle: (data: any) => void
+interface IBranchViewMain {
+  inventoriesBranchData: InventoryBranch[]
+  deleteBranchHandle: (id: string) => void
+  updateBranchHandle: (data: any) => void
   setIsEdit: (data: boolean) => void
   handleClose: () => void
   isEditPage: boolean
 }
 
-export const BrandViewMain = ({
-  inventoriesBrandData,
-  deleteBrandHandle,
-  updateBrandHandle,
+export const BranchViewMain = ({
+  inventoriesBranchData,
+  deleteBranchHandle,
+  updateBranchHandle,
   setIsEdit,
   isEditPage,
   handleClose,
-}: IBrandViewMain) => {
+}: IBranchViewMain) => {
   const { t: trans }: any = useTranslation()
-  const keys = tkeys.Inventory.MainPage.dialog.brand
+  const keys = tkeys.Inventory.MainPage.dialog.branch
   const [value, setValue] = useState('view')
-  const [idBrand, setIdBrand] = useState('')
-  const [inventoryBrandData, setInventoryBrandData] =
-    useState<InventoryBrand>(null)
+  const [idBranch, setIdBranch] = useState('')
+  const [inventoryBranchData, setInventoryBranchData] =
+    useState<InventoryBranch>(null)
 
   useEffect(() => {
-    if (idBrand) {
-      setInventoryBrandData(inventoriesBrandData.find((e) => e.id === idBrand))
+    if (idBranch) {
+      setInventoryBranchData(
+        inventoriesBranchData.find((e) => e.id === idBranch),
+      )
     }
-  }, [idBrand, inventoriesBrandData])
+  }, [idBranch, inventoriesBranchData])
 
   useEffect(() => {
     if (isEditPage) {
@@ -63,7 +65,7 @@ export const BrandViewMain = ({
   //   }
   // }, [value])
 
-  const TabBrand = (typeTab, value) => {
+  const TabBranch = (typeTab, value) => {
     const Tabs = typeTab.map((n) => {
       const labelMode = n.Label.toString().toLowerCase()
       return (
@@ -86,22 +88,22 @@ export const BrandViewMain = ({
     return Tabs
   }
 
-  const ModeBrand = (value, inventoriesBrandData, setValue) => {
+  const ModeBranch = (value, inventoriesBranchData, setValue) => {
     switch (value) {
       case 'view': {
         return (
-          <BrandObjView
-            inventoriesBrandData={inventoriesBrandData}
+          <BranchObjView
+            inventoriesBranchData={inventoriesBranchData}
             setValue={setValue}
-            deleteBrandHandle={deleteBrandHandle}
-            setIdBrand={setIdBrand}
+            deleteBranchHandle={deleteBranchHandle}
+            setIdBranch={setIdBranch}
           />
         )
       }
       case 'create': {
         return (
-          <BrandObjCreate
-            updateBrandHandle={updateBrandHandle}
+          <BranchObjCreate
+            updateBranchHandle={updateBranchHandle}
             setValueMode={setValue}
             isEditPage={isEditPage}
             handleClose={handleClose}
@@ -110,9 +112,9 @@ export const BrandViewMain = ({
       }
       case 'update': {
         return (
-          <BrandObjUpdate
-            inventoryBrandData={inventoryBrandData}
-            updateBrandHandle={updateBrandHandle}
+          <BranchObjUpdate
+            inventoryBranchData={inventoryBranchData}
+            updateBranchHandle={updateBranchHandle}
             setValueMode={setValue}
           />
         )
@@ -137,9 +139,9 @@ export const BrandViewMain = ({
             borderRadius: '12px',
           },
         }}>
-        {TabBrand(typeTab, value)}
+        {TabBranch(typeTab, value)}
       </Tabs>
-      {ModeBrand(value, inventoriesBrandData, setValue)}
+      {ModeBranch(value, inventoriesBranchData, setValue)}
     </div>
   )
 }

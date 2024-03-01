@@ -19,6 +19,7 @@ export type UpsertInventoryData = {
   amount: number
   price: number
   sku?: string
+  serialNumber?: string
   favorite?: boolean
   size?: {
     width?: number
@@ -31,7 +32,8 @@ export type UpsertInventoryData = {
   description?: string
   createdBy?: string
   inventoryTypeId: string
-  brandTypeId: string
+  inventoryBrandId: string
+  inventoryBranchId: string
   expiryDate?: string
 }
 

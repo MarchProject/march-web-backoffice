@@ -4,7 +4,8 @@ import { ResponseData } from '@/types/response'
 export enum EnumDeletedType {
   inventory = 'inventory',
   inventoryType = 'inventoryType',
-  brandType = 'brandType',
+  inventoryBrand = 'inventoryBrand',
+  inventoryBranch = 'inventoryBranch',
 }
 
 export enum EnumDeletedMode {

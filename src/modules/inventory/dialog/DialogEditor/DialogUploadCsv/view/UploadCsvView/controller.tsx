@@ -6,7 +6,8 @@ import { tranfromCsvFile } from '../../../../../dto/upload.dto'
 import { validateExpiryDate } from './validate/expiryDateValidate'
 import { ICompleteValues, IValidatedValues } from './interface'
 import {
-  BrandType,
+  InventoryBranch,
+  InventoryBrand,
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
@@ -16,7 +17,8 @@ import { tkeys } from '@/translations/i18n'
 interface IUseControllerUploadCsvViewProps {
   inventoryNamesData: InventoryNamesClass[]
   inventoriesTypeData: InventoryType[]
-  inventoriesBrandData: BrandType[]
+  inventoriesBrandData: InventoryBrand[]
+  inventoriesBranchData: InventoryBranch[]
   uploadHandle: (value: IValidatedValues[]) => void
 }
 
@@ -24,6 +26,7 @@ export const useControllerUploadCsvView = ({
   inventoryNamesData,
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   uploadHandle,
 }: IUseControllerUploadCsvViewProps) => {
   // const { notification } = useNotificationContext()
@@ -32,6 +35,7 @@ export const useControllerUploadCsvView = ({
       inventoryNamesData,
       inventoriesTypeData,
       inventoriesBrandData,
+      inventoriesBranchData,
       uploadHandle,
     })
   return {
@@ -45,14 +49,15 @@ export const useControllerUploadCsvView = ({
 const validateDataCsv = (
   result: ICompleteValues,
   inventoriesTypeData: InventoryType[],
-  inventoriesBrandData: BrandType[],
+  inventoriesBrandData: InventoryBrand[],
+  inventoriesBranchData: InventoryBranch[],
   inventoryNamesData: InventoryNamesClass[],
   trans: any,
 ) => {
   const _values = result.data
   const values = tranfromCsvFile(_values)
   const keys = tkeys.Inventory.MainPage.dialog.upload
-  const requiredFields = ['name', 'type', 'brand', 'amount', 'price']
+  const requiredFields = ['name', 'type', 'brand', 'branch', 'amount', 'price']
   const integerFields = [
     'reorderLevel',
     'priceMember',
@@ -105,6 +110,22 @@ const validateDataCsv = (
       } else if (field === 'brand') {
         const value = obj[field]
         const findType = inventoriesBrandData.find((e) => e.name === value)
+        if (value === undefined || value === null || value === '') {
+          isValid = false
+          invalidFields.push({
+            name: field,
+            message: trans(keys.validated.field.requried),
+          })
+        } else if (!findType) {
+          isValid = false
+          invalidFields.push({
+            name: field,
+            message: `${value} ${trans(keys.validated.field.notFound)}`,
+          })
+        }
+      } else if (field === 'branch') {
+        const value = obj[field]
+        const findType = inventoriesBranchData.find((e) => e.name === value)
         if (value === undefined || value === null || value === '') {
           isValid = false
           invalidFields.push({
@@ -274,6 +295,7 @@ const useHandleUploadCsv = ({
   inventoryNamesData,
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   uploadHandle,
 }: IUseControllerUploadCsvViewProps) => {
   // const [selectedFile, setSelectFile] = useState<File[]>(null)
@@ -292,6 +314,7 @@ const useHandleUploadCsv = ({
       obj,
       inventoriesTypeData,
       inventoriesBrandData,
+      inventoriesBranchData,
       inventoryNamesData,
       trans,
     )

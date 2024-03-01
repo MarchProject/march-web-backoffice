@@ -5,10 +5,13 @@ import { useUpsertBrandHandler } from '../../fetcher/useUpsertBrand'
 import { useDeleteBrandInventoryHandler } from '../../fetcher/useDeleteBrand'
 import { useDeleteTypeInventoryHandler } from '../../fetcher/useDeleteType'
 import { useRecoveryTrashHandler } from '../../fetcher/useRecoveryTrash'
+import { useUpsertBranchHandler } from '../../fetcher/useUpsertBranch'
+import { useDeleteBranchInventoryHandler } from '../../fetcher/useDeleteBranch'
 
 export const useDialogController = ({
   setTriggerType,
   setTriggerBrand,
+  setTriggerBranch,
   setTriggerInventory,
   setTriggerTrash,
 }) => {
@@ -26,6 +29,10 @@ export const useDialogController = ({
     setTriggerBrand((e: boolean) => !e)
   }, [setTriggerBrand])
 
+  const triggerBranch = useCallback(() => {
+    setTriggerBranch((e: boolean) => !e)
+  }, [setTriggerBranch])
+
   const { notification } = useNotificationContext()
 
   const { deleteInventoryType, deleteInventoryTypeLoading, deleteTypeHandle } =
@@ -35,11 +42,23 @@ export const useDialogController = ({
       triggerTrash,
     })
 
-  const { deleteBrandType, deleteInventoryBrandLoading, deleteBrandHandle } =
-    useDeleteBrandInventoryHandler({
-      triggerBrand,
-      triggerTrash,
-    })
+  const {
+    deleteInventoryBrand,
+    deleteInventoryBrandLoading,
+    deleteBrandHandle,
+  } = useDeleteBrandInventoryHandler({
+    triggerBrand,
+    triggerTrash,
+  })
+
+  const {
+    deleteInventoryBranch,
+    deleteInventoryBranchLoading,
+    deleteBranchHandle,
+  } = useDeleteBranchInventoryHandler({
+    triggerBranch,
+    triggerTrash,
+  })
   const {
     upsertInventoryType,
     upsertInventoryTypeData,
@@ -50,12 +69,21 @@ export const useDialogController = ({
   })
 
   const {
-    upsertBrandType,
+    upsertInventoryBrand,
     updateBrandHandle,
     upsertInventoryBrandLoading,
     upsertInventoryBrandData,
   } = useUpsertBrandHandler({
     triggerBrand,
+  })
+
+  const {
+    upsertInventoryBranch,
+    updateBranchHandle,
+    upsertInventoryBranchLoading,
+    upsertInventoryBranchData,
+  } = useUpsertBranchHandler({
+    triggerBranch,
   })
 
   const { openDialogCsv, handleOpenCsv, handleCloseCsv } = useHandleDialogCsv()
@@ -65,9 +93,12 @@ export const useDialogController = ({
     useHandleDialogType()
   const { openDialogBrand, handleCloseBrand, handleOpenBrand } =
     useHandleDialogBrand()
+  const { openDialogBranch, handleCloseBranch, handleOpenBranch } =
+    useHandleDialogBranch()
   const { recoveryHardDeletedHandle } = useRecoveryTrashHandler({
     triggerInventory,
     triggerBrand,
+    triggerBranch,
     triggerType,
     triggerTrash,
     notification,
@@ -79,9 +110,14 @@ export const useDialogController = ({
       deleteTypeHandle,
     },
     deletBrandHandle: {
-      deleteBrandType,
+      deleteInventoryBrand,
       deleteInventoryBrandLoading,
       deleteBrandHandle,
+    },
+    deletBranchHandle: {
+      deleteInventoryBranch,
+      deleteInventoryBranchLoading,
+      deleteBranchHandle,
     },
     upsertTypeHandle: {
       upsertInventoryType,
@@ -90,10 +126,16 @@ export const useDialogController = ({
       upsertInventoryTypeLoading,
     },
     upsertBrandHandle: {
-      upsertBrandType,
+      upsertInventoryBrand,
       updateBrandHandle,
       upsertInventoryBrandLoading,
       upsertInventoryBrandData,
+    },
+    upsertBranchHandle: {
+      upsertInventoryBranch,
+      updateBranchHandle,
+      upsertInventoryBranchLoading,
+      upsertInventoryBranchData,
     },
     dialogCsv: {
       openDialogCsv,
@@ -115,6 +157,11 @@ export const useDialogController = ({
       openDialogBrand,
       handleCloseBrand,
       handleOpenBrand,
+    },
+    dialogBranch: {
+      openDialogBranch,
+      handleCloseBranch,
+      handleOpenBranch,
     },
   }
 }
@@ -220,5 +267,21 @@ export const useHandleDialogBrand = () => {
     openDialogBrand: open,
     handleOpenBrand: handleOpen,
     handleCloseBrand: handleClose,
+  }
+}
+
+export const useHandleDialogBranch = () => {
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  return {
+    openDialogBranch: open,
+    handleOpenBranch: handleOpen,
+    handleCloseBranch: handleClose,
   }
 }

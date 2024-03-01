@@ -10,12 +10,16 @@ export const getInventoriesQuery = gql`
           name
           amount
           sold
+          serialNumber
           price
           favorite
           inventoryType {
             name
           }
-          brandType {
+          inventoryBrand {
+            name
+          }
+          inventoryBranch {
             name
           }
           description
@@ -49,6 +53,7 @@ export type GetInventoriesVariables = {
     type?: string[]
     favorite?: IFavoriteStatus
     brand?: string[]
+    branch?: string[]
     pageNo?: number
   }
 }
@@ -68,7 +73,7 @@ export type InventoriesData = {
   inventoryType: {
     name: string
   }
-  brandType: {
+  InventoryBrand: {
     name: string
   }
   description: string

@@ -2,7 +2,7 @@ import {
   UpsertBrandInventoryResponse,
   UpsertBrandInventoryVariables,
 } from '@/core/gql/inventory/upsertBrandInventoryMutation'
-import { upsertBrandInventoryMutation } from '@/core/gql/inventory/upsertBrandInventoryMutation'
+import { upsertInventoryBrandMutation } from '@/core/gql/inventory/upsertBrandInventoryMutation'
 import { useCallback, useState } from 'react'
 import {
   notificationUpdateErrorProp,
@@ -24,10 +24,10 @@ export const useUpsertBrandHandler = ({
 
   const [upsertBrandInventory, { loading, data: upsertInventoryBrandData }] =
     useMutation<UpsertBrandInventoryResponse, UpsertBrandInventoryVariables>(
-      upsertBrandInventoryMutation,
+      upsertInventoryBrandMutation,
       {
         onCompleted: (data) => {
-          if (data?.upsertBrandInventory?.status?.code === StatusCode.SUCCESS) {
+          if (data?.upsertInventoryBrand?.status?.code === StatusCode.SUCCESS) {
             notification(notificationUpdateSuccessProp('brand', flagCreate))
             triggerBrand()
           } else {
@@ -35,7 +35,7 @@ export const useUpsertBrandHandler = ({
               notificationUpdateErrorProp(
                 'brand',
                 flagCreate,
-                data?.upsertBrandInventory?.status?.message,
+                data?.upsertInventoryBrand?.status?.message,
               ),
             )
           }
@@ -69,10 +69,10 @@ export const useUpsertBrandHandler = ({
   )
 
   return {
-    upsertBrandType: upsertBrandInventory,
+    upsertInventoryBrand: upsertBrandInventory,
     updateBrandHandle,
     upsertInventoryBrandLoading: loading,
     upsertInventoryBrandData:
-      upsertInventoryBrandData?.upsertBrandInventory?.data,
+      upsertInventoryBrandData?.upsertInventoryBrand?.data,
   }
 }

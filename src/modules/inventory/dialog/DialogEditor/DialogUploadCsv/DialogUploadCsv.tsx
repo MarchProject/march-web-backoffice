@@ -6,7 +6,8 @@ import DownLoadCsv from '@/components/common/DownLoad/DownLoadCsv'
 import { UploadCsvView } from './view/UploadCsvView'
 import { useControllerUplaod } from './controller'
 import {
-  BrandType,
+  InventoryBranch,
+  InventoryBrand,
   InventoryNamesClass,
   InventoryType,
 } from '@/core/model/inventory'
@@ -18,7 +19,8 @@ interface IDialogUploadCsv {
   handleClose: () => void
   setTriggerGetInventoryNames: (value: boolean) => void
   inventoriesTypeData: InventoryType[]
-  inventoriesBrandData: BrandType[]
+  inventoriesBrandData: InventoryBrand[]
+  inventoriesBranchData: InventoryBranch[]
   inventoryNamesData: InventoryNamesClass[]
 }
 
@@ -27,6 +29,7 @@ const DialogUploadCsv = ({
   handleClose,
   inventoriesTypeData,
   inventoriesBrandData,
+  inventoriesBranchData,
   inventoryNamesData,
   setTriggerGetInventoryNames,
 }: IDialogUploadCsv) => {
@@ -36,6 +39,7 @@ const DialogUploadCsv = ({
     {
       inventoriesTypeData,
       inventoriesBrandData,
+      inventoriesBranchData,
       setTriggerGetInventoryNames,
       handleClose,
     },
@@ -63,6 +67,7 @@ const DialogUploadCsv = ({
                 uploadHandle={uploadHandle}
                 inventoriesTypeData={inventoriesTypeData}
                 inventoriesBrandData={inventoriesBrandData}
+                inventoriesBranchData={inventoriesBranchData}
                 inventoryNamesData={inventoryNamesData}
                 isPass={isPass}
               />
