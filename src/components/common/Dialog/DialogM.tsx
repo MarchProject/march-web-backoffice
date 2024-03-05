@@ -34,6 +34,7 @@ export const DialogM = ({
       maxWidth={maxWidth}
       sx={{
         '& .MuiPaper-root': {
+          backgroundColor: '#ffffff',
           // maxWidth: '440px',
           // width: '100%',
           borderRadius: '12px',

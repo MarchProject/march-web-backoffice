@@ -1,7 +1,6 @@
 import React from 'react'
 import { InventoryManagement } from './view/InventoryManagement'
 import DataTableMarch from '@/components/common/Table/table'
-import { columns } from './view/column'
 import { useInventoryController } from './controller'
 
 const ContainerInventory = () => {
@@ -48,10 +47,11 @@ const ContainerInventory = () => {
     setTriggerType,
     setTriggerBrand,
     setTriggerBranch,
-    favoriteInventoryHandle,
     InventoryNames: { inventoryNamesData, setTriggerGetInventoryNames },
     trash: { setTriggerTrash, trashData },
+    mainTab: { userColumn, unUsedColumn, updateTable },
   } = useInventoryController()
+  console.log({ userColumn, unUsedColumn })
   return (
     <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
       <div className="p-[15px]">
@@ -95,10 +95,15 @@ const ContainerInventory = () => {
                   inventoriesBranchLoading,
                   handleSearchInventoryBranch,
                 }}
+                tableController={{
+                  userColumn,
+                  unUsedColumn,
+                  updateTable,
+                }}
               />
               <DataTableMarch
                 rows={inventoryData?.getInventories?.inventories || []}
-                columns={columns({ favoriteInventoryHandle })}
+                columns={userColumn}
                 onRow={onRow}
                 onPaginationModelChange={onPaginationModelChange}
                 pageCount={inventoryData?.getInventories?.totalPage || 1}

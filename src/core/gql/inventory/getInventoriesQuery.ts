@@ -10,16 +10,23 @@ export const getInventoriesQuery = gql`
           name
           amount
           sold
-          serialNumber
           price
+          sku
+          serialNumber
+          size
           favorite
+          priceMember
+          reorderLevel
           inventoryType {
+            id
             name
           }
           inventoryBrand {
+            id
             name
           }
           inventoryBranch {
+            id
             name
           }
           description

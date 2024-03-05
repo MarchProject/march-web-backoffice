@@ -19,24 +19,19 @@ interface ColumnInventory {
   favoriteInventoryHandle: (value: string) => void
 }
 
-export const columns = ({
+export const mainTableColumns = ({
   favoriteInventoryHandle,
 }: ColumnInventory): GridColDef[] => {
   const { t: trans }: any = useTranslation()
+
   const keys = tkeys.Inventory.MainPage.table
-  return [
-    //   {
-    //     field: 'id',
-    //     headerName: 'ID',
-    //     width: 90,
-    //     align: 'center',
-    //     headerAlign: 'center',
-    //   },
+
+  const mainInventoryColumn: GridColDef[] = [
     {
       field: 'name',
       headerName: trans(keys.name),
       flex: 1,
-      minWidth: 150,
+      minWidth: 160,
       valueGetter: (params) => params.row?.name,
       renderCell: (params) => {
         const name = params.row?.name
@@ -140,6 +135,33 @@ export const columns = ({
       headerAlign: 'center',
     },
     {
+      field: 'priceMember',
+      headerName: trans(keys.priceMember),
+      type: 'number',
+      flex: 1,
+      minWidth: 120,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'reorderLevel',
+      headerName: trans(keys.reorderLevel),
+      type: 'number',
+      flex: 1,
+      minWidth: 120,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      field: 'sku',
+      headerName: trans(keys.sku),
+      type: 'string',
+      flex: 1,
+      minWidth: 200,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
       field: 'formattedExpiryDate',
       headerName: trans(keys.expiryDate),
       sortable: false,
@@ -220,4 +242,6 @@ export const columns = ({
       },
     },
   ]
+
+  return mainInventoryColumn
 }

@@ -1,7 +1,13 @@
 import { useNotificationContext } from '@/context/notification'
 import { InventoryBrand, InventoryType } from '@/core/model/inventory'
 import { AutocompleteChangeReason } from '@mui/material'
-import { SyntheticEvent, useCallback, useState } from 'react'
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useQueryInventoryBrand } from './fetcher/useQueryInventoryBrand'
 import { useQueryInventoryType } from './fetcher/useQueryInventoryType'
 import { useMutationFavorite } from './fetcher/useMutationFavorite'
@@ -9,6 +15,10 @@ import { useGetInventoryNames } from './fetcher/useGetInventoryNames'
 import { useQueryInventories } from './fetcher/useQueryInventories'
 import { useQueryTrashHandler } from './fetcher/useQueryTrash'
 import { useQueryInventoryBranch } from './fetcher/useQueryInventoryBranch'
+import { GridColDef } from '@mui/x-data-grid'
+import { IMainTables } from './interface'
+import { getMainInventoryColumn, setMainInventoryColumn } from '@/config/client'
+import { mainTableColumns } from './view/column'
 
 export const useInventoryController = () => {
   const { notification } = useNotificationContext()
@@ -79,6 +89,11 @@ export const useInventoryController = () => {
       setBrand,
       setBranch,
     })
+
+  const { userColumn, unUsedColumn, updateTable } = useHandleMainTable({
+    mainTableColumn: mainTableColumns({ favoriteInventoryHandle }),
+  })
+
   return {
     globalState: {},
     setTriggerType,
@@ -142,6 +157,11 @@ export const useInventoryController = () => {
       setTriggerTrash,
       trashData,
     },
+    mainTab: {
+      userColumn,
+      unUsedColumn,
+      updateTable,
+    },
   }
 }
 
@@ -198,4 +218,69 @@ const useHandleInventory = ({ setType, setBrand, setBranch }) => {
     handleBrandChange,
     handleBranchChange,
   }
+}
+
+const useHandleMainTable = ({ mainTableColumn }) => {
+  const [userColumn, setUserColumn] = useState([])
+  const [unUsedColumn, setUnUsedColumn] = useState([])
+  const mainTable = getMainInventoryColumn()
+
+  const localTables: IMainTables[] = useMemo(() => {
+    return JSON.parse(mainTable) ?? []
+  }, [mainTable])
+
+  const mainTableColumns: GridColDef[] = useMemo(
+    () => mainTableColumn || [],
+    [mainTableColumn],
+  )
+
+  const arraysEqual = (arr1, arr2) => {
+    return JSON.stringify(arr1) === JSON.stringify(arr2)
+  }
+
+  useEffect(() => {
+    const newUserColumn = []
+    const newUnUsedColumn = []
+    if (localTables.length > 0 && mainTableColumns.length > 0) {
+      mainTableColumns.forEach((m) => {
+        const check = Object.values(localTables).some(
+          (e) => e.field === m.field,
+        )
+        if (check) {
+          newUserColumn.push(m)
+        } else {
+          newUnUsedColumn.push(m)
+        }
+      })
+
+      newUserColumn.sort((a, b) => {
+        const indexA = localTables.findIndex(
+          (localTable) => localTable.field === a.field,
+        )
+        const indexB = localTables.findIndex(
+          (localTable) => localTable.field === b.field,
+        )
+        return indexA - indexB
+      })
+    }
+
+    if (!arraysEqual(newUserColumn, userColumn)) {
+      setUserColumn(newUserColumn)
+      setUnUsedColumn(newUnUsedColumn)
+    }
+  }, [localTables, mainTableColumns, userColumn])
+
+  const updateTable = useCallback(
+    (selected: GridColDef[], unSelected: GridColDef[]) => {
+      setUserColumn(selected)
+      setUnUsedColumn(unSelected)
+      const valueLocals = selected.map((e) => {
+        return { field: e.field }
+      })
+      setMainInventoryColumn(JSON.stringify(valueLocals))
+    },
+    [],
+  )
+
+  return { userColumn, unUsedColumn, updateTable }
 }

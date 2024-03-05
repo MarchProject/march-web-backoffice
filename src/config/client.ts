@@ -6,8 +6,11 @@
  */
 
 import { Credential } from '../types/uam'
+import { tableConfig } from './table.config'
 
 const prefix = 'march.backOffice'
+
+const tableLocal = ['mainInventoryTable']
 
 const itemLocal = [
   'userId',
@@ -89,6 +92,14 @@ export function getDefaultLoginPath() {
   return localStorage.getItem(`${prefix}.defaultLoginPath`)
 }
 
+export function getMainInventoryColumn() {
+  return localStorage.getItem(`${prefix}.mainInventoryTable`)
+}
+
+export function setMainInventoryColumn(value: any) {
+  return localStorage.setItem(`${prefix}.mainInventoryTable`, value)
+}
+
 export function init(config: any, credential: Credential) {
   const logPrefix = 'config.init'
   console.log(logPrefix, { config })
@@ -102,6 +113,16 @@ export function init(config: any, credential: Credential) {
 
   Object.keys(_config).forEach((key) => {
     localStorage.setItem(`${prefix}.${key}`, _config[key])
+  })
+
+  tableLocal.forEach((key) => {
+    const tableValue = localStorage.getItem(`${prefix}.${key}`)
+    const tableConfigS = tableConfig()
+    if (!tableValue)
+      localStorage.setItem(
+        `${prefix}.${key}`,
+        JSON.stringify(tableConfigS[key]),
+      )
   })
 }
 

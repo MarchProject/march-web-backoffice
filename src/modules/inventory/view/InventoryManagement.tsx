@@ -23,6 +23,8 @@ import { useLoadingContext } from '@/context/loading'
 import { max } from '@/utils/common/normalizeInput'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import SelectAllTransferList from '@/components/common/Transferlist/TransferList'
+import { GridColDef } from '@mui/x-data-grid'
 
 type InventoryManagementProps = {
   setSearch: (value: string) => void
@@ -76,6 +78,11 @@ type InventoryManagementProps = {
     trashData: InventoryTrash
     setTriggerTrash: (value: boolean) => void
   }
+  tableController: {
+    userColumn: GridColDef[]
+    unUsedColumn: GridColDef[]
+    updateTable: (selected: GridColDef[], unSelected: GridColDef[]) => void
+  }
 }
 
 export const InventoryManagement = ({
@@ -111,6 +118,7 @@ export const InventoryManagement = ({
   favorite,
   inventoryNamesData,
   trash: { trashData, setTriggerTrash },
+  tableController: { userColumn, unUsedColumn, updateTable },
 }: InventoryManagementProps) => {
   const searchFieldRef = useRef(null)
   const typeFieldRef = useRef(null)
@@ -125,6 +133,8 @@ export const InventoryManagement = ({
   }
   const { t: trans }: any = useTranslation()
   const [open, setOpen] = useState(false)
+  const [openTableSort, setOpenTableSort] = useState(false)
+
   const handleClickOpen = () => {
     zIndexLoading(20)
     setOpen(true)
@@ -135,8 +145,38 @@ export const InventoryManagement = ({
     zIndexLoading(9999)
   }
 
+  const handleClickOpenTableSort = () => {
+    zIndexLoading(20)
+    setOpenTableSort(true)
+  }
+
+  const handleCloseTableSort = () => {
+    setOpenTableSort(false)
+    zIndexLoading(9999)
+  }
+
   return (
     <>
+      <DialogM
+        maxWidth="sm"
+        dialogTitle={trans(tkeys.Inventory.MainPage.filter.label)}
+        open={openTableSort}
+        handleClose={handleCloseTableSort}
+        contentRender={() => {
+          return (
+            <>
+              <SelectAllTransferList
+                selected={userColumn}
+                unselected={unUsedColumn}
+                updateTable={updateTable}
+              />
+            </>
+          )
+        }}
+        actionRender={() => {
+          return <></>
+        }}
+      />
       <DialogM
         dialogTitle={trans(tkeys.Inventory.MainPage.filter.label)}
         open={open}
