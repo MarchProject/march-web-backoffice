@@ -1,15 +1,13 @@
-import { EnumSeverity } from "@/context/notification"
+import { EnumSeverity } from '@/context/notification'
 
-export const notificationDialogUploadSuccessProp = {
-    severity: EnumSeverity.success,
-    title: 'Inventory',
-    message: 'Upload Success',
+export const notificationProp = (
+  title: string,
+  message: string,
+  severity: EnumSeverity,
+) => {
+  return {
+    severity: severity,
+    title: title,
+    message: `${message}`,
   }
-  
-  export const notificationDialogUploadErrorProp = (message: string) => {
-    return {
-      severity: EnumSeverity.error,
-      title: 'Inventory',
-      message: `${message}`,
-    }
-  }
+}

@@ -129,7 +129,7 @@ function Layout({ children }) {
 
   const TabM = (isMobile: boolean) => {
     const tranT = useCallback((text: string) => {
-      return trans(`Menu.${text}`)
+      return trans(`common.Menu.${text}`)
     }, [])
 
     const test = orderBy(

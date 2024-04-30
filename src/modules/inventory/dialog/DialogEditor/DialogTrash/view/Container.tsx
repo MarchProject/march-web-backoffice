@@ -110,7 +110,9 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
       )
     })
     if (trashObjs?.length > 0) {
-      return <div className="mt-[10px] min-h-[350px] max-h-[350px]">{trashObj}</div>
+      return (
+        <div className="mt-[10px] min-h-[350px] max-h-[350px]">{trashObj}</div>
+      )
     }
     return (
       <div className="mt-[10px] h-[350px] overflow-y-auto">
@@ -119,7 +121,7 @@ export const Trash = ({ trashData, recoveryHardDeletedHandle }: ITrash) => {
             <div className="w-full text-center">
               <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
               <p className="m-0 mt-[5px] text-secondary">
-                {trans(tkeys.button.empty)}
+                {trans(tkeys.common.button.empty)}
               </p>
             </div>
           </div>

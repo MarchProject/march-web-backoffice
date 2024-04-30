@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import {
   GetBranchsInventoryVariables,
   GetInventoriesBranchResponse,
@@ -6,13 +6,14 @@ import {
 } from '@/core/gql/inventory/getBranchsInventoryQuery'
 
 import { InventoryBranch } from '@/core/model/inventory'
-import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { AutocompleteInputChangeReason } from '@mui/material'
 import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
-
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 interface IUseQueryInventoryBranchProps {
   trigger: boolean
 }
@@ -20,6 +21,7 @@ interface IUseQueryInventoryBranchProps {
 export const useQueryInventoryBranch = ({
   trigger,
 }: IUseQueryInventoryBranchProps) => {
+  const { t: trans }: any = useTranslation()
   const { notification } = useNotificationContext()
   const [search, setSearch] = useState<string>('')
   const [inventoriesBranchData, setInventoriesBranchData] = useState<
@@ -40,11 +42,23 @@ export const useQueryInventoryBranch = ({
           )
           if (response) setInventoriesBranchData(response)
         } else {
-          notification(notificationFetchInventoryErrorProp('Branch Error'))
+          notification(
+            notificationProp(
+              trans(tkeys.Inventory.MainPage.HeadText),
+              trans(tkeys.Inventory.MainPage.noti.fetch.branch),
+              EnumSeverity.error,
+            ),
+          )
         }
       },
       onError: () => {
-        notification(notificationFetchInventoryErrorProp('Branch Error'))
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.fetch.branch),
+            EnumSeverity.error,
+          ),
+        )
       },
     },
   )

@@ -1,17 +1,16 @@
 import { upsertInventoryMutation } from '@/core/gql/inventory/upsertInventory'
 import { UpsertInventoryTypeResponse } from '@/core/gql/inventory/upsertInventory'
 import { UpsertInventoryTypeVariables } from '@/core/gql/inventory/upsertInventory'
-import {
-  notificationEditorErrorProp,
-  notificationEditorSuccessProp,
-} from '@/core/notification'
 import { inventoryRoute } from '@/router/inventory'
 import { useMutation } from '@apollo/client'
 import router from 'next/router'
 import { UseFormReset } from 'react-hook-form'
 import { IInventoryForm } from '../editor/interface'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 export interface IUseUpsertInventoryProps {
   reset: UseFormReset<IInventoryForm>
@@ -23,6 +22,8 @@ export const useUpsertInventory = ({
   idInventory,
 }: IUseUpsertInventoryProps) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
+  const mode = idInventory ? 'update' : 'create'
   const [upsertInventory, { loading }] = useMutation<
     UpsertInventoryTypeResponse,
     UpsertInventoryTypeVariables
@@ -30,7 +31,11 @@ export const useUpsertInventory = ({
     onCompleted: (data) => {
       if (data?.upsertInventory?.status?.code === StatusCode.SUCCESS) {
         notification(
-          notificationEditorSuccessProp(idInventory ? 'Update' : 'Create'),
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.editor.upsertInventory[mode]),
+            EnumSeverity.success,
+          ),
         )
         reset()
         router.push({
@@ -38,18 +43,26 @@ export const useUpsertInventory = ({
         })
       } else {
         notification(
-          notificationEditorErrorProp(
-            idInventory ? 'Update' : 'Create',
-            data?.upsertInventory?.status?.message,
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(
+              tkeys.Inventory.MainPage.noti.editor.upsertInventory[
+                `${data?.upsertInventory?.status?.code}`
+              ],
+            ),
+            EnumSeverity.error,
           ),
         )
       }
     },
-    onError: (error) => {
+    onError: () => {
       notification(
-        notificationEditorErrorProp(
-          idInventory ? 'Update' : 'Create',
-          error?.message,
+        notificationProp(
+          trans(tkeys.Inventory.MainPage.HeadText),
+          trans(
+            tkeys.Inventory.MainPage.noti.editor.somethingWrong,
+          ),
+          EnumSeverity.error,
         ),
       )
     },

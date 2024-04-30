@@ -1,13 +1,14 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { InventoryNamesResponse } from '@/core/gql/inventory/getInventoryNamesQuery'
 import { getInventoryNamesQuery } from '@/core/gql/inventory/getInventoryNamesQuery'
 import { InventoryNamesClass } from '@/core/model/inventory'
-import { notificationFetchInventoryErrorProp } from '@/core/notification'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { plainToInstance } from 'class-transformer'
 import { useEffect, useState } from 'react'
-
+import { tkeys } from '@/translations/i18n'
+import { useTranslation } from 'react-i18next'
 interface useGetInventoryNames {
   triggerGetInventoryNames: boolean
 }
@@ -16,6 +17,7 @@ export const useGetInventoryNames = ({
   triggerGetInventoryNames,
 }: useGetInventoryNames) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [dataTranform, setDataTranform] = useState<InventoryNamesClass[]>([])
   const [getInventoryNames, { loading, error }] = useLazyQuery<
     InventoryNamesResponse,
@@ -29,11 +31,23 @@ export const useGetInventoryNames = ({
         )
         if (response) setDataTranform(response)
       } else {
-        notification(notificationFetchInventoryErrorProp('Names Error'))
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.fetch.names),
+            EnumSeverity.error,
+          ),
+        )
       }
     },
     onError: () => {
-      notification(notificationFetchInventoryErrorProp('Names Error'))
+      notification(
+        notificationProp(
+          trans(tkeys.Inventory.MainPage.HeadText),
+          trans(tkeys.Inventory.MainPage.noti.fetch.names),
+          EnumSeverity.error,
+        ),
+      )
     },
   })
 

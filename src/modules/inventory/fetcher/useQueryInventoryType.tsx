@@ -1,17 +1,18 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import {
   GetTypesInventoryResponse,
   GetInventoriesTypeVariables,
   getInventoryTypesQuery,
 } from '@/core/gql/inventory/getTypesInventoryQuery'
 import { InventoryType } from '@/core/model/inventory'
-import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { AutocompleteInputChangeReason } from '@mui/material'
 import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
-
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 interface IUseQueryInventoryTypeProps {
   trigger: boolean
 }
@@ -20,6 +21,7 @@ export const useQueryInventoryType = ({
   trigger,
 }: IUseQueryInventoryTypeProps) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [search, setSearch] = useState<string>('')
   const [inventoriesTypeData, setInventoriesTypeData] = useState<
     InventoryType[]
@@ -38,10 +40,24 @@ export const useQueryInventoryType = ({
           )
           if (response) setInventoriesTypeData(response)
         } else {
-          notification(notificationFetchInventoryErrorProp('Type Error'))
+          notification(
+            notificationProp(
+              trans(tkeys.Inventory.MainPage.HeadText),
+              trans(tkeys.Inventory.MainPage.noti.fetch.type),
+              EnumSeverity.error,
+            ),
+          )
         }
       },
-      onError: () => {},
+      onError: () => {
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.fetch.type),
+            EnumSeverity.error,
+          ),
+        )
+      },
     },
   )
 

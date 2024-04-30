@@ -1,15 +1,16 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { GetBrandInventoryVariables } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { getInventoryBrandsQuery } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { InventoryBrand } from '@/core/model/inventory'
-import { notificationFetchInventoryErrorProp } from '@/core/notification'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { AutocompleteInputChangeReason } from '@mui/material'
 import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
-
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 interface IUseQueryInventoryBrandProps {
   trigger: boolean
 }
@@ -18,6 +19,7 @@ export const useQueryInventoryBrand = ({
   trigger,
 }: IUseQueryInventoryBrandProps) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [search, setSearch] = useState<string>('')
   const [inventoriesBrandData, setInventoriesBrandData] = useState<
     InventoryBrand[]
@@ -37,11 +39,23 @@ export const useQueryInventoryBrand = ({
           )
           if (response) setInventoriesBrandData(response)
         } else {
-          notification(notificationFetchInventoryErrorProp('Brand Error'))
+          notification(
+            notificationProp(
+              trans(tkeys.Inventory.MainPage.HeadText),
+              trans(tkeys.Inventory.MainPage.noti.fetch.brand),
+              EnumSeverity.error,
+            ),
+          )
         }
       },
       onError: () => {
-        notification(notificationFetchInventoryErrorProp('Brand Error'))
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.fetch.brand),
+            EnumSeverity.error,
+          ),
+        )
       },
     },
   )

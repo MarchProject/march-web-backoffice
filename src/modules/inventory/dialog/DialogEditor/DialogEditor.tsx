@@ -43,6 +43,7 @@ interface IDialogEditor {
     reason: AutocompleteInputChangeReason,
   ) => void
   setTriggerBranch: (e: boolean) => void
+  handleClickOpenTableSort: () => void
 }
 
 const DialogEditor = ({
@@ -60,6 +61,7 @@ const DialogEditor = ({
   inventoriesBranchData,
   handleSearchInventoryBranch,
   setTriggerBranch,
+  handleClickOpenTableSort,
 }: IDialogEditor) => {
   const { t: trans }: any = useTranslation()
   const {
@@ -153,6 +155,11 @@ const DialogEditor = ({
         className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mb-[3px]"
         onClick={handleOpenTrash}>
         {trans(tkeys.Inventory.MainPage.menu.trash)}
+      </MenuItem>
+      <MenuItem
+        className="!mx-3 hover:!bg-violet-400 hover:!text-white !rounded-xl !mb-[3px]"
+        onClick={handleClickOpenTableSort}>
+        {trans(tkeys.Inventory.MainPage.menu.tableConfig)}
       </MenuItem>
     </>
   )

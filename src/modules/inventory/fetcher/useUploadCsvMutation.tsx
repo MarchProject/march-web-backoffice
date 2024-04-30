@@ -6,13 +6,12 @@ import {
   uploadInventoryMutation,
 } from '@/core/gql/inventory/uploadInventoryMutation'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
-import {
-  notificationDialogUploadErrorProp,
-  notificationDialogUploadSuccessProp,
-} from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 import { useMutation } from '@apollo/client'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 export const useUploadCsvMutation = ({
   inventoriesTypeData,
@@ -22,6 +21,7 @@ export const useUploadCsvMutation = ({
   handleClose,
 }) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [isPass, setIsPass] = useState(true)
 
   const [uploadInventory, { loading }] = useMutation<
@@ -32,23 +32,47 @@ export const useUploadCsvMutation = ({
       setTriggerGetInventoryNames((prev) => !prev)
       if (data?.uploadInventory?.status?.code === StatusCode.SUCCESS) {
         if (data?.uploadInventory?.data?.success === true) {
-          notification(notificationDialogUploadSuccessProp)
+          notification(
+            notificationProp(
+              trans(tkeys.Inventory.MainPage.HeadText),
+              trans(tkeys.Inventory.MainPage.noti.upload.success),
+              EnumSeverity.success,
+            ),
+          )
           setIsPass(true)
           handleClose()
         } else {
           notification(
-            notificationDialogUploadErrorProp(
-              data?.uploadInventory?.data?.reason,
+            notificationProp(
+              trans(tkeys.Inventory.MainPage.HeadText),
+              trans(
+                tkeys.Inventory.MainPage.noti.upload[
+                  `${data?.uploadInventory?.data?.reason}`
+                ],
+              ),
+              EnumSeverity.error,
             ),
           )
           setIsPass(false)
         }
       } else {
-        notification(notificationDialogUploadErrorProp('Upload Failed'))
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.upload.somethingWrong),
+            EnumSeverity.error,
+          ),
+        )
       }
     },
     onError: () => {
-      notification(notificationDialogUploadErrorProp('Upload Failed'))
+      notification(
+        notificationProp(
+          trans(tkeys.Inventory.MainPage.HeadText),
+          trans(tkeys.Inventory.MainPage.noti.upload.somethingWrong),
+          EnumSeverity.error,
+        ),
+      )
     },
   })
 

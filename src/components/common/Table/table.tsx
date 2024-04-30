@@ -79,10 +79,10 @@ export default function DataTableMarch({
             <div className="lg:flex hidden">
               {totalRow > 0 && (
                 <h5 className="text-secondary ml-4 font-medium">
-                  {`${trans(tkeys.table.footer.show)} ${offset + 1} - ${
+                  {`${trans(tkeys.common.table.footer.show)} ${offset + 1} - ${
                     offset + limit
-                  } ${trans(tkeys.table.footer.of)} ${totalRow} ${trans(
-                    tkeys.table.footer.results,
+                  } ${trans(tkeys.common.table.footer.of)} ${totalRow} ${trans(
+                    tkeys.common.table.footer.results,
                   )}`}
                 </h5>
               )}
@@ -154,10 +154,10 @@ export default function DataTableMarch({
               }}
               labelDisplayedRows={() => (
                 <div className="text-secondary text-xs font-medium lg:block hidden">
-                  {trans(tkeys.table.footer.entries)}
+                  {trans(tkeys.common.table.footer.entries)}
                 </div>
               )}
-              labelRowsPerPage={trans(tkeys.table.footer.show)}
+              labelRowsPerPage={trans(tkeys.common.table.footer.show)}
               ActionsComponent={() => <></>}
               getItemAriaLabel={undefined}
             />

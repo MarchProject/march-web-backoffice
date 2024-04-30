@@ -79,7 +79,7 @@ export const BranchObjCreate = ({
           {!isEditPage && (
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-              label={trans(tkeys.button.back)}
+              label={trans(tkeys.common.button.back)}
               color={'secondary'}
               variant="outlined"
               onClick={() => {
@@ -89,7 +89,7 @@ export const BranchObjCreate = ({
           )}
           <ButtonForm
             classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-            label={trans(tkeys.button.create)}
+            label={trans(tkeys.common.button.create)}
             color={'primary'}
             variant="contained"
             disabled={!inventoryBranchDataValue?.name}

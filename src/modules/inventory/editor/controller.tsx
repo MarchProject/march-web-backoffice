@@ -1,4 +1,4 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IInventoryForm, IUseQueryHandlerProps } from './interface'
@@ -7,10 +7,6 @@ import { useQueryInventoryType } from '../fetcher/useQueryInventoryType'
 import { useQueryInventoryBrand } from '../fetcher/useQueryInventoryBrand'
 import { useCallback, useState } from 'react'
 import { tranFromUpsertInventoryDto } from '../dto/upsert.dto'
-import {
-  notificationEditorErrorProp,
-  notificationEditorValidErrorProp,
-} from '@/core/notification'
 import {
   useHandleDialogBranch,
   useHandleDialogBrand,
@@ -24,9 +20,13 @@ import { useDeleteInventory } from '../fetcher/useDeleteInventory'
 import { useLoadingHandler } from '@/core/utils/hook/useLoadingHook'
 import { useQueryInventoryBranch } from '../fetcher/useQueryInventoryBranch'
 import { useUpsertBranchHandler } from '../fetcher/useUpsertBranch'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 export const useEditorInventoryController = ({ idInventory }) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [triggerType, setTriggerType] = useState(true)
   const [triggerBrand, setTriggerBrand] = useState(true)
   const [triggerBranch, setTriggerBranch] = useState(true)
@@ -107,6 +107,7 @@ export const useEditorInventoryController = ({ idInventory }) => {
     notification,
     idInventory,
     upsertInventory: upsertInventory.upsertInventory,
+    trans,
   })
 
   const {
@@ -253,7 +254,12 @@ const useFormHandler = () => {
   } as any
 }
 
-const useSubmitForm = ({ notification, idInventory, upsertInventory }) => {
+const useSubmitForm = ({
+  notification,
+  idInventory,
+  upsertInventory,
+  trans,
+}) => {
   const onSubmit: SubmitHandler<IInventoryForm> = (data) => {
     try {
       const InventoryInput = tranFromUpsertInventoryDto(data, idInventory)
@@ -263,11 +269,21 @@ const useSubmitForm = ({ notification, idInventory, upsertInventory }) => {
         },
       })
     } catch (error) {
-      notification(notificationEditorErrorProp('Server', error?.message))
+      notification(notificationProp(
+        trans(tkeys.Inventory.MainPage.HeadText),
+        trans(tkeys.Inventory.MainPage.noti.editor.somethingWrong),
+        EnumSeverity.error,
+      ),)
     }
   }
   const onError = () => {
-    notification(notificationEditorValidErrorProp)
+    notification(
+      notificationProp(
+        trans(tkeys.Inventory.MainPage.HeadText),
+        trans(tkeys.Inventory.MainPage.noti.editor.validate),
+        EnumSeverity.error,
+      ),
+    )
   }
 
   return {

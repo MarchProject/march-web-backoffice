@@ -79,7 +79,7 @@ const DialogUploadCsv = ({
             <>
               <ButtonForm
                 classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px]"
-                label={trans(tkeys.button.upload)}
+                label={trans(tkeys.common.button.upload)}
                 color={'primary'}
                 disabled={!isValid || !isPass}
                 variant={!isValid || !isPass ? 'text' : 'contained'}
@@ -92,7 +92,7 @@ const DialogUploadCsv = ({
                   return (
                     <ButtonForm
                       classNames="!w-[170px] !h-[40px] !w-[100%] !normal-case !mr-[16px] !no-underline"
-                      label={trans(tkeys.button.downloadTemp)}
+                      label={trans(tkeys.common.button.downloadTemp)}
                       color={'primary'}
                       variant="outlined"
                       onClick={handleClose}

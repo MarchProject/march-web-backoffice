@@ -79,7 +79,7 @@ export const BrandObjCreate = ({
           {!isEditPage && (
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-              label={trans(tkeys.button.back)}
+              label={trans(tkeys.common.button.back)}
               color={'secondary'}
               variant="outlined"
               onClick={() => {
@@ -89,7 +89,7 @@ export const BrandObjCreate = ({
           )}
           <ButtonForm
             classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-            label={trans(tkeys.button.create)}
+            label={trans(tkeys.common.button.create)}
             color={'primary'}
             variant="contained"
             disabled={!inventoryBrandDataValue?.name}

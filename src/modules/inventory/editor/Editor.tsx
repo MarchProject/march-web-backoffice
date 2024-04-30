@@ -702,8 +702,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                         }}
                         label={
                           mode === EnumModeEditorPage.VIEW
-                            ? trans(tkeys.button.back)
-                            : trans(tkeys.button.discard)
+                            ? trans(tkeys.common.button.back)
+                            : trans(tkeys.common.button.discard)
                         }
                       />
                       {mode === EnumModeEditorPage.UPDATE && (
@@ -712,7 +712,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                           color="error"
                           variant="contained"
                           onClick={deleteInventoryHandle}
-                          label={trans(tkeys.button.delete)}
+                          label={trans(tkeys.common.button.delete)}
                         />
                       )}
                       {mode !== EnumModeEditorPage.VIEW && (
@@ -721,8 +721,8 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                           onClick={onSubmit}
                           label={
                             mode === EnumModeEditorPage.UPDATE
-                              ? trans(tkeys.button.updateItem)
-                              : trans(tkeys.button.addItem)
+                              ? trans(tkeys.common.button.updateItem)
+                              : trans(tkeys.common.button.addItem)
                           }
                         />
                       )}

@@ -240,7 +240,7 @@ export const InventoryManagement = ({
                   <div className="flex gap-[10px] justify-start max-w-[380px]">
                     <ButtonForm
                       classNames="!w-[150px] !h-[40px] !normal-case"
-                      label={trans(tkeys.button.favorite)}
+                      label={trans(tkeys.common.button.favorite)}
                       variant="outlined"
                       color="error"
                       endIcon={
@@ -271,14 +271,14 @@ export const InventoryManagement = ({
             <div className="pr-[12px] flex gap-2">
               <ButtonForm
                 classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
-                label={trans(tkeys.button.clear)}
+                label={trans(tkeys.common.button.clear)}
                 color={'primary'}
                 variant="outlined"
                 onClick={handleReset}
               />
               <ButtonForm
                 classNames="!w-[80px] !h-[40px] !w-[100%] !normal-case"
-                label={trans(tkeys.button.close)}
+                label={trans(tkeys.common.button.close)}
                 color={'primary'}
                 variant="contained"
                 onClick={handleClose}
@@ -327,10 +327,9 @@ export const InventoryManagement = ({
                 normalizes={[max(60)]}
               />
             </div>
-
             <ButtonForm
               classNames="lg:!w-[120px] !w-[60px] !h-[40px] !normal-case"
-              label={trans(tkeys.button.filter)}
+              label={trans(tkeys.common.button.filter)}
               color={'primary'}
               endIcon={<BiCaretDown size={15} />}
               onClick={handleClickOpen}
@@ -350,6 +349,7 @@ export const InventoryManagement = ({
               inventoriesBranchData={inventoriesBranchData}
               handleSearchInventoryBranch={handleSearchInventoryBranch}
               setTriggerBranch={setTriggerBranch}
+              handleClickOpenTableSort={handleClickOpenTableSort}
             />
           </div>
         </div>

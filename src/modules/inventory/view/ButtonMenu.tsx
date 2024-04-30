@@ -1,6 +1,6 @@
 import ButtonForm from '@/components/common/Button/button'
 import { inventoryCreateRoute } from '@/router/inventory'
-import { AutocompleteInputChangeReason, Menu, MenuItem } from '@mui/material'
+import {  Menu, MenuItem } from '@mui/material'
 import router from 'next/router'
 import React, { useState } from 'react'
 import { RiAddLine } from 'react-icons/ri'
@@ -23,6 +23,7 @@ export const ButtonMenu = ({
   inventoriesBranchData,
   handleSearchInventoryBranch,
   setTriggerBranch,
+  handleClickOpenTableSort,
 }) => {
   const { t: trans }: any = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -38,7 +39,7 @@ export const ButtonMenu = ({
     <>
       <ButtonForm
         classNames="lg:!w-[120px] !w-[60px] !h-[40px] !normal-case"
-        label={trans(tkeys.button.menu)}
+        label={trans(tkeys.common.button.menu)}
         color={'primary'}
         endIcon={<RiAddLine size={15} />}
         onClick={handleClick as any}
@@ -81,6 +82,7 @@ export const ButtonMenu = ({
           inventoriesBranchData={inventoriesBranchData}
           handleSearchInventoryBranch={handleSearchInventoryBranch}
           setTriggerBranch={setTriggerBranch}
+          handleClickOpenTableSort={handleClickOpenTableSort}
         />
       </Menu>
     </>

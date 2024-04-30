@@ -177,7 +177,7 @@ export const TypeObjUpdate = ({
           <div className="flex justify-end my-[10px]">
             <ButtonForm
               classNames="!w-[120px] !h-[40px] !w-[100%] !normal-case"
-              label={trans(tkeys.button.update)}
+              label={trans(tkeys.common.button.update)}
               color={'primary'}
               variant="contained"
               disabled={

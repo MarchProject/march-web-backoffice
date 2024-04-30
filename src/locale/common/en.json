@@ -1,0 +1,39 @@
+{
+  "button": {
+    "favorite": "Favorite",
+    "clear": " Clear",
+    "close": "Close",
+    "filter": "Filter",
+    "menu": "Menu",
+    "discard": "Discard",
+    "addItem": "Add Item",
+    "delete": "Delete",
+    "updateItem": "Update Item",
+    "back": "Back",
+    "upload": "Upload",
+    "downloadTemp": "Download Template",
+    "edit": "Edit",
+    "restore": "Restore",
+    "empty": "Empty",
+    "create": "Create",
+    "update": "Update",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "table": {
+    "footer": {
+      "show": "show",
+      "of": "of",
+      "results": "results",
+      "entries": "entries"
+    }
+  },
+  "Menu": {
+    "Home": "Home",
+    "Sales": "Sales",
+    "Inventory": "Inventory",
+    "Customer": "Customer",
+    "Dashboard": "Dashboard",
+    "User": "User"
+  }
+}

@@ -40,7 +40,7 @@ const AppBarMobile = ({ tabMenu, handlePath, tab, profiles }) => {
           i18n.changeLanguage(lg === 'th' ? 'en' : 'th')
         }}>
         <p className="text-xs font-semibold text-secondary m-0 ml-[2px]">
-          {trans(tkeys.button.language)}
+          {trans(tkeys.common.button.language)}
         </p>
         <MdLanguage color="rgb(135 135 135)" className={'my-auto ml-[15px] '} />
       </div>
@@ -64,7 +64,7 @@ const AppBarMobile = ({ tabMenu, handlePath, tab, profiles }) => {
 
   const tranT = useCallback(
     (text: string) => {
-      return trans(`Menu.${text}`)
+      return trans(`common.Menu.${text}`)
     },
     [trans],
   )

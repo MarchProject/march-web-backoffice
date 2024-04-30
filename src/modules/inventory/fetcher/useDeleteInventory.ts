@@ -1,16 +1,15 @@
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { DeleteInventoryData } from '@/core/gql/inventory/deleteInventoryMutation'
 import { DeleteInventoryVariables } from '@/core/gql/inventory/deleteInventoryMutation'
 import { deleteInventoryMutation } from '@/core/gql/inventory/deleteInventoryMutation'
-import {
-  notificationEditorDeleteErrorProp,
-  notificationEditorSuccessProp,
-} from '@/core/notification'
 import { inventoryRoute } from '@/router/inventory'
 import { StatusCode } from '@/types/response'
 import { useMutation } from '@apollo/client'
 import router from 'next/router'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 
 export interface IUseDeleteInventoryProps {
   id: string
@@ -18,26 +17,41 @@ export interface IUseDeleteInventoryProps {
 
 export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
   const { notification } = useNotificationContext()
+  const { t: trans }: any = useTranslation()
   const [deleteInventory, { loading }] = useMutation<
     DeleteInventoryData,
     DeleteInventoryVariables
   >(deleteInventoryMutation, {
     onCompleted: (data) => {
       if (data?.deleteInventory?.status?.code === StatusCode.SUCCESS) {
-        notification(notificationEditorSuccessProp('Delete'))
+        notification(
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.success),
+            EnumSeverity.success,
+          ),
+        )
         router.push({
           pathname: inventoryRoute.path,
         })
       } else {
         notification(
-          notificationEditorDeleteErrorProp(
-            data?.deleteInventory?.status?.message,
+          notificationProp(
+            trans(tkeys.Inventory.MainPage.HeadText),
+            trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.error),
+            EnumSeverity.error,
           ),
         )
       }
     },
-    onError: (error) => {
-      notification(notificationEditorDeleteErrorProp(error?.message))
+    onError: () => {
+      notification(
+        notificationProp(
+          trans(tkeys.Inventory.MainPage.HeadText),
+          trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.error),
+          EnumSeverity.error,
+        ),
+      )
     },
   })
 

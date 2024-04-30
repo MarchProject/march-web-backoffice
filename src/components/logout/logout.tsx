@@ -44,7 +44,7 @@ const Index = () => {
         }
         onClick={handleSignOut}>
         <p className="m-0 lg:hidden text-xs font-semibold text-secondary ml-[2px]">
-          {trans(tkeys.button.signOut)}
+          {trans(tkeys.common.button.signOut)}
         </p>
         <LogoutIcon className="text-secondary my-auto lg:!text-lg !text-sm" />
       </div>

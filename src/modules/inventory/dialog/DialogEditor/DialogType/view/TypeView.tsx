@@ -84,7 +84,7 @@ export const TypeObjView = ({
         <div className="text-center">
           <BsTrash style={{ ...styleIconMarch, fontSize: '40px' }} />
           <p className="m-0 mt-[5px] text-secondary">
-            {trans(tkeys.button.empty)}
+            {trans(tkeys.common.button.empty)}
           </p>
         </div>
       </div>

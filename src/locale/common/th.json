@@ -1,0 +1,39 @@
+{
+  "button": {
+    "favorite": "รายการโปรด",
+    "clear": "ล้างค่า",
+    "close": "ปิด",
+    "filter": "กรอง",
+    "menu": "เมนู",
+    "discard": "ยกเลิก",
+    "addItem": "เพิ่มสินค้า",
+    "delete": "ลบ",
+    "updateItem": "อัปเดตสินค้า",
+    "back": "กลับ",
+    "upload": "อัปโหลด",
+    "downloadTemp": "ดาวน์โหลด",
+    "edit": "แก้ไข",
+    "restore": "กู้คืน",
+    "empty": "ว่างเปล่า",
+    "create": "สร้าง",
+    "update": "อัปเดต",
+    "signOut": "ลงชื่อออก",
+    "language": "ภาษา"
+  },
+  "table": {
+    "footer": {
+      "show": "แสดง",
+      "of": "จากทั้งหมด",
+      "results": "รายการ",
+      "entries": "รายการ"
+    }
+  },
+  "Menu": {
+    "Home": "หน้าแรก",
+    "Sales": "การเงิน",
+    "Inventory": "คลังสินค้า",
+    "Customer": "ลูกค้า",
+    "Dashboard": "แดชบอร์ด",
+    "User": "ผู้่ใช้"
+  }
+}
