@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import {
-  notificationTrashMutateErrorProp,
-  notificationTrashMutateSuccessProp,
+  notificationInternalErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import {
   EnumDeletedMode,
@@ -14,6 +14,7 @@ import {
 } from '@/core/gql/inventory/recoveryHardDeletedMutation'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
+import { EnumSeverity } from '@/context/notification'
 
 export const useRecoveryTrashHandler = ({
   triggerInventory,
@@ -30,8 +31,9 @@ export const useRecoveryTrashHandler = ({
     onCompleted: (data) => {
       if (data?.recoveryHardDeleted?.status?.code === StatusCode.SUCCESS) {
         notification(
-          notificationTrashMutateSuccessProp(
-            data?.recoveryHardDeleted?.data.mode,
+          notificationMutationProp(
+            data?.recoveryHardDeleted?.status.message,
+            EnumSeverity.success,
           ),
         )
         triggerType()
@@ -40,10 +42,11 @@ export const useRecoveryTrashHandler = ({
         triggerInventory()
         triggerTrash()
       } else {
+        notification(notificationInternalErrorProp('Trash Failed.'))
       }
     },
     onError: () => {
-      notification(notificationTrashMutateErrorProp)
+      notification(notificationInternalErrorProp('Trash Failed.'))
     },
   })
 

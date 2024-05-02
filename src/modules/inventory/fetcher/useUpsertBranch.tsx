@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import {
-  notificationUpdateErrorProp,
-  notificationUpdateSuccessProp,
+  notificationInternalErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import {
   UpsertBranchInventoryResponse,
   UpsertBranchInventoryVariables,
@@ -20,7 +20,6 @@ export const useUpsertBranchHandler = ({
   triggerBranch,
 }: IUseUpsertBranchHandlerProps) => {
   const { notification } = useNotificationContext()
-  const [flagCreate, setFlagCreate] = useState(true)
 
   const [upsertInventoryBranch, { loading, data: upsertInventoryBranchData }] =
     useMutation<UpsertBranchInventoryResponse, UpsertBranchInventoryVariables>(
@@ -30,33 +29,30 @@ export const useUpsertBranchHandler = ({
           if (
             data?.upsertInventoryBranch?.status?.code === StatusCode.SUCCESS
           ) {
-            notification(notificationUpdateSuccessProp('branch', flagCreate))
+            notification(
+              notificationMutationProp(
+                data?.upsertInventoryBranch?.status.message,
+                EnumSeverity.success,
+              ),
+            )
             triggerBranch()
           } else {
             notification(
-              notificationUpdateErrorProp(
-                'branch',
-                flagCreate,
-                data?.upsertInventoryBranch?.status?.message,
+              notificationMutationProp(
+                data?.upsertInventoryBranch?.status.message,
+                EnumSeverity.error,
               ),
             )
           }
         },
-        onError: (error) => {
-          notification(
-            notificationUpdateErrorProp('branch', flagCreate, error?.message),
-          )
+        onError: () => {
+          notification(notificationInternalErrorProp('Update Failed.'))
         },
       },
     )
 
   const updateBranchHandle = useCallback(
     (data) => {
-      if (data?.id) {
-        setFlagCreate(false)
-      } else {
-        setFlagCreate(true)
-      }
       upsertInventoryBranch({
         variables: {
           input: {

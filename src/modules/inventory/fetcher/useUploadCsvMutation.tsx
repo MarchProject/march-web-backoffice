@@ -6,12 +6,13 @@ import {
   uploadInventoryMutation,
 } from '@/core/gql/inventory/uploadInventoryMutation'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
 import { useMutation } from '@apollo/client'
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
-import { useTranslation } from 'react-i18next'
-import { tkeys } from '@/translations/i18n'
+import {
+  notificationInternalErrorProp,
+  notificationMutationProp,
+} from '@/core/notification'
 
 export const useUploadCsvMutation = ({
   inventoriesTypeData,
@@ -21,7 +22,6 @@ export const useUploadCsvMutation = ({
   handleClose,
 }) => {
   const { notification } = useNotificationContext()
-  const { t: trans }: any = useTranslation()
   const [isPass, setIsPass] = useState(true)
 
   const [uploadInventory, { loading }] = useMutation<
@@ -33,9 +33,8 @@ export const useUploadCsvMutation = ({
       if (data?.uploadInventory?.status?.code === StatusCode.SUCCESS) {
         if (data?.uploadInventory?.data?.success === true) {
           notification(
-            notificationProp(
-              trans(tkeys.Inventory.MainPage.HeadText),
-              trans(tkeys.Inventory.MainPage.noti.upload.success),
+            notificationMutationProp(
+              data?.uploadInventory?.status.message,
               EnumSeverity.success,
             ),
           )
@@ -43,13 +42,8 @@ export const useUploadCsvMutation = ({
           handleClose()
         } else {
           notification(
-            notificationProp(
-              trans(tkeys.Inventory.MainPage.HeadText),
-              trans(
-                tkeys.Inventory.MainPage.noti.upload[
-                  `${data?.uploadInventory?.data?.reason}`
-                ],
-              ),
+            notificationMutationProp(
+              data?.uploadInventory?.status.message,
               EnumSeverity.error,
             ),
           )
@@ -57,22 +51,15 @@ export const useUploadCsvMutation = ({
         }
       } else {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.upload.somethingWrong),
+          notificationMutationProp(
+            data?.uploadInventory?.status.message,
             EnumSeverity.error,
           ),
         )
       }
     },
     onError: () => {
-      notification(
-        notificationProp(
-          trans(tkeys.Inventory.MainPage.HeadText),
-          trans(tkeys.Inventory.MainPage.noti.upload.somethingWrong),
-          EnumSeverity.error,
-        ),
-      )
+      notification(notificationInternalErrorProp('Upload Failed'))
     },
   })
 

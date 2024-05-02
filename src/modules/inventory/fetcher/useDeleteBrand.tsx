@@ -5,12 +5,13 @@ import {
 import { deleteInventoryBrandMutation } from '@/core/gql/inventory/deleteBrandInventoryMutation'
 import { useCallback } from 'react'
 import {
-  notificationDeleteErrorProp,
+  notificationInternalErrorProp,
   notificationDeleteSuccessProp,
   notificationTypeUsedDeleteErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 
 interface IUseDeleteBrandHandlerProps {
@@ -29,19 +30,25 @@ export const useDeleteBrandInventoryHandler = ({
   >(deleteInventoryBrandMutation, {
     onCompleted: (data) => {
       if (data?.deleteInventoryBrand?.status?.code === StatusCode.SUCCESS) {
-        notification(notificationDeleteSuccessProp('brand'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryBrand?.status.message,
+            EnumSeverity.success,
+          ),
+        )
         triggerBrand()
         triggerTrash()
-      } else if (
-        data?.deleteInventoryBrand?.status?.code === StatusCode.ONUSE
-      ) {
-        notification(notificationTypeUsedDeleteErrorProp('brand'))
       } else {
-        notification(notificationDeleteErrorProp('brand'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryBrand?.status.message,
+            EnumSeverity.error,
+          ),
+        )
       }
     },
     onError: () => {
-      notification(notificationDeleteErrorProp('brand'))
+      notification(notificationInternalErrorProp('Delete Failed.'))
     },
   })
 

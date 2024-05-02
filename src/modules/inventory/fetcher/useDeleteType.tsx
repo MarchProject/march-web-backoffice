@@ -5,12 +5,12 @@ import {
 } from '@/core/gql/inventory/deleteTypeInventoryMutation'
 import { useCallback } from 'react'
 import {
-  notificationTypeUsedDeleteErrorProp,
-  notificationDeleteErrorProp,
-  notificationDeleteSuccessProp,
+  notificationInternalErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
+import { EnumSeverity } from '@/context/notification'
 
 export const useDeleteTypeInventoryHandler = ({
   notification,
@@ -23,17 +23,25 @@ export const useDeleteTypeInventoryHandler = ({
   >(deleteInventoryTypeMutation, {
     onCompleted: (data) => {
       if (data?.deleteInventoryType?.status?.code === StatusCode.SUCCESS) {
-        notification(notificationDeleteSuccessProp('type'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryType?.status.message,
+            EnumSeverity.success,
+          ),
+        )
         triggerType()
         triggerTrash()
-      } else if (data?.deleteInventoryType?.status?.code === StatusCode.ONUSE) {
-        notification(notificationTypeUsedDeleteErrorProp('type'))
       } else {
-        notification(notificationDeleteErrorProp('type'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryType?.status.message,
+            EnumSeverity.error,
+          ),
+        )
       }
     },
     onError: () => {
-      notification(notificationDeleteErrorProp('type'))
+      notification(notificationInternalErrorProp('Delete Failed.'))
     },
   })
 

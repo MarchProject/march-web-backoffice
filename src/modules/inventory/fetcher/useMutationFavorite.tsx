@@ -8,6 +8,10 @@ import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { EnumSeverity } from '@/context/notification'
+import {
+  notificationInternalErrorProp,
+  notificationMutationProp,
+} from '@/core/notification'
 
 export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
   const { t: trans }: any = useTranslation()
@@ -18,31 +22,23 @@ export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
     onCompleted: (data) => {
       if (data?.favoriteInventory?.status?.code === StatusCode.SUCCESS) {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.favorite.success),
+          notificationMutationProp(
+            data?.favoriteInventory?.status.message,
             EnumSeverity.success,
           ),
         )
         setTriggerFavorite((prev) => !prev)
       } else {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.favorite.error),
+          notificationMutationProp(
+            data?.favoriteInventory?.status.message,
             EnumSeverity.error,
           ),
         )
       }
     },
     onError: () => {
-      notification(
-        notificationProp(
-          trans(tkeys.Inventory.MainPage.HeadText),
-          trans(tkeys.Inventory.MainPage.noti.favorite.error),
-          EnumSeverity.error,
-        ),
-      )
+      notification(notificationInternalErrorProp('Favorite Failed.'))
     },
   })
 

@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import {
-  notificationDeleteErrorProp,
+  notificationInternalErrorProp,
   notificationDeleteSuccessProp,
-  notificationTypeUsedDeleteErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 import {
   DeleteBranchInventoryResponse,
@@ -29,19 +29,25 @@ export const useDeleteBranchInventoryHandler = ({
   >(deleteInventoryBranchMutation, {
     onCompleted: (data) => {
       if (data?.deleteInventoryBranch?.status?.code === StatusCode.SUCCESS) {
-        notification(notificationDeleteSuccessProp('branch'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryBranch?.status.message,
+            EnumSeverity.success,
+          ),
+        )
         triggerBranch()
         triggerTrash()
-      } else if (
-        data?.deleteInventoryBranch?.status?.code === StatusCode.ONUSE
-      ) {
-        notification(notificationTypeUsedDeleteErrorProp('branch'))
       } else {
-        notification(notificationDeleteErrorProp('branch'))
+        notification(
+          notificationMutationProp(
+            data?.deleteInventoryBranch?.status.message,
+            EnumSeverity.error,
+          ),
+        )
       }
     },
     onError: () => {
-      notification(notificationDeleteErrorProp('branch'))
+      notification(notificationInternalErrorProp('Delete Failed.'))
     },
   })
 

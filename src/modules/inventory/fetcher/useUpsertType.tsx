@@ -1,14 +1,14 @@
 import { UpsertTypeInventoryVariables } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { UpsertTypeInventoryResponse } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { upsertInventoryTypeMutation } from '@/core/gql/inventory/upsertTypeInventoryMutation'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import {
-  notificationUpdateErrorProp,
-  notificationUpdateSuccessProp,
+  notificationInternalErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 
 interface IUseUpsertTypeHandleProps {
   triggerType: () => void
@@ -18,7 +18,6 @@ export const useUpsertTypeHandle = ({
   triggerType,
 }: IUseUpsertTypeHandleProps) => {
   const { notification } = useNotificationContext()
-  const [flagCreate, setFlagCreate] = useState(true)
 
   const [upsertTypeInventory, { data: upsertInventoryTypeData, loading }] =
     useMutation<UpsertTypeInventoryResponse, UpsertTypeInventoryVariables>(
@@ -26,33 +25,30 @@ export const useUpsertTypeHandle = ({
       {
         onCompleted: (data) => {
           if (data?.upsertInventoryType?.status?.code === StatusCode.SUCCESS) {
-            notification(notificationUpdateSuccessProp('type', flagCreate))
+            notification(
+              notificationMutationProp(
+                data?.upsertInventoryType?.status.message,
+                EnumSeverity.success,
+              ),
+            )
             triggerType()
           } else {
             notification(
-              notificationUpdateErrorProp(
-                'type',
-                flagCreate,
-                data?.upsertInventoryType?.status?.message,
+              notificationMutationProp(
+                data?.upsertInventoryType?.status.message,
+                EnumSeverity.error,
               ),
             )
           }
         },
-        onError: (error) => {
-          notification(
-            notificationUpdateErrorProp('type', flagCreate, error?.message),
-          )
+        onError: () => {
+          notification(notificationInternalErrorProp('Update Failed.'))
         },
       },
     )
 
   const updateTypeHandle = useCallback(
     (data) => {
-      if (data?.id) {
-        setFlagCreate(false)
-      } else {
-        setFlagCreate(true)
-      }
       upsertTypeInventory({
         variables: {
           input: {

@@ -3,14 +3,14 @@ import {
   UpsertBrandInventoryVariables,
 } from '@/core/gql/inventory/upsertBrandInventoryMutation'
 import { upsertInventoryBrandMutation } from '@/core/gql/inventory/upsertBrandInventoryMutation'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import {
-  notificationUpdateErrorProp,
-  notificationUpdateSuccessProp,
+  notificationInternalErrorProp,
+  notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { useNotificationContext } from '@/context/notification'
+import { EnumSeverity, useNotificationContext } from '@/context/notification'
 
 interface IUseUpsertBrandHandlerProps {
   triggerBrand: () => void
@@ -20,7 +20,6 @@ export const useUpsertBrandHandler = ({
   triggerBrand,
 }: IUseUpsertBrandHandlerProps) => {
   const { notification } = useNotificationContext()
-  const [flagCreate, setFlagCreate] = useState(true)
 
   const [upsertBrandInventory, { loading, data: upsertInventoryBrandData }] =
     useMutation<UpsertBrandInventoryResponse, UpsertBrandInventoryVariables>(
@@ -28,33 +27,30 @@ export const useUpsertBrandHandler = ({
       {
         onCompleted: (data) => {
           if (data?.upsertInventoryBrand?.status?.code === StatusCode.SUCCESS) {
-            notification(notificationUpdateSuccessProp('brand', flagCreate))
+            notification(
+              notificationMutationProp(
+                data?.upsertInventoryBrand?.status.message,
+                EnumSeverity.success,
+              ),
+            )
             triggerBrand()
           } else {
             notification(
-              notificationUpdateErrorProp(
-                'brand',
-                flagCreate,
-                data?.upsertInventoryBrand?.status?.message,
+              notificationMutationProp(
+                data?.upsertInventoryBrand?.status.message,
+                EnumSeverity.error,
               ),
             )
           }
         },
-        onError: (error) => {
-          notification(
-            notificationUpdateErrorProp('brand', flagCreate, error?.message),
-          )
+        onError: () => {
+          notification(notificationInternalErrorProp('Update Failed.'))
         },
       },
     )
 
   const updateBrandHandle = useCallback(
     (data) => {
-      if (data?.id) {
-        setFlagCreate(false)
-      } else {
-        setFlagCreate(true)
-      }
       upsertBrandInventory({
         variables: {
           input: {

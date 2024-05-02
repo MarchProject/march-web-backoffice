@@ -8,9 +8,7 @@ import { UseFormReset } from 'react-hook-form'
 import { IInventoryForm } from '../editor/interface'
 import { EnumSeverity, useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
-import { useTranslation } from 'react-i18next'
-import { tkeys } from '@/translations/i18n'
+import { notificationInternalErrorProp, notificationMutationProp } from '@/core/notification'
 
 export interface IUseUpsertInventoryProps {
   reset: UseFormReset<IInventoryForm>
@@ -22,8 +20,6 @@ export const useUpsertInventory = ({
   idInventory,
 }: IUseUpsertInventoryProps) => {
   const { notification } = useNotificationContext()
-  const { t: trans }: any = useTranslation()
-  const mode = idInventory ? 'update' : 'create'
   const [upsertInventory, { loading }] = useMutation<
     UpsertInventoryTypeResponse,
     UpsertInventoryTypeVariables
@@ -31,9 +27,8 @@ export const useUpsertInventory = ({
     onCompleted: (data) => {
       if (data?.upsertInventory?.status?.code === StatusCode.SUCCESS) {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.editor.upsertInventory[mode]),
+          notificationMutationProp(
+            data?.upsertInventory?.status.message,
             EnumSeverity.success,
           ),
         )
@@ -43,28 +38,15 @@ export const useUpsertInventory = ({
         })
       } else {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(
-              tkeys.Inventory.MainPage.noti.editor.upsertInventory[
-                `${data?.upsertInventory?.status?.code}`
-              ],
-            ),
+          notificationMutationProp(
+            data?.upsertInventory?.status.message,
             EnumSeverity.error,
           ),
         )
       }
     },
     onError: () => {
-      notification(
-        notificationProp(
-          trans(tkeys.Inventory.MainPage.HeadText),
-          trans(
-            tkeys.Inventory.MainPage.noti.editor.somethingWrong,
-          ),
-          EnumSeverity.error,
-        ),
-      )
+      notification(notificationInternalErrorProp('Update Failed.'))
     },
   })
 

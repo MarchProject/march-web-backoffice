@@ -162,10 +162,11 @@ export async function initApollo(uri?: string) {
     let _headers = {
       ...headers,
     }
-
+    const lang = clientConfig.getLanguage()
     if (accessToken) {
       _headers = Object.assign({}, _headers, {
         authorization: `Bearer ${accessToken}`,
+        lang: headers?.lang ?? lang,
       })
     }
 

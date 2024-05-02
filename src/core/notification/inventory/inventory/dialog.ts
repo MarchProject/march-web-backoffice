@@ -1,6 +1,17 @@
 import { EnumSeverity } from '@/context/notification'
 import { EnumDeletedMode } from '@/core/gql/inventory/recoveryHardDeletedMutation'
 
+export const notificationMutationProp = (
+  message: string,
+  severity: EnumSeverity,
+) => {
+  return {
+    severity,
+    title: message?.split('|')?.[0],
+    message: message?.split('|')?.[1],
+  }
+}
+
 export const notificationDeleteSuccessProp = (type = 'type') => {
   return {
     severity: EnumSeverity.success,
@@ -17,11 +28,11 @@ export const notificationTypeUsedDeleteErrorProp = (type = 'type') => {
     } already use in product`,
   }
 }
-export const notificationDeleteErrorProp = (type = 'type') => {
+export const notificationInternalErrorProp = (message: string = '') => {
   return {
     severity: EnumSeverity.error,
-    title: `Product ${type === 'type' ? 'type' : 'brand'}`,
-    message: 'Delete Failed.',
+    title: `Internal Error`,
+    message,
   }
 }
 export const notificationUpdateSuccessProp = (

@@ -7,9 +7,7 @@ import { StatusCode } from '@/types/response'
 import { useMutation } from '@apollo/client'
 import router from 'next/router'
 import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { tkeys } from '@/translations/i18n'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationInternalErrorProp, notificationMutationProp } from '@/core/notification'
 
 export interface IUseDeleteInventoryProps {
   id: string
@@ -17,7 +15,6 @@ export interface IUseDeleteInventoryProps {
 
 export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
   const { notification } = useNotificationContext()
-  const { t: trans }: any = useTranslation()
   const [deleteInventory, { loading }] = useMutation<
     DeleteInventoryData,
     DeleteInventoryVariables
@@ -25,9 +22,8 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
     onCompleted: (data) => {
       if (data?.deleteInventory?.status?.code === StatusCode.SUCCESS) {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.success),
+          notificationMutationProp(
+            data?.deleteInventory?.status.message,
             EnumSeverity.success,
           ),
         )
@@ -36,22 +32,15 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
         })
       } else {
         notification(
-          notificationProp(
-            trans(tkeys.Inventory.MainPage.HeadText),
-            trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.error),
+          notificationMutationProp(
+            data?.deleteInventory?.status.message,
             EnumSeverity.error,
           ),
         )
       }
     },
     onError: () => {
-      notification(
-        notificationProp(
-          trans(tkeys.Inventory.MainPage.HeadText),
-          trans(tkeys.Inventory.MainPage.noti.editor.deleteInventory.error),
-          EnumSeverity.error,
-        ),
-      )
+      notification(notificationInternalErrorProp('Delete Failed.'))
     },
   })
 
