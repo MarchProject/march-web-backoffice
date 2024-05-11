@@ -17,7 +17,6 @@ export interface IUseUpsertInventoryProps {
 
 export const useUpsertInventory = ({
   reset,
-  idInventory,
 }: IUseUpsertInventoryProps) => {
   const { notification } = useNotificationContext()
   const [upsertInventory, { loading }] = useMutation<
@@ -45,8 +44,12 @@ export const useUpsertInventory = ({
         )
       }
     },
-    onError: () => {
-      notification(notificationInternalErrorProp('Update Failed.'))
+    onError: (error) => {
+      if (error.message === 'Unauthorized Role') {
+        notification(notificationInternalErrorProp('Permission.', 'Server'))
+      } else {
+        notification(notificationInternalErrorProp('Update Failed.'))
+      }
     },
   })
 

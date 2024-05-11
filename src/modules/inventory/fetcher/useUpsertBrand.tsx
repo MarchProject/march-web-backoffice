@@ -26,6 +26,7 @@ export const useUpsertBrandHandler = ({
       upsertInventoryBrandMutation,
       {
         onCompleted: (data) => {
+          console.log({ data })
           if (data?.upsertInventoryBrand?.status?.code === StatusCode.SUCCESS) {
             notification(
               notificationMutationProp(
@@ -43,8 +44,12 @@ export const useUpsertBrandHandler = ({
             )
           }
         },
-        onError: () => {
-          notification(notificationInternalErrorProp('Update Failed.'))
+        onError: (error) => {
+          if (error.message === 'Unauthorized Role') {
+            notification(notificationInternalErrorProp('Permission.', 'Server'))
+          } else {
+            notification(notificationInternalErrorProp('Update Failed.'))
+          }
         },
       },
     )

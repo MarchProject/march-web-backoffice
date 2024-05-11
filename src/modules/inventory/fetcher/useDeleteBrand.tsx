@@ -47,8 +47,12 @@ export const useDeleteBrandInventoryHandler = ({
         )
       }
     },
-    onError: () => {
-      notification(notificationInternalErrorProp('Delete Failed.'))
+    onError: (error) => {
+      if (error.message === 'Unauthorized Role') {
+        notification(notificationInternalErrorProp('Permission.', 'Server'))
+      } else {
+        notification(notificationInternalErrorProp('Update Failed.'))
+      }
     },
   })
 

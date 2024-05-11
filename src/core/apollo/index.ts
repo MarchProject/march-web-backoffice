@@ -128,7 +128,8 @@ export async function initApollo(uri?: string) {
           case 'Unauthorized ShopId':
             unAuthorizeHandle()
           case 'Unauthorized Role':
-          // unAuthorizeHandle()
+            // unAuthorizeHandle()
+            break
           case 'Unauthorized Device':
             unAuthorizeHandle()
           case 'jwt expired':
@@ -191,10 +192,10 @@ export async function initApollo(uri?: string) {
         fetchPolicy: 'no-cache',
         errorPolicy: 'ignore',
       },
-      mutate: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
-      },
+      // mutate: {
+      //   fetchPolicy: 'no-cache',
+      //   errorPolicy: 'all',
+      // },
     },
   })
 

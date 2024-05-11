@@ -45,8 +45,12 @@ export const useRecoveryTrashHandler = ({
         notification(notificationInternalErrorProp('Trash Failed.'))
       }
     },
-    onError: () => {
-      notification(notificationInternalErrorProp('Trash Failed.'))
+    onError: (error) => {
+      if (error.message === 'Unauthorized Role') {
+        notification(notificationInternalErrorProp('Permission.', 'Server'))
+      } else {
+        notification(notificationInternalErrorProp('Update Failed.'))
+      }
     },
   })
 

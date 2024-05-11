@@ -28,10 +28,13 @@ export const notificationTypeUsedDeleteErrorProp = (type = 'type') => {
     } already use in product`,
   }
 }
-export const notificationInternalErrorProp = (message: string = '') => {
+export const notificationInternalErrorProp = (
+  message: string = '',
+  title?: string,
+) => {
   return {
     severity: EnumSeverity.error,
-    title: `Internal Error`,
+    title: title ? title : `Internal Error`,
     message,
   }
 }

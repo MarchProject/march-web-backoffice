@@ -37,8 +37,12 @@ export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
         )
       }
     },
-    onError: () => {
-      notification(notificationInternalErrorProp('Favorite Failed.'))
+    onError: (error) => {
+      if (error.message === 'Unauthorized Role') {
+        notification(notificationInternalErrorProp('Permission.', 'Server'))
+      } else {
+        notification(notificationInternalErrorProp('Update Failed.'))
+      }
     },
   })
 
