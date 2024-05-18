@@ -12,6 +12,7 @@ import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/Layout'
 import ContainerUser from '@/modules/user/Container'
+import * as clientConfig from '@/config/client'
 
 const Index = () => {
   return (
@@ -44,7 +45,7 @@ export async function getServerSideProps(
 }
 
 async function _initApollo(setClient: any) {
-  const client = await initApollo()
+  const client = await initApollo(clientConfig.getUserApiUrl())
   setClient(client)
 }
 

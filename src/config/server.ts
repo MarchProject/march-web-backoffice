@@ -33,6 +33,7 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     uamLoginEnabled,
     defaultLoginPath,
     authApiUrl,
+    userApiUrl,
     inventoryApiUrl,
     azureAdAuthority,
     azureAdClientid,
@@ -45,17 +46,23 @@ export function init(env: NodeJS.ProcessEnv): ServerConfig {
     defaultLoginPath: String(defaultLoginPath),
     authApiUrl: String(authApiUrl),
     inventoryApiUrl: String(inventoryApiUrl),
+    userApiUrl: String(userApiUrl),
     azureAdClientid: String(azureAdClientid),
     azureAdAuthority: String(azureAdAuthority),
   }
-  console.log({  config })
+  console.log({ config })
 
   return config
 }
 
 export function toClientConfig(): ClientConfig {
-  const { development, authApiUrl, defaultLoginPath, inventoryApiUrl } =
-    global.config as ServerConfig
+  const {
+    development,
+    authApiUrl,
+    defaultLoginPath,
+    inventoryApiUrl,
+    userApiUrl,
+  } = global.config as ServerConfig
 
   console.log('clientConfig', {
     development,
@@ -69,5 +76,6 @@ export function toClientConfig(): ClientConfig {
     defaultLoginPath,
     authApiUrl,
     inventoryApiUrl,
+    userApiUrl,
   }
 }

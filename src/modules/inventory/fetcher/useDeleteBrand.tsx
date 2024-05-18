@@ -6,8 +6,6 @@ import { deleteInventoryBrandMutation } from '@/core/gql/inventory/deleteBrandIn
 import { useCallback } from 'react'
 import {
   notificationInternalErrorProp,
-  notificationDeleteSuccessProp,
-  notificationTypeUsedDeleteErrorProp,
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'

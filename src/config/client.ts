@@ -44,6 +44,10 @@ export function getInventoryApiUrl() {
   return localStorage.getItem(`${prefix}.inventoryApiUrl`)
 }
 
+export function getUserApiUrl() {
+  return localStorage.getItem(`${prefix}.userApiUrl`)
+}
+
 export function getUserId() {
   return localStorage.getItem(`${prefix}.userId`)
 }

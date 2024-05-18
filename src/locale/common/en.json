@@ -18,7 +18,9 @@
     "create": "Create",
     "update": "Update",
     "signOut": "Sign out",
-    "language": "Language"
+    "language": "Language",
+    "invite": "Invite People",
+    "revoke": "Revoke Invite"
   },
   "table": {
     "footer": {

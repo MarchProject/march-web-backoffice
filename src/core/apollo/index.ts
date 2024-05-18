@@ -36,6 +36,7 @@ export async function initApollo(uri?: string) {
   const basePath = process.env.basePath
   const authPath = process.env.authApiUrl
   const _uri = uri || authPath
+  console.log({ uri, _uri })
   const wsUri = _uri?.replace(/^http/, 'ws')
   const accessToken = clientConfig.getAccessToken()
   const reconnect = !wsUri.startsWith(

@@ -1,24 +1,18 @@
 import React from 'react'
 import GeneralTabUser from './subMain/General'
-import UsersTabUser from './subMain/User'
+import UsersTabUser from './subMain/user/Container'
 import RoleTabUser from './subMain/Role'
 import NotiTabUser from './subMain/Notification'
+import { userManagementController } from './controller'
 
 interface IMainUsersProps {
   valueTabKey: string
-  generalProps?: any
-  usersProps?: any
-  roleProps?: any
-  notiProps?: any
 }
 
-const MainUsers = ({
-  valueTabKey,
-  generalProps,
-  usersProps,
-  roleProps,
-  notiProps,
-}: IMainUsersProps) => {
+const MainUsers = ({ valueTabKey }: IMainUsersProps) => {
+  const { generalProps, usersProps, roleProps, notiProps } =
+    userManagementController()
+
   const MenuTab = (valueTabKey: string) => {
     switch (valueTabKey) {
       case 'general': {
@@ -39,7 +33,11 @@ const MainUsers = ({
     }
   }
 
-  return <div className="overflow-y-auto">{MenuTab(valueTabKey)}</div>
+  return (
+    <div className="">
+      {MenuTab(valueTabKey)}
+    </div>
+  )
 }
 
 export default MainUsers

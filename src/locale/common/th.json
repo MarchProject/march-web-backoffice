@@ -18,7 +18,9 @@
     "create": "สร้าง",
     "update": "อัปเดต",
     "signOut": "ลงชื่อออก",
-    "language": "ภาษา"
+    "language": "ภาษา",
+    "invite": "เชิญคนอื่น",
+    "revoke": "ยกเลิกคำเชิญ"
   },
   "table": {
     "footer": {

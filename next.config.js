@@ -13,6 +13,9 @@ function getBasePath() {
 }
 
 module.exports = withBundleAnalyzer({
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+  },
   reactStrictMode: false,
   compiler: {
     // Enables the styled-components SWC transform
