@@ -3,6 +3,19 @@
     "Users": "Users",
     "Text": "Expand your network by inviting others to join your shop. Collaborate with team members. Maintain control over your workspace with our comprehensive user management features.",
     "Pending": "Pending Invites",
-    "TextPend": "List of pending invites. You can revoke invite"
+    "TextPend": "List of pending invites. You can revoke invite",
+    "Modals": {
+      "invite": {
+        "header": "Invite Team",
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "description":"Description",
+        "email": "Email",
+        "role": "Role",
+        "button": {
+          "invite": "Invite"
+        }
+      }
+    }
   }
 }

@@ -19,7 +19,7 @@ const MainUsers = ({ valueTabKey }: IMainUsersProps) => {
         return <GeneralTabUser generalProps={generalProps} />
       }
       case 'users': {
-        return <UsersTabUser usersProps={usersProps} />
+        return <UsersTabUser usersProps={usersProps} roleProps={roleProps} />
       }
       case 'role': {
         return <RoleTabUser roleProps={roleProps} />
@@ -33,11 +33,7 @@ const MainUsers = ({ valueTabKey }: IMainUsersProps) => {
     }
   }
 
-  return (
-    <div className="">
-      {MenuTab(valueTabKey)}
-    </div>
-  )
+  return <div className="">{MenuTab(valueTabKey)}</div>
 }
 
 export default MainUsers

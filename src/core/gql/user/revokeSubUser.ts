@@ -9,6 +9,7 @@ export const revokeSubUserMutation = gql`
       }
       status {
         code
+        message
       }
     }
   }

@@ -9,6 +9,7 @@ export const createSubUserMutation = gql`
       }
       status {
         code
+        message
       }
     }
   }
@@ -19,7 +20,13 @@ export type CreateSubUserResponse = {
 }
 
 export type CreateSubUserVariables = {
-  input: { role: string; username: string; email: string }
+  input: {
+    role: string
+    firstname: string
+    lastname: string
+    description: string
+    email: string
+  }
 }
 
 export type CreateSubUserType = {

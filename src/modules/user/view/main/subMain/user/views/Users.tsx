@@ -9,6 +9,7 @@ import { SlPeople } from 'react-icons/sl'
 
 interface IUsersTab {
   users: User[]
+  handleModalInvite: () => void
 }
 
 const styleIcon: React.CSSProperties = {
@@ -73,7 +74,7 @@ const mapUser = (users: User[]) => {
   )
 }
 
-const Users = ({ users }: IUsersTab) => {
+const Users = ({ users, handleModalInvite }: IUsersTab) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.User
   return (
@@ -92,7 +93,7 @@ const Users = ({ users }: IUsersTab) => {
               label={trans(tkeys.common.button.invite)}
               color={'primary'}
               variant="contained"
-              onClick={() => {}}
+              onClick={handleModalInvite}
             />
           </div>
         </div>

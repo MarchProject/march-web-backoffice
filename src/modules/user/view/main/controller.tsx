@@ -1,14 +1,21 @@
+import { useCallback, useState } from 'react'
 import { IUseUserManangementHandler } from './interface'
 import { useGetPermission } from './subMain/fetcher/useGetPermission'
 
 export const userManagementController = () => {
-  const triggerGetPermission = true
+  const [triggerGetPermission, setTriggerGetPermission] = useState(false)
+
+  const triggerPermissionHandler = useCallback(() => {
+    console.log('trigger')
+    setTriggerGetPermission(!triggerGetPermission)
+  }, [triggerGetPermission])
 
   const { getPermissionData } = useGetPermission({
     triggerGetPermission,
   })
 
   const { users } = useUserManangementHandler({ getPermissionData })
+  const { roles } = useRoleManangementHandler({ getPermissionData })
 
   console.log({ getPermissionData })
 
@@ -16,9 +23,22 @@ export const userManagementController = () => {
     generalProps: {},
     usersProps: {
       users,
+      triggerPermissionHandler,
     },
-    roleProps: {},
+    roleProps: {
+      roles,
+    },
     notiProps: {},
+  }
+}
+
+const useRoleManangementHandler = ({
+  getPermissionData,
+}: IUseUserManangementHandler) => {
+  const roles = getPermissionData?.shop?.groups
+
+  return {
+    roles,
   }
 }
 

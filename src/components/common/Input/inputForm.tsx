@@ -17,6 +17,7 @@ interface InputFormProps extends IInputProps {
     label: string
     required: boolean
     classNames?: string
+    classInput?:string
   }
   type: string
   name: string
@@ -32,6 +33,7 @@ interface IInputProps {
     label: string
     required: boolean
     classNames?: string
+    classInput?:string
   }
   type: string
   name?: string
@@ -118,7 +120,7 @@ const Input = (props: IInputProps) => {
       <TextField
         inputRef={inputRef}
         id={id}
-        className={classnames(classNames, '!rounded-full')}
+        className={classnames('!rounded-full', classNames)}
         name={name}
         variant={variant}
         value={value}
@@ -128,7 +130,7 @@ const Input = (props: IInputProps) => {
             e.stopPropagation()
           },
           readOnly: disabled,
-          className: '!rounded-2xl',
+          className: `${classnames('!rounded-2xl', inputLabel.classInput)}`,
         }}
         onFocus={() => {
           setFocus(true)

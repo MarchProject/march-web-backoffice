@@ -11,13 +11,14 @@ import {
   CreateSubUserResponse,
   CreateSubUserVariables,
 } from '@/core/gql/user/createSubUser'
+import { IInviteDataForm } from '../user/interface'
 
 interface IUseCreateSubUserHandlerProps {
-  triggerPermission: () => void
+  triggerPermissionHandler: () => void
 }
 
 export const useCreateSubUserHandler = ({
-  triggerPermission,
+  triggerPermissionHandler,
 }: IUseCreateSubUserHandlerProps) => {
   const { notification } = useNotificationContext()
   const [createSubUser, { loading }] = useMutation<
@@ -32,7 +33,7 @@ export const useCreateSubUserHandler = ({
             EnumSeverity.success,
           ),
         )
-        triggerPermission()
+        triggerPermissionHandler()
       } else {
         notification(
           notificationMutationProp(
@@ -52,12 +53,14 @@ export const useCreateSubUserHandler = ({
   })
 
   const createSubUserHandle = useCallback(
-    (data) => {
+    (data: IInviteDataForm) => {
       createSubUser({
         variables: {
           input: {
             email: data.email,
-            username: data.username,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            description: data.description,
             role: data.role,
           },
         },
@@ -68,7 +71,7 @@ export const useCreateSubUserHandler = ({
 
   return {
     createSubUser,
-    deleteInventoryBrandLoading: loading,
+    createSubUserLoading: loading,
     createSubUserHandle,
   }
 }

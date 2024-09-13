@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 interface IPendingTab {
   users: User[]
+  revokeSubUserHandle: (data: any) => void
 }
 
 const styleIcon: React.CSSProperties = {
@@ -21,7 +22,11 @@ const styleIcon: React.CSSProperties = {
   fontSize: '40px',
 }
 
-const mapUser = (users: User[], trans: any) => {
+const mapUser = (
+  users: User[],
+  trans: any,
+  revokeSubUserHandle: (data: any) => void,
+) => {
   const userId = clientConfig.getUserId()
 
   const usersAnother = users
@@ -67,7 +72,9 @@ const mapUser = (users: User[], trans: any) => {
                   label={trans(tkeys.common.button.revoke)}
                   color={'primary'}
                   variant="contained"
-                  onClick={() => {}}
+                  onClick={() => {
+                    revokeSubUserHandle({ id: user.id })
+                  }}
                 />
               </div>
             </div>
@@ -83,7 +90,7 @@ const mapUser = (users: User[], trans: any) => {
   )
 }
 
-const Pending = ({ users }: IPendingTab) => {
+const Pending = ({ users, revokeSubUserHandle }: IPendingTab) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.User
   return (
@@ -99,7 +106,7 @@ const Pending = ({ users }: IPendingTab) => {
         </div>
       </div>
       <div className="w-full col-span-3">
-        <div className="mt-5">{mapUser(users, trans)}</div>
+        <div className="mt-5">{mapUser(users, trans, revokeSubUserHandle)}</div>
       </div>
     </div>
   )

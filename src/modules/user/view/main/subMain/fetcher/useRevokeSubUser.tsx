@@ -13,11 +13,11 @@ import {
 } from '@/core/gql/user/revokeSubUser'
 
 interface IUseRevokeSubUserHandlerProps {
-  triggerPermission: () => void
+  triggerPermissionHandler: () => void
 }
 
 export const useRevokeSubUserHandler = ({
-  triggerPermission,
+  triggerPermissionHandler,
 }: IUseRevokeSubUserHandlerProps) => {
   const { notification } = useNotificationContext()
   const [revokeSubUser, { loading }] = useMutation<
@@ -32,7 +32,7 @@ export const useRevokeSubUserHandler = ({
             EnumSeverity.success,
           ),
         )
-        triggerPermission()
+        triggerPermissionHandler()
       } else {
         notification(
           notificationMutationProp(
@@ -55,7 +55,7 @@ export const useRevokeSubUserHandler = ({
     (data) => {
       revokeSubUser({
         variables: {
-          userId: data.userId,
+          userId: data.id,
         },
       })
     },
