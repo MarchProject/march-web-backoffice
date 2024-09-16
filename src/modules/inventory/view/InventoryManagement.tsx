@@ -186,26 +186,9 @@ export const InventoryManagement = ({
             <div className="mx-auto w-full pb-[20px]">
               <div className="px-5">
                 <AutocompleteSelectAsync
-                  inputRef={brandFieldRef}
-                  value={inventoryBrandValue}
-                  classNames="mx-auto"
-                  id="brandFilter"
-                  labelIndex="name"
-                  valueIndex={'id'}
-                  multiple={true}
-                  options={inventoriesBrandData}
-                  InputProps={{
-                    label: trans(tkeys.Inventory.MainPage.filter.brand),
-                    placeholder: trans(tkeys.Inventory.MainPage.filter.brand),
-                  }}
-                  onChange={handleBrandChange}
-                  loading={inventoriesBrandLoading}
-                  onInputChange={handleSearchInventoryBrand}
-                />
-                <AutocompleteSelectAsync
                   inputRef={branchFieldRef}
                   value={inventoryBranchValue}
-                  classNames="mx-auto mt-[10px]"
+                  classNames="mx-auto "
                   id="branchFilter"
                   labelIndex="name"
                   valueIndex={'id'}
@@ -218,6 +201,23 @@ export const InventoryManagement = ({
                   onChange={handleBranchChange}
                   loading={inventoriesBranchLoading}
                   onInputChange={handleSearchInventoryBranch}
+                />
+                <AutocompleteSelectAsync
+                  inputRef={brandFieldRef}
+                  value={inventoryBrandValue}
+                  classNames="mx-auto mt-[10px]"
+                  id="brandFilter"
+                  labelIndex="name"
+                  valueIndex={'id'}
+                  multiple={true}
+                  options={inventoriesBrandData}
+                  InputProps={{
+                    label: trans(tkeys.Inventory.MainPage.filter.brand),
+                    placeholder: trans(tkeys.Inventory.MainPage.filter.brand),
+                  }}
+                  onChange={handleBrandChange}
+                  loading={inventoriesBrandLoading}
+                  onInputChange={handleSearchInventoryBrand}
                 />
                 <AutocompleteSelectAsync
                   inputRef={typeFieldRef}
