@@ -6,7 +6,6 @@ import { max } from '@/utils/common/normalizeInput'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Control, FieldValues } from 'react-hook-form'
-import { Group } from '@/core/model/user'
 import { IRadioOption, RadioGroupForm } from '@/components/common/Radio/Radio'
 
 interface IInviteTeamProps {

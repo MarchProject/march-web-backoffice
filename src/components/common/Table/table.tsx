@@ -8,7 +8,7 @@ import {
   GridRowSelectionModel,
   useGridApiRef,
 } from '@mui/x-data-grid'
-import { Pagination, TablePagination } from '@mui/material'
+import { Pagination } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { useResize } from '@/core/utils/hook/resizeHook'

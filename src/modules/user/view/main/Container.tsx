@@ -10,13 +10,16 @@ interface IMainUsersProps {
 }
 
 const MainUsers = ({ valueTabKey }: IMainUsersProps) => {
-  const { generalProps, usersProps, roleProps, notiProps } =
-    userManagementController()
+  const { usersProps, roleProps, notiProps } = userManagementController()
 
   const MenuTab = (valueTabKey: string) => {
     switch (valueTabKey) {
       case 'general': {
-        return <GeneralTabUser generalProps={generalProps} />
+        return (
+          <GeneralTabUser
+          // generalProps={generalProps}
+          />
+        )
       }
       case 'users': {
         return <UsersTabUser usersProps={usersProps} roleProps={roleProps} />

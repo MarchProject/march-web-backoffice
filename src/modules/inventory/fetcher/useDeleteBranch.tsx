@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import {
   notificationInternalErrorProp,
-  notificationDeleteSuccessProp,
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'

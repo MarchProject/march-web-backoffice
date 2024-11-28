@@ -1,6 +1,6 @@
 import React from 'react'
 
-const RoleTabUser = ({ roleProps }) => {
+const RoleTabUser = ({ roleProps: _ }) => {
   return <div>RoleTabUser</div>
 }
 

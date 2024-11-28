@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NotiTabUser = ({ notiProps }) => {
+const NotiTabUser = ({ notiProps: _notiProps }) => {
   return <div>NotiTabUser</div>
 }
 

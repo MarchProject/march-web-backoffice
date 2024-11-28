@@ -52,8 +52,8 @@ export function parseNumber(value: string): number {
   return parseFloat(_value.replace(/,/g, '')) || 0
 }
 
-export default {
-  formatNumber,
-  formatFloat: formatFloat,
-  parseNumber,
-}
+// export default {
+//   formatNumber,
+//   formatFloat: formatFloat,
+//   parseNumber,
+// }

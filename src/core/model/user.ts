@@ -22,7 +22,7 @@ export class PermissonUserClass {
     this._functions = plainToInstance(Function, functions)
   }
 
-  get tasks(): Function[] {
+  get tasks(): Task[] {
     return this._tasks
   }
 

@@ -2,6 +2,8 @@ import { getUserId } from '@/config/client'
 import { IInventoryForm } from '../editor/interface'
 import { UpsertInventoryTypeVariables } from '@/core/gql/inventory/upsertInventory'
 import { get, isNil } from 'lodash'
+import dayjs from '@/core/common/dayjs'
+import { DbFormat } from '@/core/common'
 
 export const tranFromUpsertInventoryDto = (
   input: IInventoryForm,
@@ -14,6 +16,11 @@ export const tranFromUpsertInventoryDto = (
     height: isNil(input?.height) ? undefined : Number(input?.height),
     weight: isNil(input?.weight) ? undefined : Number(input?.weight),
   }
+  const expiryDate = get(input, 'expiryDate', undefined)
+  const tranformExp = expiryDate
+    ? dayjs(expiryDate).format(DbFormat)
+    : undefined
+
   return {
     input: {
       id: id,
@@ -33,7 +40,7 @@ export const tranFromUpsertInventoryDto = (
       inventoryTypeId: input.type.id,
       inventoryBrandId: input.brand.id,
       inventoryBranchId: input.branch.id,
-      expiryDate: get(input, 'expiryDate', undefined),
+      expiryDate: tranformExp,
     },
   }
 }

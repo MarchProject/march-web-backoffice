@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { getPicture } from '@/config/client'
+// import { getPicture } from '@/config/client'
 import {
   Avatar,
   List,
@@ -15,9 +15,9 @@ import { SlPeople } from 'react-icons/sl'
 import { TbPackages, TbCategory, TbSettingsCheck } from 'react-icons/tb'
 import { FaMoneyBillWave } from 'react-icons/fa'
 
-const GeneralTabUser = ({ generalProps }) => {
-  const basePic = `${process.env.basePath}/man.png`
-  const urlPic = getPicture() || basePic
+const GeneralTabUser = () => {
+  // const basePic = `${process.env.basePath}/man.png`
+  // const urlPic = getPicture() || basePic
 
   const services = [
     {
