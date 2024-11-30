@@ -68,7 +68,7 @@ export async function initApollo(uri?: string) {
     const { graphQLErrors, networkError, operation, forward } = errorHandler
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
-        switch (err.extensions.exception?.message) {
+        switch (err?.message) {
           case 'Unauthorized':
             // ignore 401 error for a refresh request
             if (operation.operationName === 'tokenExpire') {
@@ -128,6 +128,7 @@ export async function initApollo(uri?: string) {
             return observable
           case 'Unauthorized ShopId':
             unAuthorizeHandle()
+            // console.log('here naja')
           case 'Unauthorized Role':
             // unAuthorizeHandle()
             break
