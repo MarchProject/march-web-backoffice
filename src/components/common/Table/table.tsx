@@ -2,6 +2,7 @@ import * as React from 'react'
 import {
   DataGrid,
   GridCallbackDetails,
+  GridColDef,
   GridFooterContainer,
   GridPagination,
   GridPaginationModel,
@@ -13,9 +14,9 @@ import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { useResize } from '@/core/utils/hook/resizeHook'
 
-type DataTableMarchProps = {
-  rows: any[]
-  columns: any[]
+type DataTableMarchProps<T> = {
+  rows: T[]
+  columns: GridColDef<T>[]
   pageCount: number
   onRow: (
     rowSelectionModel: GridRowSelectionModel,
@@ -33,7 +34,7 @@ type DataTableMarchProps = {
   idNav?: string
 }
 
-export default function DataTableMarch({
+export default function DataTableMarch<T>({
   rows = [],
   columns,
   onRow,
@@ -45,7 +46,7 @@ export default function DataTableMarch({
   limit,
   totalRow = 1,
   idNav,
-}: DataTableMarchProps) {
+}: DataTableMarchProps<T>) {
   const apiRef = useGridApiRef()
   const { t: trans }: any = useTranslation()
 

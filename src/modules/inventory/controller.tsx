@@ -1,5 +1,9 @@
 import { useNotificationContext } from '@/context/notification'
-import { InventoryBrand, InventoryType } from '@/core/model/inventory'
+import {
+  Inventory,
+  InventoryBrand,
+  InventoryType,
+} from '@/core/model/inventory'
 import { AutocompleteChangeReason } from '@mui/material'
 import {
   SyntheticEvent,
@@ -221,15 +225,15 @@ const useHandleInventory = ({ setType, setBrand, setBranch }) => {
 }
 
 const useHandleMainTable = ({ mainTableColumn }) => {
-  const [userColumn, setUserColumn] = useState([])
-  const [unUsedColumn, setUnUsedColumn] = useState([])
+  const [userColumn, setUserColumn] = useState<GridColDef<Inventory>[]>([])
+  const [unUsedColumn, setUnUsedColumn] = useState<GridColDef<Inventory>[]>([])
   const mainTable = getMainInventoryColumn()
 
   const localTables: IMainTables[] = useMemo(() => {
     return JSON.parse(mainTable) ?? []
   }, [mainTable])
 
-  const mainTableColumns: GridColDef[] = useMemo(
+  const mainTableColumns: GridColDef<Inventory>[] = useMemo(
     () => mainTableColumn || [],
     [mainTableColumn],
   )
@@ -239,8 +243,8 @@ const useHandleMainTable = ({ mainTableColumn }) => {
   }
 
   useEffect(() => {
-    const newUserColumn = []
-    const newUnUsedColumn = []
+    const newUserColumn: GridColDef<Inventory>[] = []
+    const newUnUsedColumn: GridColDef<Inventory>[] = []
     if (localTables.length > 0 && mainTableColumns.length > 0) {
       mainTableColumns.forEach((m) => {
         const check = Object.values(localTables).some(

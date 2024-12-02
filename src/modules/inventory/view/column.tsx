@@ -9,6 +9,7 @@ import { AiOutlineEye } from 'react-icons/ai'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import { Inventory } from '@/core/model/inventory'
 
 const styleColumns: CSSProperties = {
   textOverflow: 'ellipsis',
@@ -21,7 +22,7 @@ interface ColumnInventory {
 
 export const mainTableColumns = ({
   favoriteInventoryHandle,
-}: ColumnInventory): GridColDef[] => {
+}: ColumnInventory): GridColDef<Inventory>[] => {
   const { t: trans }: any = useTranslation()
 
   const keys = tkeys.Inventory.MainPage.table
