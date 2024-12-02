@@ -10,7 +10,7 @@ import {
 } from 'express'
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
-import Layout from '@/layout/Layout'
+import Layout from '@/layout/LayOutMarch'
 import * as clientConfig from '@/config/client'
 import EditorInventoryPage from '@/modules/inventory/editor/Editor'
 import { EnumModeEditorPage } from '@/modules/interface'

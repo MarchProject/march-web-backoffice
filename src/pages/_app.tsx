@@ -10,10 +10,11 @@ import '../translations/i18n'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { getLanguage } from '@/config/client'
+import { ConfigProvider } from 'antd'
 
 export default function App({ Component, pageProps }: AppProps) {
   const title = `March ${process.env.version}`
-  
+
   const { i18n } = useTranslation()
   const [lg, setLg] = useState(null)
 
@@ -25,11 +26,13 @@ export default function App({ Component, pageProps }: AppProps) {
     if (lg) {
       i18n.changeLanguage(lg)
     }
-    // else {
-    //   i18n.changeLanguage('en')
-    //   setLanguage('en')
-    // }
   }, [i18n, lg])
+
+  const themes = {
+    token: {
+      fontFamily: 'IBM Plex Sans Thai, sans-serif',
+    },
+  }
 
   return (
     <>
@@ -41,12 +44,14 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <title>{title}</title>
       </Head>
-
-      <ThemeProvider theme={theme}>
-        <Providers>
-          <Component className="font-IBMPlexSansThai" {...pageProps} />
-        </Providers>
-      </ThemeProvider>
+      <ConfigProvider theme={themes}>
+        <ThemeProvider theme={theme}>
+          <Providers>
+            <Component className="font-IBMPlexSansThai" {...pageProps} />
+          </Providers>
+        </ThemeProvider>
+      </ConfigProvider>
+      ,
     </>
   )
 }

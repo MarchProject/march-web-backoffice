@@ -36,6 +36,7 @@ const Index = () => {
       },
     })
   }
+
   return (
     <div className="text-right my-auto w-full">
       <div

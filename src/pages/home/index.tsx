@@ -10,7 +10,7 @@ import {
 } from 'express'
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
-import Layout from '@/layout/Layout'
+import Layout from '@/layout/LayOutMarch'
 import { useLoadingContext } from '@/context/loading'
 
 const Index = () => {
