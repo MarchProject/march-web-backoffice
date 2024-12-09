@@ -6,7 +6,57 @@ import { Menu } from 'antd'
 import dynamic from 'next/dynamic'
 import NewAppBarMobile from './views/NewAppBarMobile'
 import { useLayoutController } from './controller/controller'
-import UserUI from './views/UserUI'
+import SignOut from '@/components/logout/logout'
+import { Image } from 'antd'
+// import UserUI from './views/UserUI'
+
+type UserUIPropsType = {
+  hide: boolean
+  urlPic: string
+  username: string
+}
+
+const UserUI = ({ hide, urlPic, username }: UserUIPropsType) => {
+  return (
+    <div
+      className={`mt-[20px] flex bg-white justify-between mx-auto ${
+        hide ? 'max-w-[40px]' : 'px-[40px]'
+      }`}>
+      <Image
+        className={
+          'max-w-[30px] max-h-[30px] my-auto block !border-2! border-violet-500 border-solid rounded-full ' +
+          (hide ? ' mx-auto' : '')
+        }
+        preview={false}
+        width={30}
+        src={urlPic}
+        alt="user-icon"
+      />
+      {!hide ? (
+        <h3
+          className={
+            'text-center text-primary text-xs capitalize font-normal ' +
+            (!hide
+              ? 'block opacity-100'
+              : 'overflow-hidden opacity-0 w-0 h-0 absolute')
+          }>
+          {username}
+        </h3>
+      ) : null}
+      {!hide ? (
+        <div
+          className={
+            'my-auto ' +
+            (!hide
+              ? 'block opacity-100'
+              : 'overflow-hidden opacity-0 w-0 h-0 absolute')
+          }>
+          <SignOut />
+        </div>
+      ) : null}
+    </div>
+  )
+}
 
 const LayOut = ({ children }) => {
   const {
@@ -24,7 +74,6 @@ const LayOut = ({ children }) => {
     Menu: { onClick, handlePath },
     i18n,
   } = useLayoutController()
-
 
   return (
     <>

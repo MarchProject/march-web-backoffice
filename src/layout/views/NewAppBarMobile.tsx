@@ -89,7 +89,8 @@ const NewAppBarMobile = ({ tabMenu, handlePath, profiles }) => {
         </div>
         <Dropdown menu={{ items: user }} trigger={['click']}>
           <Image
-            className="max-w-[45px] max-h-[45px] my-auto block !border-2! border-violet-500 border-solid rounded-full bg-white"
+            className="w-[45px] h-[45px] my-auto block !border-2! border-violet-500 border-solid rounded-full bg-white"
+            width={45}
             preview={false}
             src={profiles.pic}
             alt="user-icon"
