@@ -27,7 +27,8 @@
       "show": "show",
       "of": "of",
       "results": "results",
-      "entries": "entries"
+      "entries": "entries",
+      "page": "page"
     }
   },
   "Menu": {
@@ -37,5 +38,17 @@
     "Customer": "Customer",
     "Dashboard": "Dashboard",
     "User": "User"
+  },
+  "notification": {
+    "error": {
+      "title": "An error occurred",
+      "description": "Please try again later"
+    },
+    "signIn": {
+      "title": "Sign In",
+      "success": "Sign In Success",
+      "error": "Sign In Error",
+      "expire": "Sign In Expire"
+    }
   }
 }

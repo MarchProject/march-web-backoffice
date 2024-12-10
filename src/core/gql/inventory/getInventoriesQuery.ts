@@ -83,6 +83,9 @@ export type InventoriesData = {
   InventoryBrand: {
     name: string
   }
+  InventoryBranch: {
+    name: string
+  }
   description: string
   createdBy: string
   createdAt: string

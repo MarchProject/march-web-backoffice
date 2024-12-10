@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { GetBrandInventoryVariables } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { GetInventoriesBrandResponse } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { getInventoryBrandsQuery } from '@/core/gql/inventory/getBrandsInventoryQuery'
@@ -10,7 +10,7 @@ import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 interface IUseQueryInventoryBrandProps {
   trigger: boolean
 }
@@ -43,7 +43,7 @@ export const useQueryInventoryBrand = ({
             notificationProp(
               trans(tkeys.Inventory.MainPage.HeadText),
               trans(tkeys.Inventory.MainPage.noti.fetch.brand),
-              EnumSeverity.error,
+              'error',
             ),
           )
         }
@@ -53,7 +53,7 @@ export const useQueryInventoryBrand = ({
           notificationProp(
             trans(tkeys.Inventory.MainPage.HeadText),
             trans(tkeys.Inventory.MainPage.noti.fetch.brand),
-            EnumSeverity.error,
+            'error',
           ),
         )
       },

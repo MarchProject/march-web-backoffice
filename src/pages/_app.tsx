@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const themes = {
     token: {
       fontFamily: 'IBM Plex Sans Thai, sans-serif',
+      colorPrimary: '#a78bfa',
     },
   }
 
@@ -51,7 +52,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </Providers>
         </ThemeProvider>
       </ConfigProvider>
-      ,
     </>
   )
 }

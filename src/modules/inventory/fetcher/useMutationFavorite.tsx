@@ -4,7 +4,7 @@ import { favoriteInventoryMutation } from '@/core/gql/inventory/favoriteInventor
 import { StatusCode } from '@/types/response'
 import { useMutation } from '@apollo/client'
 import { useCallback } from 'react'
-import { EnumSeverity } from '@/context/notification'
+
 import {
   notificationInternalErrorProp,
   notificationMutationProp,
@@ -20,7 +20,7 @@ export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
         notification(
           notificationMutationProp(
             data?.favoriteInventory?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         setTriggerFavorite((prev) => !prev)
@@ -28,7 +28,7 @@ export const useMutationFavorite = ({ notification, setTriggerFavorite }) => {
         notification(
           notificationMutationProp(
             data?.favoriteInventory?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

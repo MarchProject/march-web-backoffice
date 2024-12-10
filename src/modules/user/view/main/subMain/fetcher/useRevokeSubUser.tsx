@@ -4,7 +4,7 @@ import {
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 import {
   revokeSubUserMutation,
@@ -29,7 +29,7 @@ export const useRevokeSubUserHandler = ({
         notification(
           notificationMutationProp(
             data?.revokeSubUser?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         triggerPermissionHandler()
@@ -37,7 +37,7 @@ export const useRevokeSubUserHandler = ({
         notification(
           notificationMutationProp(
             data?.revokeSubUser?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

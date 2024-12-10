@@ -1,10 +1,10 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import {
   getPermissionQuery,
   GetPermissionResponse,
 } from '@/core/gql/user/getPermission'
 import { PermissonUserClass } from '@/core/model/user'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { tkeys } from '@/translations/i18n'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface IUseGetPermission {
-  triggerGetPermission:  boolean
+  triggerGetPermission: boolean
 }
 
 export const useGetPermission = ({
@@ -38,7 +38,7 @@ export const useGetPermission = ({
           notificationProp(
             trans(tkeys.Inventory.MainPage.HeadText),
             trans(tkeys.Inventory.MainPage.noti.fetch.names),
-            EnumSeverity.error,
+            'error',
           ),
         )
       }
@@ -48,7 +48,7 @@ export const useGetPermission = ({
         notificationProp(
           trans(tkeys.Inventory.MainPage.HeadText),
           trans(tkeys.Inventory.MainPage.noti.fetch.names),
-          EnumSeverity.error,
+          'error',
         ),
       )
     },

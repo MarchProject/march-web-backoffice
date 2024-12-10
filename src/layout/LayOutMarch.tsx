@@ -133,7 +133,7 @@ const LayOut = ({ children }) => {
               <Menu
                 defaultSelectedKeys={['1']}
                 selectedKeys={[tab]}
-                mode={'vertical'}
+                mode={'inline'}
                 onClick={onClick}
                 theme={'light'}
                 items={tabMenu}

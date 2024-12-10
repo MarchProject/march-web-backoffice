@@ -11,20 +11,20 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ILoginForm } from './interface'
 import { schema } from './schema'
-import {
-  notificationSignInErrorProp,
-  notificationSignInExpireErrorProp,
-  notificationSignInSuccessProp,
-} from '@/core/notification'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 
 export const useLoginController = () => {
+  const { t: trans } = useTranslation()
   const { notification } = useNotificationContext()
-  const { signIn, signInLoading } = useSignInState({ notification })
+  const { signIn, signInLoading } = useSignInState({ notification, trans })
   const { register, errors, onSubmit, control }: any = useFormHandler({
     notification,
     signIn,
+    trans,
   })
-  const { signInOAuthHandle } = useSignInOAuth({ notification })
+  const { signInOAuthHandle } = useSignInOAuth({ notification, trans })
   return {
     signInState: {
       signIn,
@@ -37,7 +37,7 @@ export const useLoginController = () => {
   }
 }
 
-const useSignInState = ({ notification }) => {
+const useSignInState = ({ notification, trans }) => {
   const [dataSet, setDataSet] = useState<any>()
   const [signIn, { loading: _loading, error, data }] = useMutation<
     LoginResult,
@@ -46,9 +46,15 @@ const useSignInState = ({ notification }) => {
 
   useEffect(() => {
     if (error) {
-      notification(notificationSignInErrorProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.error),
+          'error',
+        ),
+      )
     }
-  }, [error, notification])
+  }, [error, notification, trans])
 
   const signAxios = async ({ access_token, refresh_token }) => {
     const response = await axios.post('/backoffice/api/signIn', {
@@ -60,10 +66,16 @@ const useSignInState = ({ notification }) => {
   useEffect(() => {
     const check = clientConfig.getAuthFailed()
     if (check === 'true') {
-      notification(notificationSignInExpireErrorProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.expire),
+          'error',
+        ),
+      )
       clientConfig.removeAuthFailed()
     }
-  }, [notification])
+  }, [notification, trans])
   useEffect(() => {
     if (data) {
       if (data[Object?.keys(data)[0]] !== null) {
@@ -78,7 +90,13 @@ const useSignInState = ({ notification }) => {
   useEffect(() => {
     if (dataSet) {
       if (!dataSet.accessToken) {
-        notification(notificationSignInErrorProp)
+        notification(
+          notificationProp(
+            trans(tkeys.common.notification.signIn.title),
+            trans(tkeys.common.notification.signIn.error),
+            'error',
+          ),
+        )
         return () => {}
       }
       clientConfig.clearLocal()
@@ -94,10 +112,16 @@ const useSignInState = ({ notification }) => {
           shopName: dataSet?.shopName,
         })
       }
-      notification(notificationSignInSuccessProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.success),
+          'success',
+        ),
+      )
       router.push({ pathname: homeRoute.path })
     }
-  }, [dataSet, notification])
+  }, [dataSet, notification, trans])
 
   return {
     signIn,
@@ -105,7 +129,7 @@ const useSignInState = ({ notification }) => {
   }
 }
 
-const useFormHandler = ({ notification, signIn }) => {
+const useFormHandler = ({ notification, signIn, trans }) => {
   const {
     register,
     handleSubmit,
@@ -130,7 +154,13 @@ const useFormHandler = ({ notification, signIn }) => {
     reset()
   }
   const onError = () => {
-    notification(notificationSignInErrorProp)
+    notification(
+      notificationProp(
+        trans(tkeys.common.notification.signIn.title),
+        trans(tkeys.common.notification.signIn.error),
+        'error',
+      ),
+    )
   }
 
   return {
@@ -141,7 +171,7 @@ const useFormHandler = ({ notification, signIn }) => {
   }
 }
 
-const useSignInOAuth = ({ notification }) => {
+const useSignInOAuth = ({ notification, trans }) => {
   const [signInOAuth, { loading: _loading, error, data }] = useMutation<
     OAuthUrlData,
     any
@@ -159,10 +189,15 @@ const useSignInOAuth = ({ notification }) => {
 
   useEffect(() => {
     if (error) {
-      console.log({ error })
-      notification(notificationSignInErrorProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.error),
+          'error',
+        ),
+      )
     }
-  }, [error, notification])
+  }, [error, notification, trans])
 
   return {
     signInOAuthHandle,

@@ -11,7 +11,7 @@ export const useResize = (id?: string) => {
         navbarHeight = document.getElementById(id)?.offsetHeight
       }
       //   const
-      const availableHeight = windowHeight - 63 - navbarHeight
+      const availableHeight = windowHeight - 125- navbarHeight
       setGridHeight(availableHeight)
     }
 

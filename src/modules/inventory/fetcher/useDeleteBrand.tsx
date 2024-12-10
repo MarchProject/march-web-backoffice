@@ -9,7 +9,7 @@ import {
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 
 interface IUseDeleteBrandHandlerProps {
@@ -31,7 +31,7 @@ export const useDeleteBrandInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryBrand?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         triggerBrand()
@@ -40,7 +40,7 @@ export const useDeleteBrandInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryBrand?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

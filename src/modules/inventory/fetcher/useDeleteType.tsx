@@ -10,7 +10,6 @@ import {
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { EnumSeverity } from '@/context/notification'
 
 export const useDeleteTypeInventoryHandler = ({
   notification,
@@ -26,7 +25,7 @@ export const useDeleteTypeInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryType?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         triggerType()
@@ -35,7 +34,7 @@ export const useDeleteTypeInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryType?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

@@ -12,12 +12,14 @@ import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/LayOutMarch'
 import * as clientConfig from '@/config/client'
-import ContainerInventory from '@/modules/inventory/Container'
+import { InventoryMain } from '@/modules/sub/inventory'
+// import ContainerInventory from '@/modules/inventory/Container'
 
 const Index = () => {
   return (
     <>
-      <ContainerInventory />
+      {/* <ContainerInventory /> */}
+      <InventoryMain />
     </>
   )
 }

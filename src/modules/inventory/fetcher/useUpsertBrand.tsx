@@ -10,7 +10,7 @@ import {
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 
 interface IUseUpsertBrandHandlerProps {
   triggerBrand: () => void
@@ -31,7 +31,7 @@ export const useUpsertBrandHandler = ({
             notification(
               notificationMutationProp(
                 data?.upsertInventoryBrand?.status.message,
-                EnumSeverity.success,
+                'success',
               ),
             )
             triggerBrand()
@@ -39,7 +39,7 @@ export const useUpsertBrandHandler = ({
             notification(
               notificationMutationProp(
                 data?.upsertInventoryBrand?.status.message,
-                EnumSeverity.error,
+                'error',
               ),
             )
           }

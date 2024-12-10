@@ -8,7 +8,7 @@ import {
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 
 interface IUseUpsertTypeHandleProps {
   triggerType: () => void
@@ -28,7 +28,7 @@ export const useUpsertTypeHandle = ({
             notification(
               notificationMutationProp(
                 data?.upsertInventoryType?.status.message,
-                EnumSeverity.success,
+                'success',
               ),
             )
             triggerType()
@@ -36,7 +36,7 @@ export const useUpsertTypeHandle = ({
             notification(
               notificationMutationProp(
                 data?.upsertInventoryType?.status.message,
-                EnumSeverity.error,
+                'error',
               ),
             )
           }

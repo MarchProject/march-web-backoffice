@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IInventoryForm, IUseQueryHandlerProps } from './interface'
@@ -20,7 +20,7 @@ import { useDeleteInventory } from '../fetcher/useDeleteInventory'
 import { useLoadingHandler } from '@/core/utils/hook/useLoadingHook'
 import { useQueryInventoryBranch } from '../fetcher/useQueryInventoryBranch'
 import { useUpsertBranchHandler } from '../fetcher/useUpsertBranch'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 
@@ -269,11 +269,13 @@ const useSubmitForm = ({
         },
       })
     } catch (error) {
-      notification(notificationProp(
-        trans(tkeys.Inventory.MainPage.HeadText),
-        trans(tkeys.Inventory.MainPage.noti.editor.somethingWrong),
-        EnumSeverity.error,
-      ),)
+      notification(
+        notificationProp(
+          trans(tkeys.Inventory.MainPage.HeadText),
+          trans(tkeys.Inventory.MainPage.noti.editor.somethingWrong),
+          'error',
+        ),
+      )
     }
   }
   const onError = () => {
@@ -281,7 +283,7 @@ const useSubmitForm = ({
       notificationProp(
         trans(tkeys.Inventory.MainPage.HeadText),
         trans(tkeys.Inventory.MainPage.noti.editor.validate),
-        EnumSeverity.error,
+        'error',
       ),
     )
   }

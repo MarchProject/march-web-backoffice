@@ -4,7 +4,7 @@ import {
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 import {
   DeleteBranchInventoryResponse,
@@ -31,7 +31,7 @@ export const useDeleteBranchInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryBranch?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         triggerBranch()
@@ -40,7 +40,7 @@ export const useDeleteBranchInventoryHandler = ({
         notification(
           notificationMutationProp(
             data?.deleteInventoryBranch?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

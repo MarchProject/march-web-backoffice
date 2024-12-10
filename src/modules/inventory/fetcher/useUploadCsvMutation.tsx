@@ -7,7 +7,7 @@ import {
 } from '@/core/gql/inventory/uploadInventoryMutation'
 import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
 import { useMutation } from '@apollo/client'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 import {
   notificationInternalErrorProp,
@@ -35,7 +35,7 @@ export const useUploadCsvMutation = ({
           notification(
             notificationMutationProp(
               data?.uploadInventory?.status.message,
-              EnumSeverity.success,
+              'success',
             ),
           )
           setIsPass(true)
@@ -44,7 +44,7 @@ export const useUploadCsvMutation = ({
           notification(
             notificationMutationProp(
               data?.uploadInventory?.status.message,
-              EnumSeverity.error,
+              'error',
             ),
           )
           setIsPass(false)
@@ -53,7 +53,7 @@ export const useUploadCsvMutation = ({
         notification(
           notificationMutationProp(
             data?.uploadInventory?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

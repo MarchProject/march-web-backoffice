@@ -6,18 +6,19 @@ import { useMutation } from '@apollo/client'
 import router from 'next/router'
 import { UseFormReset } from 'react-hook-form'
 import { IInventoryForm } from '../editor/interface'
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'
-import { notificationInternalErrorProp, notificationMutationProp } from '@/core/notification'
+import {
+  notificationInternalErrorProp,
+  notificationMutationProp,
+} from '@/core/notification'
 
 export interface IUseUpsertInventoryProps {
   reset: UseFormReset<IInventoryForm>
   idInventory?: string
 }
 
-export const useUpsertInventory = ({
-  reset,
-}: IUseUpsertInventoryProps) => {
+export const useUpsertInventory = ({ reset }: IUseUpsertInventoryProps) => {
   const { notification } = useNotificationContext()
   const [upsertInventory, { loading }] = useMutation<
     UpsertInventoryTypeResponse,
@@ -28,7 +29,7 @@ export const useUpsertInventory = ({
         notification(
           notificationMutationProp(
             data?.upsertInventory?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         reset()
@@ -39,7 +40,7 @@ export const useUpsertInventory = ({
         notification(
           notificationMutationProp(
             data?.upsertInventory?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

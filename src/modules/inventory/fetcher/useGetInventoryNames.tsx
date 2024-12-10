@@ -1,8 +1,8 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { InventoryNamesResponse } from '@/core/gql/inventory/getInventoryNamesQuery'
 import { getInventoryNamesQuery } from '@/core/gql/inventory/getInventoryNamesQuery'
 import { InventoryNamesClass } from '@/core/model/inventory'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { plainToInstance } from 'class-transformer'
@@ -35,7 +35,7 @@ export const useGetInventoryNames = ({
           notificationProp(
             trans(tkeys.Inventory.MainPage.HeadText),
             trans(tkeys.Inventory.MainPage.noti.fetch.names),
-            EnumSeverity.error,
+            'error',
           ),
         )
       }
@@ -45,7 +45,7 @@ export const useGetInventoryNames = ({
         notificationProp(
           trans(tkeys.Inventory.MainPage.HeadText),
           trans(tkeys.Inventory.MainPage.noti.fetch.names),
-          EnumSeverity.error,
+          'error',
         ),
       )
     },

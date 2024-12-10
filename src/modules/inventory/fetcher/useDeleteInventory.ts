@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import { DeleteInventoryData } from '@/core/gql/inventory/deleteInventoryMutation'
 import { DeleteInventoryVariables } from '@/core/gql/inventory/deleteInventoryMutation'
 import { deleteInventoryMutation } from '@/core/gql/inventory/deleteInventoryMutation'
@@ -7,7 +7,10 @@ import { StatusCode } from '@/types/response'
 import { useMutation } from '@apollo/client'
 import router from 'next/router'
 import { useCallback } from 'react'
-import { notificationInternalErrorProp, notificationMutationProp } from '@/core/notification'
+import {
+  notificationInternalErrorProp,
+  notificationMutationProp,
+} from '@/core/notification'
 
 export interface IUseDeleteInventoryProps {
   id: string
@@ -24,7 +27,7 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
         notification(
           notificationMutationProp(
             data?.deleteInventory?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         router.push({
@@ -34,7 +37,7 @@ export const useDeleteInventory = ({ id }: IUseDeleteInventoryProps) => {
         notification(
           notificationMutationProp(
             data?.deleteInventory?.status.message,
-            EnumSeverity.error,
+            'error',
           ),
         )
       }

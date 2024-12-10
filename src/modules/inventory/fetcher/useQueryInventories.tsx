@@ -10,14 +10,13 @@ import {
   InventoryType,
   InventoryBranch,
 } from '@/core/model/inventory'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { StatusCode } from '@/types/response'
 import { useLazyQuery } from '@apollo/client'
 import { plainToInstance } from 'class-transformer'
 import { useEffect, useState } from 'react'
 import { tkeys } from '@/translations/i18n'
 import { useTranslation } from 'react-i18next'
-import { EnumSeverity } from '@/context/notification'
 
 export const useQueryInventories = ({
   notification,
@@ -37,7 +36,7 @@ export const useQueryInventories = ({
   const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
   const [inventoriesData, setInventoriesData] = useState<InventoriesResponse>()
   const { t: trans }: any = useTranslation()
-  
+
   const [
     getInventoriesTrigger,
     { error: getInventoriesError, loading: getInventoriesLoading },
@@ -63,7 +62,7 @@ export const useQueryInventories = ({
           notificationProp(
             trans(tkeys.Inventory.MainPage.HeadText),
             trans(tkeys.Inventory.MainPage.noti.fetch.inventory),
-            EnumSeverity.error,
+            'error',
           ),
         )
       },

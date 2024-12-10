@@ -1,4 +1,4 @@
-import { EnumSeverity, useNotificationContext } from '@/context/notification'
+import { useNotificationContext } from '@/context/notification'
 import {
   GetBranchsInventoryVariables,
   GetInventoriesBranchResponse,
@@ -13,7 +13,7 @@ import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 interface IUseQueryInventoryBranchProps {
   trigger: boolean
 }
@@ -46,7 +46,7 @@ export const useQueryInventoryBranch = ({
             notificationProp(
               trans(tkeys.Inventory.MainPage.HeadText),
               trans(tkeys.Inventory.MainPage.noti.fetch.branch),
-              EnumSeverity.error,
+              'error',
             ),
           )
         }
@@ -56,7 +56,7 @@ export const useQueryInventoryBranch = ({
           notificationProp(
             trans(tkeys.Inventory.MainPage.HeadText),
             trans(tkeys.Inventory.MainPage.noti.fetch.branch),
-            EnumSeverity.error,
+            'error',
           ),
         )
       },

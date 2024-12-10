@@ -14,7 +14,6 @@ import {
 } from '@/core/gql/inventory/recoveryHardDeletedMutation'
 import { useMutation } from '@apollo/client'
 import { StatusCode } from '@/types/response'
-import { EnumSeverity } from '@/context/notification'
 
 export const useRecoveryTrashHandler = ({
   triggerInventory,
@@ -33,7 +32,7 @@ export const useRecoveryTrashHandler = ({
         notification(
           notificationMutationProp(
             data?.recoveryHardDeleted?.status.message,
-            EnumSeverity.success,
+            'success',
           ),
         )
         triggerType()

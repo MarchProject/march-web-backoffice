@@ -9,8 +9,7 @@ import { plainToInstance } from 'class-transformer'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
-import { notificationProp } from '@/core/notification/inventory/inventory/dialogUpload'
-import { EnumSeverity } from '@/context/notification'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 
 export const useQueryTrashHandler = ({ notification }) => {
   const { t: trans }: any = useTranslation()
@@ -36,7 +35,7 @@ export const useQueryTrashHandler = ({ notification }) => {
               notificationProp(
                 trans(tkeys.Inventory.MainPage.HeadText),
                 trans(tkeys.Inventory.MainPage.noti.fetch.trash),
-                EnumSeverity.error,
+                'error',
               ),
             )
           }
@@ -46,7 +45,7 @@ export const useQueryTrashHandler = ({ notification }) => {
             notificationProp(
               trans(tkeys.Inventory.MainPage.HeadText),
               trans(tkeys.Inventory.MainPage.noti.fetch.trash),
-              EnumSeverity.error,
+              'error',
             ),
           )
         },
