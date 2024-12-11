@@ -41,7 +41,7 @@ export const LoadingProvider: FC<ILoadingProvider> = (props) => {
   const closeLoading = useCallback(() => {
     setTimeout(() => {
       setLoading(false)
-    }, 600)
+    }, 1500)
   }, [])
 
   const zIndexLoading = useCallback((value) => {
@@ -55,6 +55,7 @@ export const LoadingProvider: FC<ILoadingProvider> = (props) => {
       zIndexLoading,
     }
   }, [closeLoading, openLoading, zIndexLoading])
+
   const propsLoader = {
     color: '#a78bfa',
   }

@@ -1,4 +1,4 @@
-import React, {  } from 'react'
+import React from 'react'
 import type { TableColumnsType } from 'antd'
 import { Pagination, Table } from 'antd'
 import { useResize } from '@/core/utils/hook/resizeHook'
@@ -32,7 +32,11 @@ const Container = <T extends object>({
         columns={columns}
         dataSource={data}
         pagination={false}
-        scroll={{ scrollToFirstRowOnChange: true, y: gridHeight - 120 }}
+        scroll={{
+          scrollToFirstRowOnChange: true,
+          y: gridHeight - 125,
+          x: true,
+        }}
         bordered
         loading={loading}
         rowKey={(record: any) => record?.id}

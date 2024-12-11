@@ -130,6 +130,7 @@ export const InventoryManagement = ({
     searchFieldRef.current.value = ''
     typeFieldRef.current.value = ''
     brandFieldRef.current.value = ''
+    branchFieldRef.current.value = ''
   }
   const { t: trans }: any = useTranslation()
   const [open, setOpen] = useState(false)

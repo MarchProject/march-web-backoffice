@@ -6,10 +6,12 @@ import { BsBoxSeam } from 'react-icons/bs'
 import { styleIconMarch } from '@/utils/style/utill'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
-import { Dropdown, MenuProps, message } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import { Flex } from 'antd'
+import DropdownButton from '@/components/commonAntd/Button/DropdownButton'
+import Filter from './view/filter/Filter'
 
 const Container = () => {
+  const { t: trans } = useTranslation()
   const {
     table: {
       handleSearchChange,
@@ -23,51 +25,36 @@ const Container = () => {
         },
       },
     },
+    menuProps: {
+      handleButtonClick,
+      menuProps,
+      data: {
+        inventoriesBranchData,
+        inventoriesBrandData,
+        inventoriesTypeData,
+      },
+      filter: {
+        onChange: onChangeFilter,
+        filterModal: { ...filterModal },
+        favorite,
+        handleFavoriteChange,
+        handleClearChange,
+      },
+    },
   } = useControllerInventory()
-  const { t: trans } = useTranslation()
-
-  const items: MenuProps['items'] = [
-    {
-      label: '1st menu item',
-      key: '1',
-      icon: <UserOutlined />,
-    },
-    {
-      label: '2nd menu item',
-      key: '2',
-      icon: <UserOutlined />,
-    },
-    {
-      label: '3rd menu item',
-      key: '3',
-      icon: <UserOutlined />,
-      danger: true,
-    },
-    {
-      label: '4rd menu item',
-      key: '4',
-      icon: <UserOutlined />,
-      danger: true,
-      disabled: true,
-    },
-  ]
-
-  const handleMenuClick: MenuProps['onClick'] = (e) => {
-    console.log('click', e)
-  }
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  }
-
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    message.info('Click on left button.')
-    console.log('click left button', e)
-  }
 
   return (
     <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
+      <Filter
+        inventoriesBranchData={inventoriesBranchData}
+        inventoriesBrandData={inventoriesBrandData}
+        inventoriesTypeData={inventoriesTypeData}
+        onChange={onChangeFilter}
+        modalProps={filterModal}
+        favorite={favorite}
+        handleFavoriteChange={handleFavoriteChange}
+        handleClearChange={handleClearChange}
+      />
       <div className="p-[15px]">
         <div className="bg-white m-0 rounded-lg lg:min-h-[calc(100vh-63px)] min-h-[calc(100vh-56px)]">
           <div className="mb-[0px] h-full">
@@ -79,11 +66,7 @@ const Container = () => {
                     {trans(tkeys.Inventory.MainPage.HeadText)}
                   </p>
                 </div>
-                <div>
-                  <Dropdown.Button menu={menuProps} onClick={handleButtonClick}>
-                    Dropdown
-                  </Dropdown.Button>
-
+                <Flex align="center" gap={10}>
                   <Search
                     loading={inventoryLoading}
                     onSearch={handleSearchChange}
@@ -93,7 +76,13 @@ const Container = () => {
                     }}
                     style={{ width: 304 }}
                   />
-                </div>
+                  <DropdownButton
+                    title={trans(tkeys.Inventory.MainPage.menu.addItem)}
+                    type="primary"
+                    menu={menuProps}
+                    onClick={handleButtonClick}
+                  />
+                </Flex>
               </div>
               <TableMarch
                 data={inventoryData ?? []}

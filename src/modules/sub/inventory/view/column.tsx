@@ -229,6 +229,7 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
     {
       title: trans(keys.action),
       dataIndex: 'action',
+      width: 120,
       key: 'action',
       align: 'center',
       fixed: 'right',

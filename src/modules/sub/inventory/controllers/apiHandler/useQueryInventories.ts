@@ -3,11 +3,6 @@ import {
   IFavoriteStatus,
 } from '@/core/gql/inventory/getInventoriesQuery'
 import { GetInventoriesResponse } from '@/core/gql/inventory/getInventoriesQuery'
-import {
-  InventoryBrand,
-  InventoryType,
-  InventoryBranch,
-} from '@/core/model/inventory'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { StatusCode } from '@/types/response'
 import { useCallback, useEffect, useState } from 'react'
@@ -21,9 +16,9 @@ export const useQueryInventories = ({ notification }) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
   const [search, setSearch] = useState('')
-  const [type, setType] = useState<InventoryType[]>([])
-  const [brand, setBrand] = useState<InventoryBrand[]>([])
-  const [branch, setBranch] = useState<InventoryBranch[]>([])
+  const [type, setType] = useState<string[]>([])
+  const [brand, setBrand] = useState<string[]>([])
+  const [branch, setBranch] = useState<string[]>([])
   const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
   const [inventoriesData, setInventoriesData] = useState<GetInventoriesType>()
   const [trigger, setTrigger] = useState(true)
@@ -76,15 +71,9 @@ export const useQueryInventories = ({ notification }) => {
         pageNo: page,
         search: search,
         favorite: favorite,
-        type: type.map((e: any) => {
-          return e.id
-        }),
-        brand: brand.map((e: any) => {
-          return e.id
-        }),
-        branch: branch.map((e: any) => {
-          return e.id
-        }),
+        type,
+        brand,
+        branch,
       },
     })
   }, [limit, page, search, favorite, type, brand, branch, refetch, trigger])

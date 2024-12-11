@@ -4,6 +4,7 @@
     "searchText": "Search item here",
     "filter": {
       "label": "Filter",
+      "placeholder": "Please Select Filter",
       "brand": "Brand Filter",
       "branch": "Branch Filter",
       "type": "Type Filter"
