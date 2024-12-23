@@ -54,7 +54,6 @@ export const NotificationContextProvider: FC<INotificationContextProvider> = (
       title,
       message,
     }: ConfigNotificationPropsType = {}): void => {
-      console.log({ type, title, message })
       api[type ? type : 'success']({
         message: title || '',
         description: message || '',

@@ -10,13 +10,9 @@ import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { getInventoryBranch } from '../fetcher/getInventoryBranch'
 
-interface IUseQueryInventoryBranchProps {
-  trigger: boolean
-}
+type UseQueryInventoryBranchProps = {}
 
-export const useQueryInventoryBranch = ({
-  trigger,
-}: IUseQueryInventoryBranchProps) => {
+export const useQueryInventoryBranch = ({}: UseQueryInventoryBranchProps) => {
   const { t: trans }: any = useTranslation()
   const { notification } = useNotificationContext()
   const [search, setSearch] = useState<string>('')
@@ -61,18 +57,23 @@ export const useQueryInventoryBranch = ({
     [setSearch],
   )
 
-  useEffect(() => {
+  const fetching = useCallback(() => {
     refetch({
       params: {
         search,
       },
     })
-  }, [refetch, search, trigger])
+  }, [refetch, search])
+
+  useEffect(() => {
+    fetching()
+  }, [fetching])
 
   return {
     inventoriesBranchData: inventoriesBranchData,
     inventoriesBranchDataError: getInventoryBranchsError,
     inventoriesBranchLoading: getInventoryBranchsLoading,
     handleSearchInventoryBranch: onInputBranchChange,
+    inventoriesBranchRefetch: fetching,
   }
 }

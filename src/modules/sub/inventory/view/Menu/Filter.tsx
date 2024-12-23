@@ -133,7 +133,7 @@ const Filter = ({
         contentRender={() => {
           return (
             <div className="mx-auto w-full pb-[0px]">
-              <div className="px-0">
+              <div className="px-0 flex gap-[10px]">
                 <Select
                   mode="multiple"
                   allowClear
@@ -147,14 +147,6 @@ const Filter = ({
                   labelInValue
                   options={options}
                 />
-              </div>
-            </div>
-          )
-        }}
-        footerRender={() => {
-          return (
-            <div className="mt-[0px]">
-              <div className="flex gap-[10px] justify-end w-full">
                 <Button
                   danger
                   variant="outlined"
@@ -181,6 +173,7 @@ const Filter = ({
             </div>
           )
         }}
+        footerRender={() => <></>}
       />
     </>
   )

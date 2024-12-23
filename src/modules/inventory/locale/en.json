@@ -32,7 +32,7 @@
       "sku": "SKU",
       "expiryDate": "Expiry Date",
       "description": "Description",
-      "action": "Actions  "
+      "action": "Actions"
     },
     "editor": {
       "back": "Back to inventory list",
@@ -211,7 +211,7 @@
       "branch": {
         "header": {
           "lable": "Branch",
-          "sub": "Add branch for items"
+          "sub": "Add branch for items (click for edit)"
         },
         "search": "Search branch here",
         "mode": {

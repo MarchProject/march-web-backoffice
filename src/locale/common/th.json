@@ -23,6 +23,10 @@
     "revoke": "ยกเลิกคำเชิญ"
   },
   "table": {
+    "config": {
+      "unused": "ไม่ใช้",
+      "used": "ใช้"
+    },
     "footer": {
       "show": "แสดง",
       "of": "จากทั้งหมด",
@@ -50,5 +54,17 @@
     "success": "เข้าสู่ระบบสำเร็จ",
     "error": "เข้าสู่ระบบผิดพลาด",
     "expire": "การเข้าสู่ระบบหมดอายุ"
-  }
+  },
+  "name": "ชื่อ",
+  "type": "ประเภท",
+  "action": "Actions",
+  "description": "คำอธิบาย",
+  "createdBy": "สร้างโดย",
+  "updatedAt": "อัปเดตล่าสุด",
+  "addNew": "สร้างใหม่",
+  "sureToDelete": "ลบ",
+  "deleteDescription": "แน่ใจที่จะลบ ?",
+  "yes": "ใช่",
+  "no": "ไม่",
+  "delete": "ลบ"
 }

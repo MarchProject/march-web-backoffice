@@ -9,6 +9,7 @@ import localeData from 'dayjs/plugin/localeData'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import weekYear from 'dayjs/plugin/weekYear'
+import 'dayjs/locale/th'
 // Load the customParseFormat plugin
 dayjs.extend(customParseFormat)
 dayjs.extend(timezone)

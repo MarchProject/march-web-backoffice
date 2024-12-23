@@ -1,25 +1,23 @@
 import { FavoriteInventoryResponse } from '@/core/gql/inventory/favoriteInventoryMutation'
 import { StatusCode } from '@/types/response'
-import { Dispatch, SetStateAction, useCallback } from 'react'
+import { useCallback } from 'react'
 import {
   ConfigErrorNotificationType,
   ConfigNotificationPropsType,
 } from '@/context/notification'
-import {
-  notificationMutationProp,
-} from '@/core/notification'
+import { notificationMutationProp } from '@/core/notification'
 import { useFavoriteInventory } from '../fetcher/favoriteInventory'
 
 type UseMutationFavoritePropsType = {
   notification: (config?: ConfigNotificationPropsType) => void
   errorNotification: (config?: ConfigErrorNotificationType) => void
-  setTrigger: Dispatch<SetStateAction<boolean>>
+  inventoryRefetch: () => void
 }
 
 export const useMutationFavorite = ({
   notification,
   errorNotification,
-  setTrigger,
+  inventoryRefetch,
 }: UseMutationFavoritePropsType) => {
   const onCompleted = useCallback(
     (data: FavoriteInventoryResponse) => {
@@ -31,7 +29,7 @@ export const useMutationFavorite = ({
               'success',
             ),
           )
-          setTrigger((prev) => !prev)
+          inventoryRefetch()
         } else {
           notification(
             notificationMutationProp(
@@ -42,7 +40,7 @@ export const useMutationFavorite = ({
         }
       }
     },
-    [notification, setTrigger],
+    [notification, inventoryRefetch],
   )
 
   const onError = useCallback(() => {

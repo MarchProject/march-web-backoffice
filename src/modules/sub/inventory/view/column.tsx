@@ -1,4 +1,4 @@
-import { Inventory } from '@/core/model/inventory'
+import { InventoriesData } from '@/core/gql/inventory/getInventoriesQuery'
 import { inventoryUpdateRoute, inventoryViewRoute } from '@/router/inventory'
 import { tkeys } from '@/translations/i18n'
 import { SearchOutlined } from '@ant-design/icons'
@@ -26,7 +26,7 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.table
 
-  type DataIndex = keyof Inventory
+  type DataIndex = keyof InventoriesData
   const [_searchText, setSearchText] = useState('')
   const [_searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef<InputRef>(null)
@@ -48,7 +48,7 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
 
   const getColumnSearchProps = (
     dataIndex: DataIndex,
-  ): TableColumnType<Inventory> => ({
+  ): TableColumnType<InventoriesData> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -111,7 +111,6 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
       <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
     ),
     onFilter: (value, record) => {
-      console.log({ record, dataIndex, name: record[dataIndex] })
       return record[dataIndex]
         .toString()
         .toLowerCase()
@@ -127,7 +126,7 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
     render: (text) => text,
   })
 
-  const columns: TableColumnsType<Inventory> = [
+  const columns: TableColumnsType<InventoriesData> = [
     {
       title: trans(keys.name),
       dataIndex: 'name',
@@ -139,11 +138,12 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
       title: trans(keys.type),
       dataIndex: 'inventoryType',
       key: 'inventoryType',
+      width: 170,
+      // width: '20%',
+      ...getColumnSearchProps('inventoryType'),
       render: (value) => {
         return <>{value.name}</>
       },
-      // width: '20%',
-      ...getColumnSearchProps('inventoryType'),
     },
     {
       title: trans(keys.brand),
@@ -216,9 +216,9 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
     },
     {
       title: trans(keys.expiryDate),
-      dataIndex: 'formattedExpiryDate',
-      key: 'formattedExpiryDate',
-      ...getColumnSearchProps('formattedExpiryDate'),
+      dataIndex: 'expiryDate',
+      key: 'expiryDate',
+      ...getColumnSearchProps('expiryDate'),
     },
     {
       title: trans(keys.description),

@@ -8,7 +8,10 @@ import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { Flex } from 'antd'
 import DropdownButton from '@/components/commonAntd/Button/DropdownButton'
-import Filter from './view/filter/Filter'
+import Filter from './view/Menu/Filter'
+import Transfer from './view/Menu/Transfer'
+import Trash from './view/Menu/trash/Trash'
+import MainModal from './view/Menu/main/MainModal'
 
 const Container = () => {
   const { t: trans } = useTranslation()
@@ -26,12 +29,16 @@ const Container = () => {
       },
     },
     menuProps: {
-      handleButtonClick,
       menuProps,
       data: {
         inventoriesBranchData,
         inventoriesBrandData,
         inventoriesTypeData,
+      },
+      loading: {
+        inventoriesBranchLoading,
+        inventoriesBrandLoading,
+        inventoriesTypeLoading,
       },
       filter: {
         onChange: onChangeFilter,
@@ -39,6 +46,34 @@ const Container = () => {
         favorite,
         handleFavoriteChange,
         handleClearChange,
+      },
+      transfer: { updateTable, mainTableColumns, transferModal },
+      trash: {
+        trashModal,
+        trashData,
+        recoveryHardDeletedHandler,
+        recoveryHardDeletedLoading,
+      },
+      branch: {
+        branchModal,
+        updateBranchHandle,
+        upsertInventoryBranchLoading,
+        deleteBranchHandle,
+        deleteInventoryBranchLoading,
+      },
+      brand: {
+        brandModal,
+        upsertInventoryBrandLoading,
+        updateBrandHandle,
+        deleteBrandHandle,
+        deleteInventoryBrandLoading,
+      },
+      type: {
+        typeModal,
+        upsertInventoryTypeLoading,
+        updateTypeHandle,
+        deleteTypeHandle,
+        deleteInventoryTypeLoading,
       },
     },
   } = useControllerInventory()
@@ -55,6 +90,55 @@ const Container = () => {
         handleFavoriteChange={handleFavoriteChange}
         handleClearChange={handleClearChange}
       />
+      <Transfer
+        dataSource={mainTableColumns}
+        userColumn={userColumn}
+        updateTable={updateTable}
+        modalProps={transferModal}
+      />
+      <Trash
+        modalProps={trashModal}
+        trashData={trashData}
+        recoveryHardDeletedHandler={recoveryHardDeletedHandler}
+        recoveryHardDeletedLoading={recoveryHardDeletedLoading}
+      />
+      <MainModal
+        mode="branch"
+        modalProps={branchModal}
+        data={inventoriesBranchData}
+        loading={
+          inventoriesBranchLoading ||
+          upsertInventoryBranchLoading ||
+          deleteInventoryBranchLoading
+        }
+        updateHandle={updateBranchHandle}
+        deleteHandle={deleteBranchHandle}
+      />
+      <MainModal
+        mode="brand"
+        modalProps={brandModal}
+        data={inventoriesBrandData}
+        loading={
+          inventoriesBrandLoading ||
+          upsertInventoryBrandLoading ||
+          deleteInventoryBrandLoading
+        }
+        updateHandle={updateBrandHandle}
+        deleteHandle={deleteBrandHandle}
+      />
+      <MainModal
+        mode="type"
+        modalProps={typeModal}
+        data={inventoriesTypeData}
+        loading={
+          inventoriesTypeLoading ||
+          upsertInventoryTypeLoading ||
+          deleteInventoryTypeLoading
+        }
+        updateHandle={updateTypeHandle}
+        deleteHandle={deleteTypeHandle}
+      />
+
       <div className="p-[15px]">
         <div className="bg-white m-0 rounded-lg lg:min-h-[calc(100vh-63px)] min-h-[calc(100vh-56px)]">
           <div className="mb-[0px] h-full">
@@ -77,10 +161,10 @@ const Container = () => {
                     style={{ width: 304 }}
                   />
                   <DropdownButton
-                    title={trans(tkeys.Inventory.MainPage.menu.addItem)}
+                    title={trans(tkeys.Inventory.MainPage.filter.label)}
                     type="primary"
                     menu={menuProps}
-                    onClick={handleButtonClick}
+                    onClick={filterModal.handleOpen}
                   />
                 </Flex>
               </div>

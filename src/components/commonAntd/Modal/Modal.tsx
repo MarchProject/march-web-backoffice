@@ -9,6 +9,7 @@ type ModalPropsType = {
   loading?: boolean
   contentRender: () => JSX.Element
   footerRender: () => JSX.Element
+  width?: number
 }
 
 const Modal = ({
@@ -19,6 +20,7 @@ const Modal = ({
   loading = false,
   contentRender,
   footerRender,
+  width,
 }: ModalPropsType) => {
   return (
     <>
@@ -28,6 +30,7 @@ const Modal = ({
         title={title}
         onOk={handleOk}
         onCancel={handleCancel}
+        width={width}
         footer={footerRender}>
         {contentRender()}
       </ModalAntd>

@@ -1,7 +1,5 @@
 import { useNotificationContext } from '@/context/notification'
-import {
-  GetBrandsInventoryType,
-} from '@/core/gql/inventory/getBrandsInventoryQuery'
+import { GetBrandsInventoryType } from '@/core/gql/inventory/getBrandsInventoryQuery'
 import { StatusCode } from '@/types/response'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,13 +7,10 @@ import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { getInventoryBrand } from '../fetcher/getInventoryBrand'
 
-interface IUseQueryInventoryBrandProps {
-  trigger: boolean
+type UseQueryInventoryBrandProps = {
 }
 
-export const useQueryInventoryBrand = ({
-  trigger,
-}: IUseQueryInventoryBrandProps) => {
+export const useQueryInventoryBrand = ({}: UseQueryInventoryBrandProps) => {
   const { notification } = useNotificationContext()
   const { t: trans }: any = useTranslation()
   const [search, setSearch] = useState<string>('')
@@ -66,18 +61,27 @@ export const useQueryInventoryBrand = ({
     [setSearch],
   )
 
+  const fetching = useCallback(() => {
+    refetch({
+      params: {
+        search,
+      },
+    })
+  }, [refetch, search])
+
   useEffect(() => {
     refetch({
       params: {
         search,
       },
     })
-  }, [refetch, search, trigger])
+  }, [refetch, search])
 
   return {
     inventoriesBrandData: inventoriesBrandData,
     inventoriesBrandDataError: getInventoryBrandsError,
     inventoriesBrandLoading: getInventoryBrandsLoading,
     handleSearchInventoryBrand: onInputBrandChange,
+    inventoriesBrandRefetch: fetching,
   }
 }

@@ -8,7 +8,6 @@ import { StatusCode } from '@/types/response'
 import { useCallback, useEffect, useState } from 'react'
 import { tkeys } from '@/translations/i18n'
 import { useTranslation } from 'react-i18next'
-
 import { useGetInventories } from '../fetcher/getInventories'
 
 export const useQueryInventories = ({ notification }) => {
@@ -21,7 +20,6 @@ export const useQueryInventories = ({ notification }) => {
   const [branch, setBranch] = useState<string[]>([])
   const [favorite, setFavorite] = useState<IFavoriteStatus>('DEFAULT')
   const [inventoriesData, setInventoriesData] = useState<GetInventoriesType>()
-  const [trigger, setTrigger] = useState(true)
 
   const onError = useCallback(() => {
     notification(
@@ -64,7 +62,7 @@ export const useQueryInventories = ({ notification }) => {
     setFavorite('DEFAULT')
   }
 
-  useEffect(() => {
+  const fetching = useCallback(() => {
     refetch({
       params: {
         limit: limit,
@@ -76,7 +74,11 @@ export const useQueryInventories = ({ notification }) => {
         branch,
       },
     })
-  }, [limit, page, search, favorite, type, brand, branch, refetch, trigger])
+  }, [branch, brand, favorite, limit, page, refetch, search, type])
+
+  useEffect(() => {
+    fetching()
+  }, [fetching])
 
   useEffect(() => {
     if (inventoriesData?.inventories?.length === 0) {
@@ -108,6 +110,6 @@ export const useQueryInventories = ({ notification }) => {
     inventoryTypeValue: type,
     inventoryBrandValue: brand,
     inventoryBranchValue: branch,
-    setTriggerInventories: setTrigger,
+    inventoryRefetch: fetching,
   }
 }

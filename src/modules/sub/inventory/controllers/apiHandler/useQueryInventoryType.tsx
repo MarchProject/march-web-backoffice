@@ -10,13 +10,9 @@ import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { getInventoryType } from '../fetcher/getInventorType'
 
-interface IUseQueryInventoryTypeProps {
-  trigger: boolean
-}
+type UseQueryInventoryTypeProps = {}
 
-export const useQueryInventoryType = ({
-  trigger,
-}: IUseQueryInventoryTypeProps) => {
+export const useQueryInventoryType = ({}: UseQueryInventoryTypeProps) => {
   const { notification } = useNotificationContext()
   const { t: trans }: any = useTranslation()
   const [search, setSearch] = useState<string>('')
@@ -64,18 +60,27 @@ export const useQueryInventoryType = ({
     [setSearch],
   )
 
+  const fetching = useCallback(() => {
+    refetch({
+      params: {
+        search,
+      },
+    })
+  }, [refetch, search])
+
   useEffect(() => {
     refetch({
       params: {
         search,
       },
     })
-  }, [refetch, search, trigger])
+  }, [refetch, search])
 
   return {
     inventoriesTypeData: inventoriesTypeData,
     inventoriesTypeDataError: getInventoryTypesError,
     inventoriesTypeLoading: getInventoryTypesLoading,
     handleSearchInventoryType: onInputTypeChange,
+    inventoriesTypeRefetch: fetching,
   }
 }

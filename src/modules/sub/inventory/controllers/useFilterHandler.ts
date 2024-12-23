@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react'
-import { RenderItem } from '../view/filter/Filter'
+import { RenderItem } from '../view/Menu/Filter'
 
 type UseFilterHandlerPropsType = {
   setType: Dispatch<SetStateAction<string[]>>

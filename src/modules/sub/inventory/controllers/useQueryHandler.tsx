@@ -4,6 +4,7 @@ import { useQueryInventories } from './apiHandler/useQueryInventories'
 import { useQueryInventoryBranch } from './apiHandler/useQueryInventoryBranch'
 import { useQueryInventoryBrand } from './apiHandler/useQueryInventoryBrand'
 import { useQueryInventoryType } from './apiHandler/useQueryInventoryType'
+import { useQueryTrashHandler } from './apiHandler/useQueryTrash'
 
 export const useQueryHandler = ({ notification }) => {
   const { openLoading, closeLoading } = useLoadingContext()
@@ -19,13 +20,18 @@ export const useQueryHandler = ({ notification }) => {
   const { inventoryLoading, ...inventory } = useQueryInventories({
     notification,
   })
+  const { trashData, inventoryAllDeletedLoaing, trashRefetch } =
+    useQueryTrashHandler({
+      notification,
+    })
 
   useEffect(() => {
     if (
       inventoriesBranchLoading ||
       inventoriesBrandLoading ||
       inventoriesTypeLoading ||
-      inventoryLoading
+      inventoryLoading ||
+      inventoryAllDeletedLoaing
     ) {
       openLoading()
     } else {
@@ -40,6 +46,7 @@ export const useQueryHandler = ({ notification }) => {
     inventoriesBranchLoading,
     inventoriesBrandLoading,
     inventoriesTypeLoading,
+    inventoryAllDeletedLoaing,
     inventoryLoading,
     openLoading,
   ])
@@ -49,5 +56,6 @@ export const useQueryHandler = ({ notification }) => {
     type: { ...type, inventoriesTypeLoading },
     brand: { ...brand, inventoriesBrandLoading },
     branch: { ...branch, inventoriesBranchLoading },
+    trash: { trashData, trashRefetch },
   }
 }

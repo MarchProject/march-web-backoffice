@@ -1,9 +1,9 @@
 import { getMainInventoryColumn, setMainInventoryColumn } from '@/config/client'
-import { Inventory } from '@/core/model/inventory'
 import { IMainTables } from '@/modules/inventory/interface'
 import { ColumnsType } from 'antd/es/table'
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { columns } from '../view/column'
+import { InventoriesData } from '@/core/gql/inventory/getInventoriesQuery'
 
 type useColumnHandlerPropsType = {
   favoriteInventoryHandler: (id: string) => void
@@ -14,15 +14,17 @@ export const useColumnHandler = ({
 }: useColumnHandlerPropsType) => {
   const mainTableColumn = columns({ favoriteInventoryHandler })
 
-  const [userColumn, setUserColumn] = useState<ColumnsType<Inventory>>([])
-  const [unUsedColumn, setUnUsedColumn] = useState<ColumnsType<Inventory>>([])
+  const [userColumn, setUserColumn] = useState<ColumnsType<InventoriesData>>([])
+  const [unUsedColumn, setUnUsedColumn] = useState<
+    ColumnsType<InventoriesData>
+  >([])
   const mainTable = getMainInventoryColumn()
 
   const localTables: IMainTables[] = useMemo(() => {
     return JSON.parse(mainTable) ?? []
   }, [mainTable])
 
-  const mainTableColumns: ColumnsType<Inventory> = useMemo(
+  const mainTableColumns: ColumnsType<InventoriesData> = useMemo(
     () => mainTableColumn || [],
     [mainTableColumn],
   )
@@ -32,8 +34,8 @@ export const useColumnHandler = ({
   }
 
   useEffect(() => {
-    const newUserColumn: ColumnsType<Inventory> = []
-    const newUnUsedColumn: ColumnsType<Inventory> = []
+    const newUserColumn: ColumnsType<InventoriesData> = []
+    const newUnUsedColumn: ColumnsType<InventoriesData> = []
     if (localTables.length > 0 && mainTableColumns.length > 0) {
       mainTableColumns.forEach((m) => {
         const check = Object.values(localTables).some((e) => e.field === m.key)
@@ -61,14 +63,15 @@ export const useColumnHandler = ({
     }
   }, [localTables, mainTableColumns, userColumn])
 
-  const updateTable = useCallback((selected: any[], unSelected: any[]) => {
+  const updateTable = useCallback((selected: any[]) => {
     setUserColumn(selected)
-    setUnUsedColumn(unSelected)
+    // setUnUsedColumn(unSelected)
     const valueLocals = selected.map((e) => {
-      return { field: e.field }
+      return { field: e.key }
     })
+    console.log({ valueLocals })
     setMainInventoryColumn(JSON.stringify(valueLocals))
   }, [])
 
-  return { userColumn, unUsedColumn, updateTable }
+  return { userColumn, unUsedColumn, updateTable, mainTableColumns }
 }

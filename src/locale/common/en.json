@@ -23,6 +23,10 @@
     "revoke": "Revoke Invite"
   },
   "table": {
+    "config": {
+      "unused": "unused",
+      "used": "used"
+    },
     "footer": {
       "show": "show",
       "of": "of",
@@ -50,5 +54,17 @@
       "error": "Sign In Error",
       "expire": "Sign In Expire"
     }
-  }
+  },
+  "name": "Name",
+  "type": "Type",
+  "action": "Actions",
+  "description": "Description",
+  "createdBy": "Created by",
+  "updatedAt": "Updated at",
+  "addNew": "Add new",
+  "sureToDelete": "Sure to delete ?",
+  "deleteDescription": "Are you sure to delete this task ?",
+  "yes": "Yes",
+  "no": "No",
+  "delete": "Delete"
 }
