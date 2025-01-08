@@ -23,11 +23,16 @@
     "revoke": "Revoke Invite"
   },
   "table": {
+    "config": {
+      "unused": "unused",
+      "used": "used"
+    },
     "footer": {
       "show": "show",
       "of": "of",
       "results": "results",
-      "entries": "entries"
+      "entries": "entries",
+      "page": "page"
     }
   },
   "Menu": {
@@ -37,5 +42,29 @@
     "Customer": "Customer",
     "Dashboard": "Dashboard",
     "User": "User"
-  }
+  },
+  "notification": {
+    "error": {
+      "title": "An error occurred",
+      "description": "Please try again later"
+    },
+    "signIn": {
+      "title": "Sign In",
+      "success": "Sign In Success",
+      "error": "Sign In Error",
+      "expire": "Sign In Expire"
+    }
+  },
+  "name": "Name",
+  "type": "Type",
+  "action": "Actions",
+  "description": "Description",
+  "createdBy": "Created by",
+  "updatedAt": "Updated at",
+  "addNew": "Add new",
+  "sureToDelete": "Sure to delete ?",
+  "deleteDescription": "Are you sure to delete this task ?",
+  "yes": "Yes",
+  "no": "No",
+  "delete": "Delete"
 }

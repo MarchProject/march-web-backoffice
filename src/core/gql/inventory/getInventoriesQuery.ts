@@ -76,14 +76,29 @@ export type GetInventoriesType = {
 export type InventoriesData = {
   id: string
   name: string
-  amount: number
+  sold: number
+  price: number
+  sku: string
+  serialNumber: string
+  reorderLevel: number
+  size: string
+  favorite: boolean
+  priceMember: number
   inventoryType: {
+    id: string
     name: string
   }
-  InventoryBrand: {
+  inventoryBrand: {
+    id: string
+    name: string
+  }
+  inventoryBranch: {
+    id: string
     name: string
   }
   description: string
+  expiryDate: string
+  amount: number
   createdBy: string
   createdAt: string
   updatedBy: string

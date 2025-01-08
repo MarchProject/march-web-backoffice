@@ -1,7 +1,7 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
 
-type IDeletedInventory = {
+export type IDeletedInventory = {
   id: string
   name: string
   createdBy: string
@@ -14,6 +14,7 @@ export type GetInventoryAllDeletedType = {
   inventory: IDeletedInventory[]
   brand: IDeletedInventory[]
   type: IDeletedInventory[]
+  branch: IDeletedInventory[]
 }
 
 export type GetInventoryAllDeletedResponse = {

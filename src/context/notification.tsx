@@ -1,128 +1,88 @@
-import { SnackbarCloseReason, SnackbarProps } from '@mui/material/Snackbar'
 import {
   createContext,
   FC,
   ReactElement,
-  SyntheticEvent,
   useCallback,
   useContext,
   useMemo,
-  useState,
 } from 'react'
 import { noop } from '../utils/common/noop'
+import { notification as notificationAnd } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { tkeys } from '@/translations/i18n'
 
 interface INotificationContextProvider {
   children: ReactElement
 }
 
-export enum EnumNotificationType {
-  toast = 'toast',
-}
+export type NotificationType = 'success' | 'info' | 'warning' | 'error'
 
-export enum EnumSeverity {
-  success = 'success',
-  error = 'error',
-}
-
-export interface INotification extends Pick<SnackbarProps, 'onClose'> {
-  type?: EnumNotificationType
-  severity: EnumSeverity
-  duration?: number
+export type ConfigErrorNotificationType = {
   title?: string
+  description?: string
+}
+
+export type ConfigNotificationPropsType = {
+  severity?: NotificationType
+  title?: string
+  duration?: number | null
   message?: string
-  open?: boolean
-  onClick?: (event: SyntheticEvent<Element, Event>) => void
-  onClose?: (
-    event: Event | SyntheticEvent<any, Event>,
-    reason?: SnackbarCloseReason,
-  ) => void
+  onClick?: () => void
+  onClose?: () => void
 }
 
 interface INotificationContext {
-  notification: (config: INotification) => void
-  notificationProps: INotification
-}
-
-const initialNotificationProps: INotification = {
-  type: EnumNotificationType.toast,
-  severity: EnumSeverity.success,
-  duration: 3000,
-  onClose: noop,
-  open: false,
+  errorNotification: (config?: ConfigErrorNotificationType) => void
+  notification: (config?: ConfigNotificationPropsType) => void
 }
 
 const NotificatioContext = createContext<INotificationContext>({
+  errorNotification: noop,
   notification: noop,
-  notificationProps: initialNotificationProps,
 })
 
 export const NotificationContextProvider: FC<INotificationContextProvider> = (
   props,
 ) => {
   const { children } = props
-  const [notificationProps, setNotificationProps] = useState<INotification>(
-    initialNotificationProps,
-  )
+  const { t: trans } = useTranslation()
+  const [api, contextHolder] = notificationAnd.useNotification()
 
-  const handleClose = useCallback(
-    (
-      event: Event | SyntheticEvent<any, Event>,
-      reason?: SnackbarCloseReason,
-    ) => {
-      if (reason === 'clickaway') {
-        return
-      }
-      const onClose = notificationProps.onClose
-      if (onClose) {
-        onClose(event, reason)
-      }
-
-      setNotificationProps((preState) => ({
-        ...preState,
-        open: false,
-      }))
+  const notification = useCallback(
+    ({
+      severity: type,
+      title,
+      message,
+    }: ConfigNotificationPropsType = {}): void => {
+      api[type ? type : 'success']({
+        message: title || '',
+        description: message || '',
+      })
     },
-    [notificationProps],
+    [api],
   )
 
-  const handleClickAlert = useCallback(
-    (event: SyntheticEvent<Element, Event>) => {
-      const onClose = notificationProps.onClose
-      if (onClose) {
-        onClose(event)
-      }
-
-      setNotificationProps((preState) => ({
-        ...preState,
-        open: false,
-      }))
+  const errorNotification = useCallback(
+    ({ title, description }: ConfigErrorNotificationType = {}) => {
+      api.error({
+        message: title || trans(tkeys.common.notification.error.title),
+        description:
+          description || trans(tkeys.common.notification.error.description),
+      })
     },
-    [notificationProps.onClose],
+    [api, trans],
   )
-
-  const notification = useCallback((config: INotification): void => {
-    setNotificationProps((preState) => {
-      return {
-        ...preState,
-        ...config,
-        open: true,
-      }
-    })
-  }, [])
 
   const contextValue = useMemo(() => {
     return {
+      errorNotification,
       notification,
-      notificationProps: {
-        ...notificationProps,
-        onClose: handleClose,
-        onClick: handleClickAlert,
-      },
     }
-  }, [handleClickAlert, handleClose, notification, notificationProps])
+  }, [notification, errorNotification])
 
   return (
     <NotificatioContext.Provider value={contextValue}>
+      {contextHolder}
       {children}
     </NotificatioContext.Provider>
   )

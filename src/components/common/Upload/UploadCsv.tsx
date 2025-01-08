@@ -2,12 +2,7 @@ import Papa, { ParseResult } from 'papaparse'
 import React, { useRef, useState } from 'react'
 import { BiCloudUpload } from 'react-icons/bi'
 import { noop } from '@/utils/common/noop'
-import { useNotificationContext } from '@/context/notification'
-import {
-  notificationTypeErrorProp,
-  notificationFileSizeErrorProp,
-  notificationMultiErrorProp,
-} from './notification'
+// import { useNotificationContext } from '@/context/notification'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 
@@ -29,7 +24,7 @@ export const UploadCsv = <T extends object>({
   onCompleteValueObj,
   onChangeFile = noop,
 }: IUploadCsv<T>) => {
-  const { notification } = useNotificationContext()
+  // const { notification } = useNotificationContext()
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef(null)
   const [key, setKey] = useState(0)
@@ -53,15 +48,15 @@ export const UploadCsv = <T extends object>({
     const size = files.some((e) => e.size > 4194304)
     handleKey()
     if (type) {
-      notification(notificationTypeErrorProp)
+      // notification(notificationTypeErrorProp)
       return
     }
     if (size) {
-      notification(notificationFileSizeErrorProp)
+      // notification(notificationFileSizeErrorProp)
       return
     }
     if (files.length > 1) {
-      notification(notificationMultiErrorProp)
+      // notification(notificationMultiErrorProp)
       return
     }
     onChangeFile(files)

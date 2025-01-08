@@ -5,15 +5,13 @@ import { useMutation } from '@apollo/client'
 import axios from 'axios'
 import { useCallback, useEffect, useState } from 'react'
 import * as clientConfig from '../../../config/client'
-import {
-  notificationSignInErrorProp,
-  notificationSignInExpireErrorProp,
-  notificationSignInSuccessProp,
-} from '@/core/notification'
 import router from 'next/router'
 import { homeRoute } from '@/router/home'
 import { noAccessRoute, uamLoginRoute } from '@/router/user'
 import { useLoadingContext } from '@/context/loading'
+import { useTranslation } from 'react-i18next'
+import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
+import { tkeys } from '@/translations/i18n'
 
 export const useControllerCallback = () => {
   const { notification } = useNotificationContext()
@@ -39,6 +37,7 @@ const useSignInOAuthGetParams = ({ signInOAuthHandle }) => {
 }
 
 const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
+  const { t: trans } = useTranslation()
   const [dataSet, setDataSet] = useState<any>()
 
   const [signInOAuth, { loading: _loading, error, data }] = useMutation<
@@ -65,14 +64,20 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
 
   useEffect(() => {
     if (error) {
-      notification(notificationSignInErrorProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.error),
+          'error',
+        ),
+      )
       if (error.message === 'Unauthorized No Access') {
         router.push({ pathname: noAccessRoute.path })
       } else {
         router.push({ pathname: uamLoginRoute.path })
       }
     }
-  }, [error, notification])
+  }, [error, notification, trans])
 
   const signAxios = async ({ access_token, refresh_token }) => {
     const response = await axios.post('/backoffice/api/signIn', {
@@ -85,10 +90,16 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
   useEffect(() => {
     const check = clientConfig.getAuthFailed()
     if (check === 'true') {
-      notification(notificationSignInExpireErrorProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.expire),
+          'error',
+        ),
+      )
       clientConfig.removeAuthFailed()
     }
-  }, [notification])
+  }, [notification, trans])
 
   useEffect(() => {
     if (data) {
@@ -104,7 +115,13 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
   useEffect(() => {
     if (dataSet) {
       if (!dataSet.accessToken) {
-        notification(notificationSignInErrorProp)
+        notification(
+          notificationProp(
+            trans(tkeys.common.notification.signIn.title),
+            trans(tkeys.common.notification.signIn.error),
+            'error',
+          ),
+        )
         return () => {}
       }
       clientConfig.clearLocal()
@@ -121,10 +138,16 @@ const useSignInOAuth = ({ notification, openLoading, closeLoading }) => {
           picture: dataSet?.picture,
         })
       }
-      notification(notificationSignInSuccessProp)
+      notification(
+        notificationProp(
+          trans(tkeys.common.notification.signIn.title),
+          trans(tkeys.common.notification.signIn.success),
+          'success',
+        ),
+      )
       router.push({ pathname: homeRoute.path })
     }
-  }, [dataSet, notification])
+  }, [dataSet, notification, trans])
 
   return {
     signInOAuthHandle,

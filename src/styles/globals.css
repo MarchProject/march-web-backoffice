@@ -108,7 +108,29 @@
 }
 
 body {
-  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', sans-serif !important;
   margin: 0px !important;
   height: '100%';
 }
+
+.ant-menu {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important; /* Centers menu items along Y-axis */
+}
+
+.ant-menu-item {
+  display: flex !important;
+  align-items: left !important; /* Centers icon and label vertically */
+  justify-content: left !important; /* Centers icon and label horizontally */
+}
+
+.ant-menu-item-icon {
+  margin-block: auto !important;
+}
+
+.ant-menu-title-content {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  transition: 'opacity 1s ease-in';
+}
+
