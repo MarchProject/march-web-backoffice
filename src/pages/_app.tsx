@@ -10,7 +10,7 @@ import '../translations/i18n'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { getLanguage } from '@/config/client'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, ThemeConfig } from 'antd'
 
 export default function App({ Component, pageProps }: AppProps) {
   const title = `March ${process.env.version}`
@@ -28,11 +28,12 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [i18n, lg])
 
-  const themes = {
+  const themes: ThemeConfig = {
     token: {
       fontFamily: 'IBM Plex Sans Thai, sans-serif',
       colorPrimary: '#a78bfa',
     },
+    
   }
 
   return (

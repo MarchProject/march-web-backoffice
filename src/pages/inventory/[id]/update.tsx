@@ -12,7 +12,7 @@ import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/LayOutMarch'
 import * as clientConfig from '@/config/client'
-import EditorInventoryPage from '@/modules/inventory/editor/Editor'
+import EditorInventoryPage from '@/modules/sub/inventory/view/editor/Editor'
 import { EnumModeEditorPage } from '@/modules/interface'
 
 const Index = () => {

@@ -1,4 +1,4 @@
-export const dateFormat = 'DD-MM-YYYY'
+export const dateFormat = 'YYYY-MM-DD'
 export const dateTimeFormat = 'YYYY-MM-DD HH:mm:ss'
 export const dateTimeNoSecFormat = 'DD-MM-YYYY HH:mm'
 export const marchFormat = 'DD MMM YY hh:mma'

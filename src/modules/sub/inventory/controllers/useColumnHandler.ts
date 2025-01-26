@@ -1,9 +1,12 @@
 import { getMainInventoryColumn, setMainInventoryColumn } from '@/config/client'
-import { IMainTables } from '@/modules/inventory/interface'
 import { ColumnsType } from 'antd/es/table'
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { columns } from '../view/column'
 import { InventoriesData } from '@/core/gql/inventory/getInventoriesQuery'
+
+export interface IMainTables {
+  field: string
+}
 
 type useColumnHandlerPropsType = {
   favoriteInventoryHandler: (id: string) => void

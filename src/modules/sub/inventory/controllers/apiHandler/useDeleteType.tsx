@@ -27,7 +27,7 @@ export const useDeleteTypeInventoryHandler = ({
             'success',
           ),
         )
-        triggerDeleteType
+        triggerDeleteType()
       } else {
         notification(
           notificationMutationProp(

@@ -1,8 +1,9 @@
 import { ResponseData } from '@/types/response'
 import { gql } from '@apollo/client'
+import { InventoriesData } from './getInventoriesQuery'
 
 export interface IGetInventoryResponse {
-  getInventory: ResponseData<any>
+  getInventory: ResponseData<InventoriesData>
 }
 export interface IGetInventoryVariable {
   id: string

@@ -1,14 +1,13 @@
-import { UpsertTypeInventoryVariables } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { UpsertTypeInventoryResponse } from '@/core/gql/inventory/upsertTypeInventoryMutation'
-import { upsertInventoryTypeMutation } from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { useCallback } from 'react'
 import {
   notificationInternalErrorProp,
   notificationMutationProp,
 } from '@/core/notification'
-import { useMutation } from '@apollo/client'
+import { ApolloError } from '@apollo/client'
 import { StatusCode } from '@/types/response'
 import { ConfigNotificationPropsType } from '@/context/notification'
+import { upsertInventoryType } from '../fetcher/upsertInventoryType'
 
 interface IUseUpsertTypeHandleProps {
   triggerUpsertType: () => void
@@ -19,41 +18,41 @@ export const useUpsertTypeHandler = ({
   triggerUpsertType,
   notification,
 }: IUseUpsertTypeHandleProps) => {
-  const [upsertTypeInventory, { data: upsertInventoryTypeData, loading }] =
-    useMutation<UpsertTypeInventoryResponse, UpsertTypeInventoryVariables>(
-      upsertInventoryTypeMutation,
-      {
-        onCompleted: (data) => {
-          if (data?.upsertInventoryType?.status?.code === StatusCode.SUCCESS) {
-            notification(
-              notificationMutationProp(
-                data?.upsertInventoryType?.status.message,
-                'success',
-              ),
-            )
-            triggerUpsertType()
-          } else {
-            notification(
-              notificationMutationProp(
-                data?.upsertInventoryType?.status.message,
-                'error',
-              ),
-            )
-          }
-        },
-        onError: (error) => {
-          if (error.message === 'Unauthorized Role') {
-            notification(notificationInternalErrorProp('Permission.', 'Server'))
-          } else {
-            notification(notificationInternalErrorProp('Update Failed.'))
-          }
-        },
-      },
-    )
+  const onCompleted = (data: UpsertTypeInventoryResponse) => {
+    if (data?.upsertInventoryType?.status?.code === StatusCode.SUCCESS) {
+      notification(
+        notificationMutationProp(
+          data?.upsertInventoryType?.status.message,
+          'success',
+        ),
+      )
+      triggerUpsertType()
+    } else {
+      notification(
+        notificationMutationProp(
+          data?.upsertInventoryType?.status.message,
+          'error',
+        ),
+      )
+    }
+  }
+
+  const onError = (error: ApolloError) => {
+    if (error.message === 'Unauthorized Role') {
+      notification(notificationInternalErrorProp('Permission.', 'Server'))
+    } else {
+      notification(notificationInternalErrorProp('Update Failed.'))
+    }
+  }
+
+  const {
+    upsertInventoryType: upsertInventoryTypeMutation,
+    upsertInventoryTypeLoading,
+  } = upsertInventoryType({ onCompleted, onError })
 
   const updateTypeHandle = useCallback(
     (data) => {
-      upsertTypeInventory({
+      upsertInventoryTypeMutation({
         variables: {
           input: {
             id: data?.id,
@@ -63,13 +62,11 @@ export const useUpsertTypeHandler = ({
         },
       })
     },
-    [upsertTypeInventory],
+    [upsertInventoryTypeMutation],
   )
 
   return {
-    upsertInventoryType: upsertTypeInventory,
     updateTypeHandle,
-    upsertInventoryTypeLoading: loading,
-    upsertInventoryTypeData: upsertInventoryTypeData?.upsertInventoryType?.data,
+    upsertInventoryTypeLoading: upsertInventoryTypeLoading,
   }
 }

@@ -1,16 +1,13 @@
-import {
-  UpsertBrandInventoryResponse,
-  UpsertBrandInventoryVariables,
-} from '@/core/gql/inventory/upsertBrandInventoryMutation'
-import { upsertInventoryBrandMutation } from '@/core/gql/inventory/upsertBrandInventoryMutation'
+import { UpsertBrandInventoryResponse } from '@/core/gql/inventory/upsertBrandInventoryMutation'
 import { useCallback } from 'react'
 import {
   notificationInternalErrorProp,
   notificationMutationProp,
 } from '@/core/notification'
-import { useMutation } from '@apollo/client'
+import { ApolloError } from '@apollo/client'
 import { StatusCode } from '@/types/response'
 import { ConfigNotificationPropsType } from '@/context/notification'
+import { upsertInventoryBrand } from '../fetcher/upsertinventoryBrand'
 
 interface IUseUpsertBrandHandlerProps {
   triggerUpsertBrand: () => void
@@ -21,42 +18,41 @@ export const useUpsertBrandHandler = ({
   triggerUpsertBrand,
   notification,
 }: IUseUpsertBrandHandlerProps) => {
-  const [upsertBrandInventory, { loading, data: upsertInventoryBrandData }] =
-    useMutation<UpsertBrandInventoryResponse, UpsertBrandInventoryVariables>(
-      upsertInventoryBrandMutation,
-      {
-        onCompleted: (data) => {
-          console.log({ data })
-          if (data?.upsertInventoryBrand?.status?.code === StatusCode.SUCCESS) {
-            notification(
-              notificationMutationProp(
-                data?.upsertInventoryBrand?.status.message,
-                'success',
-              ),
-            )
-            triggerUpsertBrand()
-          } else {
-            notification(
-              notificationMutationProp(
-                data?.upsertInventoryBrand?.status.message,
-                'error',
-              ),
-            )
-          }
-        },
-        onError: (error) => {
-          if (error.message === 'Unauthorized Role') {
-            notification(notificationInternalErrorProp('Permission.', 'Server'))
-          } else {
-            notification(notificationInternalErrorProp('Update Failed.'))
-          }
-        },
-      },
-    )
+  const onCompleted = (data: UpsertBrandInventoryResponse) => {
+    if (data?.upsertInventoryBrand?.status?.code === StatusCode.SUCCESS) {
+      notification(
+        notificationMutationProp(
+          data?.upsertInventoryBrand?.status.message,
+          'success',
+        ),
+      )
+      triggerUpsertBrand()
+    } else {
+      notification(
+        notificationMutationProp(
+          data?.upsertInventoryBrand?.status.message,
+          'error',
+        ),
+      )
+    }
+  }
+
+  const onError = (error: ApolloError) => {
+    if (error.message === 'Unauthorized Role') {
+      notification(notificationInternalErrorProp('Permission.', 'Server'))
+    } else {
+      notification(notificationInternalErrorProp('Update Failed.'))
+    }
+  }
+
+  const {
+    upsertInventoryBrand: upsertInventoryBranchMutation,
+    upsertInventoryBrandLoading,
+  } = upsertInventoryBrand({ onCompleted, onError })
 
   const updateBrandHandle = useCallback(
     (data) => {
-      upsertBrandInventory({
+      upsertInventoryBranchMutation({
         variables: {
           input: {
             id: data?.id,
@@ -66,14 +62,11 @@ export const useUpsertBrandHandler = ({
         },
       })
     },
-    [upsertBrandInventory],
+    [upsertInventoryBranchMutation],
   )
 
   return {
-    upsertInventoryBrand: upsertBrandInventory,
     updateBrandHandle,
-    upsertInventoryBrandLoading: loading,
-    upsertInventoryBrandData:
-      upsertInventoryBrandData?.upsertInventoryBrand?.data,
+    upsertInventoryBrandLoading: upsertInventoryBrandLoading,
   }
 }

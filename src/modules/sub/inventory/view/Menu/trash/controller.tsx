@@ -74,7 +74,7 @@ export const useTrashController = ({
     {
       title: trans(tkeys.common.action),
       dataIndex: 'type',
-      width: 50,
+      width: 100,
       render: (_value, record) => {
         return (
           <div className="flex gap-[15px] justify-between">
