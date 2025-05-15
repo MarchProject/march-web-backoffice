@@ -4,8 +4,6 @@ import '../styles/theme.css'
 import type { AppProps } from 'next/app'
 import Providers from '@/providers'
 import 'react-block-ui/style.css'
-import { ThemeProvider } from '@mui/material'
-import { theme } from '@/theme/theme'
 import '../translations/i18n'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
@@ -47,11 +45,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>{title}</title>
       </Head>
       <ConfigProvider theme={themes}>
-        <ThemeProvider theme={theme}>
           <Providers>
             <Component className="font-IBMPlexSansThai" {...pageProps} />
           </Providers>
-        </ThemeProvider>
       </ConfigProvider>
     </>
   )

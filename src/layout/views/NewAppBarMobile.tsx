@@ -1,5 +1,5 @@
 import * as React from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
+import { CgMenu } from 'react-icons/cg'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import SignOut from '@/components/logout/logout'
@@ -73,7 +73,7 @@ const NewAppBarMobile = ({ tabMenu, handlePath, profiles }) => {
           fontFamily: "'IBM Plex Sans Thai', sans-serif",
         }}>
         <Dropdown menu={{ items: menu, onClick }} trigger={['click']}>
-          <MenuIcon />
+          <CgMenu />
         </Dropdown>
         <div
           style={{

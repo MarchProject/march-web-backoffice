@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import * as clientConfig from '@/config/client'
 import router from 'next/router'
-import LogoutIcon from '@mui/icons-material/Logout'
 import { initApollo } from '@/core/apollo'
 import dynamic from 'next/dynamic'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
+import { SlLogout } from "react-icons/sl";
 
 type SignOut = {
   signOut: {
@@ -47,7 +47,7 @@ const Index = () => {
         <p className="m-0 lg:hidden text-xs font-semibold text-secondary ml-[2px]">
           {trans(tkeys.common.button.signOut)}
         </p>
-        <LogoutIcon className="text-secondary my-auto lg:!text-lg !text-sm" />
+        <SlLogout className="text-secondary my-auto lg:!text-lg !text-sm" />
       </div>
     </div>
   )

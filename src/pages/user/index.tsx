@@ -11,13 +11,13 @@ import {
 import { getErrorServerSideProps } from '@/core/common'
 import { getLoginRoute } from '@/router/auth'
 import Layout from '@/layout/LayOutMarch'
-import ContainerUser from '@/modules/user/Container'
+
 import * as clientConfig from '@/config/client'
 
 const Index = () => {
   return (
     <>
-      <ContainerUser />
+     123
     </>
   )
 }

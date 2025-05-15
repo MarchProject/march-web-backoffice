@@ -1,9 +1,7 @@
 import React from 'react'
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import dayjs from '../../../core/common/dayjs'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import classnames from 'classnames'
-import { DateValidationError } from '@mui/x-date-pickers/internals'
 import { DatePicker } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
 import { dateFormat } from '@/core/common'
@@ -19,7 +17,7 @@ interface IDatePickerSelect {
     classNames?: string
   }
   error: string
-  onError?: (reason: DateValidationError, value: any) => void
+  onError?: (reason: any, value: any) => void
   disabled?: boolean
   size?: SizeType
 }
@@ -71,7 +69,7 @@ interface IDatePickerSelectForm {
     classNames?: string
   }
   inputFormat: string
-  onError?: (reason: DateValidationError, value: any) => void
+  onError?: (reason: any, value: any) => void
   disabled?: boolean
   size?: SizeType
 }
