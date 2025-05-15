@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form'
 
 interface IAutocompleteSelectForm<T> extends IAutocompleteSelect<T> {
-  control?: Control<FieldValues, any>
+  control?: Control<any, any>
 }
 interface IAutocompleteSelect<T> {
   inputRef?: any
@@ -65,7 +65,6 @@ const AutocompleteSelectAsync = <T extends object>({
   disabled,
   ...otherProps
 }: IAutocompleteSelect<T>) => {
-
   const [focus, setFocus] = useState(false)
 
   const mappedOptions = options.map((option) => ({

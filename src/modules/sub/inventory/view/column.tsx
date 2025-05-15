@@ -1,3 +1,4 @@
+import { dateFormatSlash, dateTimeFormat } from '@/core/common'
 import { InventoriesData } from '@/core/gql/inventory/getInventoriesQuery'
 import { inventoryUpdateRoute, inventoryViewRoute } from '@/router/inventory'
 import { tkeys } from '@/translations/i18n'
@@ -11,6 +12,7 @@ import {
   TableColumnType,
 } from 'antd'
 import { FilterDropdownProps } from 'antd/es/table/interface'
+import dayjs from 'dayjs'
 import router from 'next/router'
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -161,6 +163,7 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
       title: trans(keys.serialNumber),
       dataIndex: 'serialNumber',
       key: 'serialNumber',
+      width: 220,
       ...getColumnSearchProps('serialNumber'),
       // sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ['descend', 'ascend'],
@@ -218,7 +221,20 @@ export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
       title: trans(keys.expiryDate),
       dataIndex: 'expiryDate',
       key: 'expiryDate',
+      width: 170,
+      align: 'center',
       ...getColumnSearchProps('expiryDate'),
+      render: (value) => {
+        return (
+          <>
+            {value
+              ? dayjs(value, dateTimeFormat)
+                  .locale('th')
+                  .format(dateFormatSlash)
+              : ''}
+          </>
+        )
+      },
     },
     {
       title: trans(keys.description),

@@ -151,7 +151,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                                 classNames:
                                   'text-base !text-secondary !font-semibold',
                               }}
-                              type={'text'}
+                              type="text"
                               variant={'outlined'}
                               disabled={disabled}
                               normalizes={[max(50)]}

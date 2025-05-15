@@ -1,9 +1,9 @@
 import { getUserId } from '@/config/client'
-import { IInventoryForm } from '../editor/interface'
 import { UpsertInventoryTypeVariables } from '@/core/gql/inventory/upsertInventory'
 import { get, isNil } from 'lodash'
 import dayjs from '@/core/common/dayjs'
 import { DbFormat } from '@/core/common'
+import { IInventoryForm } from '../view/editor/interface'
 
 export const tranFromUpsertInventoryDto = (
   input: IInventoryForm,

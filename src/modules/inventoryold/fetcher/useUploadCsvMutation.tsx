@@ -5,7 +5,7 @@ import {
   UploadInventoryVariable,
   uploadInventoryMutation,
 } from '@/core/gql/inventory/uploadInventoryMutation'
-import { tranFromUploadCsv } from '@/modules/inventory/dto/uploadCsv.dto'
+import { tranFromUploadCsv } from '@/modules/inventoryold/dto/uploadCsv.dto'
 import { useMutation } from '@apollo/client'
 import { useNotificationContext } from '@/context/notification'
 import { StatusCode } from '@/types/response'

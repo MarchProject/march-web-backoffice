@@ -1,7 +1,7 @@
-import { IUseUpsertInventoryProps } from '../fetcher/useUpsertInventory'
-import { IUseQueryInventoryProps } from '../fetcher/useQueryInventory'
-import { IUseDeleteInventoryProps } from '../fetcher/useDeleteInventory'
 import { InventoryBranch } from '@/core/model/inventory'
+import { IUseUpsertInventoryProps } from '../../controllers/apiHandler/useUpsertInventory'
+import { IUseDeleteInventoryProps } from '../../controllers/apiHandler/useDeleteInventory'
+import { IUseQueryInventoryProps } from '../../controllers/apiHandler/useQueryInventory'
 
 interface InventoryType {
   id: string

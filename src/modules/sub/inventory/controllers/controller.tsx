@@ -172,12 +172,14 @@ export const useControllerInventory = () => {
   const branchModal = useModalHandler()
   const brandModal = useModalHandler()
   const typeModal = useModalHandler()
+  const uploadModal = useModalHandler()
   const { menuProps } = useMenuHandler({
     handleOpenTransfer: transferModal.handleOpen,
     handleOpenTrash: trashModal.handleOpen,
     handleOpenBranch: branchModal.handleOpen,
     handleOpenBrand: brandModal.handleOpen,
     handleOpenType: typeModal.handleOpen,
+    handleOpenUpload: uploadModal.handleOpen,
   })
 
   return {
@@ -249,6 +251,9 @@ export const useControllerInventory = () => {
         updateTypeHandle,
         deleteTypeHandle,
         deleteInventoryTypeLoading,
+      },
+      upload: {
+        uploadModal,
       },
     },
   }

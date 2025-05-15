@@ -1,5 +1,6 @@
 import {
   ApolloClient,
+  ApolloLink,
   FetchResult,
   HttpLink,
   InMemoryCache,
@@ -18,6 +19,9 @@ import { tokenExpireMutation } from '../gql/auth'
 import router from 'next/router'
 import Cookies from 'js-cookie'
 import { GraphQLClient } from 'graphql-request'
+import { createUploadLink } from 'apollo-upload-client'
+// import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
+
 /**
  * working on cient-side only
  */
@@ -128,7 +132,7 @@ export async function initApollo(uri?: string) {
             return observable
           case 'Unauthorized ShopId':
             unAuthorizeHandle()
-            // console.log('here naja')
+          // console.log('here naja')
           case 'Unauthorized Role':
             // unAuthorizeHandle()
             break
@@ -180,9 +184,16 @@ export async function initApollo(uri?: string) {
     }
   })
 
+  const uploadLink = createUploadLink({
+    uri: _uri,
+    headers: {
+      'keep-alive': 'true',
+    },
+  })
+
   const client = new ApolloClient({
-    link: authLink.concat(errorLink).concat(httpLink),
-    // ApolloLink.from([errorLink, httpLink, authLink]),
+    // link: authLink.concat(uploadLink).concat(errorLink).concat(httpLink),
+    link: ApolloLink.from([authLink, errorLink, uploadLink, httpLink]),
     // uri: uri,
     cache: new InMemoryCache(),
     defaultOptions: {

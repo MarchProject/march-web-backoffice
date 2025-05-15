@@ -1,15 +1,7 @@
 import { UseFormReset } from 'react-hook-form'
-import {
-  IGetInventoryResponse,
-  IGetInventoryVariable,
-  getInventoryQuery,
-} from '@/core/gql/inventory/getInventoryQuery'
-import { Inventory } from '@/core/model/inventory'
+import { IGetInventoryResponse } from '@/core/gql/inventory/getInventoryQuery'
 import { inventoryRoute } from '@/router/inventory'
-import { useQuery } from '@apollo/client'
-import { plainToInstance } from 'class-transformer'
 import router from 'next/router'
-import { useState } from 'react'
 
 import { StatusCode } from '@/types/response'
 import { IInventoryForm } from '../../view/editor/interface'

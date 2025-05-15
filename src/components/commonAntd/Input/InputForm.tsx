@@ -1,14 +1,10 @@
 import React, { ChangeEvent, ChangeEventHandler, useState } from 'react'
 import { Input as AntInput, InputProps } from 'antd'
-import {
-  Control,
-  Controller,
-  FieldValues,
-} from 'react-hook-form'
+import { Control, Controller, FieldValues } from 'react-hook-form'
 import classnames from 'classnames'
 import { noop } from '@/utils/common/noop'
 import { Normalization } from '@/utils/common/utils'
-import TextArea from 'antd/es/input/TextArea'
+const { TextArea } = AntInput
 
 interface InputFormProps extends IInputProps {
   id: string
@@ -24,7 +20,6 @@ interface InputFormProps extends IInputProps {
 }
 
 interface IInputProps extends InputProps {
-
   inputRef?: any
   inputLabel?: {
     label: string

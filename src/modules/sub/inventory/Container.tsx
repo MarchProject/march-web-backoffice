@@ -12,6 +12,7 @@ import Filter from './view/Menu/Filter'
 import Transfer from './view/Menu/Transfer'
 import Trash from './view/Menu/trash/Trash'
 import MainModal from './view/Menu/main/MainModal'
+import UploadCsv from './view/Menu/Upload/Upload'
 
 const Container = () => {
   const { t: trans } = useTranslation()
@@ -75,11 +76,13 @@ const Container = () => {
         deleteTypeHandle,
         deleteInventoryTypeLoading,
       },
+      upload: { uploadModal },
     },
   } = useControllerInventory()
 
   return (
     <div className="w-full mainBg min-h-[calc(100vh + 10px)] h-auto lg:h-[calc(100vh)]">
+      <UploadCsv modalProps={uploadModal} />
       <Filter
         inventoriesBranchData={inventoriesBranchData}
         inventoriesBrandData={inventoriesBrandData}

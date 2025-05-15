@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import dayjs from '../../../core/common/dayjs'
 import { Control, Controller, FieldValues } from 'react-hook-form'
@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import { DateValidationError } from '@mui/x-date-pickers/internals'
 import { DatePicker } from 'antd'
 import { SizeType } from 'antd/es/config-provider/SizeContext'
+import { dateFormat } from '@/core/common'
 
 interface IDatePickerSelect {
   onChange: (value: any, keyboardInputValue?: string) => void
@@ -31,9 +32,20 @@ const DatePickerSelect = ({
   error,
   disabled,
   size,
+  inputLabel,
 }: IDatePickerSelect) => {
   return (
     <>
+      {inputLabel && (
+        <div
+          className={classnames(
+            inputLabel.classNames,
+            `text-xs ${focus ? 'text-violet-400' : 'text-gray-600'} mb-1`,
+          )}>
+          {inputLabel.label}
+          {inputLabel.required && <span className="text-rose-600"> *</span>}
+        </div>
+      )}
       <DatePicker
         value={value}
         size={size}
@@ -81,11 +93,11 @@ const DatePickerSelectForm = ({
         render={({ field, fieldState: { error } }) => {
           const onChange = (value) => {
             const transformedDate = value
-              ? dayjs(value).format(inputFormat)
+              ? dayjs(value).format(dateFormat)
               : null
             field.onChange(transformedDate)
           }
-          const value = field?.value ? dayjs(field.value, inputFormat) : null
+          const value = field?.value ? dayjs(field.value, dateFormat) : null
           return (
             <>
               <DatePickerSelect

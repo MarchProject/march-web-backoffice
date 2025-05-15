@@ -17,6 +17,7 @@ export const useMenuHandler = ({
   handleOpenBranch,
   handleOpenBrand,
   handleOpenType,
+  handleOpenUpload,
 }) => {
   const { t: trans } = useTranslation()
   const tkeysMenu = tkeys.Inventory.MainPage.menu
@@ -54,7 +55,9 @@ export const useMenuHandler = ({
       label: trans(tkeysMenu.upload),
       key: '5',
       icon: <IoCloudUploadOutline className="text-[#a78bfa]" />,
-      onClick: () => {},
+      onClick: () => {
+        handleOpenUpload()
+      },
     },
     {
       label: trans(tkeysMenu.tableConfig),

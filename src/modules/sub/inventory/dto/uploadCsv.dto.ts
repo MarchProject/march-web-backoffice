@@ -1,6 +1,6 @@
 import { GetTypesInventoryType } from '@/core/gql/inventory/getTypesInventoryQuery'
 import { UploadInventoryVariable } from '@/core/gql/inventory/uploadInventoryMutation'
-import { IValidatedValues } from '../dialog/DialogEditor/DialogUploadCsv/view/UploadCsvView/interface'
+import { IValidatedValues } from './interface'
 import { defaultTo, get } from 'lodash'
 import { DbFormat, dateFormat } from '@/core/common'
 import dayjs from '@/core/common/dayjs'

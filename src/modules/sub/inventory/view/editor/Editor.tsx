@@ -7,7 +7,6 @@ import { max, onlyNumber } from '@/utils/common/normalizeInput'
 import { inventoryRoute } from '@/router/inventory'
 import { EnumModeEditorPage } from '@/modules/interface'
 import { MdFavorite } from 'react-icons/md'
-import { dateFormat } from '@/core/common'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import MainModal from '../Menu/main/MainModal'
@@ -35,7 +34,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
   }, [mode])
 
   const {
-    formHandler: { control, onSubmit, setValue },
+    formHandler: { control, onSubmit },
     inventoriesType: { inventoriesTypeData, inventoriesTypeLoading },
     inventoriesBrand: { inventoriesBrandData, inventoriesBrandLoading },
     inventoriesBranch: { inventoriesBranchData, inventoriesBranchLoading },
@@ -216,7 +215,7 @@ const EditorInventoryPage = ({ mode }: IEditorInventoryPage) => {
                               classNames:
                                 'text-base !text-secondary !font-semibold',
                             }}
-                            inputFormat={dateFormat}
+                            inputFormat={'DD-MM-YYYY'}
                             size="large"
                           />
                         </div>
