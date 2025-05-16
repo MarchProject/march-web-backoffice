@@ -5,10 +5,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
-import { getInventoryBrand } from '../fetcher/getInventoryBrand'
+import { useGetInventoryBrand } from '../fetcher/getInventoryBrand'
 
-type UseQueryInventoryBrandProps = {
-}
+type UseQueryInventoryBrandProps = {}
 
 export const useQueryInventoryBrand = ({}: UseQueryInventoryBrandProps) => {
   const { notification } = useNotificationContext()
@@ -49,7 +48,7 @@ export const useQueryInventoryBrand = ({}: UseQueryInventoryBrandProps) => {
     refetch,
     loading: getInventoryBrandsLoading,
     error: getInventoryBrandsError,
-  } = getInventoryBrand({
+  } = useGetInventoryBrand({
     onCompleted,
     onError,
   })

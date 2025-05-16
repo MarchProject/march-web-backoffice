@@ -1,8 +1,8 @@
 import {
   UpsertBrandInventoryResponse,
   UpsertBrandInventoryVariables,
+  upsertInventoryBrandMutation,
 } from '@/core/gql/inventory/upsertBrandInventoryMutation'
-import { upsertInventoryBrandMutation } from '@/core/gql/inventory/upsertBrandInventoryMutation'
 import { useCallback } from 'react'
 import { ApolloError, useMutation } from '@apollo/client'
 
@@ -11,7 +11,7 @@ interface IUseUpsertBrandHandlerProps {
   onError: (error: ApolloError) => void
 }
 
-export const upsertInventoryBrand = ({
+export const useUpsertInventoryBrand = ({
   onCompleted,
   onError,
 }: IUseUpsertBrandHandlerProps) => {

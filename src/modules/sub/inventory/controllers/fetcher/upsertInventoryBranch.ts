@@ -11,7 +11,7 @@ interface IUseUpsertBranchHandlerProps {
   onError?: (error: ApolloError) => void
 }
 
-export const upsertInventoryBranch = ({
+export const useUpsertInventoryBranch = ({
   onCompleted,
   onError,
 }: IUseUpsertBranchHandlerProps) => {

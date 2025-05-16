@@ -4,12 +4,12 @@ import {
 } from '@/core/gql/inventory/getInventoryAllDeletedQuery'
 import { ApolloError, useQuery } from '@apollo/client'
 
-type getInventoryAllDeletedPropsType = {
+export type getInventoryAllDeletedPropsType = {
   onCompleted?: (data: GetInventoryAllDeletedResponse) => void
   onError?: (error: ApolloError) => void
 }
 
-export const getInventoryAllDeleted = ({
+export const useGetInventoryAllDeleted = ({
   onCompleted,
   onError,
 }: getInventoryAllDeletedPropsType) => {

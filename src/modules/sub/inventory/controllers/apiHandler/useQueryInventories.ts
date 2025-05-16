@@ -1,14 +1,14 @@
-import {
-  GetInventoriesType,
-  IFavoriteStatus,
-} from '@/core/gql/inventory/getInventoriesQuery'
-import { GetInventoriesResponse } from '@/core/gql/inventory/getInventoriesQuery'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
 import { StatusCode } from '@/types/response'
 import { useCallback, useEffect, useState } from 'react'
 import { tkeys } from '@/translations/i18n'
 import { useTranslation } from 'react-i18next'
 import { useGetInventories } from '../fetcher/getInventories'
+import {
+  GetInventoriesType,
+  IFavoriteStatus,
+  GetInventoriesResponse,
+} from '@/core/gql/inventory/getInventoriesQuery'
 
 export const useQueryInventories = ({ notification }) => {
   const { t: trans }: any = useTranslation()
@@ -31,13 +31,14 @@ export const useQueryInventories = ({ notification }) => {
     )
   }, [notification, trans])
 
-  const onCompleted = useCallback((data: GetInventoriesResponse) => {
-    if (data?.getInventories?.status?.code === StatusCode.SUCCESS) {
-      try {
+  const onCompleted = useCallback(
+    (data: GetInventoriesResponse) => {
+      if (data?.getInventories?.status?.code === StatusCode.SUCCESS) {
         setInventoriesData(data.getInventories.data)
-      } catch (error) {}
-    }
-  }, [])
+      }
+    },
+    [setInventoriesData],
+  )
 
   const { loading, refetch, error } = useGetInventories({
     onCompleted,
@@ -63,6 +64,7 @@ export const useQueryInventories = ({ notification }) => {
   }
 
   const fetching = useCallback(() => {
+    console.log('first')
     refetch({
       params: {
         limit: limit,
@@ -77,6 +79,7 @@ export const useQueryInventories = ({ notification }) => {
   }, [branch, brand, favorite, limit, page, refetch, search, type])
 
   useEffect(() => {
+    console.log('secn')
     fetching()
   }, [fetching])
 

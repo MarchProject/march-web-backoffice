@@ -24,7 +24,7 @@ type ColumnsPropsType = {
   favoriteInventoryHandler: (id: string) => void
 }
 
-export const columns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
+export const useColumns = ({ favoriteInventoryHandler }: ColumnsPropsType) => {
   const { t: trans }: any = useTranslation()
   const keys = tkeys.Inventory.MainPage.table
 

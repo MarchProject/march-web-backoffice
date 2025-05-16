@@ -1,7 +1,7 @@
-import { DeleteTypeInventoryResponse } from '@/core/gql/inventory/deleteTypeInventoryMutation'
 import {
   DeleteTypeInventoryVariables,
   deleteInventoryTypeMutation,
+  DeleteTypeInventoryResponse,
 } from '@/core/gql/inventory/deleteTypeInventoryMutation'
 import { useCallback } from 'react'
 import {

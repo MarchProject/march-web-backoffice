@@ -11,7 +11,7 @@ interface IUseUploadCSVHandleProps {
   onError: (error: ApolloError) => void
 }
 
-export const uploadCsv = ({
+export const useUploadCsv = ({
   onCompleted,
   onError,
 }: IUseUploadCSVHandleProps) => {

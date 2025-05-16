@@ -5,7 +5,7 @@ import {
 } from '@/core/notification'
 import { StatusCode } from '@/types/response'
 import { ConfigNotificationPropsType } from '@/context/notification'
-import { upsertInventoryBranch } from '../fetcher/upsertInventoryBranch'
+import { useUpsertInventoryBranch } from '../fetcher/upsertInventoryBranch'
 
 interface IUseUpsertBranchHandlerProps {
   triggerUpsertBranch: () => void
@@ -52,7 +52,7 @@ export const useUpsertBranchHandler = ({
   const {
     upsertInventoryBranch: upsertInventoryBranchMutation,
     upsertInventoryBranchLoading,
-  } = upsertInventoryBranch({ onCompleted, onError })
+  } = useUpsertInventoryBranch({ onCompleted, onError })
 
   const updateBranchHandle = useCallback(
     (data) => {

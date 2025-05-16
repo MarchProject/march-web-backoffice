@@ -4,7 +4,7 @@ import {
   notificationMutationProp,
 } from '@/core/notification'
 import { StatusCode } from '@/types/response'
-import { recoveryTrash } from '../fetcher/recoveryHardDeleted'
+import { useRecoveryTrash } from '../fetcher/recoveryHardDeleted'
 import { ConfigNotificationPropsType } from '@/context/notification'
 
 type UseRecoveryTrashHandlerPropsType = {
@@ -45,7 +45,7 @@ export const useRecoveryTrashHandler = ({
   )
 
   const { recoveryHardDeletedHandler, recoveryHardDeletedLoading } =
-    recoveryTrash({
+    useRecoveryTrash({
       onCompleted,
       onError,
     })

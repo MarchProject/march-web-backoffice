@@ -10,7 +10,7 @@ type getInventoryBrandPropsType = {
   onError?: (error: ApolloError) => void
 }
 
-export const getInventoryBranch = ({
+export const useGetInventoryBranch = ({
   onCompleted,
   onError,
 }: getInventoryBrandPropsType) => {

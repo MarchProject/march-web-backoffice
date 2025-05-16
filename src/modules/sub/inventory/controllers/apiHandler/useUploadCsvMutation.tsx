@@ -4,7 +4,7 @@ import {
   notificationInternalErrorProp,
   notificationMutationProp,
 } from '@/core/notification'
-import { uploadCsv } from '../fetcher/uploadCsv'
+import { useUploadCsv } from '../fetcher/uploadCsv'
 import { UploadCSVResponse } from '@/core/gql/inventory/uploadCsv'
 
 export const useUploadCsvMutation = ({ handleClose }) => {
@@ -46,7 +46,7 @@ export const useUploadCsvMutation = ({ handleClose }) => {
     }
   }
 
-  const { uploadCSVHandler, upLoadCsvLoading } = uploadCsv({
+  const { uploadCSVHandler, upLoadCsvLoading } = useUploadCsv({
     onCompleted,
     onError,
   })

@@ -1,6 +1,8 @@
-import { UpsertTypeInventoryVariables } from '@/core/gql/inventory/upsertTypeInventoryMutation'
-import { UpsertTypeInventoryResponse } from '@/core/gql/inventory/upsertTypeInventoryMutation'
-import { upsertInventoryTypeMutation } from '@/core/gql/inventory/upsertTypeInventoryMutation'
+import {
+  UpsertTypeInventoryVariables,
+  UpsertTypeInventoryResponse,
+  upsertInventoryTypeMutation,
+} from '@/core/gql/inventory/upsertTypeInventoryMutation'
 import { useCallback } from 'react'
 import { ApolloError, useMutation } from '@apollo/client'
 
@@ -9,7 +11,7 @@ interface IUseUpsertTypeHandleProps {
   onError: (error: ApolloError) => void
 }
 
-export const upsertInventoryType = ({
+export const useUpsertInventoryType = ({
   onCompleted,
   onError,
 }: IUseUpsertTypeHandleProps) => {

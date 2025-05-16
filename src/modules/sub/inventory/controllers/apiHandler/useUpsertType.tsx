@@ -7,7 +7,7 @@ import {
 import { ApolloError } from '@apollo/client'
 import { StatusCode } from '@/types/response'
 import { ConfigNotificationPropsType } from '@/context/notification'
-import { upsertInventoryType } from '../fetcher/upsertInventoryType'
+import { useUpsertInventoryType } from '../fetcher/upsertInventoryType'
 
 interface IUseUpsertTypeHandleProps {
   triggerUpsertType: () => void
@@ -48,7 +48,7 @@ export const useUpsertTypeHandler = ({
   const {
     upsertInventoryType: upsertInventoryTypeMutation,
     upsertInventoryTypeLoading,
-  } = upsertInventoryType({ onCompleted, onError })
+  } = useUpsertInventoryType({ onCompleted, onError })
 
   const updateTypeHandle = useCallback(
     (data) => {

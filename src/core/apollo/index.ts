@@ -184,7 +184,7 @@ export async function initApollo(uri?: string) {
     }
   })
 
-  const uploadLink = createUploadLink({
+  const uploadLink: any = createUploadLink({
     uri: _uri,
     headers: {
       'keep-alive': 'true',

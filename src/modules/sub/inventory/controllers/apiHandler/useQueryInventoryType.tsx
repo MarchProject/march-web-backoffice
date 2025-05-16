@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
-import { getInventoryType } from '../fetcher/getInventorType'
+import { useGetInventoryType } from '../fetcher/getInventorType'
 
 type UseQueryInventoryTypeProps = {}
 
@@ -51,7 +51,7 @@ export const useQueryInventoryType = ({}: UseQueryInventoryTypeProps) => {
     refetch,
     error: getInventoryTypesError,
     loading: getInventoryTypesLoading,
-  } = getInventoryType({ onCompleted, onError })
+  } = useGetInventoryType({ onCompleted, onError })
 
   const onInputTypeChange = useCallback(
     (value: string) => {

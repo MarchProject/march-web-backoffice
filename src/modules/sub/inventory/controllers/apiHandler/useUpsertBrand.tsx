@@ -7,7 +7,7 @@ import {
 import { ApolloError } from '@apollo/client'
 import { StatusCode } from '@/types/response'
 import { ConfigNotificationPropsType } from '@/context/notification'
-import { upsertInventoryBrand } from '../fetcher/upsertinventoryBrand'
+import { useUpsertInventoryBrand } from '../fetcher/upsertinventoryBrand'
 
 interface IUseUpsertBrandHandlerProps {
   triggerUpsertBrand: () => void
@@ -48,7 +48,7 @@ export const useUpsertBrandHandler = ({
   const {
     upsertInventoryBrand: upsertInventoryBranchMutation,
     upsertInventoryBrandLoading,
-  } = upsertInventoryBrand({ onCompleted, onError })
+  } = useUpsertInventoryBrand({ onCompleted, onError })
 
   const updateBrandHandle = useCallback(
     (data) => {

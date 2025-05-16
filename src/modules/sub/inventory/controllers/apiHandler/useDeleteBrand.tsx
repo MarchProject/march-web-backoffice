@@ -1,17 +1,15 @@
 import {
   DeleteBrandInventoryResponse,
   DeleteBrandInventoryVariables,
+  deleteInventoryBrandMutation,
 } from '@/core/gql/inventory/deleteBrandInventoryMutation'
-import { deleteInventoryBrandMutation } from '@/core/gql/inventory/deleteBrandInventoryMutation'
 import { useCallback } from 'react'
 import {
   notificationInternalErrorProp,
   notificationMutationProp,
 } from '@/core/notification'
 import { useMutation } from '@apollo/client'
-import {
-  ConfigNotificationPropsType,
-} from '@/context/notification'
+import { ConfigNotificationPropsType } from '@/context/notification'
 import { StatusCode } from '@/types/response'
 
 interface IUseDeleteBrandHandlerProps {
@@ -23,7 +21,6 @@ export const useDeleteBrandInventoryHandler = ({
   triggerDeleteBrand,
   notification,
 }: IUseDeleteBrandHandlerProps) => {
-
   const [deleteInventoryBrand, { loading }] = useMutation<
     DeleteBrandInventoryResponse,
     DeleteBrandInventoryVariables

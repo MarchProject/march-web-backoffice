@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
-import { getInventoryAllDeleted } from '../fetcher/getInventoryAllDeleted'
+import { useGetInventoryAllDeleted } from '../fetcher/getInventoryAllDeleted'
 import {
   GetInventoryAllDeletedResponse,
   GetInventoryAllDeletedType,
@@ -41,7 +41,7 @@ export const useQueryTrashHandler = ({ notification }) => {
   }, [notification, trans])
 
   const { refetch, loading: inventoryAllDeletedLoaing } =
-    getInventoryAllDeleted({
+    useGetInventoryAllDeleted({
       onError,
       onCompleted,
     })

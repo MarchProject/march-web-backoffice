@@ -15,7 +15,7 @@ type UseRecoveryTrashHandlerPropsType = {
   onError?: (error: ApolloError) => void
 }
 
-export const recoveryTrash = ({
+export const useRecoveryTrash = ({
   onCompleted,
   onError,
 }: UseRecoveryTrashHandlerPropsType) => {

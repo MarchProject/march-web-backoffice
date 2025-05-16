@@ -5,7 +5,7 @@ import router from 'next/router'
 
 import { StatusCode } from '@/types/response'
 import { IInventoryForm } from '../../view/editor/interface'
-import { getInventory } from '../fetcher/getInventory'
+import { useGetInventory } from '../fetcher/getInventory'
 import { transformInventory } from '../../dto/inventory.dto'
 
 export interface IUseQueryInventoryProps {
@@ -35,7 +35,7 @@ export const useQueryInventory = ({
     router.push({ pathname: inventoryRoute.path })
   }
 
-  const { loading } = getInventory({
+  const { loading } = useGetInventory({
     idInventory,
     onCompleted,
     onError,

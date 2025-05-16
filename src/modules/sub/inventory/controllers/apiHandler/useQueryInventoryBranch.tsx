@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { tkeys } from '@/translations/i18n'
 import { notificationProp } from '@/core/notification/inventory/inventory/dialogCustom'
-import { getInventoryBranch } from '../fetcher/getInventoryBranch'
+import { useGetInventoryBranch } from '../fetcher/getInventoryBranch'
 
 type UseQueryInventoryBranchProps = {}
 
@@ -48,7 +48,7 @@ export const useQueryInventoryBranch = ({}: UseQueryInventoryBranchProps) => {
     refetch,
     loading: getInventoryBranchsLoading,
     error: getInventoryBranchsError,
-  } = getInventoryBranch({ onCompleted, onError })
+  } = useGetInventoryBranch({ onCompleted, onError })
 
   const onInputBranchChange = useCallback(
     (value: string) => {
