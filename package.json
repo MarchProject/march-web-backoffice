@@ -8,7 +8,7 @@
     "prod": "export $(cat .env | xargs) && node dist/index.js",
     "build": "next build && tsc --project tsconfig.server.json",
     "nextbuild": "next build",
-    "start": "next start",
+    "start": "export $(cat .env | xargs) && node dist/index.js",
     "lint": "next lint"
   },
   "dependencies": {
