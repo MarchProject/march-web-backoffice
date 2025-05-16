@@ -35,7 +35,7 @@ const Container = <T extends object>({
         scroll={{
           scrollToFirstRowOnChange: true,
           y: gridHeight - 125,
-          x: true,
+          x: 'max-content',
         }}
         bordered
         loading={loading}

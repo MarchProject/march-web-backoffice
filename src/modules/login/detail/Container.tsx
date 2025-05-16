@@ -12,7 +12,7 @@ const ContainerLogin = () => {
 
   return (
     <BlockUi tag="div" blocking={signInLoading}>
-      <div className="bg-login">
+      <div className="bg-login w-full h-full">
         <div className="container mx-auto">
           <div className="layout-loginForm">
             <LoginForm
