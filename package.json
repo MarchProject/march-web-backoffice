@@ -2,8 +2,10 @@
   "name": "march-web-backoffice",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@7.5.1",
   "engines": {
-    "node": "18.20.6"
+    "node": "18.x",
+    "pnpm": "7.5.1"
   },
   "scripts": {
     "nextdev": "next dev",
